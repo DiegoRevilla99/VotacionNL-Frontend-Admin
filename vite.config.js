@@ -14,8 +14,8 @@ export default defineConfig({
       skipWaiting: true
     },
     manifest: {
-      name: 'PWA Votación de Nuevo León',
-      short_name: 'PWA Votación NL',
+      name: 'Votación de Nuevo León',
+      short_name: 'Votación NL',
       theme_color: '#ffffff',
       icons: [
         {
