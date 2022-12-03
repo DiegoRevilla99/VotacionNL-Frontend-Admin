@@ -7,8 +7,6 @@ import { CrudConsulta } from "../pages/CrudConsulta";
 import { CrudJornada } from "../pages/CrudJornada";
 import { HomePreparacion } from "../pages/HomePreparacion";
 
-
-import { InicioPage } from "../pages/InicioPage";
 import { RegistroJornadaElectoral } from "../pages/RegistroJornadaElectoral";
 
 export const PreparacionRoutes = () => {
@@ -17,13 +15,10 @@ export const PreparacionRoutes = () => {
 			<Routes>
 				<Route path="inicio" element={<HomePreparacion></HomePreparacion>} />
 				<Route path="registroJornada" element={<RegistroJornadaElectoral />} />
-        <Route path="comite" element={<CrudComite />} />
-        <Route
-          path="comite/boleta"
-          element={<AddBoletaComite></AddBoletaComite>}
-        />
-        <Route path="jornada" element={<CrudJornada />} />
-        <Route path="consulta" element={<CrudConsulta />} />
+				<Route path="comite" element={<CrudComite />} />
+				<Route path="comite/boleta" element={<AddBoletaComite></AddBoletaComite>} />
+				<Route path="jornada" element={<CrudJornada />} />
+				<Route path="consulta" element={<CrudConsulta />} />
 
 				<Route path="/*" element={<Navigate to="/preparacion/inicio" />} />
 			</Routes>
