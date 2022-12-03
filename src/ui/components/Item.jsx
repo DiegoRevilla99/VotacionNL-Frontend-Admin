@@ -24,7 +24,7 @@ export const Item = ({ title, to, icon, selected, setSelected }) => {
 					borderTopLeftRadius: 20,
 					borderBottomLeftRadius: 20,
 					// backgroundImage: "linear-gradient(90deg, #7E328B , #ffffff)",
-					backgroundColor: "#ffffff",
+					backgroundColor: "#f8f7f3",
 					// backgroundSize: "600%",
 					animation: `${animacion} 0.3s both`,
 				},

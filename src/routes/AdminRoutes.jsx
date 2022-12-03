@@ -12,7 +12,10 @@ export const AdminRoutes = () => {
 			<div className="app">
 				<SidebarCustom></SidebarCustom>
 
-				<main className="content">
+				<main
+					className="content"
+					style={{ display: "flex", flexDirection: "column", backgroundColor: "#f8f7f3" }}
+				>
 					<Topbar></Topbar>
 					<Routes>
 						{/* EMPADRONAMIENTO*/}

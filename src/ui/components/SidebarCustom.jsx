@@ -51,7 +51,7 @@ export const SidebarCustom = () => {
 					padding: "5px 35px 5px 20px !important",
 				},
 				"& .pro-inner-item:hover": {
-					color: "#ffffff !important",
+					color: "currentColor !important",
 				},
 				"& .pro-menu-item.active": {
 					color: "#7E328B !important",
@@ -71,7 +71,7 @@ export const SidebarCustom = () => {
 							justifyContent="center"
 							alignItems="center"
 							sx={{
-								background: "white",
+								background: "#f8f7f3",
 								height: "73.99px",
 								boxShadow: 3,
 							}}
