@@ -20,7 +20,7 @@ export const HomeJElectoral = () => {
     </div>
     <div>
     <Box ml={5} p={7}>
-        <Button sx={{   
+        <Button href="PcrudBoleta" sx={{   
                    backgroundColor: '#511079',
                    borderRadius: '0px 25px 25px 25px',
                    color: '#fff',
