@@ -5,6 +5,8 @@ import { AddBoletaComite } from "../pages/AddBoletaComite";
 import { CrudComite } from "../pages/CrudComite";
 import { CrudConsulta } from "../pages/CrudConsulta";
 import { CrudJornada } from "../pages/CrudJornada";
+import { HomePreparacion } from "../pages/HomePreparacion";
+
 
 import { InicioPage } from "../pages/InicioPage";
 import { RegistroJornadaElectoral } from "../pages/RegistroJornadaElectoral";
@@ -13,7 +15,7 @@ export const PreparacionRoutes = () => {
 	return (
 		<PrivateRoute>
 			<Routes>
-				<Route path="inicio" element={<InicioPage></InicioPage>} />
+				<Route path="inicio" element={<HomePreparacion></HomePreparacion>} />
 				<Route path="registroJornada" element={<RegistroJornadaElectoral />} />
         <Route path="comite" element={<CrudComite />} />
         <Route

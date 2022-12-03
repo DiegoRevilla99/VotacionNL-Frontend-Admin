@@ -25,7 +25,7 @@ export const RegistroProceso = ({ title }) => {
 						flexDirection: "column",
 						m: "3rem",
 						mt: "2rem",
-						"& .css-1iyamrn-MuiButtonBase-root-MuiButton-root:hover": {
+						"& .css-1h0ys03-MuiButtonBase-root-MuiButton-root:hover": {
 							backgroundColor: "#7E328B !important",
 							transform: "translate(-5px, -5px)",
 							boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
