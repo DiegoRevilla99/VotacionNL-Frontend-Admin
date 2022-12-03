@@ -17,18 +17,18 @@ export const HomePreparacion = () => {
     <div align = "center">
 
       <Box mt={7}>
-        <Box p={8} sx={{
+        <Box p={6} sx={{
           backgroundColor: '#FFFFFF',
           borderRadius: 10,
           border: 1,
           boxShadow: 5,
           width: 900,
-          height: 335,
+          height: 340,
           }}
           
           >
-            <Typography ml={4} variant="h4" align="left" color="initial" paragraph>
-              ¿Qué tipo de plantilla desea usar?
+            <Typography ml={4} variant="h5" align="left" paragraph>
+              ¿QUÉ TIPO DE PLANTILLA DESEA USAR?
             </Typography>
         
         <Stack direction="row"
@@ -37,11 +37,11 @@ export const HomePreparacion = () => {
               spacing={8}
               
               >  
-          <Button href="HomeJElectoral" sx={{   
+          <Button href="" sx={{   
                     backgroundColor: '#511079',
                     borderRadius: '0px 25px 25px 25px',
                     color: '#fff',
-                    boxShadow: '9px 10px 4px rgba(0, 0, 0, 0.37)',
+                    
                     fontSize: '1.5rem',
                     fontWeight: 'bold',
                     letterSpacing: '0.01rem',
@@ -51,12 +51,12 @@ export const HomePreparacion = () => {
                     height: 270,
                     '&:hover': {
                         background: 'linear-gradient(45deg, #C9A9CE 30%, #C9A9CE 90%)',
+                        boxShadow: '9px 10px 4px rgba(0, 0, 0, 0.37)',
                     },}} >PLANTILLA DE LA JORNADA ELECTORAL</Button>
           <Button href="" sx={{   
                     backgroundColor: '#511079',
                     borderRadius: '0px 25px 25px 25px',
                     color: '#fff',
-                    boxShadow: '9px 10px 4px rgba(0, 0, 0, 0.37)',
                     fontSize: '1.5rem',
                     fontWeight: 'bold',
                     letterSpacing: '0.01rem',
@@ -66,12 +66,12 @@ export const HomePreparacion = () => {
                     height: 270,
                     '&:hover': {
                         background: 'linear-gradient(45deg, #C9A9CE 30%, #C9A9CE 90%)',
+                        boxShadow: '9px 10px 4px rgba(0, 0, 0, 0.37)',
                     },}} >PLANTILLA DEL COMITÉ</Button>
           <Button href="" sx={{   
                     backgroundColor: '#511079',
                     borderRadius: '0px 25px 25px 25px',
                     color: '#fff',
-                    boxShadow: '9px 10px 4px rgba(0, 0, 0, 0.37)',
                     fontSize: '1.5rem',
                     fontWeight: 'bold',
                     letterSpacing: '0.01rem',
@@ -81,6 +81,7 @@ export const HomePreparacion = () => {
                     height: 270,
                     '&:hover': {
                         background: 'linear-gradient(45deg, #C9A9CE 30%, #C9A9CE 90%)',
+                        boxShadow: '9px 10px 4px rgba(0, 0, 0, 0.37)',
                     },}} >PLANTILLA DE LA CONSULTA CIUDADANA</Button>
         </Stack>
       </Box>
