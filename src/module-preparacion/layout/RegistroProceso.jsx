@@ -1,7 +1,39 @@
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { DataGridTable } from "../../ui/components/DataGridTable";
+import { Tabla } from "../../ui/components/table/Tabla";
+import { columns, data } from "../helpers/DataBoletas";
 
 export const RegistroProceso = ({ title }) => {
+	const [datos, setDatos] = useState(data);
+
+	useEffect(() => {
+		setDatos(data);
+	}, []);
+
+	const onEliminar = (event, rowData) => {
+		const { candidato } = rowData;
+		console.log("has presionado " + candidato);
+		const newData = datos.filter((obj) => {
+			if (obj.candidato !== candidato) return obj;
+		});
+		setDatos(newData);
+	};
+
+	const actions = [
+		{
+			icon: "edit",
+			title: "Editar",
+			sx: {},
+			onClick: (event, rowData) => alert("Se ha editado a " + rowData.candidato),
+		},
+		{
+			icon: "delete",
+			title: "Eliminar",
+			sx: { ml: 1, mr: 1, backgroundColor: "error.main" },
+			onClick: (event, rowData) => onEliminar(event, rowData),
+		},
+	];
 	return (
 		<Grid
 			container
@@ -23,7 +55,7 @@ export const RegistroProceso = ({ title }) => {
 						height: "100%",
 						display: "flex",
 						flexDirection: "column",
-						m: "3rem",
+						m: "2rem",
 						mt: "2rem",
 						"& .css-1h0ys03-MuiButtonBase-root-MuiButton-root:hover": {
 							backgroundColor: "#7E328B !important",
@@ -78,6 +110,7 @@ export const RegistroProceso = ({ title }) => {
 							sx={{ height: "100%", display: "flex", flexDirection: "column" }}
 						>
 							<DataGridTable />
+							{/* <Tabla data={datos} actions={actions} columns={columns}></Tabla> */}
 						</Box>
 					</Box>
 				</Box>
