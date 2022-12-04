@@ -1,4 +1,5 @@
 import { Box, Divider, Grid, Typography, TextField, Paper, Button } from "@mui/material";
+import { DataGridTable } from "../../ui/components/DataGridTable";
 
 export const AddPapeleta = () => {
 	return (
@@ -66,7 +67,7 @@ export const AddPapeleta = () => {
 							DATOS GEOELECTORALES
 						</Typography>
 					</Grid>
-					<Grid item xs={8}>
+					<Grid item xs={12} md={12} lg={8}>
 						<TextField
 							fullWidth
 							size="small"
@@ -75,7 +76,7 @@ export const AddPapeleta = () => {
 							variant="filled"
 						/>
 					</Grid>
-					<Grid item xs={4}>
+					<Grid item xs={12} md={12} lg={4}>
 						<TextField
 							fullWidth
 							size="small"
@@ -125,7 +126,7 @@ export const AddPapeleta = () => {
 							variant="filled"
 						/>
 					</Grid>
-					<Grid item xs={6}>
+					<Grid item xs={12} md={6} lg={4}>
 						<Button
 							// onClick={add}
 							variant="contained"
@@ -148,6 +149,25 @@ export const AddPapeleta = () => {
 						>
 							Agregar preguntas
 						</Button>
+					</Grid>
+					<Grid item xs={12}>
+						<Box
+							sx={{
+								height: "25rem",
+								// boxShadow: 1,
+								// height: "100%",
+								// display: "flex",
+								// flexDirection: "column",
+								backgroundColor: "#f0f0f0",
+								// mt: "1rem",
+								borderRadius: "2rem",
+								p: "2rem",
+								pt: "1rem",
+								pb: "1rem",
+							}}
+						>
+							<DataGridTable />
+						</Box>
 					</Grid>
 				</Grid>
 			</Box>
