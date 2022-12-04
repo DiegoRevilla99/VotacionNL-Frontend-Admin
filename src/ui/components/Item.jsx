@@ -2,6 +2,7 @@ import { MenuItem } from "react-pro-sidebar";
 import Typography from "@mui/material/Typography";
 import { keyframes } from "@emotion/react";
 import { Box } from "@mui/system";
+import { Link } from "react-router-dom";
 
 const animacion = keyframes`
 0%{
@@ -40,6 +41,7 @@ export const Item = ({ title, to, icon, selected, setSelected }) => {
 				icon={icon}
 			>
 				<Typography variant="button">{title}</Typography>
+				<Link to={to} />
 			</MenuItem>
 		</Box>
 	);
