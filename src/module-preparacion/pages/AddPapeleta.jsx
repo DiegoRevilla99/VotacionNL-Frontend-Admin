@@ -1,12 +1,26 @@
 import { Box, Divider, Grid, Typography, TextField, Paper, Button } from "@mui/material";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useUiStore } from "../../hooks/useUiStore";
+import { saveConsultaPrueba } from "../../store/module-preparacion/consulta-ciudadana/thunks";
 import { DataGridTable } from "../../ui/components/DataGridTable";
 import { ModalPapeleta } from "../components/ModalPapeleta";
 
 export const AddPapeleta = () => {
 	const [statusModal, setStatusModal] = useState(false);
-	const handleToggleModal = () => setStatusModal(!statusModal);
-	console.log(statusModal);
+	const { toastOffOperation } = useUiStore();
+	const dispatch = useDispatch();
+
+	const handleCloseModal = () => setStatusModal(false);
+
+	const handleOpenModal = () => {
+		toastOffOperation();
+		setStatusModal(true);
+	};
+
+	const onSubmit = () => {
+		dispatch(saveConsultaPrueba());
+	};
 
 	return (
 		<Box
@@ -131,7 +145,7 @@ export const AddPapeleta = () => {
 					</Grid>
 					<Grid item xs={12} md={6} lg={4}>
 						<Button
-							onClick={handleToggleModal}
+							onClick={handleOpenModal}
 							variant="contained"
 							size="large"
 							sx={{
@@ -176,7 +190,7 @@ export const AddPapeleta = () => {
 				<Grid mt={"1rem"} container direction="row" justifyContent="flex-end" spacing={2}>
 					<Grid item xs={12} md={6} lg={3}>
 						<Button
-							// onClick={handleToggleModal}
+							onClick={onSubmit}
 							variant="contained"
 							size="large"
 							sx={{
@@ -227,7 +241,7 @@ export const AddPapeleta = () => {
 					</Grid>
 				</Grid>
 			</Box>
-			<ModalPapeleta statusModal={statusModal} handleToggleModal={handleToggleModal} />
+			<ModalPapeleta statusModal={statusModal} handleToggleModal={handleCloseModal} />
 		</Box>
 	);
 };

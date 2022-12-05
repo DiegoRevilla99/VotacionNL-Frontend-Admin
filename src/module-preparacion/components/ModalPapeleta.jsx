@@ -9,6 +9,10 @@ import {
 	TextareaAutosize,
 	Typography,
 } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { useUiStore } from "../../hooks/useUiStore";
+
+import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
 
 const style = {
 	position: "absolute",
@@ -24,7 +28,13 @@ const style = {
 };
 
 export const ModalPapeleta = ({ statusModal, handleToggleModal }) => {
+	const { addQuestion } = useConsultaCiudadanaStore();
+
+	const { toastSuccesOperation } = useUiStore();
+
 	const onSave = () => {
+		addQuestion("¿Pregunta 1?", ["Respuesta 1", "Respuesta 2"]);
+		toastSuccesOperation("Pregunta registrada con éxitooo");
 		handleToggleModal();
 	};
 
