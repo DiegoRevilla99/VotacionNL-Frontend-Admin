@@ -12,7 +12,6 @@ const useStyles = makeStyles({
     boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
     color: "white",
     height: 42,
-    background: "#ffffff",
   },
 });
 const styleButton = {
@@ -92,11 +91,12 @@ export const CrudComite = () => {
             <Button
               className={classes.boton}
               variant="contained"
-              color="primary"
               style={styleButton}
               sx={{
                 mt: 2,
                 width: { sm: `270px`, xs: "150px" },
+                backgroundColor: "#511079",
+                color: "#fff",
               }}
               onClick={agregarBoleta}
             >

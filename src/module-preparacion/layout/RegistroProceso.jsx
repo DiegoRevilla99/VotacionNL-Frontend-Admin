@@ -1,7 +1,15 @@
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { DataGridTable } from "../../ui/components/DataGridTable";
 
-export const RegistroProceso = ({ title }) => {
+export const RegistroProceso = ({ title, butonTitle, tableTitle, to }) => {
+	const navigate = useNavigate();
+
+	const add = () => {
+		navigate(to);
+	};
+
 	return (
 		<Grid
 			container
@@ -14,7 +22,7 @@ export const RegistroProceso = ({ title }) => {
 			<Grid item xs={12} sx={{ display: "flex", flexDirection: "column" }}>
 				<Box sx={{ m: "0.5rem", ml: "2rem" }}>
 					<Typography variant="h6" align="left" color="initial">
-						REGISTRO DE JORNADA ELECTORAL
+						{title}
 					</Typography>
 				</Box>
 				<Divider />
@@ -23,23 +31,17 @@ export const RegistroProceso = ({ title }) => {
 						height: "100%",
 						display: "flex",
 						flexDirection: "column",
-						m: "3rem",
+						m: "2rem",
 						mt: "2rem",
-						"& .css-1h0ys03-MuiButtonBase-root-MuiButton-root:hover": {
-							backgroundColor: "#7E328B !important",
-							transform: "translate(-5px, -5px)",
-							boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
-							// boxShadow: 3,
-						},
 					}}
 				>
 					<Grid container>
 						<Grid item lg={3} md={4} sm={12} xs={12}>
 							<Button
+								onClick={add}
 								variant="contained"
 								size="large"
 								sx={{
-									// boxShadow: 9,
 									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
 									transition: "all 0.5s ease",
 									backgroundColor: "#511079",
@@ -48,9 +50,14 @@ export const RegistroProceso = ({ title }) => {
 									borderTopRightRadius: "1.6rem",
 									borderBottomLeftRadius: "1.6rem",
 									borderBottomRightRadius: "1.6rem",
+									"&:hover": {
+										backgroundColor: "#7E328B !important",
+										transform: "translate(-5px, -5px)",
+										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+									},
 								}}
 							>
-								Registrar jornada electoral
+								{butonTitle}
 							</Button>
 						</Grid>
 					</Grid>
@@ -63,14 +70,13 @@ export const RegistroProceso = ({ title }) => {
 							flexDirection: "column",
 							backgroundColor: "white",
 							mt: "2rem",
-							// height: "100%",
 							borderRadius: "2rem",
 							p: "2rem",
 							pt: "1rem",
 						}}
 					>
 						<Typography variant="h5" color="initial" mb="0.5rem">
-							Jornadas Electorales
+							{tableTitle}
 						</Typography>
 						<Divider />
 						<Box
@@ -78,6 +84,7 @@ export const RegistroProceso = ({ title }) => {
 							sx={{ height: "100%", display: "flex", flexDirection: "column" }}
 						>
 							<DataGridTable />
+							{/* <Tabla data={datos} actions={actions} columns={columns}></Tabla> */}
 						</Box>
 					</Box>
 				</Box>

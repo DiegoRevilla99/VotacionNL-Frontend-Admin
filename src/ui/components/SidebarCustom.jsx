@@ -107,6 +107,7 @@ export const SidebarCustom = () => {
 								icon={<EditOutlinedIcon />}
 								selected={selected}
 								setSelected={setSelected}
+								to={"preparacion/inicio"}
 							></Item>
 							<Item
 								title="Empadronamiento"

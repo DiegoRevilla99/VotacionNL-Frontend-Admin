@@ -49,6 +49,7 @@ export const DataGridTable = () => {
 				pageSize={5}
 				rowsPerPageOptions={[5]}
 				checkboxSelection
+				sx={{ border: "0px" }}
 			/>
 		</div>
 	);
