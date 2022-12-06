@@ -4,11 +4,11 @@ import React from "react";
 export const Columns = ({ data = [], columns = [], actions = [] }) => {
   return (
     <>
-      <TableRow sx={{ width: "100%", color: "#ffffff", background: "#3B3A3A" }}>
+      <TableRow>
         {columns.map((row) => (
-          <TableCell key={row.title} align="center">
+          <TableCell sx={{ boxShadow: 1 }} key={row.title} align="center">
             <Typography
-              sx={{ width: "100%", fontWeight: "bold", color: "#ffffff" }}
+              sx={{ width: "100%", fontWeight: "bold", color: "#000" }}
               variant="body2"
             >
               {row.title}
@@ -16,8 +16,8 @@ export const Columns = ({ data = [], columns = [], actions = [] }) => {
           </TableCell>
         ))}
         {actions.length > 0 && (
-          <TableCell key={"actions"} align="center">
-            <Typography sx={{ fontWeight: "bold", color: "#ffffff" }}>
+          <TableCell sx={{ boxShadow: 1 }} key={"actions"} align="center">
+            <Typography sx={{ fontWeight: "bold", color: "#000" }}>
               ACCIONES
             </Typography>
           </TableCell>

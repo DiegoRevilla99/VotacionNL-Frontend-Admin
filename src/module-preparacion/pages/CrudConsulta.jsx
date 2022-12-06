@@ -51,40 +51,55 @@ export const CrudConsulta = () => {
       <PlantillaCRUD guardar={guardar} cancelar={cancelar}>
         <Box
           sx={{
-            mb: 5,
             display: "flex",
-            height: "100px",
+            height: "100%",
+            width: "100%",
+            flexDirection: "column",
+          }}
+        >
+          <Box
+            sx={{
+              mb: 4,
+              display: "flex",
+              height: "60px",
+              width: "100%",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <Typography variant="h6">Registrar papeletas</Typography>
+            <Button
+              className={classes.boton}
+              variant="contained"
+              color="primary"
+              style={styleButton}
+              sx={{
+                mt: 2,
+                width: { sm: `270px`, xs: "150px" },
+              }}
+              onClick={agregarPapeleta}
+            >
+              Agregar papeleta
+            </Button>
+          </Box>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            height: "calc(100% - 90px)",
             width: "100%",
             flexDirection: "column",
             justifyContent: "center",
-            alignContent: "center",
-            justifyItems: "center",
           }}
         >
-          <Typography
-            sx={{
-              ml: 5,
-            }}
-            variant="h6"
-          >
-            Registrar papeletas
-          </Typography>
-          <Button
-            className={classes.boton}
-            variant="contained"
-            color="primary"
-            style={styleButton}
-            sx={{
-              ml: 5,
-              mt: 2,
-              width: { sm: `270px`, xs: "150px" },
-            }}
-            onClick={agregarPapeleta}
-          >
-            Agregar papeleta
-          </Button>
+          <Tabla
+            titulo={"BOLETAS"}
+            data={data}
+            actions={actions}
+            columns={columns}
+          ></Tabla>
         </Box>
-        <Tabla data={data} actions={actions} columns={columns}></Tabla>
       </PlantillaCRUD>
     </>
   );

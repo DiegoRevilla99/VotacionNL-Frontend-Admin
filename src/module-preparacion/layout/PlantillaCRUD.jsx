@@ -10,7 +10,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import ListItem from "@mui/material/ListItem";
 import { Box } from "@mui/system";
 import { makeStyles } from "@mui/styles";
 
@@ -28,13 +27,14 @@ const useStyles = makeStyles({
 });
 
 const hijoResponsive = {
-  mt: 5,
   display: "flex",
   flexDirection: "column",
   alignContent: "center",
   justifyContent: "center",
-  width: { sm: "97%", xs: "90%" },
-  height: { xl: "80%", lg: "80%", md: "90%", xs: "95%" },
+  width: "100%",
+  pl: "2rem",
+  pr: "2rem",
+  height: "calc(92% - 100px)",
 };
 
 const styleButton = {
@@ -46,6 +46,8 @@ const botones = {
   justifyContent: "end",
   alignContent: "space-around",
   width: "95%",
+  height: "50px",
+  pt: 2,
 };
 
 export const PlantillaCRUD = ({
@@ -56,22 +58,24 @@ export const PlantillaCRUD = ({
   const classes = useStyles();
   return (
     <>
-      <Stack
-        spacing={2}
+      <Box
         direction="column"
         sx={{
-          width: "97%",
-          height: { xl: "90%", lg: "80%", sm: "70%", xs: "70%" },
-          ml: 2,
+          width: "100%",
+          height: "calc(100% - 74px)",
         }}
       >
         <Box
           sx={{
             mt: 2,
+            mb: 2,
             width: "100%",
+            height: "40px",
           }}
         >
-          <Typography variant="h6">REGISTRO</Typography>
+          <Typography sx={{ ml: "2rem" }} variant="h6">
+            REGISTRO
+          </Typography>
           <hr className={classes.hr} />
         </Box>
 
@@ -81,6 +85,7 @@ export const PlantillaCRUD = ({
             sx={{
               width: "500px",
               display: "flex",
+
               justifyContent: "space-around",
             }}
           >
@@ -111,7 +116,7 @@ export const PlantillaCRUD = ({
             </Button>
           </Box>
         </Box>
-      </Stack>
+      </Box>
     </>
   );
 };

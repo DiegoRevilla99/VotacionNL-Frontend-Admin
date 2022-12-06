@@ -39,12 +39,9 @@ export const Body = ({ data = [], actions = [] }) => {
 
   return (
     <>
-      <TableBody sx={{ width: { sm: "90%", xs: "90%" } }}>
+      <TableBody sx={{ width: { sm: "90%", xs: "90%" }, background: "#fff" }}>
         {data.map((row, index) => (
-          <TableRow
-            key={row.id}
-            sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-          >
+          <TableRow key={row.id}>
             {rows(row)}
 
             {actions.length > 0 && (
