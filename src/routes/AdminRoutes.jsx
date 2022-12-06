@@ -1,5 +1,5 @@
-import { Snackbar } from "@mui/material";
-import React, { useEffect } from "react";
+import { Alert, Button, IconButton, Slide, Snackbar } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useUiStore } from "../hooks/useUiStore";
@@ -8,32 +8,55 @@ import { JornadaRoutes } from "../module-jornada/routes/JornadaRoutes";
 import { PreparacionRoutes } from "../module-preparacion/routes/PreparacionRoutes";
 import { SidebarCustom } from "../ui/components/SidebarCustom";
 import { Topbar } from "../ui/components/Topbar";
-import { Toaster, toast } from "react-hot-toast";
 
 let toastId = null;
 
 export const AdminRoutes = () => {
-	const { status, toastCheckingMessage, toastErrorMessage, toastSuccessMessage } = useUiStore();
+	const {
+		status,
+		toastCheckingMessage,
+		toastErrorMessage,
+		toastSuccessMessage,
+		toastOffOperation,
+	} = useUiStore();
 
 	console.log("MENSAJE: ", toastSuccessMessage);
 	console.log("STATUS: ", status);
+
 	useEffect(() => {
-		if (status === "checking") {
-			toastId = toast.loading(toastCheckingMessage);
-		} else if (status === "success") {
-			toast.success(toastSuccessMessage, {
-				id: toastId,
-			});
-		} else if (status === "error") {
-			toast.error(toastErrorMessage, {
-				id: toastId,
-			});
+		if (status === "success") {
+			setTimeout(() => toastOffOperation(), 4000);
 		}
 	}, [status]);
 
+	const [messageInfo, setMessageInfo] = useState(undefined);
+
+	const handleExited = () => {
+		setMessageInfo(undefined);
+	};
+
 	return (
 		<>
-			<Toaster />
+			<Snackbar
+				open={status === "success"}
+				autoHideDuration={4000}
+				TransitionProps={{ onExited: handleExited }}
+				TransitionComponent={Slide}
+				// anchorOrigin={{ vertical: "top", horizontal: "right" }}
+			>
+				<Alert severity="success" sx={{ width: "100%" }}>
+					Consulta guardada
+				</Alert>
+			</Snackbar>
+			<Snackbar
+				open={status === "checking"}
+				autoHideDuration={1000}
+				TransitionProps={{ onExited: handleExited }}
+				TransitionComponent={Slide}
+				// anchorOrigin={{ vertical: "top", horizontal: "right" }}
+			>
+				<Alert severity="info">Guardando consulta...</Alert>
+			</Snackbar>
 			<div className="app">
 				<SidebarCustom></SidebarCustom>
 

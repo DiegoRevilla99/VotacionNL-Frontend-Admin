@@ -1,8 +1,12 @@
 export const simulacionFetch = async () => {
 	try {
-		await fetch("https://pokeapi.co/api/v2/pokemon-species/aegislash");
+		await timeout(3000);
 		return true;
 	} catch (error) {
 		return false;
 	}
+};
+
+const timeout = (ms) => {
+	return new Promise((resolve) => setTimeout(resolve, ms));
 };

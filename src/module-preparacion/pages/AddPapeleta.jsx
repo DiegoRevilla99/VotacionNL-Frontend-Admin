@@ -5,10 +5,12 @@ import { useUiStore } from "../../hooks/useUiStore";
 import { saveConsultaPrueba } from "../../store/module-preparacion/consulta-ciudadana/thunks";
 import { DataGridTable } from "../../ui/components/DataGridTable";
 import { ModalPapeleta } from "../components/ModalPapeleta";
+import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
 
 export const AddPapeleta = () => {
 	const [statusModal, setStatusModal] = useState(false);
 	const { toastOffOperation } = useUiStore();
+	const { status } = useConsultaCiudadanaStore();
 	const dispatch = useDispatch();
 
 	const handleCloseModal = () => setStatusModal(false);
@@ -148,15 +150,17 @@ export const AddPapeleta = () => {
 							onClick={handleOpenModal}
 							variant="contained"
 							size="large"
+							disabled={status === "checking"}
 							sx={{
 								boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
 								transition: "all 0.5s ease",
 								backgroundColor: "#511079",
 								width: "100%",
-								borderTopLeftRadius: "0",
-								borderTopRightRadius: "1.6rem",
-								borderBottomLeftRadius: "1.6rem",
-								borderBottomRightRadius: "1.6rem",
+								borderRadius: "25px 25px 25px 25px",
+								// borderTopLeftRadius: "1.6rem",
+								// borderTopRightRadius: "1.6rem",
+								// borderBottomLeftRadius: "1.6rem",
+								// borderBottomRightRadius: "1.6rem",
 								"&:hover": {
 									backgroundColor: "#7E328B !important",
 									transform: "translate(-5px, -5px)",
@@ -193,6 +197,7 @@ export const AddPapeleta = () => {
 							onClick={onSubmit}
 							variant="contained"
 							size="large"
+							disabled={status === "checking"}
 							sx={{
 								// marginLeft: "5rem",
 								// marginRight: "5rem",
@@ -219,6 +224,7 @@ export const AddPapeleta = () => {
 							// onClick={handleToggleModal}
 							variant="contained"
 							size="large"
+							disabled={status === "checking"}
 							sx={{
 								boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
 								transition: "all 0.5s ease",

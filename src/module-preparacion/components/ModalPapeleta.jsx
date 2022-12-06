@@ -34,7 +34,7 @@ export const ModalPapeleta = ({ statusModal, handleToggleModal }) => {
 
 	const onSave = () => {
 		addQuestion("¿Pregunta 1?", ["Respuesta 1", "Respuesta 2"]);
-		toastSuccesOperation("Pregunta registrada con éxitooo");
+		toastSuccesOperation("Pregunta registrada con éxito");
 		handleToggleModal();
 	};
 
