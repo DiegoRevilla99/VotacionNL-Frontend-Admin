@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { PrivateRoute } from "../../router/PrivateRoute";
 import { AddBoletaComite } from "../pages/AddBoletaComite";
+import { AddBoletaJornada } from "../pages/AddBoletaJornada";
 import { AddPapeleta } from "../pages/AddPapeleta";
 import { CrudComite } from "../pages/CrudComite";
 import { CrudConsulta } from "../pages/CrudConsulta";
@@ -25,6 +26,9 @@ export const PreparacionRoutes = () => {
 				<Route path="comite" element={<CrudComite />} />
 				<Route path="comite/boleta" element={<AddBoletaComite></AddBoletaComite>} />
 				<Route path="jornada" element={<CrudJornada />} />
+				<Route path="jornada/boleta" element={<AddBoletaJornada />} />
+
+				
 				<Route path="consulta" element={<CrudConsulta />} />
 				<Route path="consulta/papeleta" element={<AddPapeleta />} />
 
