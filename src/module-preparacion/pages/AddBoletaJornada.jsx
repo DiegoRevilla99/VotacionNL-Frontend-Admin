@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { DataGridTable } from "../../ui/components/DataGridTable";
 import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
 import { ModalBoletaCandidato } from "../components/ModalBoletaCandidato";
+import { ModalEliminarPC } from "../components/ModalEliminarPC";
 // import { ModalPapeleta } from "../components/ModalPapeleta";
 // import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
 
@@ -16,10 +17,13 @@ export const AddBoletaJornada = () => {
 	// const dispatch = useDispatch();
 
     const [statusCandidateModal, setStatusCandidateModal] = useState(false);
+	const [statusDeleteModal, setStatusDeleteModal] = useState(false);
 
 	const handleCloseMatchModal = () => setStatusMatchModal(false);
 
     const handleCloseCandidateModal = () => setStatusCandidateModal(false);
+
+	const handleCloseDeleteModal = () => setStatusDeleteModal(false);
 
 	 const handleOpenMatchModal = () => {
 	 	// toastOffOperation();
@@ -29,6 +33,11 @@ export const AddBoletaJornada = () => {
      const handleOpenCandidateModal = () => {
         // toastOffOperation();
         setStatusCandidateModal(true);
+    };
+
+	const handleOpenDeleteModal = () => {
+        // toastOffOperation();
+        setStatusDeleteModal(true);
     };
 
 	const onSubmit = () => {
@@ -216,7 +225,7 @@ export const AddBoletaJornada = () => {
 								boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
 								transition: "all 0.5s ease",
 								backgroundColor: "#511079",
-								
+								fontSize: { xl: "15px", lg: "15px", sm: "15px", xs: "15px" },
 								borderRadius: "25px 25px 25px 25px",
 								"&:hover": {
 									backgroundColor: "#7E328B !important",
@@ -226,6 +235,28 @@ export const AddBoletaJornada = () => {
 							}}
 						>
 							Agregar candidato independiente
+						</Button>
+					</Grid>
+					<Grid item xs={12} md={3} lg={3}>
+						<Button
+						onClick={handleOpenDeleteModal}
+							variant="contained"
+							size="small"
+							disabled={status === "checking"}
+							sx={{
+								boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+								transition: "all 0.5s ease",
+								backgroundColor: "#791010",
+								width: "100%",
+                                borderRadius: "25px 25px 25px 25px",
+								"&:hover": {
+									backgroundColor: "#8B3232 !important",
+									transform: "translate(-5px, -5px)",
+									boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+								},
+							}}
+						>
+							eliminar
 						</Button>
 					</Grid>
 					<Grid item xs={12}>
@@ -242,6 +273,7 @@ export const AddBoletaJornada = () => {
 							<DataGridTable />
 						</Box>
 					</Grid>
+
 				</Grid>
 				<Grid mt={"1rem"} container direction="row" justifyContent="flex-end" spacing={2}>
 					<Grid item xs={12} md={6} lg={3}>
@@ -287,10 +319,12 @@ export const AddBoletaJornada = () => {
 							Cancelar
 						</Button>
 					</Grid>
+					
 				</Grid>
 			</Box>
 			<ModalBoletaPartido statusMatchModal={statusMatchModal} handleToggleModal={handleCloseMatchModal} />
             <ModalBoletaCandidato statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} />
+			<ModalEliminarPC statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} />
 		</Box>
 	);
 };
