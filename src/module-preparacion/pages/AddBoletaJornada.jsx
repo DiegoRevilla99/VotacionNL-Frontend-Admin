@@ -7,10 +7,14 @@ import { DataGridTable } from "../../ui/components/DataGridTable";
 import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
 import { ModalBoletaCandidato } from "../components/ModalBoletaCandidato";
 import { ModalEliminarPC } from "../components/ModalEliminarPC";
+
+import { useNavigate } from "react-router-dom";
 // import { ModalPapeleta } from "../components/ModalPapeleta";
 // import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
 
 export const AddBoletaJornada = () => {
+	const navigate = useNavigate();
+
 	const [statusMatchModal, setStatusMatchModal] = useState(false);
 	// const { toastOffOperation } = useUiStore();
 	// const { status } = useConsultaCiudadanaStore();
@@ -20,9 +24,7 @@ export const AddBoletaJornada = () => {
 	const [statusDeleteModal, setStatusDeleteModal] = useState(false);
 
 	const handleCloseMatchModal = () => setStatusMatchModal(false);
-
     const handleCloseCandidateModal = () => setStatusCandidateModal(false);
-
 	const handleCloseDeleteModal = () => setStatusDeleteModal(false);
 
 	 const handleOpenMatchModal = () => {
@@ -42,6 +44,10 @@ export const AddBoletaJornada = () => {
 
 	const onSubmit = () => {
 		// dispatch(saveConsultaPrueba());
+		navigate("/preparacion/jornada");
+	};
+	const onCancel = () => {
+		navigate("/preparacion/jornada");
 	};
 
 	return (
@@ -237,7 +243,7 @@ export const AddBoletaJornada = () => {
 							Agregar candidato independiente
 						</Button>
 					</Grid>
-					<Grid item xs={12} md={3} lg={3}>
+					<Grid item xs={4} md={2} lg={2}>
 						<Button
 						onClick={handleOpenDeleteModal}
 							variant="contained"
@@ -300,6 +306,7 @@ export const AddBoletaJornada = () => {
 					</Grid>
 					<Grid item xs={12} md={6} lg={3}>
 						<Button
+							onClick={onCancel}
 							variant="contained"
 							size="large"
 							disabled={status === "checking"}

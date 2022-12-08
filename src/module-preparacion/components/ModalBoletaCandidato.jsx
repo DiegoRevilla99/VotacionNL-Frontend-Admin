@@ -1,12 +1,9 @@
 import {
 	Box,
 	Button,
-	FormControlLabel,
 	Grid,
 	Modal,
 	TextField,
-	RadioGroup,
-	TextareaAutosize,
 	Typography,
 } from "@mui/material";
 
@@ -24,12 +21,10 @@ const style = {
 	top: "50%",
 	left: "50%",
 	transform: "translate(-50%, -50%)",
-	// width: "50rem",
 	width: { xl: "50rem", lg: "50rem", sm: "40rem", xs: "30rem" },
 	height: "38rem",
 	bgcolor: "background.paper",
 	border: '2px solid #fff',
-	// border: "2px solid #000",
 	borderRadius: "2rem",
 	boxShadow: 3,
 	p: 4,
@@ -40,11 +35,11 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 
 	// const { toastSuccesOperation } = useUiStore();
 
-	// const onSave = () => {
-	// 	addQuestion("¿Pregunta 1?", ["Respuesta 1", "Respuesta 2"]);
-	// 	toastSuccesOperation("Pregunta registrada con éxito");
-	// 	handleToggleModal();
-	// };
+	const onSave = () => {
+		// addQuestion("¿Pregunta 1?", ["Respuesta 1", "Respuesta 2"]);
+		// toastSuccesOperation("Pregunta registrada con éxito");
+		handleToggleModal();
+	};
 
 	 const onCancel = () => {
 	 	handleToggleModal();
@@ -83,9 +78,6 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 						fullWidth
 						variant="outlined"
 						size="small"
-						// helperText="Ingrese el emblema del candidato/a"
-						
-						//   className={styles.textField}
 						></TextField>
 						<IconButton
 						color="primary"
@@ -112,8 +104,6 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 						disabled
 						variant="outlined"
 						size="small"
-						// helperText="Ingrese la fotografía del candidato/a"
-						//   className={styles.textField}
 						></TextField>
 						<IconButton
 							color="primary"
@@ -167,7 +157,7 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 					>
 						<Grid item xs={12} md={6} lg={3}>
 							<Button
-								// onClick={onSave}
+								onClick={onSave}
 								variant="contained"
 								size="large"
 								sx={{

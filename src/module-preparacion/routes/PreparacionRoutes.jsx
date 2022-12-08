@@ -26,7 +26,7 @@ export const PreparacionRoutes = () => {
 				<Route path="comite" element={<CrudComite />} />
 				<Route path="comite/boleta" element={<AddBoletaComite></AddBoletaComite>} />
 				<Route path="jornada" element={<CrudJornada />} />
-				<Route path="jornada/boleta" element={<AddBoletaJornada />} />
+				<Route path="jornada/boleta" element={<AddBoletaJornada></AddBoletaJornada>} />
 
 				
 				<Route path="consulta" element={<CrudConsulta />} />

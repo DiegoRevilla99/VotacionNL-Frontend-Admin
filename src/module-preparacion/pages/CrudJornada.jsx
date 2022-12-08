@@ -4,7 +4,7 @@ import { makeStyles } from "@mui/styles";
 import { Tabla } from "../../ui/components/table/Tabla";
 import { PlantillaCRUD } from "../layout/PlantillaCRUD";
 import { columns, data } from "../helpers/DataBoletas";
-
+import { useNavigate } from "react-router-dom";
 const useStyles = makeStyles({
   boton: {
     boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
@@ -19,8 +19,10 @@ const styleButton = {
 
 export const CrudJornada = () => {
   const classes = useStyles();
-
-  const agregarBoleta = () => {};
+  const navigate = useNavigate();
+  const agregarBoleta = () => {
+    navigate("/preparacion/jornada/boleta");
+  };
 
   const guardar = () => {
     alert("Se ha presionado guardar de Jornada");
