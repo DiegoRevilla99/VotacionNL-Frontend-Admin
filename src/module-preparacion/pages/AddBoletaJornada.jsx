@@ -154,14 +154,15 @@ export const AddBoletaJornada = () => {
 		}}
 	>
 		{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (
-			<form className="formulario" onSubmit={handleSubmit}>
-				<Box 
-					sx={{
-						height: "100%",
-						width: "100%",
-						overflowY: "auto",
-					}}
-				>
+			<Box 
+			sx={{
+				height: "100%",
+				width: "100%",
+				overflowY: "auto",
+			}}
+		>
+			<Form className="formulario" onSubmit={handleSubmit} >
+				
 				<Box sx={{ m: "0.5rem", ml: "2rem" }}>
 					<Typography variant="h6" align="left" color="initial">
 						REGISTRO DE BOLETA
@@ -494,9 +495,10 @@ export const AddBoletaJornada = () => {
 			<ModalBoletaPartido statusMatchModal={statusMatchModal} handleToggleModal={handleCloseMatchModal} />
             <ModalBoletaCandidato statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} />
 			<ModalEliminarPC statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} />
-			</Box>
 			
-		</form>
+			
+		</Form>
+		</Box>
 		)}
 		</Formik>
 	</>
