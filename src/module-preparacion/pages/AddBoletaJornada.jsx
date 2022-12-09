@@ -151,6 +151,7 @@ export const AddBoletaJornada = () => {
 			console.log('Formulario enviado');
 			cambiarFormularioEnviado(true);
 			setTimeout(() => cambiarFormularioEnviado(false), 5000);
+			// navigate("/preparacion/jornada");
 		}}
 	>
 		{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (

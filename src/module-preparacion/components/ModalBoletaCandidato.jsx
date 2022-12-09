@@ -9,8 +9,8 @@ import {
 
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-
-
+import { Formik, Form } from 'formik';
+import { useState } from "react";
 // import { useDispatch } from "react-redux";
 // import { useUiStore } from "../../hooks/useUiStore";
 
@@ -22,7 +22,8 @@ const style = {
 	left: "50%",
 	transform: "translate(-50%, -50%)",
 	width: { xl: "50rem", lg: "50rem", sm: "40rem", xs: "30rem" },
-	height: "38rem",
+	height: { xl: "34rem", lg: "34rem", sm: "37rem", xs: "40rem" },
+	// height: "38rem",
 	bgcolor: "background.paper",
 	border: '2px solid #fff',
 	borderRadius: "2rem",
@@ -31,6 +32,7 @@ const style = {
 };
 
 export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }) => {
+	const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
 	// const { addQuestion } = useConsultaCiudadanaStore();
 
 	// const { toastSuccesOperation } = useUiStore();
@@ -46,12 +48,51 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 	 };
 
 	return (
+		<>
 		<Modal
 			open={statusCandidateModal}
 			onClose={handleToggleModal}
 			aria-labelledby="modal-modal-title"
 			aria-describedby="modal-modal-description"
 		>
+			<Formik
+				initialValues={{
+					nombrePropietario: "",//Text
+					seudonimoCandidato: "",//Text
+					nombreSuplente: "",//Text
+				}}
+		validate={(valores) => {
+			let errores = {};
+			// Validacion nombrePropietario
+			if(!valores.nombrePropietario){
+				errores.nombrePropietario = 'Por favor,  ingresa un nombre del propietario/a'
+			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.nombrePropietario)){
+				errores.nombrePropietario = 'El nombre del propietario/a solo puede contener letras y espacios'
+			}
+			// Validacion seudonimoCandidato
+			if(!valores.seudonimoCandidato){
+				errores.seudonimoCandidato = 'Por favor,  ingresa un seudónimo del candidato/a'
+			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.seudonimoCandidato)){
+				errores.seudonimoCandidato = 'La seudónimo del candidato/a solo puede contener letras y espacios'
+			}
+			// Validacion nombreSuplente
+			if(!valores.nombreSuplente){
+				errores.nombreSuplente = 'Por favor, ingresa un nombre del suplente'
+			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.nombreSuplente)){
+				errores.nombreSuplente = 'El nombre del suplente solo puede contener letras y espacios'
+			}
+
+			return errores;
+		}}
+		onSubmit={(valores, {resetForm}) => {
+			resetForm();
+			console.log('Formulario enviado');
+			cambiarFormularioEnviado(true);
+			setTimeout(() => cambiarFormularioEnviado(false), 5000);
+			// handleToggleModal();
+		}}
+	>
+		{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (
 			<Box sx={style}>
 				<Typography id="modal-modal-title" variant="h5" color="initial" align="center">
 					REGISTRO DE CANDIDATO/A INDEPENDIENTE
@@ -61,8 +102,11 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 				sx={{
 					width: { xl: "90%", lg: "90%", sm: "90%", xs: "90%" },
 					padding: "1rem",
+					height: "100%",
+					overflowY: "auto",
 				}}
 			>
+				<Form className="formulario" onSubmit={handleSubmit} >
 				<Typography variant="h7" mt={"1rem"}>
 				INSERTAR EMBLEMA DEL CANDIDATO/A <span style={{ color: "red" }}>*</span>
 					</Typography>
@@ -123,9 +167,13 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 						size="small"
 						id="outlined-basic" 
 						variant="outlined"
-						helperText="Ingrese el nombre del propietario/a"
-						label=""
+						label="Ingrese el nombre del propietario/a"
+						name="nombrePropietario"
+						value={values.nombrePropietario}
+						onChange={handleChange}
+						onBlur={handleBlur}
 					/>
+					{touched.nombrePropietario && errors.nombrePropietario && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombrePropietario}</Typography>}
 				<Typography variant="h7" mt={"1rem"}>
 				SEUDÓNIMO DEL CANDIDATO/A <span style={{ color: "red" }}>*</span>
 					</Typography>
@@ -134,9 +182,13 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 						size="small"
 						id="outlined-basic" 
 						variant="outlined"
-						helperText="Ingrese el seudónimo del candidato/a"
-						label=""
+												label="Ingrese el seudónimo del candidato/a"
+						name="seudonimoCandidato"
+						value={values.seudonimoCandidato}
+						onChange={handleChange}
+						onBlur={handleBlur}
 					/>
+					{touched.seudonimoCandidato && errors.seudonimoCandidato && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.seudonimoCandidato}</Typography>}
 				<Typography variant="h7" mt={"1rem"}>
 				NOMBRE DEL SUPLENTE <span style={{ color: "red" }}>*</span>
 					</Typography>
@@ -145,19 +197,26 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 						size="small"
 						id="outlined-basic" 
 						variant="outlined"
-						helperText="Ingrese el nombre del suplente"
-						label=""
+						label="Ingrese el nombre del suplente"
+						name="nombreSuplente"
+						value={values.nombreSuplente}
+						onChange={handleChange}
+						onBlur={handleBlur}
 					/>
+					{touched.nombreSuplente && errors.nombreSuplente && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombreSuplente}</Typography>}
 					<Grid
 						container
 						direction="row"
 						justifyContent="flex-end"
 						alignItems="center"
 						spacing={2}
+						mt={2}
+						mb={2}
 					>
-						<Grid item xs={12} md={6} lg={3}>
+						<Grid item xs={12} md={6} lg={3} >
 							<Button
-								onClick={onSave}
+								// onClick={onSave}
+								type="submit"
 								variant="contained"
 								size="large"
 								sx={{
@@ -198,8 +257,13 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 							</Button>
 						</Grid>
 					</Grid>
+				{formularioEnviado && <p className="exito" align="center">Formulario enviado con exito!</p>}
+					</Form>
 				</Box>
 			</Box>
+		)}
+			</Formik>
 		</Modal>
+	</>
 	);
 };
