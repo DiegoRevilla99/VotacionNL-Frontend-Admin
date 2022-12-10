@@ -46,8 +46,9 @@ export const AddPapeleta = () => {
 		setStatusModal(true);
 	};
 
-	const onSubmit = () => {
+	const onSubmit = (values) => {
 		setIsSubmited(true);
+		console.log(values, questions);
 		if (questions.length > 0) dispatch(saveConsultaPrueba());
 	};
 
@@ -56,8 +57,6 @@ export const AddPapeleta = () => {
 			sx={{
 				height: "100%",
 				overflowY: "auto",
-				// width: "100%",
-				// flexGrow: 1,
 			}}
 		>
 			<Box sx={{ m: "0.5rem", ml: "2rem" }}>
@@ -89,8 +88,8 @@ export const AddPapeleta = () => {
 						cargoSegundoFirmante: "",
 					}}
 					validationSchema={validationSchema}
-					onSubmit={() => {
-						onSubmit();
+					onSubmit={(values) => {
+						onSubmit(values);
 					}}
 				>
 					{({ values, handleSubmit, handleChange, errors, touched }) => (
