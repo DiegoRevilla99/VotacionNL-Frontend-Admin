@@ -9,6 +9,7 @@ export const HomePreparacion = () => {
 	return (
 		<>
 			<div>
+				{/* hola */}
 				<Box ml={3}>
 					<h3>PREPARACIÓN</h3>
 				</Box>
@@ -28,7 +29,7 @@ export const HomePreparacion = () => {
 							height: { xl: "90%", lg: "90%", sm: "80%", xs: "70%" },
 						}}
 					>
-						<Typography ml={4} variant="h5" align="left" paragraph>
+						<Typography ml={4} variant="h5" align="left" paragraph> 
 							¿QUÉ TIPO DE PLANTILLA DESEA USAR?
 						</Typography>
 
