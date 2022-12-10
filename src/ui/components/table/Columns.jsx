@@ -16,7 +16,7 @@ export const Columns = ({ data = [], columns = [], actions = [] }) => {
           </TableCell>
         ))}
         {actions.length > 0 && (
-          <TableCell sx={{ boxShadow: 1 }} key={"actions"} align="center">
+          <TableCell sx={{ boxShadow: 1 }} key={"action"} align="center">
             <Typography sx={{ fontWeight: "bold", color: "#000" }}>
               ACCIONES
             </Typography>

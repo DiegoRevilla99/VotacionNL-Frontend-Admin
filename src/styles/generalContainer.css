@@ -20,7 +20,7 @@ body,
 }
 
 ::-webkit-scrollbar-track{
-  background: #f8f7f3;
+  background: #f8f7f300;
 }
 
 ::-webkit-scrollbar-thumb{

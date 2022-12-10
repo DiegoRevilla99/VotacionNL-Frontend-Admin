@@ -1,16 +1,17 @@
+import { Box, Button, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import React, { useEffect, useState } from "react";
 import { Tabla } from "../../ui/components/table/Tabla";
 import { PlantillaCRUD } from "../layout/PlantillaCRUD";
-import { Box, Button, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { useNavigate } from "react-router-dom";
+
 import { columns, data } from "../helpers/DataBoletas";
 
 const useStyles = makeStyles({
   boton: {
-    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+    boxShadow: 1,
     color: "white",
     height: 42,
-    background: "#ffffff",
   },
 });
 const styleButton = {
@@ -19,7 +20,26 @@ const styleButton = {
 
 export const CrudConsulta = () => {
   const classes = useStyles();
-  const agregarPapeleta = () => {};
+  const navigate = useNavigate();
+
+  const [datos, setDatos] = useState(data);
+
+  const guardar = () => {
+    alert("Se ha presionado guardar de consulta");
+  };
+
+  const cancelar = () => {
+    alert("Se ha presionado cancelar de consulta");
+  };
+
+  const onEliminar = (event, rowData) => {
+    const { candidato } = rowData;
+    console.log("has presionado " + candidato);
+    const newData = datos.filter((obj) => {
+      if (obj.candidato !== candidato) return obj;
+    });
+    setDatos(newData);
+  };
 
   const actions = [
     {
@@ -33,22 +53,22 @@ export const CrudConsulta = () => {
       icon: "delete",
       title: "Eliminar",
       sx: { ml: 1, mr: 1, backgroundColor: "error.main" },
-      onClick: (event, rowData) =>
-        alert("Se ha eliminado a " + rowData.candidato),
+      onClick: (event, rowData) => onEliminar(event, rowData),
     },
   ];
 
-  const guardar = () => {
-    alert("Se ha presionado guardar de consulta");
-  };
-
-  const cancelar = () => {
-    alert("Se ha presionado cancelar de consulta");
-  };
+  useEffect(() => {
+    setDatos(data);
+  }, []);
 
   return (
     <>
-      <PlantillaCRUD guardar={guardar} cancelar={cancelar}>
+      <PlantillaCRUD
+        tipo="papeleta"
+        go=""
+        guardar={guardar}
+        cancelar={cancelar}
+      >
         <Box
           sx={{
             display: "flex",
@@ -59,46 +79,20 @@ export const CrudConsulta = () => {
         >
           <Box
             sx={{
-              mb: 4,
               display: "flex",
-              height: "60px",
+              height: "100%",
               width: "100%",
               flexDirection: "column",
               justifyContent: "center",
             }}
           >
-            <Typography variant="h6">Registrar papeletas</Typography>
-            <Button
-              className={classes.boton}
-              variant="contained"
-              color="primary"
-              style={styleButton}
-              sx={{
-                mt: 2,
-                width: { sm: `270px`, xs: "150px" },
-              }}
-              onClick={agregarPapeleta}
-            >
-              Agregar papeleta
-            </Button>
+            <Tabla
+              titulo={"BOLETAS"}
+              data={datos}
+              actions={actions}
+              columns={columns}
+            ></Tabla>
           </Box>
-        </Box>
-
-        <Box
-          sx={{
-            display: "flex",
-            height: "calc(100% - 90px)",
-            width: "100%",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}
-        >
-          <Tabla
-            titulo={"BOLETAS"}
-            data={data}
-            actions={actions}
-            columns={columns}
-          ></Tabla>
         </Box>
       </PlantillaCRUD>
     </>

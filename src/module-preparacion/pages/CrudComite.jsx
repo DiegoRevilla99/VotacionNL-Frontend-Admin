@@ -1,47 +1,39 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { useEffect, useState } from "react";
 import { Tabla } from "../../ui/components/table/Tabla";
 import { PlantillaCRUD } from "../layout/PlantillaCRUD";
-import { useNavigate } from "react-router-dom";
-
+import CircularProgress from "@mui/material/CircularProgress";
 import { columns, data } from "../helpers/DataBoletas";
-
-const useStyles = makeStyles({
-  boton: {
-    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-    color: "white",
-    height: 42,
-  },
-});
-const styleButton = {
-  borderRadius: 50,
-};
+import { useGetBoletasComite } from "../hooks/useGetBoletasComite";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useUiStore } from "../../hooks/useUiStore";
+import { saveComite } from "../../store/module-preparacion/comite/thunksComite";
 
 export const CrudComite = () => {
-  const classes = useStyles();
   const navigate = useNavigate();
-
-  const [datos, setDatos] = useState(data);
-  const agregarBoleta = () => {
-    navigate("/preparacion/comite/boleta");
-  };
+  const dispatch = useDispatch();
+  const { boletas, isLoadingBoletas } = useGetBoletasComite();
 
   const guardar = () => {
-    alert("Se ha presionado guardar de comite");
+    dispatch(
+      saveComite({}, () => {
+        navigate("/preparacion/registroComite");
+      })
+    );
   };
 
   const cancelar = () => {
-    alert("Se ha presionado cancelar de comite");
+    navigate("/preparacion/registroComite");
   };
 
   const onEliminar = (event, rowData) => {
-    const { candidato } = rowData;
-    console.log("has presionado " + candidato);
-    const newData = datos.filter((obj) => {
-      if (obj.candidato !== candidato) return obj;
-    });
-    setDatos(newData);
+    alert("Eliminando a " + rowData.candidato);
+  };
+
+  const onEditar = (event, rowData) => {
+    navigate("/preparacion/comite/boleta/" + rowData.candidato);
   };
 
   const actions = [
@@ -49,8 +41,7 @@ export const CrudComite = () => {
       icon: "edit",
       title: "Editar",
       sx: {},
-      onClick: (event, rowData) =>
-        alert("Se ha editado a " + rowData.candidato),
+      onClick: (event, rowData) => onEditar(event, rowData),
     },
     {
       icon: "delete",
@@ -60,13 +51,13 @@ export const CrudComite = () => {
     },
   ];
 
-  useEffect(() => {
-    setDatos(data);
-  }, []);
-
   return (
     <>
-      <PlantillaCRUD guardar={guardar} cancelar={cancelar}>
+      <PlantillaCRUD
+        go="/preparacion/comite/boleta"
+        guardar={guardar}
+        cancelar={cancelar}
+      >
         <Box
           sx={{
             display: "flex",
@@ -77,47 +68,31 @@ export const CrudComite = () => {
         >
           <Box
             sx={{
-              mb: 4,
               display: "flex",
-              height: "60px",
+              height: "100%",
               width: "100%",
               flexDirection: "column",
               justifyContent: "center",
             }}
           >
-            <Typography sx={{}} variant="h6">
-              Registrar Boletas
-            </Typography>
-            <Button
-              className={classes.boton}
-              variant="contained"
-              style={styleButton}
-              sx={{
-                mt: 2,
-                width: { sm: `270px`, xs: "150px" },
-                backgroundColor: "#511079",
-                color: "#fff",
-              }}
-              onClick={agregarBoleta}
-            >
-              Agregar boleta
-            </Button>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              height: "calc(100% - 90px)",
-              width: "100%",
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
-          >
-            <Tabla
-              titulo={"BOLETAS"}
-              data={datos}
-              actions={actions}
-              columns={columns}
-            ></Tabla>
+            {isLoadingBoletas ? (
+              // <CircularProgress color="primary" />
+              <Stack
+                justifyContent="center"
+                sx={{ color: "grey.500" }}
+                spacing={2}
+                direction="row"
+              >
+                <CircularProgress color="primary" />
+              </Stack>
+            ) : (
+              <Tabla
+                titulo={"BOLETAS"}
+                data={boletas}
+                actions={actions}
+                columns={columns}
+              ></Tabla>
+            )}
           </Box>
         </Box>
       </PlantillaCRUD>

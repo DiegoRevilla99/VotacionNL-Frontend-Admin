@@ -21,10 +21,11 @@ export const Body = ({ data = [], actions = [] }) => {
   const acciones = (id) => {
     let botones = [];
 
-    actions.forEach((element) => {
+    actions.forEach((element, index) => {
       const info = data[id];
       botones.push(
         <Action
+          key={index}
           icon={element.icon}
           sx={element.sx}
           title={element.title}
@@ -41,11 +42,13 @@ export const Body = ({ data = [], actions = [] }) => {
     <>
       <TableBody sx={{ width: { sm: "90%", xs: "90%" }, background: "#fff" }}>
         {data.map((row, index) => (
-          <TableRow key={row.id}>
+          <TableRow key={index}>
             {rows(row)}
 
             {actions.length > 0 && (
-              <TableCell align="center">{acciones(index)}</TableCell>
+              <TableCell key={index + "vell"} align="center">
+                {acciones(index)}
+              </TableCell>
             )}
           </TableRow>
         ))}

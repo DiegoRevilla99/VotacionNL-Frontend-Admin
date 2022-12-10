@@ -1,16 +1,16 @@
-import React, { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import React, { useEffect, useState } from "react";
 import { Tabla } from "../../ui/components/table/Tabla";
 import { PlantillaCRUD } from "../layout/PlantillaCRUD";
+
 import { columns, data } from "../helpers/DataBoletas";
 
 const useStyles = makeStyles({
   boton: {
-    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+    boxShadow: 1,
     color: "white",
     height: 42,
-    background: "#ffffff",
   },
 });
 const styleButton = {
@@ -18,16 +18,23 @@ const styleButton = {
 };
 
 export const CrudJornada = () => {
-  const classes = useStyles();
-
-  const agregarBoleta = () => {};
+  const [datos, setDatos] = useState(data);
 
   const guardar = () => {
-    alert("Se ha presionado guardar de Jornada");
+    alert("Se ha presionado guardar de jornada");
   };
 
   const cancelar = () => {
-    alert("Se ha presionado cancelar de Jornada");
+    alert("Se ha presionado cancelar de jornada");
+  };
+
+  const onEliminar = (event, rowData) => {
+    const { candidato } = rowData;
+    console.log("has presionado " + candidato);
+    const newData = datos.filter((obj) => {
+      if (obj.candidato !== candidato) return obj;
+    });
+    setDatos(newData);
   };
 
   const actions = [
@@ -42,14 +49,17 @@ export const CrudJornada = () => {
       icon: "delete",
       title: "Eliminar",
       sx: { ml: 1, mr: 1, backgroundColor: "error.main" },
-      onClick: (event, rowData) =>
-        alert("Se ha eliminado a " + rowData.candidato),
+      onClick: (event, rowData) => onEliminar(event, rowData),
     },
   ];
 
+  useEffect(() => {
+    setDatos(data);
+  }, []);
+
   return (
     <>
-      <PlantillaCRUD guardar={guardar} cancelar={cancelar}>
+      <PlantillaCRUD go="" guardar={guardar} cancelar={cancelar}>
         <Box
           sx={{
             display: "flex",
@@ -60,34 +70,8 @@ export const CrudJornada = () => {
         >
           <Box
             sx={{
-              mb: 4,
               display: "flex",
-              height: "60px",
-              width: "100%",
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
-          >
-            <Typography variant="h6">Registrar Boletas</Typography>
-            <Button
-              className={classes.boton}
-              variant="contained"
-              color="primary"
-              style={styleButton}
-              sx={{
-                mt: 2,
-                width: { sm: `270px`, xs: "150px" },
-              }}
-              onClick={agregarBoleta}
-            >
-              Agregar boleta
-            </Button>
-          </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              height: "calc(100% - 90px)",
+              height: "100%",
               width: "100%",
               flexDirection: "column",
               justifyContent: "center",
@@ -95,7 +79,7 @@ export const CrudJornada = () => {
           >
             <Tabla
               titulo={"BOLETAS"}
-              data={data}
+              data={datos}
               actions={actions}
               columns={columns}
             ></Tabla>

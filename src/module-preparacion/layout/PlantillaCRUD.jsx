@@ -1,17 +1,10 @@
 import React from "react";
-import {
-  bottomNavigationClasses,
-  Button,
-  Divider,
-  Grid,
-  List,
-  ListItemText,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { bottomNavigationClasses, Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { makeStyles } from "@mui/styles";
+import { PlantillaRegistro } from "./PlantillaRegistro";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles({
   hr: {
@@ -19,7 +12,7 @@ const useStyles = makeStyles({
     color: "rgb(210, 210, 210)",
   },
   boton: {
-    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+    boxShadow: 1,
     color: "white",
     height: 42,
   },
@@ -33,7 +26,7 @@ const hijoResponsive = {
   width: "100%",
   pl: "2rem",
   pr: "2rem",
-  height: "calc(92% - 100px)",
+  height: "calc(100% - 140px)",
 };
 
 const styleButton = {
@@ -46,38 +39,54 @@ const botones = {
   alignContent: "space-around",
   width: "95%",
   height: "50px",
-  pt: 2,
 };
 
 export const PlantillaCRUD = ({
   children,
+  tipo = "boleta",
+  go = "",
   guardar = () => {},
   cancelar = () => {},
 }) => {
   const classes = useStyles();
+  const navigate = useNavigate();
+  const { status } = useSelector((state) => state.comite);
+
+  const agregarBoleta = () => {
+    navigate(go);
+  };
   return (
     <>
-      <Box
-        direction="column"
-        sx={{
-          width: "100%",
-          height: "calc(100% - 74px)",
-        }}
-      >
+      <PlantillaRegistro>
         <Box
           sx={{
-            mt: 2,
-            mb: 2,
+            mb: 4,
+            display: "flex",
+            height: "60px",
             width: "100%",
-            height: "40px",
+            flexDirection: "column",
+            justifyContent: "center",
           }}
         >
-          <Typography sx={{ ml: "2rem" }} variant="h6">
-            REGISTRO
+          <Typography sx={{}} variant="h6">
+            Registrar {tipo}s
           </Typography>
-          <hr className={classes.hr} />
+          <Button
+            className={classes.boton}
+            variant="contained"
+            disabled={status === "checking"}
+            style={styleButton}
+            sx={{
+              mt: 2,
+              width: { sm: `270px`, xs: "150px" },
+              backgroundColor: "#511079",
+              color: "#fff",
+            }}
+            onClick={agregarBoleta}
+          >
+            Agregar {tipo}
+          </Button>
         </Box>
-
         <Box sx={hijoResponsive}>{children}</Box>
         <Box sx={botones}>
           <Box
@@ -89,6 +98,7 @@ export const PlantillaCRUD = ({
             }}
           >
             <Button
+              type="submit"
               className={classes.boton}
               variant="contained"
               color="primary"
@@ -104,6 +114,7 @@ export const PlantillaCRUD = ({
             <Button
               className={classes.boton}
               variant="contained"
+              disabled={status === "checking"}
               style={styleButton}
               sx={{
                 width: { sm: `150px`, xs: "150px" },
@@ -115,7 +126,7 @@ export const PlantillaCRUD = ({
             </Button>
           </Box>
         </Box>
-      </Box>
+      </PlantillaRegistro>
     </>
   );
 };

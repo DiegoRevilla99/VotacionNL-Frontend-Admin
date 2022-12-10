@@ -1,23 +1,16 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { AddModal } from "../layout/AddModal";
 
-export const AddPlanillaComite = ({
+export const AddRepresentanteComite = ({
   isOpen = false,
   abrirCerrarModal = () => {},
 }) => {
-  const navigate = useNavigate();
-
-  const enviar = () => {
-    navigate("/preparacion/comite/boleta");
-  };
   return (
     <>
       <AddModal
-        titulo="REGISTRO PLANILLA"
+        titulo="REGISTRO REPESENTANTE INDEPENDIENTE"
         isOpen={isOpen}
         abrirCerrarModal={abrirCerrarModal}
-        enviar={enviar}
       ></AddModal>
     </>
   );

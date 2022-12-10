@@ -22,6 +22,11 @@ export const PreparacionRoutes = () => {
           path="comite/boleta"
           element={<AddBoletaComite></AddBoletaComite>}
         />
+
+        <Route
+          path="comite/boleta/:nombre"
+          element={<AddBoletaComite></AddBoletaComite>}
+        />
         <Route path="jornada" element={<CrudJornada />} />
         <Route path="consulta" element={<CrudConsulta />} />
 
