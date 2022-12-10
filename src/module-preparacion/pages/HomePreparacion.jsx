@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 
 export const HomePreparacion = () => {
 	return (
-		<>
+		<Box sx={{ width: "100%" }}>
 			<div>
 				<Box ml={3}>
 					<h3>PREPARACIÓN</h3>
@@ -15,7 +15,7 @@ export const HomePreparacion = () => {
 				<hr />
 			</div>
 
-			<div align="center">
+			<div align="center" style={{ width: "100%" }}>
 				<Box mt={7}>
 					<Box
 						p={6}
@@ -36,7 +36,7 @@ export const HomePreparacion = () => {
 							direction={{ xl: "row", lg: "row", sm: "column", xs: "column" }}
 							justifyContent="center"
 							alignItems="center"
-							spacing={{ xl: 15, lg: 7, sm: 4, xs: 2 }}
+							spacing={{ lg: 7, sm: 4, xs: 2 }}
 						>
 							<Button
 								href=""
@@ -143,6 +143,6 @@ export const HomePreparacion = () => {
 					</Box>
 				</Box>
 			</div>
-		</>
+		</Box>
 	);
 };
