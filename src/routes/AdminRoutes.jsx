@@ -25,7 +25,7 @@ export const AdminRoutes = () => {
 
 	useEffect(() => {
 		if (status === "success") {
-			setTimeout(() => toastOffOperation(), 4000);
+			setTimeout(() => toastOffOperation(), 1000);
 		}
 	}, [status]);
 
@@ -45,7 +45,7 @@ export const AdminRoutes = () => {
 				// anchorOrigin={{ vertical: "top", horizontal: "right" }}
 			>
 				<Alert severity="success" sx={{ width: "100%" }}>
-					Consulta guardada
+					{toastSuccessMessage}
 				</Alert>
 			</Snackbar>
 			<Snackbar
@@ -55,7 +55,7 @@ export const AdminRoutes = () => {
 				TransitionComponent={Slide}
 				// anchorOrigin={{ vertical: "top", horizontal: "right" }}
 			>
-				<Alert severity="info">Guardando consulta...</Alert>
+				<Alert severity="info">{toastCheckingMessage}</Alert>
 			</Snackbar>
 			<div className="app">
 				<SidebarCustom></SidebarCustom>

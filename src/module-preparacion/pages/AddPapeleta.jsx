@@ -1,16 +1,42 @@
-import { Box, Divider, Grid, Typography, TextField, Paper, Button } from "@mui/material";
+import { Box, Divider, Grid, Typography } from "@mui/material";
+import { Formik } from "formik";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useUiStore } from "../../hooks/useUiStore";
 import { saveConsultaPrueba } from "../../store/module-preparacion/consulta-ciudadana/thunks";
-import { DataGridTable } from "../../ui/components/DataGridTable";
 import { ModalPapeleta } from "../components/ModalPapeleta";
 import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
+import { object, string } from "yup";
+import { FielTextCustom } from "../components/FielTextCustom";
+import { AddPapeletasTable } from "../components/AddPapeletasTable";
+import { ButtonsContainer } from "../components/ButtonsContainer";
+
+const validationSchema = object({
+	encabezadoConsulta: string("Ingresa el encabezado de la consulta").required(
+		"Este campo es requerido"
+	),
+	asunto: string("Ingresa el asunto").required("Este campo es requerido"),
+	entidadFedereativa: string("Ingresa la entidad federativa").required("Este campo es requerido"),
+	distritoElectoral: string("Ingresa el distrito electoral").required("Este campo es requerido"),
+	nombrePrimerFirmante: string("Ingresa el nombre del primer firmante").required(
+		"Este campo es requerido"
+	),
+	cargoPrimerFirmante: string("Ingresa el cargo del primer firmante").required(
+		"Este campo es requerido"
+	),
+	nombreSegundoFirmante: string("Ingresa el nombre del segundo firmante").required(
+		"Este campo es requerido"
+	),
+	cargoSegundoFirmante: string("Ingresa el cargo del segundo firmante").required(
+		"Este campo es requerido"
+	),
+});
 
 export const AddPapeleta = () => {
 	const [statusModal, setStatusModal] = useState(false);
+	const [isSubmited, setIsSubmited] = useState(false);
 	const { toastOffOperation } = useUiStore();
-	const { status } = useConsultaCiudadanaStore();
+	const { status, questions } = useConsultaCiudadanaStore();
 	const dispatch = useDispatch();
 
 	const handleCloseModal = () => setStatusModal(false);
@@ -21,15 +47,16 @@ export const AddPapeleta = () => {
 	};
 
 	const onSubmit = () => {
-		dispatch(saveConsultaPrueba());
+		setIsSubmited(true);
+		if (questions.length > 0) dispatch(saveConsultaPrueba());
 	};
 
 	return (
 		<Box
 			sx={{
 				height: "100%",
-				width: "100%",
 				overflowY: "auto",
+				// width: "100%",
 				// flexGrow: 1,
 			}}
 		>
@@ -50,202 +77,146 @@ export const AddPapeleta = () => {
 					pt: "1rem",
 				}}
 			>
-				<Grid
-					container
-					sx={{
-						height: "100%",
-						display: "flex",
+				<Formik
+					initialValues={{
+						encabezadoConsulta: "",
+						asunto: "",
+						entidadFedereativa: "",
+						distritoElectoral: "",
+						nombrePrimerFirmante: "",
+						cargoPrimerFirmante: "",
+						nombreSegundoFirmante: "",
+						cargoSegundoFirmante: "",
 					}}
-					spacing={3}
+					validationSchema={validationSchema}
+					onSubmit={() => {
+						onSubmit();
+					}}
 				>
-					<Grid item xs={12} mt="0.5rem">
-						<Typography variant="h6" color="initial">
-							DATOS GENERALES
-						</Typography>
-					</Grid>
-					<Grid item xs={12}>
-						<TextField
-							fullWidth
-							size="small"
-							id="filled-basic"
-							label="ENCABEZADO DE LA CONSULTA"
-							variant="filled"
-						/>
-					</Grid>
-					<Grid item xs={12}>
-						<TextField
-							fullWidth
-							size="small"
-							id="filled-basic"
-							label="ASUNTO"
-							variant="filled"
-						/>
-					</Grid>
-					<Grid item xs={12}>
-						<Typography variant="h6" color="initial">
-							DATOS GEOELECTORALES
-						</Typography>
-					</Grid>
-					<Grid item xs={12} md={12} lg={8}>
-						<TextField
-							fullWidth
-							size="small"
-							id="filled-basic"
-							label="ENTIDAD FEDERATIVA"
-							variant="filled"
-						/>
-					</Grid>
-					<Grid item xs={12} md={12} lg={4}>
-						<TextField
-							fullWidth
-							size="small"
-							id="filled-basic"
-							label="DISTRITO ELECTORAL"
-							variant="filled"
-						/>
-					</Grid>
-					<Grid item xs={12}>
-						<Typography variant="h6" color="initial">
-							FIRMANTES
-						</Typography>
-					</Grid>
-					<Grid item xs={12}>
-						<TextField
-							fullWidth
-							size="small"
-							id="filled-basic"
-							label="NOMBRE DEL PRIMER FIRMANTE"
-							variant="filled"
-						/>
-					</Grid>
-					<Grid item xs={12}>
-						<TextField
-							fullWidth
-							size="small"
-							id="filled-basic"
-							label="CARGO DEL PRIMER FIRMANTE"
-							variant="filled"
-						/>
-					</Grid>
-					<Grid item xs={12}>
-						<TextField
-							fullWidth
-							size="small"
-							id="filled-basic"
-							label="NOMBRE DEL SEGUNDO FIRMANTE"
-							variant="filled"
-						/>
-					</Grid>
-					<Grid item xs={12}>
-						<TextField
-							fullWidth
-							size="small"
-							id="filled-basic"
-							label="CARGO DEL SEGUNDO FIRMANTE"
-							variant="filled"
-						/>
-					</Grid>
-					<Grid item xs={12} md={6} lg={4}>
-						<Button
-							onClick={handleOpenModal}
-							variant="contained"
-							size="large"
-							disabled={status === "checking"}
-							sx={{
-								boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
-								transition: "all 0.5s ease",
-								backgroundColor: "#511079",
-								width: "100%",
-								borderRadius: "25px 25px 25px 25px",
-								// borderTopLeftRadius: "1.6rem",
-								// borderTopRightRadius: "1.6rem",
-								// borderBottomLeftRadius: "1.6rem",
-								// borderBottomRightRadius: "1.6rem",
-								"&:hover": {
-									backgroundColor: "#7E328B !important",
-									transform: "translate(-5px, -5px)",
-									boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
-								},
-							}}
-						>
-							Agregar preguntas
-						</Button>
-					</Grid>
-					<Grid item xs={12}>
-						<Box
-							sx={{
-								height: "25rem",
-								// boxShadow: 1,
-								// height: "100%",
-								// display: "flex",
-								// flexDirection: "column",
-								backgroundColor: "#f0f0f0",
-								// mt: "1rem",
-								borderRadius: "2rem",
-								p: "2rem",
-								pt: "1rem",
-								pb: "1rem",
-							}}
-						>
-							<DataGridTable />
-						</Box>
-					</Grid>
-				</Grid>
-				<Grid mt={"1rem"} container direction="row" justifyContent="flex-end" spacing={2}>
-					<Grid item xs={12} md={6} lg={3}>
-						<Button
-							onClick={onSubmit}
-							variant="contained"
-							size="large"
-							disabled={status === "checking"}
-							sx={{
-								// marginLeft: "5rem",
-								// marginRight: "5rem",
-								boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
-								transition: "all 0.5s ease",
-								backgroundColor: "#511079",
-								width: "100%",
-								borderTopLeftRadius: "0",
-								borderTopRightRadius: "1.6rem",
-								borderBottomLeftRadius: "1.6rem",
-								borderBottomRightRadius: "1.6rem",
-								"&:hover": {
-									backgroundColor: "#7E328B !important",
-									transform: "translate(-5px, -5px)",
-									boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
-								},
-							}}
-						>
-							Guardar
-						</Button>
-					</Grid>
-					<Grid item xs={12} md={6} lg={3}>
-						<Button
-							// onClick={handleToggleModal}
-							variant="contained"
-							size="large"
-							disabled={status === "checking"}
-							sx={{
-								boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
-								transition: "all 0.5s ease",
-								backgroundColor: "#791010",
-								width: "100%",
-								borderTopLeftRadius: "0",
+					{({ values, handleSubmit, handleChange, errors, touched }) => (
+						<form onSubmit={handleSubmit}>
+							<Grid
+								container
+								sx={{
+									height: "100%",
+									display: "flex",
+								}}
+								spacing={3}
+							>
+								{/* {console.log("ME RENDERIZO PADRE")} */}
+								<Grid item xs={12} mt="0.5rem">
+									<Typography variant="h6" color="initial">
+										DATOS GENERALES
+									</Typography>
+								</Grid>
+								<Grid item xs={12}>
+									<FielTextCustom
+										name="encabezadoConsulta"
+										label="ENCABEZADO DE LA CONSULTA"
+										value={values.encabezadoConsulta}
+										handleChange={handleChange}
+										error={errors.encabezadoConsulta}
+										touched={touched.encabezadoConsulta}
+									/>
+								</Grid>
 
-								borderTopRightRadius: "1.6rem",
-								borderBottomLeftRadius: "1.6rem",
-								borderBottomRightRadius: "1.6rem",
-								"&:hover": {
-									backgroundColor: "#8B3232 !important",
-									transform: "translate(-5px, -5px)",
-									boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
-								},
-							}}
-						>
-							Cancelar
-						</Button>
-					</Grid>
-				</Grid>
+								<Grid item xs={12}>
+									<FielTextCustom
+										name="asunto"
+										label="ASUNTO"
+										value={values.asunto}
+										handleChange={handleChange}
+										error={errors.asunto}
+										touched={touched.asunto}
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<Typography variant="h6" color="initial">
+										DATOS GEOELECTORALES
+									</Typography>
+								</Grid>
+								<Grid item xs={12} md={12} lg={8}>
+									<FielTextCustom
+										name="entidadFedereativa"
+										label="ENTIDAD FEDERATIVA"
+										value={values.entidadFederativa}
+										handleChange={handleChange}
+										error={errors.entidadFedereativa}
+										touched={touched.entidadFedereativa}
+									/>
+								</Grid>
+								<Grid item xs={12} md={12} lg={4}>
+									<FielTextCustom
+										name="distritoElectoral"
+										label="DISTRITO ELECTORAL"
+										value={values.distritoElectoral}
+										handleChange={handleChange}
+										error={errors.distritoElectoral}
+										touched={touched.distritoElectoral}
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<Typography variant="h6" color="initial">
+										FIRMANTES
+									</Typography>
+								</Grid>
+								<Grid item xs={12}>
+									<FielTextCustom
+										name="nombrePrimerFirmante"
+										label="NOMBRE DEL PRIMER FIRMANTE"
+										value={values.nombrePrimerFirmante}
+										handleChange={handleChange}
+										error={errors.nombrePrimerFirmante}
+										touched={touched.nombrePrimerFirmante}
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<FielTextCustom
+										name="cargoPrimerFirmante"
+										label="CARGO DEL PRIMER FIRMANTE"
+										value={values.cargoPrimerFirmante}
+										handleChange={handleChange}
+										error={errors.cargoPrimerFirmante}
+										touched={touched.cargoPrimerFirmante}
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<FielTextCustom
+										name="nombreSegundoFirmante"
+										label="NOMBRE DEL SEGUNDO FIRMANTE"
+										value={values.nombreSegundoFirmante}
+										handleChange={handleChange}
+										error={errors.nombreSegundoFirmante}
+										touched={touched.nombreSegundoFirmante}
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<FielTextCustom
+										name="cargoSegundoFirmante"
+										label="CARGO DEL SEGUNDO FIRMANTE"
+										value={values.cargoSegundoFirmante}
+										handleChange={handleChange}
+										error={errors.cargoSegundoFirmante}
+										touched={touched.cargoSegundoFirmante}
+									/>
+								</Grid>
+
+								<AddPapeletasTable
+									handleOpenModal={handleOpenModal}
+									status={status}
+								/>
+							</Grid>
+							<ButtonsContainer status={status} />
+							{isSubmited && questions.length === 0 ? (
+								<Typography variant="subtitle1" color="red" textAlign={"right"}>
+									No se ha agregado ninguna pregunta
+								</Typography>
+							) : (
+								""
+							)}
+						</form>
+					)}
+				</Formik>
 			</Box>
 			<ModalPapeleta statusModal={statusModal} handleToggleModal={handleCloseModal} />
 		</Box>
