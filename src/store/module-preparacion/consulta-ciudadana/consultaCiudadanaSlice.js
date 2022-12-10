@@ -7,6 +7,7 @@ export const consultaCiudadanaSlice = createSlice({
 		errorMessage: "",
 		successMessage: "",
 		questions: [],
+		questionSelected: {},
 		consultasData: [],
 		consultaSelected: {
 			data: "",
@@ -29,8 +30,41 @@ export const consultaCiudadanaSlice = createSlice({
 			state.status = "off";
 		},
 		onAddQuestion: (state, { payload }) => {
-			state.questions.push([payload?.question, payload?.answers]);
-			// state.successMessage = "Pregunta añadida correctamente";
+			state.questions.push({
+				id: payload?.id,
+				pregunta: payload?.question,
+				tipoDeRespuesta: payload?.type,
+				subtipo: payload?.closeType,
+				respuesta1: payload?.answer1,
+				respuesta2: payload?.answer2,
+				respuesta3: payload?.answer3,
+				respuesta4: payload?.answer4,
+				respuesta5: payload?.answer5,
+			});
+		},
+		onDeleteQuestion: (state, { payload }) => {
+			const questionFound = state.questions.find((question) => question.id === payload);
+			state.questions.splice(state.questions.indexOf(questionFound), 1);
+		},
+		onEditQuestion: (state, { payload }) => {
+			state.questionSelected = state.questions[payload];
+		},
+		onUpdateQuestion: (state, { payload }) => {
+			const question = state.questions.find(
+				(question) => question.id === state.questionSelected.id
+			);
+			question.id = payload?.id;
+			question.pregunta = payload?.question;
+			question.tipoDeRespuesta = payload?.type;
+			question.subtipo = payload?.closeType;
+			question.respuesta1 = payload?.answer1;
+			question.respuesta2 = payload?.answer2;
+			question.respuesta3 = payload?.answer3;
+			question.respuesta4 = payload?.answer4;
+			question.respuesta5 = payload?.answer5;
+		},
+		onSetQuestionsSelectedNull: (state, { payload }) => {
+			state.questionSelected = {};
 		},
 		onFillConsultasData: (state, { payload }) => {
 			state.consultasData = payload?.data;
@@ -46,7 +80,11 @@ export const {
 	onErrorOperation,
 	onOffOperation,
 	onAddQuestion,
+	onDeleteQuestion,
+	onEditQuestion,
+	onSetQuestionsSelectedNull,
 	onFillConsultasData,
+	onUpdateQuestion,
 } = consultaCiudadanaSlice.actions;
 
 // export default consultaCiudadanaSlice.reducer;
