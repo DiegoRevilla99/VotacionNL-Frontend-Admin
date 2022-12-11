@@ -11,6 +11,8 @@ import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { Formik, Form } from 'formik';
 import { useState } from "react";
+
+import { ErrorField } from "../components/ErrorField";
 // import { useDispatch } from "react-redux";
 // import { useUiStore } from "../../hooks/useUiStore";
 
@@ -31,6 +33,8 @@ const style = {
 	p: 4,
 };
 
+
+
 export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }) => {
 	const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
 	// const { addQuestion } = useConsultaCiudadanaStore();
@@ -46,6 +50,28 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 	 const onCancel = () => {
 	 	handleToggleModal();
 	 };
+
+	 //Validacion del formato imagen 
+	 const [emblema, setEmblema] = useState({ name: "Sin Archivo seleccionado" });
+	 const [fotografia, setFotografia] = useState({
+	   name: "Sin Archivo seleccionado",
+	 });
+	 const cerrarM = () => {
+		abrirCerrarModal();
+		setEmblema({ name: "Sin Archivo seleccionado" });
+		setFotografia({ name: "Sin Archivo seleccionado" });
+	  };
+	  
+	const validando = (values, props) => {
+		const errors = {};
+		if (emblema.name === "Sin Archivo seleccionado") {
+		  errors.emblema = "Se necesita un emblema";
+		}
+		if (fotografia.name === "Sin Archivo seleccionado") {
+		  errors.fotografia = "Se necesita una fotografia";
+		}
+		return errors;
+	  };
 
 	return (
 		<>
@@ -117,22 +143,35 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 						flexDirection="row"
 					>
 						<TextField
-						label="Sin archivo seleccionado"
+						label=""
 						disabled
 						fullWidth
 						variant="outlined"
 						size="small"
+						value={emblema.name}
 						></TextField>
 						<IconButton
+						disabled={status === "checking"}
 						color="primary"
 						aria-label="upload picture"
 						component="label"
 						size="large"
 						>
-						<input hidden accept="image/*" type="file" />
+						<input hidden
+							onChange={(e) => setEmblema(e.target.files[0])}
+							onBlur={handleBlur}
+							accept="image/x-png,image/jpeg"
+							type="file"
+							name="emblema"
+							id="emblema"
+						/>
 						<PhotoCamera fontSize="" />
 						</IconButton>
 					</Box>
+					{touched.emblema &&
+					emblema.name === "Sin Archivo seleccionado" && (
+					<ErrorField>{errors.emblema}</ErrorField>
+					)}
 				<Typography variant="h7" mt={"1rem"}>
 				INSERTAR FOTOGRAFÍA DEL CANDIDATO/A  <span style={{ color: "red" }}>*</span>
 					</Typography>
@@ -144,21 +183,32 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 					>
 						<TextField
 						fullWidth
-						label="Sin archivo seleccionado"
+						label=""
 						disabled
+						value={fotografia.name}
 						variant="outlined"
 						size="small"
 						></TextField>
 						<IconButton
+							disabled={status === "checking"}
 							color="primary"
 							aria-label="upload picture"
 							component="label"
 							size="large"
 							>
-							<input hidden accept="image/*" type="file" />
+							<input
+								hidden
+								onChange={(e) => setFotografia(e.target.files[0])}
+								accept="image/png,image/jpg"
+								type="file"
+							/>
 							<PhotoCamera fontSize="" />
 						</IconButton>
 					</Box>
+					{touched.fotografia &&
+						fotografia.name === "Sin Archivo seleccionado" && (
+						<ErrorField>{errors.fotografia}</ErrorField>
+						)}
 				<Typography variant="h7" mt={"1rem"}>
 				NOMBRE DEL PROPIETARIO/A <span style={{ color: "red" }}>*</span>
 					</Typography>
@@ -182,7 +232,7 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 						size="small"
 						id="outlined-basic" 
 						variant="outlined"
-												label="Ingrese el seudónimo del candidato/a"
+						label="Ingrese el seudónimo del candidato/a"
 						name="seudonimoCandidato"
 						value={values.seudonimoCandidato}
 						onChange={handleChange}
