@@ -2,12 +2,28 @@ import { Box, Button, Divider, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataGridTable } from "../../ui/components/DataGridTable";
+import { ModalRegistroProcesoElectoral } from "../components/ModalRegistroProcesoElectoral";
+import { TableRegistroProceso } from "../components/TableRegistroProceso";
 
 export const RegistroProceso = ({ title, butonTitle, tableTitle, to }) => {
 	const navigate = useNavigate();
+	const [modalStatus, setModalStatus] = useState(false);
+
+	const go = () => {
+		navigate();
+	};
+
+	const closeModal = () => {
+		setModalStatus(false);
+	};
+
+	const openModal = () => {
+		setModalStatus(true);
+	};
 
 	const add = () => {
-		navigate(to);
+		openModal();
+		// navigate(to);
 	};
 
 	return (
@@ -46,10 +62,7 @@ export const RegistroProceso = ({ title, butonTitle, tableTitle, to }) => {
 									transition: "all 0.5s ease",
 									backgroundColor: "#511079",
 									width: "100%",
-									borderTopLeftRadius: "0",
-									borderTopRightRadius: "1.6rem",
-									borderBottomLeftRadius: "1.6rem",
-									borderBottomRightRadius: "1.6rem",
+									borderRadius: "2rem 2rem 2rem 2rem",
 									"&:hover": {
 										backgroundColor: "#7E328B !important",
 										transform: "translate(-5px, -5px)",
@@ -83,12 +96,19 @@ export const RegistroProceso = ({ title, butonTitle, tableTitle, to }) => {
 							mt={"1rem"}
 							sx={{ height: "100%", display: "flex", flexDirection: "column" }}
 						>
-							<DataGridTable />
+							{/* <DataGridTable /> */}
+							<TableRegistroProceso title={"Nombre de la consulta ciudadana"} />
 							{/* <Tabla data={datos} actions={actions} columns={columns}></Tabla> */}
 						</Box>
 					</Box>
 				</Box>
 			</Grid>
+			<ModalRegistroProcesoElectoral
+				title={title}
+				modalStatus={modalStatus}
+				closeModal={closeModal}
+				openModal={openModal}
+			/>
 		</Grid>
 	);
 };

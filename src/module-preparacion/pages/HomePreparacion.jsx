@@ -4,8 +4,16 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { Navigate, useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 export const HomePreparacion = () => {
+	const navigate = useNavigate();
+
+	const go = (url) => {
+		console.log("DIO CLICK");
+		navigate(url);
+	};
 	return (
 		<Box sx={{ width: "100%" }}>
 			<div>
@@ -39,7 +47,6 @@ export const HomePreparacion = () => {
 							spacing={{ lg: 7, sm: 4, xs: 2 }}
 						>
 							<Button
-								href=""
 								sx={{
 									backgroundColor: "#511079",
 									borderRadius: "0px 25px 25px 25px",
@@ -106,7 +113,7 @@ export const HomePreparacion = () => {
 								PLANTILLA DEL COMITÉ
 							</Button>
 							<Button
-								href=""
+								onClick={() => go("/preparacion/registroConsultaCiudadana")}
 								sx={{
 									backgroundColor: "#511079",
 									borderRadius: "0px 25px 25px 25px",

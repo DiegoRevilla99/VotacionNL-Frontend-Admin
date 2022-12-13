@@ -11,6 +11,7 @@ import { HomePreparacion } from "../pages/HomePreparacion";
 import { RegistroJornadaElectoral } from "../pages/RegistroJornadaElectoral";
 import { RegistroComite } from "../pages/RegistroComite";
 import { RegistroConsultaCiudadana } from "../pages/RegistroConsultaCiudadana";
+import { CrudPapeletas } from "../pages/CrudPapeletas";
 
 export const PreparacionRoutes = () => {
 	return (
@@ -27,9 +28,9 @@ export const PreparacionRoutes = () => {
 				<Route path="comite/boleta/:nombre" element={<AddBoletaComite></AddBoletaComite>} />
 				<Route path="registroComite" element={<RegistroComite />} />
 
-				<Route path="consulta" element={<CrudConsulta />} />
+				<Route path="consulta/:id" element={<CrudPapeletas />} />
 				<Route path="registroConsultaCiudadana" element={<RegistroConsultaCiudadana />} />
-				<Route path="consulta/papeleta" element={<AddPapeleta />} />
+				<Route path="consulta/:id/papeleta/:idPapeleta" element={<AddPapeleta />} />
 
 				<Route path="/*" element={<Navigate to="/preparacion/inicio" />} />
 			</Routes>
