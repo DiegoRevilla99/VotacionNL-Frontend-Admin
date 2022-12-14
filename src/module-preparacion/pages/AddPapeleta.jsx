@@ -11,6 +11,11 @@ import { FielTextCustom } from "../components/FielTextCustom";
 import { AddPapeletasTable } from "../components/AddPapeletasTable";
 import { ButtonsContainer } from "../components/ButtonsContainer";
 
+// CONECTAR EL MODAL DE ELIMINAR BOLETA
+// import { Button } from "@mui/material";
+// import { useNavigate } from "react-router-dom";
+// import { ModalEliminarPregunta } from "../components/ModalEliminarPregunta";
+
 const validationSchema = object({
 	encabezadoConsulta: string("Ingresa el encabezado de la consulta").required(
 		"Este campo es requerido"
@@ -51,6 +56,15 @@ export const AddPapeleta = () => {
 		console.log(values, questions);
 		if (questions.length > 0) dispatch(saveConsultaPrueba());
 	};
+		// CONECTAR EL MODAL DE ELIMINAR PREGUNTA
+
+	// const navigate = useNavigate();
+	// const [statusDeleteModal, setStatusDeleteModal] = useState(false);
+	// const handleCloseDeleteModal = () => setStatusDeleteModal(false);
+	// const handleOpenDeleteModal = () => {
+	// 	// toastOffOperation();
+	// 	setStatusDeleteModal(true);
+	// };
 
 	return (
 		<Box
@@ -205,6 +219,30 @@ export const AddPapeleta = () => {
 									status={status}
 								/>
 							</Grid>
+							{/* ELIMINAR PREGUNTA */}
+							{/* <Grid item xs={4} md={2} lg={2}>
+							<Button
+							onClick={handleOpenDeleteModal}
+								variant="contained"
+								size="small"
+								disabled={status === "checking"}
+								sx={{
+									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+									transition: "all 0.5s ease",
+									backgroundColor: "#791010",
+									width: "100%",
+									borderRadius: "25px 25px 25px 25px",
+									"&:hover": {
+										backgroundColor: "#8B3232 !important",
+										transform: "translate(-5px, -5px)",
+										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+									},
+								}}
+							>
+								eliminar
+							</Button>
+						</Grid> */}
+
 							<ButtonsContainer status={status} />
 							{isSubmited && questions.length === 0 ? (
 								<Typography variant="subtitle1" color="red" textAlign={"right"}>
@@ -217,6 +255,7 @@ export const AddPapeleta = () => {
 					)}
 				</Formik>
 			</Box>
+			{/* <ModalEliminarPregunta statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} /> */}
 			<ModalPapeleta statusModal={statusModal} handleToggleModal={handleCloseModal} />
 		</Box>
 	);
