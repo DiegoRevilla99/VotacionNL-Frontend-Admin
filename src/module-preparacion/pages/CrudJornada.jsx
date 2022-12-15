@@ -8,10 +8,8 @@ import { columns, data } from "../helpers/DataBoletas";
 import { useNavigate } from "react-router-dom";
 
 // CONECTAR EL MODAL DE ELIMINAR BOLETA
-// import {Grid, Button } from "@mui/material";
-// import { useNavigate } from "react-router-dom";
-// import { useState } from "react";
-// import { ModalEliminarBoleta } from "../components/ModalEliminarBoleta";
+import {Grid } from "@mui/material";
+import { ModalEliminarBoleta } from "../components/ModalEliminarBoleta";
 
 
 
@@ -67,13 +65,13 @@ export const CrudJornada = () => {
 
 	// CONECTAR EL MODAL DE ELIMINAR BOLETA
 
-	// const navigate = useNavigate();
-	// const [statusDeleteModal, setStatusDeleteModal] = useState(false);
-	// const handleCloseDeleteModal = () => setStatusDeleteModal(false);
-	// const handleOpenDeleteModal = () => {
-	// 	// toastOffOperation();
-	// 	setStatusDeleteModal(true);
-	// };
+	const navigate = useNavigate();
+	const [statusDeleteModal, setStatusDeleteModal] = useState(false);
+	const handleCloseDeleteModal = () => setStatusDeleteModal(false);
+	const handleOpenDeleteModal = () => {
+		// toastOffOperation();
+		setStatusDeleteModal(true);
+	};
 	return (
 		<>
 			<PlantillaCRUD go="/preparacion/jornada/boleta" guardar={guardar} cancelar={cancelar}>
