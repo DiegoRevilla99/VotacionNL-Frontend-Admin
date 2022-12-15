@@ -1,15 +1,22 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import { Formik } from "formik";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useUiStore } from "../../hooks/useUiStore";
-import { saveConsultaPrueba } from "../../store/module-preparacion/consulta-ciudadana/thunks";
+import {
+	onCreatePapeleta,
+	onGetBallotData,
+	onUpdateBallotData,
+	saveConsultaPrueba,
+} from "../../store/module-preparacion/consulta-ciudadana/thunks";
 import { ModalPapeleta } from "../components/ModalPapeleta";
 import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
 import { object, string } from "yup";
 import { FielTextCustom } from "../components/FielTextCustom";
 import { AddPapeletasTable } from "../components/AddPapeletasTable";
 import { ButtonsContainer } from "../components/ButtonsContainer";
+import { useNavigate, useParams } from "react-router-dom";
+import { getBallotData } from "../../providers/Micro-Consultas/provider";
 
 // CONECTAR EL MODAL DE ELIMINAR BOLETA
 // import { Button } from "@mui/material";
@@ -21,8 +28,8 @@ const validationSchema = object({
 		"Este campo es requerido"
 	),
 	asunto: string("Ingresa el asunto").required("Este campo es requerido"),
-	entidadFedereativa: string("Ingresa la entidad federativa").required("Este campo es requerido"),
-	distritoElectoral: string("Ingresa el distrito electoral").required("Este campo es requerido"),
+	// entidadFedereativa: string("Ingresa la entidad federativa").required("Este campo es requerido"),
+	// distritoElectoral: string("Ingresa el distrito electoral").required("Este campo es requerido"),
 	nombrePrimerFirmante: string("Ingresa el nombre del primer firmante").required(
 		"Este campo es requerido"
 	),
@@ -41,8 +48,37 @@ export const AddPapeleta = () => {
 	const [statusModal, setStatusModal] = useState(false);
 	const [isSubmited, setIsSubmited] = useState(false);
 	const { toastOffOperation } = useUiStore();
-	const { status, questions } = useConsultaCiudadanaStore();
+	const { status, questions, consultaSelected } = useConsultaCiudadanaStore();
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const params = useParams();
+
+	const values =
+		Object.values(consultaSelected.ballotSelected).length === 0
+			? {
+					encabezadoConsulta: "",
+					asunto: "",
+					// entidadFedereativa: "",
+					// distritoElectoral: "",
+					nombrePrimerFirmante: "",
+					cargoPrimerFirmante: "",
+					nombreSegundoFirmante: "",
+					cargoSegundoFirmante: "",
+			  }
+			: {
+					encabezadoConsulta: consultaSelected.ballotSelected.encabezadoConsulta,
+					asunto: "",
+					// entidadFedereativa: "",
+					// distritoElectoral: "",
+					nombrePrimerFirmante: "",
+					cargoPrimerFirmante: "",
+					nombreSegundoFirmante: "",
+					cargoSegundoFirmante: "",
+			  };
+
+	const onCancel = () => {
+		navigate("/preparacion/consulta/" + params.id);
+	};
 
 	const handleCloseModal = () => setStatusModal(false);
 
@@ -53,10 +89,25 @@ export const AddPapeleta = () => {
 
 	const onSubmit = (values) => {
 		setIsSubmited(true);
-		console.log(values, questions);
-		if (questions.length > 0) dispatch(saveConsultaPrueba());
+		if (Object.values(consultaSelected.ballotSelected).length === 0) {
+			if (questions.length > 0)
+				dispatch(
+					onCreatePapeleta(values.encabezadoConsulta, () => {
+						navigate("/preparacion/consulta/" + params.id);
+					})
+				);
+		} else {
+			dispatch(
+				onUpdateBallotData(values.id, () => {
+					navigate("/preparacion/consulta/" + params.id);
+				})
+			);
+			// updateBallot(values.encabezadoConsulta);
+			// setBallotSelectedNull();
+			// navigate("/preparacion/consulta/" + params.id);
+		}
 	};
-		// CONECTAR EL MODAL DE ELIMINAR PREGUNTA
+	// CONECTAR EL MODAL DE ELIMINAR PREGUNTA
 
 	// const navigate = useNavigate();
 	// const [statusDeleteModal, setStatusDeleteModal] = useState(false);
@@ -91,16 +142,7 @@ export const AddPapeleta = () => {
 				}}
 			>
 				<Formik
-					initialValues={{
-						encabezadoConsulta: "",
-						asunto: "",
-						entidadFedereativa: "",
-						distritoElectoral: "",
-						nombrePrimerFirmante: "",
-						cargoPrimerFirmante: "",
-						nombreSegundoFirmante: "",
-						cargoSegundoFirmante: "",
-					}}
+					initialValues={values}
 					validationSchema={validationSchema}
 					onSubmit={(values) => {
 						onSubmit(values);
@@ -125,7 +167,7 @@ export const AddPapeleta = () => {
 								<Grid item xs={12}>
 									<FielTextCustom
 										name="encabezadoConsulta"
-										label="ENCABEZADO DE LA CONSULTA"
+										label="ENCABEZADO DE LA PAPELETA"
 										value={values.encabezadoConsulta}
 										handleChange={handleChange}
 										error={errors.encabezadoConsulta}
@@ -143,7 +185,7 @@ export const AddPapeleta = () => {
 										touched={touched.asunto}
 									/>
 								</Grid>
-								<Grid item xs={12}>
+								{/* <Grid item xs={12}>
 									<Typography variant="h6" color="initial">
 										DATOS GEOELECTORALES
 									</Typography>
@@ -167,7 +209,7 @@ export const AddPapeleta = () => {
 										error={errors.distritoElectoral}
 										touched={touched.distritoElectoral}
 									/>
-								</Grid>
+								</Grid> */}
 								<Grid item xs={12}>
 									<Typography variant="h6" color="initial">
 										FIRMANTES
@@ -219,31 +261,7 @@ export const AddPapeleta = () => {
 									status={status}
 								/>
 							</Grid>
-							{/* ELIMINAR PREGUNTA */}
-							{/* <Grid item xs={4} md={2} lg={2}>
-							<Button
-							onClick={handleOpenDeleteModal}
-								variant="contained"
-								size="small"
-								disabled={status === "checking"}
-								sx={{
-									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
-									transition: "all 0.5s ease",
-									backgroundColor: "#791010",
-									width: "100%",
-									borderRadius: "25px 25px 25px 25px",
-									"&:hover": {
-										backgroundColor: "#8B3232 !important",
-										transform: "translate(-5px, -5px)",
-										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
-									},
-								}}
-							>
-								eliminar
-							</Button>
-						</Grid> */}
-
-							<ButtonsContainer status={status} />
+							<ButtonsContainer status={status} onCancel={onCancel} />
 							{isSubmited && questions.length === 0 ? (
 								<Typography variant="subtitle1" color="red" textAlign={"right"}>
 									No se ha agregado ninguna pregunta

@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { authSlice } from "./auth/authSlice";
 import { comiteSlice } from "./module-preparacion/comite/comiteSlice";
 import { consultaCiudadanaSlice } from "./module-preparacion/consulta-ciudadana/consultaCiudadanaSlice";
 import { uiSlice } from "./ui/uiSlice";
@@ -9,5 +10,6 @@ export const store = configureStore({
 		comite: comiteSlice.reducer,
 		// jornada: jornadaSlice.reducer,
 		ui: uiSlice.reducer,
+		auth: authSlice.reducer,
 	},
 });

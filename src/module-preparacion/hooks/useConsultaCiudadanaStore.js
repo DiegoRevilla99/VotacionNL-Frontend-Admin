@@ -10,13 +10,23 @@ import {
 	onEditQuestion,
 	onSetQuestionsSelectedNull,
 	onUpdateQuestion,
+	onAddConsultaCiudadana,
+	onEditBallot,
+	onUpdateBallot,
 } from "../../store/module-preparacion/consulta-ciudadana/consultaCiudadanaSlice";
 
 export const useConsultaCiudadanaStore = () => {
 	const dispatch = useDispatch();
 
-	const { status, errorMessage, successMesage, questions, consultasData, questionSelected } =
-		useSelector((state) => state.consultaCiudadana);
+	const {
+		status,
+		errorMessage,
+		successMesage,
+		questions,
+		consultasData,
+		questionSelected,
+		consultaSelected,
+	} = useSelector((state) => state.consultaCiudadana);
 
 	const checkingOperation = () => {
 		dispatch(onCheckingOperation());
@@ -39,6 +49,9 @@ export const useConsultaCiudadanaStore = () => {
 
 	const editQuestion = (id) => {
 		dispatch(onEditQuestion(id));
+	};
+	const editBallot = (id) => {
+		dispatch(onEditBallot(id));
 	};
 
 	const setQuestionsSelectedNull = (id) => {
@@ -97,8 +110,20 @@ export const useConsultaCiudadanaStore = () => {
 		);
 	};
 
+	const updateBallot = (encabezadoConsulta) => {
+		dispatch(onUpdateBallot({ encabezadoConsulta }));
+	};
+
 	const fillConsultasData = () => {
 		dispatch(onFillConsultasData());
+	};
+
+	const addConsultaCiudadana = (consultaData) => {
+		dispatch(onAddConsultaCiudadana(consultaData));
+	};
+
+	const setBallotSelectedNull = () => {
+		dispatch(onSetQuestionsSelectedNull());
 	};
 
 	return {
@@ -118,5 +143,10 @@ export const useConsultaCiudadanaStore = () => {
 		deleteQuestion,
 		fillConsultasData,
 		updateQuestion,
+		addConsultaCiudadana,
+		consultaSelected,
+		editBallot,
+		updateBallot,
+		setBallotSelectedNull,
 	};
 };

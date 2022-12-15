@@ -10,8 +10,11 @@ export const consultaCiudadanaSlice = createSlice({
 		questionSelected: {},
 		consultasData: [],
 		consultaSelected: {
-			data: "",
-			questions: [],
+			id: "",
+			title: "",
+			ballots: [],
+			ballotSelected: {},
+			// ballorSelectedData:{}
 		},
 	},
 	reducers: {
@@ -70,6 +73,31 @@ export const consultaCiudadanaSlice = createSlice({
 			state.consultasData = payload?.data;
 			// state.status = "success";
 		},
+		onAddConsultaCiudadana: (state, { payload }) => {
+			state.consultasData.push(payload);
+		},
+		onSetConsultaSelected: (state, { payload }) => {
+			console.log("PAYLOAD", payload);
+			state.consultaSelected.id = payload.id;
+			state.consultaSelected.title = payload.titulo;
+			state.consultaSelected.ballots = payload?.ballots;
+		},
+		onAddBallot: (state, { payload }) => {
+			state.consultaSelected.ballots.push(payload);
+		},
+		onEditBallot: (state, { payload }) => {
+			// state.consultaSelected.ballotSelected = state.consultaSelected.ballots[payload];
+			state.consultaSelected.ballotSelected = payload;
+		},
+		onUpdateBallot: (state, { payload }) => {
+			const ballot = state.consultaSelected.ballots.find(
+				(ballot) => ballot.id === state.consultaSelected.ballotSelected.id
+			);
+			ballot.encabezadoConsulta = payload?.encabezadoConsulta;
+		},
+		onSetBallotSelectedNull: (state, { payload }) => {
+			state.consultaSelected.ballotSelected = {};
+		},
 	},
 });
 
@@ -85,6 +113,12 @@ export const {
 	onSetQuestionsSelectedNull,
 	onFillConsultasData,
 	onUpdateQuestion,
+	onAddConsultaCiudadana,
+	onSetConsultaSelected,
+	onAddBallot,
+	onEditBallot,
+	onUpdateBallot,
+	onSetBallotSelectedNull,
 } = consultaCiudadanaSlice.actions;
 
 // export default consultaCiudadanaSlice.reducer;

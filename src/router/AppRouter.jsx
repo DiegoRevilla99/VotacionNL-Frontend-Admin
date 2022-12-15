@@ -1,26 +1,29 @@
+import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthRoutes } from "../module-auth/routes/AuthRoutes";
 
 import { AdminRoutes } from "../routes/AdminRoutes";
 
 import { PrivateRoute } from "./PrivateRoute";
-import { PublicRoute } from "./PublicRoute";
 
 export const AppRouter = () => {
-  return (
-    <Routes>
-      {/* LOGIN Y REGISTRO */}
+	// const { status: userStatus } = useSelector((state) => state.auth);
+	// const logged = userStatus === "logged" ? true : false;
+	const logged = true;
+	return (
+		<Routes>
+			{/* LOGIN Y REGISTRO */}
 
-      <Route path="/auth/*" element={<AuthRoutes />}></Route>
+			<Route path="/auth/*" element={<AuthRoutes logged={logged} />}></Route>
 
-      <Route
-        path="/*"
-        element={
-          <PrivateRoute>
-            <AdminRoutes />
-          </PrivateRoute>
-        }
-      ></Route>
-    </Routes>
-  );
+			<Route
+				path="/*"
+				element={
+					<PrivateRoute logged={logged}>
+						<AdminRoutes />
+					</PrivateRoute>
+				}
+			></Route>
+		</Routes>
+	);
 };

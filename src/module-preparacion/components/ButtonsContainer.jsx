@@ -1,14 +1,15 @@
 import { Button, Grid } from "@mui/material";
 import React from "react";
 
-export const ButtonsContainer = React.memo(({ status }) => {
+export const ButtonsContainer = React.memo(({ status, onSubmit, onCancel }) => {
 	console.log("Me renderizo botones");
+
 	return (
 		<Grid mt={"1rem"} container direction="row" justifyContent="flex-end" spacing={2}>
 			<Grid item xs={12} md={6} lg={3}>
 				<Button
 					type="submit"
-					// onClick={onSubmit}
+					onClick={onSubmit}
 					variant="contained"
 					size="large"
 					disabled={status === "checking"}
@@ -30,7 +31,7 @@ export const ButtonsContainer = React.memo(({ status }) => {
 			</Grid>
 			<Grid item xs={12} md={6} lg={3}>
 				<Button
-					// onClick={handleToggleModal}
+					onClick={onCancel}
 					variant="contained"
 					size="large"
 					disabled={status === "checking"}
