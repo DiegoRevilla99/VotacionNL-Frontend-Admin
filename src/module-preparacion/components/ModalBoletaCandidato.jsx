@@ -3,16 +3,16 @@ import {
 	Button,
 	Grid,
 	Modal,
-	TextField,
 	Typography,
+	TextField,
 } from "@mui/material";
-
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { Formik, Form } from 'formik';
 import { useState } from "react";
-
+import { object, string } from "yup";
 import { ErrorField } from "../components/ErrorField";
+
 // import { useDispatch } from "react-redux";
 // import { useUiStore } from "../../hooks/useUiStore";
 
@@ -33,7 +33,19 @@ const style = {
 	p: 4,
 };
 
+//Validaciones
 
+const validationSchema = object({
+	nombrePropietario: string("").required(
+		"Por favor, ingresa el nombre del propietario"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	seudonimoCandidato: string("").required(
+		"Por favor, ingresa el seudónimo del candidato"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	nombreSuplente: string("").required(
+		"Por favor, ingresa el nombre del suplente"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+});
 
 export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }) => {
 	const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
@@ -87,36 +99,11 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 					seudonimoCandidato: "",//Text
 					nombreSuplente: "",//Text
 				}}
-		validate={(valores) => {
-			let errores = {};
-			// Validacion nombrePropietario
-			if(!valores.nombrePropietario){
-				errores.nombrePropietario = 'Por favor,  ingresa un nombre del propietario/a'
-			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.nombrePropietario)){
-				errores.nombrePropietario = 'El nombre del propietario/a solo puede contener letras y espacios'
-			}
-			// Validacion seudonimoCandidato
-			if(!valores.seudonimoCandidato){
-				errores.seudonimoCandidato = 'Por favor,  ingresa un seudónimo del candidato/a'
-			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.seudonimoCandidato)){
-				errores.seudonimoCandidato = 'La seudónimo del candidato/a solo puede contener letras y espacios'
-			}
-			// Validacion nombreSuplente
-			if(!valores.nombreSuplente){
-				errores.nombreSuplente = 'Por favor, ingresa un nombre del suplente'
-			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.nombreSuplente)){
-				errores.nombreSuplente = 'El nombre del suplente solo puede contener letras y espacios'
-			}
-
-			return errores;
-		}}
-		onSubmit={(valores, {resetForm}) => {
-			resetForm();
-			console.log('Formulario enviado');
-			cambiarFormularioEnviado(true);
-			setTimeout(() => cambiarFormularioEnviado(false), 5000);
-			// handleToggleModal();
-		}}
+				validate = {validando}
+				validationSchema={validationSchema}
+				onSubmit={(valores) => {
+					onSubmit(valores, cerrarM);
+				}}
 	>
 		{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (
 			<Box sx={style}>
@@ -132,7 +119,7 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 					overflowY: "auto",
 				}}
 			>
-				<Form className="formulario" onSubmit={handleSubmit} >
+				<Form onSubmit={handleSubmit} >
 				<Typography variant="h7" mt={"1rem"}>
 				INSERTAR EMBLEMA DEL CANDIDATO/A <span style={{ color: "red" }}>*</span>
 					</Typography>
@@ -217,28 +204,32 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 						size="small"
 						id="outlined-basic" 
 						variant="outlined"
-						label="Ingrese el nombre del propietario/a"
+						label=""
 						name="nombrePropietario"
 						value={values.nombrePropietario}
+						error = {touched.nombrePropietario && errors.nombrePropietario}
+						helperText={touched.nombrePropietario && errors.nombrePropietario}
 						onChange={handleChange}
 						onBlur={handleBlur}
 					/>
-					{touched.nombrePropietario && errors.nombrePropietario && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombrePropietario}</Typography>}
+					{/* {touched.nombrePropietario && errors.nombrePropietario && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombrePropietario}</Typography>} */}
 				<Typography variant="h7" mt={"1rem"}>
 				SEUDÓNIMO DEL CANDIDATO/A <span style={{ color: "red" }}>*</span>
 					</Typography>
 					<TextField
+						name="seudonimoCandidato"
 						fullWidth
 						size="small"
 						id="outlined-basic" 
 						variant="outlined"
-						label="Ingrese el seudónimo del candidato/a"
-						name="seudonimoCandidato"
+						label=""
 						value={values.seudonimoCandidato}
+						error = {touched.seudonimoCandidato && errors.seudonimoCandidato}
+						helperText={touched.seudonimoCandidato && errors.seudonimoCandidato}
 						onChange={handleChange}
 						onBlur={handleBlur}
 					/>
-					{touched.seudonimoCandidato && errors.seudonimoCandidato && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.seudonimoCandidato}</Typography>}
+					{/* {touched.seudonimoCandidato && errors.seudonimoCandidato && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.seudonimoCandidato}</Typography>} */}
 				<Typography variant="h7" mt={"1rem"}>
 				NOMBRE DEL SUPLENTE <span style={{ color: "red" }}>*</span>
 					</Typography>
@@ -247,13 +238,15 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 						size="small"
 						id="outlined-basic" 
 						variant="outlined"
-						label="Ingrese el nombre del suplente"
+						label=""
 						name="nombreSuplente"
 						value={values.nombreSuplente}
+						error = {touched.nombreSuplente && errors.nombreSuplente}
+						helperText={touched.nombreSuplente && errors.nombreSuplente}
 						onChange={handleChange}
 						onBlur={handleBlur}
 					/>
-					{touched.nombreSuplente && errors.nombreSuplente && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombreSuplente}</Typography>}
+					{/* {touched.nombreSuplente && errors.nombreSuplente && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombreSuplente}</Typography>} */}
 					<Grid
 						container
 						direction="row"
@@ -307,7 +300,6 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 							</Button>
 						</Grid>
 					</Grid>
-				{formularioEnviado && <p className="exito" align="center">Formulario enviado con exito!</p>}
 					</Form>
 				</Box>
 			</Box>

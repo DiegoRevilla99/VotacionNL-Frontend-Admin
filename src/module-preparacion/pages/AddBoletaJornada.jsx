@@ -17,36 +17,39 @@ import { useNavigate } from "react-router-dom";
 // import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
 
 const validationSchema = object({
-	encabezado: string("Por favor, ingresa un encabezado").required(
-		"El encabezado solo puede contener letras y espacios"
-	),
-	nombreCandidatura: string("Por favor, ingresa un nombre de Candidatura").required(
-		"El nombre de Candidatura solo puede contener letras y espacios"),
-	entidadFederativa: string("Por favor, ingresa una entidad Federativa").required(
-		"La entidad Federativa solo puede contener letras y espacios"),
-	municipio: string("Por favor, ingresa un municipio").required(
-		"El municipio solo puede contener letras y espacios"),
-	distritoElectoralLocal: number("Por favor, ingresa un distrito Electoral Local").required(
-		"El distrito Electoral Local solo puede contener numeros"
-	).positive().integer(),
-	distritoElectoral: number("Por favor, ingresa un distrito Electoral").required(
-		"El distrito Electoral solo puede contener numeros"
-	).positive().integer(),
-	tipoCasilla: string("Por favor, ingresa un tipo de Casilla").required(
-		"El tipo de Casilla solo puede contener letras y espacios'"
-	),
-	primerFirmante: string("Por favor, ingresa el nombre del Primer Firmante").required(
-		"El nombre del primer Firmante solo puede contener letras y espacios"
-	),
-	cargoPrimerFirmante: string("Por favor, ingresa un segundo Firmante").required(
-		"El cargo del Primer Firmante solo puede contener letras y espacios"
-	),
-	segundoFirmante: string("Por favor, ingresa el nombre de Segundo Firmante").required(
-		"El nombre del segundo Firmante solo puede contener letras y espacios"
-	),
-	cargoSegundoFirmante: string("Por favor, ingresa el cargo de Segundo Firmante").required(
-		"El cargo del Segundo Firmante solo puede contener letras y espacios"
-	),
+	encabezado: string("").required(
+		"Por favor, ingresa un encabezado"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	nombreCandidatura: string("").required(
+		"Por favor, ingresa un nombre de Candidatura"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	entidadFederativa: string("").required(
+		"Por favor, ingresa una entidad Federativa"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	municipio: string("").required(
+		"Por favor, ingresa un municipio"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	distritoElectoralLocal: number("").required(
+		"Por favor, ingresa un distrito Electoral Local"
+		).max("26").positive("Solo números positivos, por favor.").integer(""),
+	distritoElectoral: number("").required(
+		"Por favor, ingresa un distrito Electoral"
+		).max("3000").positive("Solo números positivos, por favor.").integer(""),
+	tipoCasilla: string("").required(
+		"Por favor, ingresa un tipo de Casilla"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	primerFirmante: string("").required(
+		"Por favor, ingresa el nombre del Primer Firmante"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	cargoPrimerFirmante: string("").required(
+		"Por favor, ingresa un segundo Firmante"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	segundoFirmante: string("").required(
+		"Por favor, ingresa el nombre de Segundo Firmante"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	cargoSegundoFirmante: string("").required(
+		"Por favor, ingresa el cargo de Segundo Firmante"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
 });
 
 export const AddBoletaJornada = () => {
@@ -111,7 +114,7 @@ export const AddBoletaJornada = () => {
 			segundoFirmante: "",//Text
 			cargoSegundoFirmante: "",//Text
 		}}
-		
+		validationSchema={validationSchema}
 		onSubmit={(valores) => {
 			onSubmit(valores);
 		}}
@@ -420,7 +423,6 @@ export const AddBoletaJornada = () => {
 						</Grid>
 						
 					</Grid>
-					{formularioEnviado && <p className="exito" align="center">Formulario enviado con exito!</p>}
 				</Box>
 			<ModalBoletaPartido statusMatchModal={statusMatchModal} handleToggleModal={handleCloseMatchModal} />
             <ModalBoletaCandidato statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} />
