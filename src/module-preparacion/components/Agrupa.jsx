@@ -85,12 +85,12 @@ export const Agrupa = ({ tipo = 1 }) => {
             }}
           >
             <Coalicion name="Alianza">
-              <BoxPartido name="Laura Yessenia Sanchez Lopez"></BoxPartido>
               <BoxPartido name="Kevin Chavez Sanchez"></BoxPartido>
               <BoxPartido name="Jose Antonio Diego Revilla"></BoxPartido>
-              <BoxPartido></BoxPartido>
             </Coalicion>
             <Coalicion name="Cambiemos" colorb="#F8F6E8">
+              <BoxPartido name="Laura Yessenia Sanchez Lopez"></BoxPartido>
+              <BoxPartido></BoxPartido>
               <BoxPartido></BoxPartido>
               <BoxPartido></BoxPartido>
             </Coalicion>
