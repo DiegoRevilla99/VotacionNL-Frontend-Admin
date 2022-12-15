@@ -10,6 +10,8 @@ import { useState } from "react";
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { Formik, Form } from 'formik';
+import { ErrorField } from "../components/ErrorField";
+import { object, string } from "yup";
 
 // import { useDispatch } from "react-redux";
 // import { useUiStore } from "../../hooks/useUiStore";
@@ -31,7 +33,22 @@ const style = {
 	p: 4,
 };
 
+//Validaciones
 
+const validationSchema = object({
+	nombrePartido: string("").required(
+		"Por favor, ingresa el nombre del partido"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	nombrePropietario: string("").required(
+		"Por favor, ingresa el nombre del propietario"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	seudonimoCandidato: string("").required(
+		"Por favor, ingresa el seudónimo del candidato"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	nombreSuplente: string("").required(
+		"Por favor, ingresa el nombre del suplente"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+});
 export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 
 	const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
@@ -52,10 +69,31 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 		handleToggleModal();
 	};
 
+	//Validacion del formato imagen 
+	const [emblema, setEmblema] = useState({ name: "Sin Archivo seleccionado" });
+	const [fotografia, setFotografia] = useState({
+	  name: "Sin Archivo seleccionado",
+	});
+	const cerrarM = () => {
+	   abrirCerrarModal();
+	   setEmblema({ name: "Sin Archivo seleccionado" });
+	   setFotografia({ name: "Sin Archivo seleccionado" });
+	 };
+	 
+   const validando = (values, props) => {
+	   const errors = {};
+	   if (emblema.name === "Sin Archivo seleccionado") {
+		 errors.emblema = "Se necesita un emblema";
+	   }
+	   if (fotografia.name === "Sin Archivo seleccionado") {
+		 errors.fotografia = "Se necesita una fotografia";
+	   }
+	   return errors;
+	 };
 	return (
 
 		<>
-				<Modal
+		<Modal
 			open={statusMatchModal}
 			onClose={handleToggleModal}
 			aria-labelledby="modal-modal-title"
@@ -68,41 +106,13 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 			seudonimoCandidato: "",//Text
 			nombreSuplente: "",//Text
 		}}
-		validate={(valores) => {
-			let errores = {};
-
-			// Validacion nombrePartido
-			if(!valores.nombrePartido){
-				errores.nombrePartido = 'Por favor,  ingresa un nombre del partido'
-			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.nombrePartido)){
-				errores.nombrePartido = 'El nombre del partido solo puede contener letras y espacios'
-			}
-			// Validacion nombrePropietario
-			if(!valores.nombrePropietario){
-				errores.nombrePropietario = 'Por favor,  ingresa un nombre del propietario/a'
-			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.nombrePropietario)){
-				errores.nombrePropietario = 'El nombre del propietario/a solo puede contener letras y espacios'
-			}
-			// Validacion seudonimoCandidato
-			if(!valores.seudonimoCandidato){
-				errores.seudonimoCandidato = 'Por favor,  ingresa un seudónimo del candidato/a'
-			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.seudonimoCandidato)){
-				errores.seudonimoCandidato = 'La seudónimo del candidato/a solo puede contener letras y espacios'
-			}
-			// Validacion nombreSuplente
-			if(!valores.nombreSuplente){
-				errores.nombreSuplente = 'Por favor, ingresa un nombre del suplente'
-			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.nombreSuplente)){
-				errores.nombreSuplente = 'El nombre del suplente solo puede contener letras y espacios'
-			}
-
-			return errores;
-		}}
+		validate = {validando}
+		validationSchema={validationSchema}
 		onSubmit={(valores, {resetForm}) => {
+			onSubmit(valores, cerrarM);
 			resetForm();
 			console.log('Formulario enviado');
 			cambiarFormularioEnviado(true);
-			setTimeout(() => cambiarFormularioEnviado(false), 5000);
 			// handleToggleModal();
 		}}
 	>
@@ -120,7 +130,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						height: "100%",
 						overflowY: "auto",
 					}}>
-						<Form className="formulario" onSubmit={handleSubmit} >
+					<Form  onSubmit={handleSubmit} >
 					<Typography variant= {{ xl: "2rem", lg: "1.5rem", sm: "1rem", xs: "0.8rem" }}>
 						NOMBRE DEL PARTIDO <span style={{ color: "red" }}>*</span>
 					</Typography>
@@ -129,13 +139,15 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						size="small"
 						id="outlined-basic" 
 						variant="outlined"
-						label="Ingrese el nombre del partido"
+						label=""
 						name="nombrePartido"
 						value={values.nombrePartido}
+						error = {touched.nombrePartido && errors.nombrePartido}
+						helperText={touched.nombrePartido && errors.nombrePartido}
 						onChange={handleChange}
 						onBlur={handleBlur}
 					/>
-					{touched.nombrePartido && errors.nombrePartido && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombrePartido}</Typography>}
+					{/* {touched.nombrePartido && errors.nombrePartido && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombrePartido}</Typography>} */}
 				
 					<Typography variant="h7" mt={"1rem"}>
 					INSERTAR EMBLEMA DEL PARTIDO <span style={{ color: "red" }}>*</span>
@@ -147,22 +159,35 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 							flexDirection="row"
 						>
 							<TextField
-							label="Sin archivo seleccionado"
+							label=""
 							disabled
 							fullWidth
 							variant="outlined"
 							size="small"
+							value={emblema.name}
 							></TextField>
 							<IconButton
+							disabled={status === "checking"}
 							color="primary"
 							aria-label="upload picture"
 							component="label"
 							size="large"
 							>
-							<input hidden accept="image/*" type="file" />
+							<input hidden
+								onChange={(e) => setEmblema(e.target.files[0])}
+								onBlur={handleBlur}
+								accept="image/x-png,image/jpeg"
+								type="file"
+								name="emblema"
+								id="emblema"
+							/>
 							<PhotoCamera fontSize="" />
 							</IconButton>
 						</Box>
+						{touched.emblema &&
+						emblema.name === "Sin Archivo seleccionado" && (
+						<ErrorField>{errors.emblema}</ErrorField>
+						)}
 					<Typography variant="h7" mt={"1rem"}>
 						INSERTAR FOTOGRAFÍA DEL PROPIETARIO/A <span style={{ color: "red" }}>*</span>
 					</Typography>
@@ -174,21 +199,32 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						>
 						<TextField
 						fullWidth
-						label="Sin archivo seleccionado"
+						label=""
+						value={fotografia.name}
 						disabled
 						variant="outlined"
 						size="small"
 						></TextField>
 						<IconButton
+							disabled={status === "checking"}
 							color="primary"
 							aria-label="upload picture"
 							component="label"
 							size="large"
 							>
-							<input hidden accept="image/*" type="file" />
+							<input
+								hidden
+								onChange={(e) => setFotografia(e.target.files[0])}
+								accept="image/png,image/jpg"
+								type="file"
+							/>
 							<PhotoCamera fontSize="" />
 						</IconButton>
 					</Box>
+					{touched.fotografia &&
+						fotografia.name === "Sin Archivo seleccionado" && (
+						<ErrorField>{errors.fotografia}</ErrorField>
+						)}
 					<Typography variant="h7" mt={"1rem"}>
 						NOMBRE DEL PROPIETARIO/A <span style={{ color: "red" }}>*</span>
 					</Typography>
@@ -197,13 +233,15 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						size="small"
 						id="outlined-basic" 
 						variant="outlined"
-						label="Ingrese el nombre del propietario/a"
+						label=""
 						name="nombrePropietario"
 						value={values.nombrePropietario}
+						error = {touched.nombrePropietario && errors.nombrePropietario}
+						helperText={touched.nombrePropietario && errors.nombrePropietario}
 						onChange={handleChange}
 						onBlur={handleBlur}
 					/>
-					{touched.nombrePropietario && errors.nombrePropietario && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombrePropietario}</Typography>}
+					{/* {touched.nombrePropietario && errors.nombrePropietario && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombrePropietario}</Typography>} */}
 					<Typography variant="h7" mt={"1rem"}>
 						SEUDÓNIMO DEL CANDIDATO/A <span style={{ color: "red" }}>*</span>
 					</Typography>
@@ -212,13 +250,15 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						size="small"
 						id="outlined-basic" 
 						variant="outlined"
-						label="Ingrese el seudónimo del candidato/a"
+						label=""
 						name="seudonimoCandidato"
 						value={values.seudonimoCandidato}
+						error = {touched.seudonimoCandidato && errors.seudonimoCandidato}
+						helperText={touched.seudonimoCandidato && errors.seudonimoCandidato}
 						onChange={handleChange}
 						onBlur={handleBlur}
 					/>
-					{touched.seudonimoCandidato && errors.seudonimoCandidato && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.seudonimoCandidato}</Typography>}
+					{/* {touched.seudonimoCandidato && errors.seudonimoCandidato && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.seudonimoCandidato}</Typography>} */}
 					<Typography variant="h7" mt={"1rem"}>
 						NOMBRE DEL SUPLENTE <span style={{ color: "red" }}>*</span>
 					</Typography>
@@ -227,13 +267,15 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						size="small"
 						id="outlined-basic" 
 						variant="outlined"
-						label="Ingrese el nombre del suplente"
+						label=""
 						name="nombreSuplente"
 						value={values.nombreSuplente}
+						error = {touched.nombreSuplente && errors.nombreSuplente}
+						helperText={touched.nombreSuplente && errors.nombreSuplente}
 						onChange={handleChange}
 						onBlur={handleBlur}
 					/>
-					{touched.nombreSuplente && errors.nombreSuplente && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombreSuplente}</Typography>}
+					{/* {touched.nombreSuplente && errors.nombreSuplente && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombreSuplente}</Typography>} */}
 					<Grid
 						container
 						direction="row"

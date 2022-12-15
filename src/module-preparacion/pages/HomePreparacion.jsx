@@ -4,10 +4,21 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { useNavigate } from "react-router-dom";
 
 export const HomePreparacion = () => {
+	const navigate = useNavigate();
+	const plantilla1 = () => {
+		navigate("/preparacion/registroJornada");
+	};
+	const plantilla2 = () => {
+		navigate("/preparacion/registroComite");
+	};
+	const plantilla3 = () => {
+		navigate("/preparacion/registroConsultaCiudadana");
+	};
 	return (
-		<Box sx={{ width: "100%" }}>
+		<>
 			<div>
 				<Box ml={3}>
 					<h3>PREPARACIÓN</h3>
@@ -15,7 +26,7 @@ export const HomePreparacion = () => {
 				<hr />
 			</div>
 
-			<div align="center" style={{ width: "100%" }}>
+			<div align="center">
 				<Box mt={7}>
 					<Box
 						p={6}
@@ -25,7 +36,7 @@ export const HomePreparacion = () => {
 							border: 1,
 							boxShadow: 5,
 							width: { xl: "90%", lg: "90%", sm: "80%", xs: "70%" },
-							height: { xl: "90%", lg: "90%", sm: "80%", xs: "70%" },
+							height: { xl: "100%", lg: "90%", sm: "80%", xs: "70%" },
 						}}
 					>
 						<Typography ml={4} variant="h5" align="left" paragraph>
@@ -36,10 +47,10 @@ export const HomePreparacion = () => {
 							direction={{ xl: "row", lg: "row", sm: "column", xs: "column" }}
 							justifyContent="center"
 							alignItems="center"
-							spacing={{ lg: 7, sm: 4, xs: 2 }}
+							spacing={{ xl: 9.5, lg: 7, md: 4, sm: 4, xs: 2 }}
 						>
 							<Button
-								href=""
+								onClick={plantilla1}
 								sx={{
 									backgroundColor: "#511079",
 									borderRadius: "0px 25px 25px 25px",
@@ -72,7 +83,7 @@ export const HomePreparacion = () => {
 								PLANTILLA DE LA JORNADA ELECTORAL
 							</Button>
 							<Button
-								href=""
+								onClick={plantilla2}
 								sx={{
 									backgroundColor: "#511079",
 									borderRadius: "0px 25px 25px 25px",
@@ -106,7 +117,7 @@ export const HomePreparacion = () => {
 								PLANTILLA DEL COMITÉ
 							</Button>
 							<Button
-								href=""
+								onClick={plantilla3}
 								sx={{
 									backgroundColor: "#511079",
 									borderRadius: "0px 25px 25px 25px",
@@ -143,6 +154,6 @@ export const HomePreparacion = () => {
 					</Box>
 				</Box>
 			</div>
-		</Box>
+		</>
 	);
 };

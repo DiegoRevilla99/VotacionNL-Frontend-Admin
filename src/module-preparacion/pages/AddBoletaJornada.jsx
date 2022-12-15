@@ -3,16 +3,54 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 // import { useUiStore } from "../../hooks/useUiStore";
 // import { saveConsultaPrueba } from "../../store/module-preparacion/consulta-ciudadana/thunks";
+
+import { FielTextCustom } from "../components/FielTextCustom";
 import { DataGridTable } from "../../ui/components/DataGridTable";
 import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
 import { ModalBoletaCandidato } from "../components/ModalBoletaCandidato";
 import { ModalEliminarPC } from "../components/ModalEliminarPC";
 
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-
+import { Formik } from 'formik';
+import { object, string, number } from "yup";
 import { useNavigate } from "react-router-dom";
 // import { ModalPapeleta } from "../components/ModalPapeleta";
 // import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
+
+const validationSchema = object({
+	encabezado: string("").required(
+		"Por favor, ingresa un encabezado"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	nombreCandidatura: string("").required(
+		"Por favor, ingresa un nombre de Candidatura"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	entidadFederativa: string("").required(
+		"Por favor, ingresa una entidad Federativa"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	municipio: string("").required(
+		"Por favor, ingresa un municipio"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	distritoElectoralLocal: number("").required(
+		"Por favor, ingresa un distrito Electoral Local"
+		).max("26").positive("Solo números positivos, por favor.").integer(""),
+	distritoElectoral: number("").required(
+		"Por favor, ingresa un distrito Electoral"
+		).max("3000").positive("Solo números positivos, por favor.").integer(""),
+	tipoCasilla: string("").required(
+		"Por favor, ingresa un tipo de Casilla"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	primerFirmante: string("").required(
+		"Por favor, ingresa el nombre del Primer Firmante"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	cargoPrimerFirmante: string("").required(
+		"Por favor, ingresa un segundo Firmante"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	segundoFirmante: string("").required(
+		"Por favor, ingresa el nombre de Segundo Firmante"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	cargoSegundoFirmante: string("").required(
+		"Por favor, ingresa el cargo de Segundo Firmante"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+});
 
 export const AddBoletaJornada = () => {
 	const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
@@ -46,11 +84,13 @@ export const AddBoletaJornada = () => {
         setStatusDeleteModal(true);
     };
 
-	// const onSubmit = (data) => {
-	// 	console.log(data);
-	// 	// dispatch(saveConsultaPrueba());
-	// 	// navigate("/preparacion/jornada");
-	// };
+	const onSubmit = (data) => {
+		console.log(data);
+		// setIsSubmited(true);
+		// console.log(values, questions);
+		// if (questions.length > 0) dispatch(saveConsultaPrueba());
+		// navigate("/preparacion/jornada");
+	};
 	const onCancel = () => {
 		navigate("/preparacion/jornada");
 	};
@@ -74,84 +114,9 @@ export const AddBoletaJornada = () => {
 			segundoFirmante: "",//Text
 			cargoSegundoFirmante: "",//Text
 		}}
-		validate={(valores) => {
-			let errores = {};
-
-			// Validacion encabezado
-			if(!valores.encabezado){
-				errores.encabezado = 'Por favor,  ingresa un encabezado'
-			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.encabezado)){
-				errores.encabezado = 'El encabezado solo puede contener letras y espacios'
-			}
-			// Validacion nombreCandidatura
-			if(!valores.nombreCandidatura){
-				errores.nombreCandidatura = 'Por favor,  ingresa un nombre de Candidatura'
-			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.nombreCandidatura)){
-				errores.nombreCandidatura = 'El nombre de Candidatura solo puede contener letras y espacios'
-			}
-			// Validacion entidadFederativa
-			if(!valores.entidadFederativa){
-				errores.entidadFederativa = 'Por favor,  ingresa una entidad Federativa'
-			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.entidadFederativa)){
-				errores.entidadFederativa = 'La entidad Federativa solo puede contener letras y espacios'
-			}
-			// Validacion municipio
-			if(!valores.municipio){
-				errores.municipio = 'Por favor, ingresa un municipio'
-			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.municipio)){
-				errores.municipio = 'El municipio solo puede contener letras y espacios'
-			}
-			// Validacion distritoElectoralLocal NUMBER
-			if(!valores.distritoElectoralLocal){
-				errores.distritoElectoralLocal = 'Por favor, ingresa un distrito Electoral Local'
-			} else if(!/^[0-9]{1,10}$/.test(valores.distritoElectoralLocal)){
-				errores.distritoElectoralLocal = 'El distrito Electoral Local solo puede contener numeros'
-			}
-			// Validacion distritoElectoral NUMBER
-			if(!valores.distritoElectoral){
-				errores.distritoElectoral = 'Por favor, ingresa un distrito Electoral'
-			} else if(!/^[0-9]{1,10}$/.test(valores.distritoElectoral)){
-				errores.distritoElectoral = 'El distrito Electoral solo puede contener numeros'
-			}
-			// Validacion tipoCasilla
-			if(!valores.tipoCasilla){
-				errores.tipoCasilla = 'Por favor, ingresa un tipo de Casilla'
-			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.tipoCasilla)){
-				errores.tipoCasilla = 'El tipo de Casilla solo puede contener letras y espacios'
-			}
-			// Validacion primerFirmante
-			if(!valores.primerFirmante){
-				errores.primerFirmante = 'Por favor, ingresa un primer Firmante'
-			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.primerFirmante)){
-				errores.primerFirmante = 'El nombre del primer Firmante solo puede contener letras y espacios'
-			}
-			// Validacion cargoPrimerFirmante
-			if(!valores.cargoPrimerFirmante){
-				errores.cargoPrimerFirmante = 'Por favor, ingresa el cargo del Primer Firmante'
-			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.cargoPrimerFirmante)){
-				errores.cargoPrimerFirmante = 'El cargo del Primer Firmante solo puede contener letras y espacios'
-			}
-			// Validacion segundoFirmante
-			if(!valores.segundoFirmante){
-				errores.segundoFirmante = 'Por favor, ingresa un segundo Firmante'
-			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.segundoFirmante)){
-				errores.segundoFirmante = 'El nombre del segundo Firmante solo puede contener letras y espacios'
-			}
-			// Validacion cargoSegundoFirmante
-			if(!valores.cargoSegundoFirmante){
-				errores.cargoSegundoFirmante = 'Por favor, ingresa el cargo de Segundo Firmante'
-			} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.cargoSegundoFirmante)){
-				errores.cargoSegundoFirmante = 'El cargo del Segundo Firmante solo puede contener letras y espacios'
-			}
-
-			return errores;
-		}}
-		onSubmit={(valores, {resetForm}) => {
-			resetForm();
-			console.log('Formulario enviado');
-			cambiarFormularioEnviado(true);
-			setTimeout(() => cambiarFormularioEnviado(false), 5000);
-			// navigate("/preparacion/jornada");
+		validationSchema={validationSchema}
+		onSubmit={(valores) => {
+			onSubmit(valores);
 		}}
 	>
 		{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (
@@ -162,7 +127,7 @@ export const AddBoletaJornada = () => {
 				overflowY: "auto",
 			}}
 		>
-			<Form className="formulario" onSubmit={handleSubmit} >
+			<form onSubmit={handleSubmit} >
 				
 				<Box sx={{ m: "0.5rem", ml: "2rem" }}>
 					<Typography variant="h6" align="left" color="initial">
@@ -195,32 +160,26 @@ export const AddBoletaJornada = () => {
 							</Typography>
 						</Grid>
 						<Grid item xs={12}>
-							<TextField
-								fullWidth
-								size="small"
-								id="filled-basic"
-								label="ENCABEZADO DE LA BOLETA"
-								variant="filled"
-								name="encabezado"
-								value={values.encabezado}
-								onChange={handleChange}
-								onBlur={handleBlur}
-							/>
-							{touched.encabezado && errors.encabezado && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.encabezado}</Typography>}
+						<FielTextCustom
+							name="encabezado"
+							label="ENCABEZADO DE LA BOLETA"
+							value={values.encabezado}
+							handleChange={handleChange}
+							error={errors.encabezado}
+							touched={touched.encabezado}
+						/>
+							{/* {touched.encabezado && errors.encabezado && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.encabezado}</Typography>} */}
 						</Grid>
 						<Grid item xs={12}>
-							<TextField
-								fullWidth
-								size="small"
-								id="filled-basic"
+							<FielTextCustom
 								label="NOMBRE DE LA CANDIDATURA"
-								variant="filled"
 								name="nombreCandidatura"
 								value={values.nombreCandidatura}
-								onChange={handleChange}
-								onBlur={handleBlur}
+								handleChange={handleChange}
+								error={errors.nombreCandidatura}
+								touched={touched.nombreCandidatura}
 							/>
-							{touched.nombreCandidatura && errors.nombreCandidatura && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombreCandidatura}</Typography>}
+							{/* {touched.nombreCandidatura && errors.nombreCandidatura && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombreCandidatura}</Typography>} */}
 						</Grid>
 						<Grid item xs={12}>
 							<Typography variant="h6" color="initial">
@@ -228,74 +187,59 @@ export const AddBoletaJornada = () => {
 							</Typography>
 						</Grid>
 						<Grid item xs={12}>
-							<TextField
-								fullWidth
-								size="small"
-								id="filled-basic"
+							<FielTextCustom
 								label="ENTIDAD FEDERATIVA"
-								variant="filled"
 								name="entidadFederativa"
 								value={values.entidadFederativa}
-								onChange={handleChange}
-								onBlur={handleBlur}
+								handleChange={handleChange}
+								error={errors.entidadFederativa}
+								touched={touched.entidadFederativa}
 							/>
-							{touched.entidadFederativa && errors.entidadFederativa && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.entidadFederativa}</Typography>}
+							{/* {touched.entidadFederativa && errors.entidadFederativa && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.entidadFederativa}</Typography>} */}
 						</Grid>
 						<Grid item xs={12}>
-							<TextField
-								fullWidth
-								size="small"
-								id="filled-basic"
+							<FielTextCustom
 								label="MUNICIPIO O DELEGACIÓN"
-								variant="filled"
 								name="municipio"
 								value={values.municipio}
-								onChange={handleChange}
-								onBlur={handleBlur}
+								handleChange={handleChange}
+								error={errors.municipio}
+								touched={touched.municipio}
 							/>
-							{touched.municipio && errors.municipio && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.municipio}</Typography>}
+							{/* {touched.municipio && errors.municipio && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.municipio}</Typography>} */}
 						</Grid>
 						<Grid item xs={12} md={12} lg={5}>
-							<TextField
-								fullWidth
-								size="small"
-								id="filled-basic"
+							<FielTextCustom
 								label="DISTRITO ELECTORAL LOCAL"
-								variant="filled"
 								name="distritoElectoralLocal"
 								value={values.distritoElectoralLocal}
-								onChange={handleChange}
-								onBlur={handleBlur}
+								handleChange={handleChange}
+								error={errors.distritoElectoralLocal}
+								touched={touched.distritoElectoralLocal}
 							/>
-							{touched.distritoElectoralLocal && errors.distritoElectoralLocal && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.distritoElectoralLocal}</Typography>}
+							{/* {touched.distritoElectoralLocal && errors.distritoElectoralLocal && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.distritoElectoralLocal}</Typography>} */}
 						</Grid>
 						<Grid item xs={12} md={12} lg={3}>
-							<TextField
-								fullWidth
-								size="small"
-								id="filled-basic"
+							<FielTextCustom
 								label="DISTRITO ELECTORAL"
-								variant="filled"
 								name="distritoElectoral"
 								value={values.distritoElectoral}
-								onChange={handleChange}
-								onBlur={handleBlur}
+								handleChange={handleChange}
+								error={errors.distritoElectoral}
+								touched={touched.distritoElectoral}
 							/>
-							{touched.distritoElectoral && errors.distritoElectoral && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.distritoElectoral}</Typography>}
+							{/* {touched.distritoElectoral && errors.distritoElectoral && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.distritoElectoral}</Typography>} */}
 						</Grid>
 						<Grid item xs={12} md={12} lg={4}>
-							<TextField
-								fullWidth
-								size="small"
-								id="filled-basic"
+							<FielTextCustom
 								label="TIPO DE CASILLA"
-								variant="filled"
 								name="tipoCasilla"
 								value={values.tipoCasilla}
-								onChange={handleChange}
-								onBlur={handleBlur}
+								handleChange={handleChange}
+								error={errors.tipoCasilla}
+								touched={touched.tipoCasilla}
 							/>
-							{touched.tipoCasilla && errors.tipoCasilla && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.tipoCasilla}</Typography>}
+							{/* {touched.tipoCasilla && errors.tipoCasilla && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.tipoCasilla}</Typography>} */}
 						</Grid>
 						<Grid item xs={12}>
 							<Typography variant="h6" color="initial">
@@ -303,60 +247,48 @@ export const AddBoletaJornada = () => {
 							</Typography>
 						</Grid>
 						<Grid item xs={12}>
-							<TextField
-								fullWidth
-								size="small"
-								id="filled-basic"
+							<FielTextCustom
 								label="NOMBRE DEL PRIMER FIRMANTE"
-								variant="filled"
 								name="primerFirmante"
 								value={values.primerFirmante}
-								onChange={handleChange}
-								onBlur={handleBlur}
+								handleChange={handleChange}
+								error={errors.primerFirmante}
+								touched={touched.primerFirmante}
 							/>
-							{touched.primerFirmante && errors.primerFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.primerFirmante}</Typography>}
+							{/* {touched.primerFirmante && errors.primerFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.primerFirmante}</Typography>} */}
 						</Grid>
 						<Grid item xs={12}>
-							<TextField
-								fullWidth
-								size="small"
-								id="filled-basic"
+							<FielTextCustom
 								label="CARGO DEL PRIMER FIRMANTE"
-								variant="filled"
 								name="cargoPrimerFirmante"
 								value={values.cargoPrimerFirmante}
-								onChange={handleChange}
-								onBlur={handleBlur}
+								handleChange={handleChange}
+								error={errors.cargoPrimerFirmante}
+								touched={touched.cargoPrimerFirmante}
 							/>
-							{touched.cargoPrimerFirmante && errors.cargoPrimerFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.cargoPrimerFirmante}</Typography>}
+							{/* {touched.cargoPrimerFirmante && errors.cargoPrimerFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.cargoPrimerFirmante}</Typography>} */}
 						</Grid>
 						<Grid item xs={12}>
-							<TextField
-								fullWidth
-								size="small"
-								id="filled-basic"
+							<FielTextCustom
 								label="NOMBRE DEL SEGUNDO FIRMANTE"
-								variant="filled"
 								name="segundoFirmante"
 								value={values.segundoFirmante}
-								onChange={handleChange}
-								onBlur={handleBlur}
+								handleChange={handleChange}
+								error={errors.segundoFirmante}
+								touched={touched.segundoFirmante}
 							/>
-							{touched.segundoFirmante && errors.segundoFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.segundoFirmante}</Typography>}
+							{/* {touched.segundoFirmante && errors.segundoFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.segundoFirmante}</Typography>} */}
 						</Grid>
 						<Grid item xs={12}>
-							<TextField
-								fullWidth
-								size="small"
-								id="filled-basic"
+							<FielTextCustom
 								label="CARGO DEL SEGUNDO FIRMANTE"
-								variant="filled"
 								name="cargoSegundoFirmante"
 								value={values.cargoSegundoFirmante}
-								onChange={handleChange}
-								onBlur={handleBlur}
+								handleChange={handleChange}
+								error={errors.cargoSegundoFirmante}
+								touched={touched.cargoSegundoFirmante}
 							/>
-							{touched.cargoSegundoFirmante && errors.cargoSegundoFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.cargoSegundoFirmante}</Typography>}
+							{/* {touched.cargoSegundoFirmante && errors.cargoSegundoFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.cargoSegundoFirmante}</Typography>} */}
 						</Grid>
 						<Grid item xs={12} md={6} lg={4}>
 							<Button
@@ -491,14 +423,13 @@ export const AddBoletaJornada = () => {
 						</Grid>
 						
 					</Grid>
-					{formularioEnviado && <p className="exito" align="center">Formulario enviado con exito!</p>}
 				</Box>
 			<ModalBoletaPartido statusMatchModal={statusMatchModal} handleToggleModal={handleCloseMatchModal} />
             <ModalBoletaCandidato statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} />
 			<ModalEliminarPC statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} />
 			
 			
-		</Form>
+		</form>
 		</Box>
 		)}
 		</Formik>

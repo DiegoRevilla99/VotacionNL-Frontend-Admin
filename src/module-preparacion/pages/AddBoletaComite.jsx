@@ -20,6 +20,10 @@ import { useAddBoletasComite } from "../hooks/useAddBoletasComite";
 import { getBoletaByIdApi } from "../helpers/ApiComite";
 import CircularProgress from "@mui/material/CircularProgress";
 
+// // CONECTAR EL MODAL DE ELIMINAR BOLETA
+// import { Grid } from "@mui/material";
+// import { ModalEliminarPR } from "../components/ModalEliminarPR";
+
 const useStyles = makeStyles({
   formulario: {
     display: "flex",
@@ -120,6 +124,15 @@ export const AddBoletaComite = () => {
     console.log("se actualizo datos");
     forceUpdate();
   }, [datos]);
+
+  	// CONECTAR EL MODAL DE ELIMINAR REPRESENTANTES Y CANDIDATO/A
+	// const [statusDeleteModal, setStatusDeleteModal] = useState(false);
+	// const handleCloseDeleteModal = () => setStatusDeleteModal(false);
+	// const handleOpenDeleteModal = () => {
+	// 	// toastOffOperation();
+	// 	setStatusDeleteModal(true);
+	// };
+
   return (
     <>
       <PlantillaRegistro>
@@ -273,7 +286,31 @@ export const AddBoletaComite = () => {
                       </Button>
                     </Box>
                   </div>
-
+{/* 
+                    <Grid item xs={4} md={2} lg={2}>
+                    <Button
+                    onClick={handleOpenDeleteModal}
+                      variant="contained"
+                      size="small"
+                      disabled={status === "checking"}
+                      sx={{
+                        boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+                        transition: "all 0.5s ease",
+                        backgroundColor: "#791010",
+                        width: "100%",
+                        borderRadius: "25px 25px 25px 25px",
+                        "&:hover": {
+                          backgroundColor: "#8B3232 !important",
+                          transform: "translate(-5px, -5px)",
+                          boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+                        },
+                      }}
+                    >
+                      eliminar
+                    </Button>
+                  </Grid>
+                  <ModalEliminarPR statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} />
+                   */}
                   <Box
                     sx={{
                       boxShadow: 1,
