@@ -16,6 +16,9 @@ import { ConfiguracionBoleta } from "../pages/ConfiguracionBoleta";
 import { ConfigBoleta } from "../pages/formales/ConfigBoleta";
 import { ConfigBoletaMultiple } from "../pages/no-formales/ConfigBoletaMultiple";
 import { CrudPapeletas } from "../pages/CrudPapeletas";
+import { RegistroJornadaElectoralGenerica } from "../pages/RegistroJornadaElectoralGenerica";
+import { CrudJornadaGenerica } from "../pages/CrudJornadaGenerica";
+import { AddBoletaJornadaGenerica } from "../pages/AddBoletaJornadaGenerica";
 
 export const PreparacionRoutes = () => {
 	return (
@@ -45,6 +48,11 @@ export const PreparacionRoutes = () => {
 				<Route path="jornada/configboleta" element={<ConfigBoletaMultiple />} />
 
 				<Route path="/*" element={<Navigate to="/preparacion/inicio" />} />
+
+				{/* Flujo de la jornada electoral generica */}
+				<Route path="registroJornadaGenerica" element={<RegistroJornadaElectoralGenerica />} />
+				<Route path="JornadaGenerica" element={<CrudJornadaGenerica />} />
+				<Route path="JornadaGenerica/boleta" element={<AddBoletaJornadaGenerica />} />
 			</Routes>
 		</PrivateRoute>
 	);

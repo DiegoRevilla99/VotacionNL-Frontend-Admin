@@ -43,7 +43,7 @@ const botones = {
 
 export const PlantillaCRUD = ({
   children,
-  tipo = "boleta",
+  tipo = "boleta genérica",
   go = "",
   guardar = () => {},
   cancelar = () => {},
@@ -69,7 +69,7 @@ export const PlantillaCRUD = ({
           }}
         >
           <Typography sx={{}} variant="h6">
-            Registrar {tipo}s
+            Registrar {tipo}
           </Typography>
           <Button
             className={classes.boton}
