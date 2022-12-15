@@ -9,8 +9,6 @@ import { PreparacionRoutes } from "../module-preparacion/routes/PreparacionRoute
 import { SidebarCustom } from "../ui/components/SidebarCustom";
 import { Topbar } from "../ui/components/Topbar";
 
-let toastId = null;
-
 export const AdminRoutes = () => {
 	const {
 		status,
@@ -81,7 +79,7 @@ export const AdminRoutes = () => {
 						<Route path="/preparacion/*" element={<PreparacionRoutes />}></Route>
 
 						{/* RUTA POR DEFAULT */}
-						<Route path="/" element={<Navigate to="/preparacion/"></Navigate>}></Route>
+						{/* <Route path="/" element={<Navigate to="/preparacion/"></Navigate>}></Route> */}
 					</Routes>
 				</main>
 				{/* <div className="generalContainer">HOLA MUNDO</div> */}
