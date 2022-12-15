@@ -14,6 +14,7 @@ import { Formik } from 'formik';
 import { object, string, number } from "yup";
 import { useNavigate } from "react-router-dom";
 import { ModalBoletaCandidatoGenerico } from "../components/ModalBoletaCandidatoGenerico";
+import { ModalEliminarCandidatoGenerico } from "../components/ModalEliminarCandidatoGenerico";
 // import { ModalPapeleta } from "../components/ModalPapeleta";
 // import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
 
@@ -337,7 +338,7 @@ export const AddBoletaJornadaGenerica = () => {
 								Agregar candidato independiente
 							</Button>
 						</Grid> */}
-						{/* <Grid item xs={4} md={2} lg={2}>
+						<Grid item xs={4} md={2} lg={2}>
 							<Button
 							onClick={handleOpenDeleteModal}
 								variant="contained"
@@ -358,7 +359,7 @@ export const AddBoletaJornadaGenerica = () => {
 							>
 								eliminar
 							</Button>
-						</Grid> */}
+						</Grid>
 						<Grid item xs={12}>
 							<Box
 								sx={{
@@ -426,7 +427,7 @@ export const AddBoletaJornadaGenerica = () => {
 					</Grid>
 				</Box>
             <ModalBoletaCandidatoGenerico statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} />
-			<ModalEliminarPC statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} />
+			<ModalEliminarCandidatoGenerico statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} />
 			
 			
 		</form>
