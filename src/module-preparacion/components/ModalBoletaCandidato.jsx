@@ -13,10 +13,9 @@ import { useState } from "react";
 import { object, string } from "yup";
 import { ErrorField } from "../components/ErrorField";
 
-// import { useDispatch } from "react-redux";
-// import { useUiStore } from "../../hooks/useUiStore";
-
-// import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
+import { useDispatch } from "react-redux";
+import { saveCandidato } from "../../store/module-preparacion/jornada/jornadaThunks";
+import { useAddBoletasJornada } from "../hooks/useAddBoletasJornada";
 
 const style = {
 	position: "absolute",
@@ -25,7 +24,6 @@ const style = {
 	transform: "translate(-50%, -50%)",
 	width: { xl: "50rem", lg: "50rem", sm: "40rem", xs: "30rem" },
 	height: { xl: "34rem", lg: "34rem", sm: "37rem", xs: "40rem" },
-	// height: "38rem",
 	bgcolor: "background.paper",
 	border: '2px solid #fff',
 	borderRadius: "2rem",
@@ -49,19 +47,18 @@ const validationSchema = object({
 
 export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }) => {
 	const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
-	// const { addQuestion } = useConsultaCiudadanaStore();
-
-	// const { toastSuccesOperation } = useUiStore();
+	// const { status } = useAddBoletasJornada();
+	const dispatch = useDispatch();
 
 	const onSave = () => {
-		// addQuestion("¿Pregunta 1?", ["Respuesta 1", "Respuesta 2"]);
-		// toastSuccesOperation("Pregunta registrada con éxito");
+		setEmblema({ name: "Sin Archivo seleccionado" });
+		setFotografia({ name: "Sin Archivo seleccionado" });
 		handleToggleModal();
 	};
 
-	 const onCancel = () => {
-	 	handleToggleModal();
-	 };
+	const onCancel = () => {
+		handleToggleModal();
+	};
 
 	 //Validacion del formato imagen 
 	 const [emblema, setEmblema] = useState({ name: "Sin Archivo seleccionado" });
@@ -89,20 +86,23 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 		<>
 		<Modal
 			open={statusCandidateModal}
-			onClose={handleToggleModal}
+			onClose={onCancel}
 			aria-labelledby="modal-modal-title"
 			aria-describedby="modal-modal-description"
 		>
 			<Formik
 				initialValues={{
+					emblema: "",
+					fotografia: "",
 					nombrePropietario: "",//Text
 					seudonimoCandidato: "",//Text
 					nombreSuplente: "",//Text
 				}}
 				validate = {validando}
 				validationSchema={validationSchema}
-				onSubmit={(valores) => {
-					onSubmit(valores, cerrarM);
+				onSubmit={(values, {resetForm}) => {
+					dispatch(saveCandidato(values, onSave));
+					resetForm();
 				}}
 	>
 		{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (
