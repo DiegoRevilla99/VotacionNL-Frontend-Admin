@@ -1,17 +1,19 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, Stack } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { useEffect, useState } from "react";
 import { Tabla } from "../../ui/components/table/Tabla";
 import { PlantillaCRUD } from "../layout/PlantillaCRUD";
-
 import { columns, data } from "../helpers/DataBoletas";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useGetBoletasJornada } from "../hooks/useGetBoletasJornada";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useUiStore } from "../../hooks/useUiStore";
+import { saveJornada } from "../../store/module-preparacion/jornada/jornadaThunks";
 
 // CONECTAR EL MODAL DE ELIMINAR BOLETA
 import {Grid } from "@mui/material";
 import { ModalEliminarBoleta } from "../components/ModalEliminarBoleta";
-
-
 
 const useStyles = makeStyles({
 	boton: {
@@ -25,14 +27,22 @@ const styleButton = {
 };
 
 export const CrudJornada = () => {
+  	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const [datos, setDatos] = useState(data);
+	const { boletas, isLoadingBoletas } = useGetBoletasJornada();
+
 
 	const guardar = () => {
-		alert("Se ha presionado guardar de jornada");
-	};
+		dispatch(
+		  saveJornada({}, () => {
+			navigate("/preparacion/registroJornada");
+		  })
+		);
+	  };
 
 	const cancelar = () => {
-		alert("Se ha presionado cancelar de jornada");
+		navigate("/preparacion/registroJornada");
 	};
 
 	const onEliminar = (event, rowData) => {
@@ -43,13 +53,16 @@ export const CrudJornada = () => {
 		});
 		setDatos(newData);
 	};
+	const onEditar = (event, rowData) => {
+		navigate("/preparacion/jornada/boleta/" + rowData.candidato);
+	};
 
 	const actions = [
 		{
 			icon: "edit",
 			title: "Editar",
 			sx: {},
-			onClick: (event, rowData) => alert("Se ha editado a " + rowData.candidato),
+			onClick: (event, rowData) => onEditar(event, rowData),
 		},
 		{
 			icon: "delete",
@@ -65,16 +78,19 @@ export const CrudJornada = () => {
 
 	// CONECTAR EL MODAL DE ELIMINAR BOLETA
 
-	const navigate = useNavigate();
-	const [statusDeleteModal, setStatusDeleteModal] = useState(false);
-	const handleCloseDeleteModal = () => setStatusDeleteModal(false);
-	const handleOpenDeleteModal = () => {
-		// toastOffOperation();
-		setStatusDeleteModal(true);
-	};
+
+	// const [statusDeleteModal, setStatusDeleteModal] = useState(false);
+	// const handleCloseDeleteModal = () => setStatusDeleteModal(false);
+	// const handleOpenDeleteModal = () => {
+	// 	// toastOffOperation();
+	// 	setStatusDeleteModal(true);
+	// };
 	return (
 		<>
-			<PlantillaCRUD go="/preparacion/jornada/boleta" guardar={guardar} cancelar={cancelar}>
+			<PlantillaCRUD 
+			go="/preparacion/jornada/boleta" 
+			guardar={guardar} 
+			cancelar={cancelar}>
 				<Box
 					sx={{
 						display: "flex",
@@ -85,19 +101,31 @@ export const CrudJornada = () => {
 				>
 					<Box
 						sx={{
-							display: "flex",
-							height: "100%",
-							width: "100%",
-							flexDirection: "column",
-							justifyContent: "center",
+						display: "flex",
+						height: "100%",
+						width: "100%",
+						flexDirection: "column",
+						justifyContent: "center",
 						}}
 					>
+						{isLoadingBoletas ? (
+						// <CircularProgress color="primary" />
+						<Stack
+							justifyContent="center"
+							sx={{ color: "grey.500" }}
+							spacing={2}
+							direction="row"
+						>
+							<CircularProgress color="primary" />
+						</Stack>
+						) : (
 						<Tabla
 							titulo={"BOLETAS"}
-							data={datos}
+							data={boletas}
 							actions={actions}
 							columns={columns}
 						></Tabla>
+						)}
 					</Box>
 				</Box>
 			</PlantillaCRUD>
