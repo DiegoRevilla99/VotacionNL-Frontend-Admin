@@ -1,22 +1,17 @@
 import { Box, Divider, Grid, Typography, TextField, Paper, Button } from "@mui/material";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-// import { useUiStore } from "../../hooks/useUiStore";
-// import { saveConsultaPrueba } from "../../store/module-preparacion/consulta-ciudadana/thunks";
-
 import { FielTextCustom } from "../components/FielTextCustom";
 import { DataGridTable } from "../../ui/components/DataGridTable";
-import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
-import { ModalBoletaCandidato } from "../components/ModalBoletaCandidato";
-import { ModalEliminarPC } from "../components/ModalEliminarPC";
+import { editBoleta, saveBoleta } from "../../store/module-preparacion/jornada/jornadaThunks";
+import { useAddBoletasJornada } from "../hooks/useAddBoletasJornada";
 
-import { Formik } from 'formik';
-import { object, string, number } from "yup";
-import { useNavigate } from "react-router-dom";
 import { ModalBoletaCandidatoGenerico } from "../components/ModalBoletaCandidatoGenerico";
 import { ModalEliminarCandidatoGenerico } from "../components/ModalEliminarCandidatoGenerico";
-// import { ModalPapeleta } from "../components/ModalPapeleta";
-// import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
+import CircularProgress from "@mui/material/CircularProgress";
+import { Formik } from 'formik';
+import { object, string, number } from "yup";
+import { useNavigate, useParams } from "react-router-dom";
 
 const validationSchema = object({
 	encabezado: string("").required(
@@ -55,17 +50,30 @@ const validationSchema = object({
 });
 
 export const AddBoletaJornadaGenerica = () => {
-	const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
-
+	const { nombreCandidatura } = useParams();
 	const navigate = useNavigate();
-
+	const { status } = useAddBoletasJornada();
 	const [statusMatchModal, setStatusMatchModal] = useState(false);
-	// const { toastOffOperation } = useUiStore();
-	// const { status } = useConsultaCiudadanaStore();
-	// const dispatch = useDispatch();
+
+	const dispatch = useDispatch();
+	const [datos, setDatos] = useState({
+		encabezado: "",	//Text
+		nombreCandidatura: "",//Text
+		entidadFederativa: "",//Text
+		municipio: "",//Text
+		distritoElectoralLocal: "",//Number
+		distritoElectoral: "",//Number
+		tipoCasilla: "",//text
+		primerFirmante: "",//Text
+		cargoPrimerFirmante: "",//Text
+		segundoFirmante: "",//Text
+		cargoSegundoFirmante: "",//Text
+	});
+	const [, forceUpdate] = React.useState();
 
     const [statusCandidateModal, setStatusCandidateModal] = useState(false);
 	const [statusDeleteModal, setStatusDeleteModal] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const handleCloseMatchModal = () => setStatusMatchModal(false);
     const handleCloseCandidateModal = () => setStatusCandidateModal(false);
@@ -85,43 +93,58 @@ export const AddBoletaJornadaGenerica = () => {
         // toastOffOperation();
         setStatusDeleteModal(true);
     };
-
-	const onSubmit = (data) => {
-		console.log(data);
-		// setIsSubmited(true);
-		// console.log(values, questions);
-		// if (questions.length > 0) dispatch(saveConsultaPrueba());
-		// navigate("/preparacion/jornada");
-	};
 	const onCancel = () => {
-		navigate("/preparacion/jornada");
+		navigate("/preparacion/JornadaGenerica");
 	};
+	const setInfo = async () => {
+		console.log(nombreCandidatura);
+		if (nombreCandidatura != undefined) {
+		  setIsLoading(true);
+		  const info = await getBoletaByIdApi(nombreCandidatura);
+		  setIsLoading(false);
+		  console.log("datps desde set info");
+		  setDatos(info);
+		}
+	  };
+	  useEffect(() => {
+		setInfo();
+	  }, []);
+	
+	  useEffect(() => {
+		console.log("se actualizo datos");
+		forceUpdate();
+	  }, [datos]);
 
+	  const guardar = () => {
+		navigate("/preparacion/JornadaGenerica");
+	  };
 
 	// INICIO DEL RETURN
 
 	return (
 		<>
-	<Formik
-		initialValues={{
-			encabezado: "",	//Text
-			nombreCandidatura: "",//Text
-			entidadFederativa: "",//Text
-			municipio: "",//Text
-			distritoElectoralLocal: "",//Number
-			distritoElectoral: "",//Number
-			tipoCasilla: "",//text
-			primerFirmante: "",//Text
-			cargoPrimerFirmante: "",//Text
-			segundoFirmante: "",//Text
-			cargoSegundoFirmante: "",//Text
-		}}
+          {isLoading ? (
+            <Stack
+              justifyContent="center"
+              sx={{ color: "grey.500" }}
+              spacing={2}
+              direction="row"
+            >
+              <CircularProgress color="primary" />
+            </Stack>
+          ) : (
+            <Formik
+		initialValues={datos}
 		validationSchema={validationSchema}
 		onSubmit={(valores) => {
-			onSubmit(valores);
-		}}
-	>
-		{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (
+			if (nombreCandidatura != undefined) {
+			  dispatch(editBoleta(valores, guardar));
+			} else {
+			  dispatch(saveBoleta(valores, guardar));
+			}
+		  }}
+		>
+			{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (
 			<Box 
 			sx={{
 				height: "100%",
@@ -163,6 +186,7 @@ export const AddBoletaJornadaGenerica = () => {
 						</Grid>
 						<Grid item xs={12}>
 						<FielTextCustom
+							disabled={status === "checking"}
 							name="encabezado"
 							label="ENCABEZADO DE LA BOLETA"
 							value={values.encabezado}
@@ -174,6 +198,7 @@ export const AddBoletaJornadaGenerica = () => {
 						</Grid>
 						<Grid item xs={12}>
 							<FielTextCustom
+							disabled={status === "checking"}
 								label="NOMBRE DE LA CANDIDATURA"
 								name="nombreCandidatura"
 								value={values.nombreCandidatura}
@@ -190,6 +215,7 @@ export const AddBoletaJornadaGenerica = () => {
 						</Grid>
 						<Grid item xs={12}>
 							<FielTextCustom
+							disabled={status === "checking"}
 								label="ENTIDAD FEDERATIVA"
 								name="entidadFederativa"
 								value={values.entidadFederativa}
@@ -201,6 +227,7 @@ export const AddBoletaJornadaGenerica = () => {
 						</Grid>
 						<Grid item xs={12}>
 							<FielTextCustom
+							disabled={status === "checking"}
 								label="MUNICIPIO O DELEGACIÓN"
 								name="municipio"
 								value={values.municipio}
@@ -212,6 +239,7 @@ export const AddBoletaJornadaGenerica = () => {
 						</Grid>
 						<Grid item xs={12} md={12} lg={5}>
 							<FielTextCustom
+							disabled={status === "checking"}
 								label="DISTRITO ELECTORAL LOCAL"
 								name="distritoElectoralLocal"
 								value={values.distritoElectoralLocal}
@@ -223,6 +251,7 @@ export const AddBoletaJornadaGenerica = () => {
 						</Grid>
 						<Grid item xs={12} md={12} lg={3}>
 							<FielTextCustom
+							disabled={status === "checking"}
 								label="DISTRITO ELECTORAL"
 								name="distritoElectoral"
 								value={values.distritoElectoral}
@@ -234,6 +263,7 @@ export const AddBoletaJornadaGenerica = () => {
 						</Grid>
 						<Grid item xs={12} md={12} lg={4}>
 							<FielTextCustom
+							disabled={status === "checking"}
 								label="TIPO DE CASILLA"
 								name="tipoCasilla"
 								value={values.tipoCasilla}
@@ -250,6 +280,7 @@ export const AddBoletaJornadaGenerica = () => {
 						</Grid>
 						<Grid item xs={12}>
 							<FielTextCustom
+							disabled={status === "checking"}
 								label="NOMBRE DEL PRIMER FIRMANTE"
 								name="primerFirmante"
 								value={values.primerFirmante}
@@ -261,6 +292,7 @@ export const AddBoletaJornadaGenerica = () => {
 						</Grid>
 						<Grid item xs={12}>
 							<FielTextCustom
+							disabled={status === "checking"}
 								label="CARGO DEL PRIMER FIRMANTE"
 								name="cargoPrimerFirmante"
 								value={values.cargoPrimerFirmante}
@@ -272,6 +304,7 @@ export const AddBoletaJornadaGenerica = () => {
 						</Grid>
 						<Grid item xs={12}>
 							<FielTextCustom
+							disabled={status === "checking"}
 								label="NOMBRE DEL SEGUNDO FIRMANTE"
 								name="segundoFirmante"
 								value={values.segundoFirmante}
@@ -283,6 +316,7 @@ export const AddBoletaJornadaGenerica = () => {
 						</Grid>
 						<Grid item xs={12}>
 							<FielTextCustom
+							disabled={status === "checking"}
 								label="CARGO DEL SEGUNDO FIRMANTE"
 								name="cargoSegundoFirmante"
 								value={values.cargoSegundoFirmante}
@@ -434,6 +468,7 @@ export const AddBoletaJornadaGenerica = () => {
 		</Box>
 		)}
 		</Formik>
+		  )}
 	</>
 		
 	);
