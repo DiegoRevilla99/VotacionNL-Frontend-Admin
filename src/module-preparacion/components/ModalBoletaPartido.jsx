@@ -16,6 +16,9 @@ import { object, string } from "yup";
 import { useDispatch } from "react-redux";
 import { savePartido } from "../../store/module-preparacion/jornada/jornadaThunks";
 import { useAddBoletasJornada } from "../hooks/useAddBoletasJornada";
+import CircularProgress from "@mui/material/CircularProgress";
+import { editBoleta, saveBoleta } from "../../store/module-preparacion/jornada/jornadaThunks";
+
 
 const style = {
 	position: "absolute",
@@ -50,7 +53,7 @@ const validationSchema = object({
 export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 
 	const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
-	// const { status } = useAddBoletasJornada();
+	const { status } = useAddBoletasJornada();
 	const dispatch = useDispatch();
 
 	const onSave = () => {
@@ -291,6 +294,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 					</Grid>
 					<Grid item xs={12} md={6} lg={3}>
 						<Button
+							disabled={status === "checking"}
 							onClick={onCancel}
 							variant="contained"
 							size="large"
@@ -311,7 +315,6 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						</Button>
 					</Grid>
 				</Grid>
-				{formularioEnviado && <p className="exito" align="center">Formulario enviado con exito!</p>}
 				</Form>
 			</Box>
 		</Box>

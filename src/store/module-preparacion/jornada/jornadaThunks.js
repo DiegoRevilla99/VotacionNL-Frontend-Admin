@@ -89,7 +89,7 @@ export const savePartido = (valores = {}, guardar = () => { }) => {
 export const saveCandidato = (valores = {}, guardar = () => { }) => {
 
     return async (dispatch) => {
-        dispatch(onToastCheckingOperation("Guardando partido..."));
+        dispatch(onToastCheckingOperation("Guardando candidato..."));
         dispatch(onCheckingOperation());
 
         const result = await addPartidoApi(valores);

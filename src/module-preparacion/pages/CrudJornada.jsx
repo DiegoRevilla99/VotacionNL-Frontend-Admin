@@ -29,7 +29,7 @@ const styleButton = {
 export const CrudJornada = () => {
   	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const [datos, setDatos] = useState(data);
+
 	const { boletas, isLoadingBoletas } = useGetBoletasJornada();
 
 
@@ -46,13 +46,9 @@ export const CrudJornada = () => {
 	};
 
 	const onEliminar = (event, rowData) => {
-		const { candidato } = rowData;
-		console.log("has presionado " + candidato);
-		const newData = datos.filter((obj) => {
-			if (obj.candidato !== candidato) return obj;
-		});
-		setDatos(newData);
-	};
+		alert("Eliminando a " + rowData.candidato);
+	  };
+
 	const onEditar = (event, rowData) => {
 		navigate("/preparacion/jornada/boleta/" + rowData.candidato);
 	};
@@ -71,10 +67,6 @@ export const CrudJornada = () => {
 			onClick: (event, rowData) => onEliminar(event, rowData),
 		},
 	];
-
-	useEffect(() => {
-		setDatos(data);
-	}, []);
 
 	// CONECTAR EL MODAL DE ELIMINAR BOLETA
 

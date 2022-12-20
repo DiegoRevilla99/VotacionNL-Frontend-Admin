@@ -1,26 +1,26 @@
 const partidos = [
     {
-        nombrePartido: "Partido 01",
+        nombrePartido: "Partido",
         nombrePropietario: "Juan",
-        seudonimoCandidato: "J01",
+        seudonimoCandidato: "J",
         nombreSuplente: "Juan Jr"
     },
     {
-        nombrePartido: "Partido 02",
+        nombrePartido: "Partido",
         nombrePropietario: "Jaime",
-        seudonimoCandidato: "J01",
+        seudonimoCandidato: "J",
         nombreSuplente: "Tyron Jr"
     },
     {
-        nombrePartido: "Partido 03",
+        nombrePartido: "Partido",
         nombrePropietario: "Pancracio",
-        seudonimoCandidato: "P01",
+        seudonimoCandidato: "P",
         nombreSuplente: "Riñón Jr"
     },
     {
-        nombrePartido: "Partido 01",
+        nombrePartido: "Partido",
         nombrePropietario: "Riky ricón",
-        seudonimoCandidato: "R01",
+        seudonimoCandidato: "R",
         nombreSuplente: "Jorge Jr"
     },
 
@@ -29,11 +29,11 @@ const partidos = [
 
 const boletas = [
     {
-        encabezado: "Encabezado 01",	//Text
+        encabezado: "Encabezado",	//Text
         nombreCandidatura: "Gobernador",//Text
         entidadFederativa: "Nuevo León",//Text
         municipio: "Monterrey",//Text
-        distritoElectoralLocal: "100",//Number
+        distritoElectoralLocal: "10",//Number
         distritoElectoral: "045",//Number
         tipoCasilla: "Casilla básica",//text
         primerFirmante: "Pepe",//Text
@@ -43,11 +43,11 @@ const boletas = [
         partidos: partidos,
     },
     {
-        encabezado: "Encabezado 02",	//Text
+        encabezado: "Encabezado",	//Text
         nombreCandidatura: "Gobernador",//Text
         entidadFederativa: "Nuevo León",//Text
         municipio: "Municipio02",//Text
-        distritoElectoralLocal: "100",//Number
+        distritoElectoralLocal: "10",//Number
         distritoElectoral: "045",//Number
         tipoCasilla: "Casilla básica",//text
         primerFirmante: "Pepe",//Text
@@ -57,11 +57,11 @@ const boletas = [
         partidos: partidos,
     },
     {
-        encabezado: "Encabezado 03",	//Text
+        encabezado: "Encabezado",	//Text
         nombreCandidatura: "Gobernador",//Text
         entidadFederativa: "Nuevo León",//Text
         municipio: "Municipio03",//Text
-        distritoElectoralLocal: "100",//Number
+        distritoElectoralLocal: "10",//Number
         distritoElectoral: "045",//Number
         tipoCasilla: "Casilla básica",//text
         primerFirmante: "Pepe",//Text
@@ -74,7 +74,7 @@ const boletas = [
 
 const jornadas = [
     {
-        nombre: "",
+        encabezado: "",
         boletas: boletas,
     }
 ]
@@ -253,7 +253,7 @@ export const addPartidoApi = async (data) => {
 
     try {
         console.log(data)
-        const respuesta = await addPlanilla(data)
+        const respuesta = await addPartido(data)
         console.log("Respuesta");
         console.log(respuesta)
         return respuesta;

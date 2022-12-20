@@ -47,7 +47,7 @@ const validationSchema = object({
 
 export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }) => {
 	const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
-	// const { status } = useAddBoletasJornada();
+	const { status } = useAddBoletasJornada();
 	const dispatch = useDispatch();
 
 	const onSave = () => {
@@ -280,6 +280,7 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 						</Grid>
 						<Grid item xs={12} md={6} lg={3}>
 							<Button
+								disabled={status === "checking"}
 								onClick={onCancel}
 								variant="contained"
 								size="large"

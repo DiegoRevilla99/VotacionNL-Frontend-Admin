@@ -52,6 +52,7 @@ export const PlantillaCRUD = ({
   const navigate = useNavigate();
   const { status } = useSelector((state) => state.comite);
 
+
   const agregarBoleta = () => {
     navigate(go);
   };
