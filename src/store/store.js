@@ -9,6 +9,7 @@ import { uiSlice } from "./ui/uiSlice";
 export const store = configureStore({
 	reducer: {
 		consultaCiudadana: consultaCiudadanaSlice.reducer,
+		comite: comiteSlice.reducer,
 		configBoleta: configBoletaSlice.reducer,
 		jornada: jornadaSlice.reducer,
 		ui: uiSlice.reducer,
