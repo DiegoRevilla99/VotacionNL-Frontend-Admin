@@ -16,6 +16,7 @@ import { ConfiguracionBoleta } from "../pages/ConfiguracionBoleta";
 import { ConfigBoleta } from "../pages/formales/ConfigBoleta";
 import { ConfigBoletaMultiple } from "../pages/no-formales/ConfigBoletaMultiple";
 import { CrudPapeletas } from "../pages/CrudPapeletas";
+import { ConfiguracionConsulta } from "../pages/ConfiguracionConsulta";
 
 export const PreparacionRoutes = () => {
 	return (
@@ -41,8 +42,8 @@ export const PreparacionRoutes = () => {
 
 				{/* CONFIGURACION */}
 				<Route path="jornada/config" element={<ConfiguracionJornada />} />
-				{/* <Route path="jornada/configboleta" element={<ConfigBoleta />} /> */}
 				<Route path="jornada/configboleta" element={<ConfigBoletaMultiple />} />
+				<Route path="consulta/config/:idConsulta" element={<ConfiguracionConsulta />} />
 
 				<Route path="/*" element={<Navigate to="/preparacion/inicio" />} />
 			</Routes>

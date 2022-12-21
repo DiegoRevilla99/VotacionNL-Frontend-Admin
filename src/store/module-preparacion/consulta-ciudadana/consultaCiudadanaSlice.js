@@ -16,6 +16,7 @@ export const consultaCiudadanaSlice = createSlice({
 			ballotSelected: {},
 			// ballorSelectedData:{}
 		},
+		configSelected: {},
 	},
 	reducers: {
 		onCheckingOperation: (state) => {
@@ -70,17 +71,30 @@ export const consultaCiudadanaSlice = createSlice({
 			state.questionSelected = {};
 		},
 		onFillConsultasData: (state, { payload }) => {
-			state.consultasData = payload?.data;
+			state.consultasData = payload;
 			// state.status = "success";
 		},
 		onAddConsultaCiudadana: (state, { payload }) => {
 			state.consultasData.push(payload);
+		},
+		onDeleteConsultaCiudadanaData: (state, { payload }) => {
+			console.log("PAYLOAD: ", payload);
+			const id = state.consultasData.findIndex((consulta) => consulta.idJornada === payload);
+			console.log("INDEX ENCONTRADO: ", id);
+			state.consultasData.splice(id, 1);
 		},
 		onSetConsultaSelected: (state, { payload }) => {
 			console.log("PAYLOAD", payload);
 			state.consultaSelected.id = payload.id;
 			state.consultaSelected.title = payload.titulo;
 			state.consultaSelected.ballots = payload?.ballots;
+		},
+		onSetConfigSelected: (state, { payload }) => {
+			// console.log("PAYLOAD", payload);
+			state.configSelected = payload || {};
+		},
+		onSetConfigSelectedNull: (state, { payload }) => {
+			state.configSelected = {};
 		},
 		onAddBallot: (state, { payload }) => {
 			state.consultaSelected.ballots.push(payload);
@@ -119,6 +133,9 @@ export const {
 	onEditBallot,
 	onUpdateBallot,
 	onSetBallotSelectedNull,
+	onDeleteConsultaCiudadanaData,
+	onSetConfigSelected,
+	onSetConfigSelectedNull,
 } = consultaCiudadanaSlice.actions;
 
 // export default consultaCiudadanaSlice.reducer;

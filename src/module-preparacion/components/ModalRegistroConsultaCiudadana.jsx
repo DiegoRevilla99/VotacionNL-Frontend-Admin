@@ -24,6 +24,9 @@ const style = {
 
 const validationSchema = object({
 	titulo: string("Ingresa un título").required("Este campo es requerido"),
+	entidad: string("Ingresa la entidad donde se llevará a cabo la consulta ciudadana").required(
+		"Este campo es requerido"
+	),
 });
 
 export const ModalRegistroConsultaCiudadana = ({ modalStatus, closeModal, openModal }) => {
@@ -32,7 +35,7 @@ export const ModalRegistroConsultaCiudadana = ({ modalStatus, closeModal, openMo
 	const { status } = useConsultaCiudadanaStore();
 	const onSubmit = (values) => {
 		dispatch(
-			onCreateConsultaCiudadana(values.titulo, (id) => {
+			onCreateConsultaCiudadana(values.titulo, values.entidad, (id) => {
 				navigate("/preparacion/consulta/" + id);
 			})
 		);
@@ -55,6 +58,7 @@ export const ModalRegistroConsultaCiudadana = ({ modalStatus, closeModal, openMo
 						<Formik
 							initialValues={{
 								titulo: "",
+								entidad: "",
 							}}
 							validationSchema={validationSchema}
 							onSubmit={(values) => {
@@ -77,6 +81,24 @@ export const ModalRegistroConsultaCiudadana = ({ modalStatus, closeModal, openMo
 										value={values.titulo}
 										error={touched.titulo && Boolean(errors.titulo)}
 										helperText={touched.titulo && errors.titulo}
+										sx={{ marginBottom: "2rem" }}
+									/>
+
+									<Typography variant="h6" mb="0.5rem">
+										ENTIDAD DONDE SE LLEVARÁ A CABO LA CONSULTA CIUDADANA
+									</Typography>
+
+									<TextField
+										name="entidad"
+										fullWidth
+										size="small"
+										id="titulo"
+										label="Entidad donde se llevará a cabo la consulta"
+										variant="filled"
+										onChange={handleChange}
+										value={values.entidad}
+										error={touched.entidad && Boolean(errors.entidad)}
+										helperText={touched.entidad && errors.entidad}
 									/>
 
 									<ButtonsContainer onCancel={closeModal} status={status} />

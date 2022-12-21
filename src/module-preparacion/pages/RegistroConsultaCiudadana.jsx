@@ -1,41 +1,82 @@
-import { Box, Button, Divider, Grid, Typography } from "@mui/material";
+import { Box, Button, Divider, Grid, IconButton, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ModalRegistroConsultaCiudadana } from "../components/ModalRegistroConsultaCiudadana";
 import { GeneralTable } from "../components/GeneralTable";
 import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
 import { Stack } from "@mui/system";
 import BallotIcon from "@mui/icons-material/Ballot";
 import SettingsIcon from "@mui/icons-material/Settings";
-
-const columns = [
-	{ field: "id", headerName: "ID", flex: 1 },
-	{ field: "titulo", headerName: "Título de la consulta ciudadana", flex: 10 },
-	{
-		field: "configuracion",
-		headerName: "Configuración",
-		flex: 5,
-		sortable: false,
-		disableColumnMenu: true,
-		renderCell: (params) => {
-			return (
-				<Stack spacing={2} direction="row">
-					<Button variant="outlined" startIcon={<BallotIcon />}>
-						Ver
-					</Button>
-					<Button variant="outlined" startIcon={<SettingsIcon />}>
-						Configuración
-					</Button>
-				</Stack>
-			);
-		},
-	},
-];
+import { useDispatch } from "react-redux";
+import {
+	onDeleteConsultaCiudadana,
+	onGetConfig,
+	onGetConsultasCiudadanas,
+} from "../../store/module-preparacion/consulta-ciudadana/thunks";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { onSetConsultaSelected } from "../../store/module-preparacion/consulta-ciudadana/consultaCiudadanaSlice";
 
 export const RegistroConsultaCiudadana = () => {
 	const navigate = useNavigate();
 	const [modalStatus, setModalStatus] = useState(false);
 	const { consultasData } = useConsultaCiudadanaStore();
+	const dispatch = useDispatch();
+	const columns = [
+		// { field: "id", headerName: "ID", flex: 3 },
+		{ field: "nombreJornada", headerName: "Título de la consulta ciudadana", flex: 10 },
+		{
+			field: "configuracion",
+			headerName: "Configuración",
+			flex: 5,
+			sortable: false,
+			disableColumnMenu: true,
+			renderCell: (params) => {
+				return (
+					<Stack spacing={2} direction="row">
+						<Button
+							variant="outlined"
+							startIcon={<BallotIcon />}
+							onClick={() => handleEdit(params.id, params.row.nombreJornada)}
+						>
+							Ver
+						</Button>
+						<Button
+							variant="outlined"
+							startIcon={<SettingsIcon />}
+							onClick={() => handleConfig(params.id)}
+						>
+							Configuración
+						</Button>
+						<IconButton
+							sx={{ color: "#511079" }}
+							onClick={() => handleDelete(params.id)}
+						>
+							<DeleteIcon />
+						</IconButton>
+					</Stack>
+				);
+			},
+		},
+	];
+
+	useEffect(() => {
+		if (consultasData.length === 0) dispatch(onGetConsultasCiudadanas());
+	}, []);
+
+	const handleDelete = (id) => {
+		console.log("ID:", id);
+		dispatch(onDeleteConsultaCiudadana(id));
+	};
+
+	const handleEdit = (id, titulo) => {
+		dispatch(onSetConsultaSelected({ id, titulo, ballots: [] }));
+		navigate("/preparacion/consulta/" + id);
+	};
+
+	const handleConfig = (id) => {
+		navigate("/preparacion/consulta/config/" + id);
+		dispatch(onGetConfig(id));
+	};
 
 	const go = () => {
 		navigate();

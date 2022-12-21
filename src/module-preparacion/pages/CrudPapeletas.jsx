@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, Divider, Grid, IconButton, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -40,6 +40,11 @@ export const CrudPapeletas = () => {
 			},
 		},
 	];
+
+	useEffect(() => {
+		// if (consultasData.length === 0) dispatch(onGetConsultasCiudadanas());
+		// dispatch(onGetPapeletas())
+	}, []);
 
 	const handleEdit = (id) => {
 		dispatch(
