@@ -9,6 +9,7 @@ export const GeneralTable = ({ data = [], columns }) => {
 	return (
 		<div style={{ height: "100%", width: "100%" }}>
 			<DataGrid
+				getRowId={(row) => row.idJornada}
 				disableSelectionOnClick
 				rows={data}
 				columns={columns}

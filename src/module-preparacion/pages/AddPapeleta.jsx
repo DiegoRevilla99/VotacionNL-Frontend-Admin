@@ -27,9 +27,9 @@ const validationSchema = object({
 	encabezadoConsulta: string("Ingresa el encabezado de la consulta").required(
 		"Este campo es requerido"
 	),
-	asunto: string("Ingresa el asunto").required("Este campo es requerido"),
-	// entidadFedereativa: string("Ingresa la entidad federativa").required("Este campo es requerido"),
-	// distritoElectoral: string("Ingresa el distrito electoral").required("Este campo es requerido"),
+	// asunto: string("Ingresa el asunto").required("Este campo es requerido"),
+	distritoElectoral: string("Ingresa el distrito electoral").required("Este campo es requerido"),
+	municipio: string("Ingresa el municipio").required("Este campo es requerido"),
 	nombrePrimerFirmante: string("Ingresa el nombre del primer firmante").required(
 		"Este campo es requerido"
 	),
@@ -57,9 +57,9 @@ export const AddPapeleta = () => {
 		Object.values(consultaSelected.ballotSelected).length === 0
 			? {
 					encabezadoConsulta: "",
-					asunto: "",
-					// entidadFedereativa: "",
-					// distritoElectoral: "",
+					// asunto: "",
+					distritoElectoral: "",
+					municipio: "",
 					nombrePrimerFirmante: "",
 					cargoPrimerFirmante: "",
 					nombreSegundoFirmante: "",
@@ -67,9 +67,9 @@ export const AddPapeleta = () => {
 			  }
 			: {
 					encabezadoConsulta: consultaSelected.ballotSelected.encabezadoConsulta,
-					asunto: "",
-					// entidadFedereativa: "",
-					// distritoElectoral: "",
+					// asunto: "",
+					distritoElectoral: "",
+					municipio: "",
 					nombrePrimerFirmante: "",
 					cargoPrimerFirmante: "",
 					nombreSegundoFirmante: "",
@@ -92,7 +92,7 @@ export const AddPapeleta = () => {
 		if (Object.values(consultaSelected.ballotSelected).length === 0) {
 			if (questions.length > 0)
 				dispatch(
-					onCreatePapeleta(values.encabezadoConsulta, () => {
+					onCreatePapeleta(values, params.id, () => {
 						navigate("/preparacion/consulta/" + params.id);
 					})
 				);
@@ -175,7 +175,7 @@ export const AddPapeleta = () => {
 									/>
 								</Grid>
 
-								<Grid item xs={12}>
+								{/* <Grid item xs={12}>
 									<FielTextCustom
 										name="asunto"
 										label="ASUNTO"
@@ -184,20 +184,20 @@ export const AddPapeleta = () => {
 										error={errors.asunto}
 										touched={touched.asunto}
 									/>
-								</Grid>
-								{/* <Grid item xs={12}>
+								</Grid> */}
+								<Grid item xs={12}>
 									<Typography variant="h6" color="initial">
 										DATOS GEOELECTORALES
 									</Typography>
 								</Grid>
 								<Grid item xs={12} md={12} lg={8}>
 									<FielTextCustom
-										name="entidadFedereativa"
-										label="ENTIDAD FEDERATIVA"
-										value={values.entidadFederativa}
+										name="municipio"
+										label="MUNICIPIO"
+										value={values.municipio}
 										handleChange={handleChange}
-										error={errors.entidadFedereativa}
-										touched={touched.entidadFedereativa}
+										error={errors.municipio}
+										touched={touched.municipio}
 									/>
 								</Grid>
 								<Grid item xs={12} md={12} lg={4}>
@@ -209,7 +209,7 @@ export const AddPapeleta = () => {
 										error={errors.distritoElectoral}
 										touched={touched.distritoElectoral}
 									/>
-								</Grid> */}
+								</Grid>
 								<Grid item xs={12}>
 									<Typography variant="h6" color="initial">
 										FIRMANTES

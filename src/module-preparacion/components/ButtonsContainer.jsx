@@ -1,7 +1,7 @@
 import { Button, Grid } from "@mui/material";
 import React from "react";
 
-export const ButtonsContainer = React.memo(({ status, onSubmit, onCancel }) => {
+export const ButtonsContainer = React.memo(({ status, onSubmit, onCancel, isDisabled }) => {
 	console.log("Me renderizo botones");
 
 	return (
@@ -12,7 +12,7 @@ export const ButtonsContainer = React.memo(({ status, onSubmit, onCancel }) => {
 					onClick={onSubmit}
 					variant="contained"
 					size="large"
-					disabled={status === "checking"}
+					disabled={status === "checking" || isDisabled}
 					sx={{
 						boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
 						transition: "all 0.5s ease",

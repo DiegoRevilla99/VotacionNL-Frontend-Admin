@@ -19,6 +19,7 @@ import { CrudPapeletas } from "../pages/CrudPapeletas";
 import { RegistroJornadaElectoralGenerica } from "../pages/RegistroJornadaElectoralGenerica";
 import { CrudJornadaGenerica } from "../pages/CrudJornadaGenerica";
 import { AddBoletaJornadaGenerica } from "../pages/AddBoletaJornadaGenerica";
+import { ConfiguracionConsulta } from "../pages/ConfiguracionConsulta";
 
 export const PreparacionRoutes = () => {
 	return (
@@ -55,6 +56,8 @@ export const PreparacionRoutes = () => {
 				/>
 				<Route path="JornadaGenerica" element={<CrudJornadaGenerica />} />
 				<Route path="JornadaGenerica/boleta" element={<AddBoletaJornadaGenerica />} />
+				<Route path="jornada/configboleta" element={<ConfigBoletaMultiple />} />
+				<Route path="consulta/config/:idConsulta" element={<ConfiguracionConsulta />} />
 
 				<Route path="/*" element={<Navigate to="/preparacion/inicio" />} />
 			</Routes>
