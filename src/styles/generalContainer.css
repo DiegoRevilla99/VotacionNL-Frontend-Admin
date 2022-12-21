@@ -32,3 +32,23 @@ body,
 ::-webkit-scrollbar-thumb:hover{
   background: #511079;
 }
+
+
+.agrupacion{
+  transition-duration: 500ms;
+  transition-property:  border-width;
+}
+.agrupacion:hover{
+  /* background: #FFF ; */
+  
+  transition: box-shadow 0.3s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.617);
+  transition: 0.3s !important;
+  
+  
+  
+  
+  
+}
+
+ 

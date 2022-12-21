@@ -111,7 +111,7 @@ export const ConfigBoletaMultiple = () => {
               mt: 1,
             }}
           >
-            <Agrupa tipo={1}></Agrupa>
+            <Agrupa tipo={2}></Agrupa>
           </Box>
 
           <Box sx={botones}>

@@ -1,15 +1,29 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Checkbox, Typography } from "@mui/material";
 import React from "react";
 
-export const BoxPartido = ({
+export const PartidoSelect = ({
   candidato = "Nombre candidato",
   partido = "Nombre Partido",
+  claveElectoral = "",
   img = "url",
+  onSelect = () => {},
+  onNotSelect = () => {},
 }) => {
+  const [checked, setChecked] = React.useState(false);
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+    if (event.target.checked) {
+      onSelect(claveElectoral);
+    } else {
+      onNotSelect(claveElectoral);
+    }
+  };
+
   return (
     <Box
       sx={{
-        boxShadow: 1,
+        boxShadow: checked ? 3 : 0,
         display: "flex",
         justifyContent: "space-around",
         alignItems: "center",
@@ -18,7 +32,7 @@ export const BoxPartido = ({
         m: 1,
         border: "1px solid rgba(0,0,0,0.2)",
         borderRadius: "8px",
-        // background: "#F1F1F1",
+        background: checked ? "#E7C0F9" : "#FFF",
       }}
     >
       <Box
@@ -38,6 +52,11 @@ export const BoxPartido = ({
           {partido}
         </Typography>
       </Box>
+      <Checkbox
+        checked={checked}
+        onChange={handleChange}
+        inputProps={{ "aria-label": "controlled" }}
+      />
     </Box>
   );
 };

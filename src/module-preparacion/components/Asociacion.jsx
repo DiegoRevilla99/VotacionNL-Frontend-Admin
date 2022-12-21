@@ -5,11 +5,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import HighlightOffSharpIcon from "@mui/icons-material/HighlightOffSharp";
 import ClearSharpIcon from "@mui/icons-material/ClearSharp";
 import React from "react";
+import { BoxPartido } from "./BoxPartido";
+import { BoxAsociacion } from "./BoxAsociacion";
 
-export const Coalicion = ({
-  name = "Nombre coalición",
+export const Asociacion = ({
+  name = "Nombre asociacion",
   color = "#511079",
   colorb = "#F3E8F8",
+  asociaciones = [],
   children,
 }) => {
   return (
@@ -47,7 +50,9 @@ export const Coalicion = ({
             flexWrap: "wrap",
           }}
         >
-          {children}
+          {asociaciones.map((partido) => (
+            <BoxAsociacion></BoxAsociacion>
+          ))}
         </Box>
       </fieldset>
     </Box>

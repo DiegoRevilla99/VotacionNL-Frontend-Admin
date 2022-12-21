@@ -1,11 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 
-export const BoxPartido = ({
-  candidato = "Nombre candidato",
-  partido = "Nombre Partido",
-  img = "url",
-}) => {
+export const BoxCandidato = ({ name = "Nombre candidato", img = "url" }) => {
   return (
     <Box
       sx={{
@@ -27,17 +23,9 @@ export const BoxPartido = ({
           width: "50px",
           height: "50px",
           background: "#000",
-          ml: 1,
         }}
       ></Box>
-      <Box sx={{ p: 2 }}>
-        <Typography sx={{ fontSize: "15px", fontWeight: "bold" }}>
-          {candidato}
-        </Typography>
-        <Typography sx={{ fontSize: "12px", fontStyle: "oblique" }}>
-          {partido}
-        </Typography>
-      </Box>
+      <Typography>{name}</Typography>
     </Box>
   );
 };

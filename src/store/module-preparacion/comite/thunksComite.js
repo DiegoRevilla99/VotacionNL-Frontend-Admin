@@ -21,6 +21,7 @@ const getDataBoletas = (boletas) => {
 export const getBoletas = () => {
 
     return async (dispatch, getState) => {
+
         dispatch(startLoadingBoletas());
         const boletas = await getBoletasApi();
         const data = getDataBoletas(boletas);

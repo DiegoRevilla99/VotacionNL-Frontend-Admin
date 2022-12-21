@@ -54,10 +54,19 @@ export const PreparacionRoutes = () => {
           element={<AddPapeleta />}
         />
 
-        {/* CONFIGURACION */}
+        {/* CONFIGURACION FORMAL */}
         <Route path="jornada/config" element={<ConfiguracionJornada />} />
-        <Route path="jornada/configboleta" element={<ConfigBoleta />} />
-        {/* <Route path="jornada/configboleta" element={<ConfigBoletaMultiple />} /> */}
+        <Route path="jornada/configboleta/:id" element={<ConfigBoleta />} />
+
+        {/* CONFIGURACION NO FORMAL */}
+        <Route
+          path="jornadaNoFormal/config"
+          element={<ConfiguracionJornada />}
+        />
+        <Route
+          path="jornadaNoFormal/configboleta"
+          element={<ConfigBoletaMultiple />}
+        />
 
         <Route path="/*" element={<Navigate to="/preparacion/inicio" />} />
       </Routes>
