@@ -24,6 +24,7 @@ const style = {
 	transform: "translate(-50%, -50%)",
 	width: { xl: "50rem", lg: "50rem", sm: "40rem", xs: "30rem" },
 	height: { xl: "34rem", lg: "34rem", sm: "37rem", xs: "40rem" },
+	// height: "38rem",
 	bgcolor: "background.paper",
 	border: '2px solid #fff',
 	borderRadius: "2rem",
@@ -45,7 +46,7 @@ const validationSchema = object({
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
 });
 
-export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }) => {
+export const ModalBoletaCandidatoGenerico = ({ statusCandidateModal, handleToggleModal }) => {
 	const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
 	const { status } = useAddBoletasJornada();
 	const dispatch = useDispatch();
@@ -86,7 +87,7 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 		<>
 		<Modal
 			open={statusCandidateModal}
-			onClose={onCancel}
+			onClose={handleToggleModal}
 			aria-labelledby="modal-modal-title"
 			aria-describedby="modal-modal-description"
 		>
@@ -108,7 +109,7 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 		{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (
 			<Box sx={style}>
 				<Typography id="modal-modal-title" variant="h5" color="initial" align="center">
-					REGISTRO DE CANDIDATO/A INDEPENDIENTE
+					REGISTRO DE CANDIDATO/A GENÉRICO 
 				</Typography>
 				<Box ml={"2rem"} mr={"2rem"}
 				
@@ -280,7 +281,6 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 						</Grid>
 						<Grid item xs={12} md={6} lg={3}>
 							<Button
-								disabled={status === "checking"}
 								onClick={onCancel}
 								variant="contained"
 								size="large"

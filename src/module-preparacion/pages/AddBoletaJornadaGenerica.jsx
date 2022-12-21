@@ -1,22 +1,17 @@
 import { Box, Divider, Grid, Typography, TextField, Paper, Button } from "@mui/material";
-import { Stack } from "@mui/system";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useUiStore } from "../../hooks/useUiStore";
-import { savePartido, saveCandidato } from "../../store/module-preparacion/jornada/jornadaThunks";
-import { editBoleta, saveBoleta } from "../../store/module-preparacion/jornada/jornadaThunks";
-import { useAddBoletasJornada } from "../hooks/useAddBoletasJornada";
-import { getBoletaByIdApi } from "../helpers/ApiJornada";
 import { FielTextCustom } from "../components/FielTextCustom";
 import { DataGridTable } from "../../ui/components/DataGridTable";
-import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
-import { ModalBoletaCandidato } from "../components/ModalBoletaCandidato";
-import { ModalEliminarPC } from "../components/ModalEliminarPC";
+import { editBoleta, saveBoleta } from "../../store/module-preparacion/jornada/jornadaThunks";
+import { useAddBoletasJornada } from "../hooks/useAddBoletasJornada";
+
+import { ModalBoletaCandidatoGenerico } from "../components/ModalBoletaCandidatoGenerico";
+import { ModalEliminarCandidatoGenerico } from "../components/ModalEliminarCandidatoGenerico";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Formik } from 'formik';
 import { object, string, number } from "yup";
 import { useNavigate, useParams } from "react-router-dom";
-
 
 const validationSchema = object({
 	encabezado: string("").required(
@@ -54,8 +49,7 @@ const validationSchema = object({
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
 });
 
-export const AddBoletaJornada = () => {
-
+export const AddBoletaJornadaGenerica = () => {
 	const { nombreCandidatura } = useParams();
 	const navigate = useNavigate();
 	const { status } = useAddBoletasJornada();
@@ -99,11 +93,9 @@ export const AddBoletaJornada = () => {
         // toastOffOperation();
         setStatusDeleteModal(true);
     };
-
 	const onCancel = () => {
-		navigate("/preparacion/jornada");
+		navigate("/preparacion/JornadaGenerica");
 	};
-
 	const setInfo = async () => {
 		console.log(nombreCandidatura);
 		if (nombreCandidatura != undefined) {
@@ -124,8 +116,9 @@ export const AddBoletaJornada = () => {
 	  }, [datos]);
 
 	  const guardar = () => {
-		navigate("/preparacion/jornada");
+		navigate("/preparacion/JornadaGenerica");
 	  };
+
 	// INICIO DEL RETURN
 
 	return (
@@ -150,8 +143,8 @@ export const AddBoletaJornada = () => {
 			  dispatch(saveBoleta(valores, guardar));
 			}
 		  }}
-	>
-		{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (
+		>
+			{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (
 			<Box 
 			sx={{
 				height: "100%",
@@ -163,7 +156,7 @@ export const AddBoletaJornada = () => {
 				
 				<Box sx={{ m: "0.5rem", ml: "2rem" }}>
 					<Typography variant="h6" align="left" color="initial">
-						REGISTRO DE BOLETA
+						REGISTRO DE BOLETA DE LA JORNADA GENÉRICA
 					</Typography>
 				</Box>
 				<Divider />
@@ -335,7 +328,7 @@ export const AddBoletaJornada = () => {
 						</Grid>
 						<Grid item xs={12} md={6} lg={4}>
 							<Button
-								onClick={handleOpenMatchModal}
+								onClick={handleOpenCandidateModal}
 								variant="contained"
 								size="large"
 								disabled={status === "checking"}
@@ -352,10 +345,10 @@ export const AddBoletaJornada = () => {
 									},
 								}}
 							>
-								Agregar partido
+								Agregar candidato
 							</Button>
 						</Grid>
-						<Grid item xs={12} md={6} lg={4}>
+						{/* <Grid item xs={12} md={6} lg={4}>
 							<Button
 								onClick={handleOpenCandidateModal}
 								variant="contained"
@@ -378,7 +371,7 @@ export const AddBoletaJornada = () => {
 							>
 								Agregar candidato independiente
 							</Button>
-						</Grid>
+						</Grid> */}
 						<Grid item xs={4} md={2} lg={2}>
 							<Button
 							onClick={handleOpenDeleteModal}
@@ -420,6 +413,7 @@ export const AddBoletaJornada = () => {
 					<Grid mt={"1rem"} container direction="row" justifyContent="flex-end" spacing={2}>
 						<Grid item xs={12} md={6} lg={3}>
 							<Button
+								// onClick={onSubmit}
 								type="submit"
 								variant="contained"
 								size="large"
@@ -466,17 +460,16 @@ export const AddBoletaJornada = () => {
 						
 					</Grid>
 				</Box>
-			<ModalBoletaPartido statusMatchModal={statusMatchModal} handleToggleModal={handleCloseMatchModal} />
-            <ModalBoletaCandidato statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} />
-			<ModalEliminarPC statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} />
+            <ModalBoletaCandidatoGenerico statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} />
+			<ModalEliminarCandidatoGenerico statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} />
 			
 			
 		</form>
 		</Box>
 		)}
 		</Formik>
-		)}
+		  )}
 	</>
-		  
+		
 	);
 };

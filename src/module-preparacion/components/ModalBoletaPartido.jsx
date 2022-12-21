@@ -13,10 +13,12 @@ import { Formik, Form } from 'formik';
 import { ErrorField } from "../components/ErrorField";
 import { object, string } from "yup";
 
-// import { useDispatch } from "react-redux";
-// import { useUiStore } from "../../hooks/useUiStore";
+import { useDispatch } from "react-redux";
+import { savePartido } from "../../store/module-preparacion/jornada/jornadaThunks";
+import { useAddBoletasJornada } from "../hooks/useAddBoletasJornada";
+import CircularProgress from "@mui/material/CircularProgress";
+import { editBoleta, saveBoleta } from "../../store/module-preparacion/jornada/jornadaThunks";
 
-// import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
 
 const style = {
 	position: "absolute",
@@ -25,7 +27,6 @@ const style = {
 	transform: "translate(-50%, -50%)",
 	width: { xl: "50rem", lg: "50rem", sm: "40rem", xs: "30rem" },
 	height: { xl: "39rem", lg: "38rem", sm: "41rem", xs: "42rem" },
-	// height: "42.5rem",
 	bgcolor: "background.paper",
 	border: '2px solid #fff',
 	borderRadius: "2rem",
@@ -52,16 +53,12 @@ const validationSchema = object({
 export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 
 	const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
-
-
-		// const [file, setFile] = useState("");
-	// const { addQuestion } = useConsultaCiudadanaStore();
-
-	// const { toastSuccesOperation } = useUiStore();
+	const { status } = useAddBoletasJornada();
+	const dispatch = useDispatch();
 
 	const onSave = () => {
-		// addQuestion("¿Pregunta 1?", ["Respuesta 1", "Respuesta 2"]);
-		// toastSuccesOperation("Pregunta registrada con éxito");
+		setEmblema({ name: "Sin Archivo seleccionado" });
+		setFotografia({ name: "Sin Archivo seleccionado" });
 		handleToggleModal();
 	};
 
@@ -74,11 +71,6 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 	const [fotografia, setFotografia] = useState({
 	  name: "Sin Archivo seleccionado",
 	});
-	const cerrarM = () => {
-	   abrirCerrarModal();
-	   setEmblema({ name: "Sin Archivo seleccionado" });
-	   setFotografia({ name: "Sin Archivo seleccionado" });
-	 };
 	 
    const validando = (values, props) => {
 	   const errors = {};
@@ -95,7 +87,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 		<>
 		<Modal
 			open={statusMatchModal}
-			onClose={handleToggleModal}
+			onClose={onCancel}
 			aria-labelledby="modal-modal-title"
 			aria-describedby="modal-modal-description"
 		>
@@ -105,15 +97,14 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 			nombrePropietario: "",//Text
 			seudonimoCandidato: "",//Text
 			nombreSuplente: "",//Text
+			emblema: "",
+			fotografia: "",
 		}}
 		validate = {validando}
 		validationSchema={validationSchema}
-		onSubmit={(valores, {resetForm}) => {
-			onSubmit(valores, cerrarM);
+		onSubmit={(values, {resetForm}) => {
+			dispatch(savePartido(values, onSave));
 			resetForm();
-			console.log('Formulario enviado');
-			cambiarFormularioEnviado(true);
-			// handleToggleModal();
 		}}
 	>
 		{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (
@@ -146,9 +137,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						helperText={touched.nombrePartido && errors.nombrePartido}
 						onChange={handleChange}
 						onBlur={handleBlur}
-					/>
-					{/* {touched.nombrePartido && errors.nombrePartido && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombrePartido}</Typography>} */}
-				
+					/>				
 					<Typography variant="h7" mt={"1rem"}>
 					INSERTAR EMBLEMA DEL PARTIDO <span style={{ color: "red" }}>*</span>
 					</Typography>
@@ -241,7 +230,6 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						onChange={handleChange}
 						onBlur={handleBlur}
 					/>
-					{/* {touched.nombrePropietario && errors.nombrePropietario && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombrePropietario}</Typography>} */}
 					<Typography variant="h7" mt={"1rem"}>
 						SEUDÓNIMO DEL CANDIDATO/A <span style={{ color: "red" }}>*</span>
 					</Typography>
@@ -258,7 +246,6 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						onChange={handleChange}
 						onBlur={handleBlur}
 					/>
-					{/* {touched.seudonimoCandidato && errors.seudonimoCandidato && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.seudonimoCandidato}</Typography>} */}
 					<Typography variant="h7" mt={"1rem"}>
 						NOMBRE DEL SUPLENTE <span style={{ color: "red" }}>*</span>
 					</Typography>
@@ -275,7 +262,6 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						onChange={handleChange}
 						onBlur={handleBlur}
 					/>
-					{/* {touched.nombreSuplente && errors.nombreSuplente && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombreSuplente}</Typography>} */}
 					<Grid
 						container
 						direction="row"
@@ -287,7 +273,6 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 					>
 					<Grid item xs={12} md={6} lg={3} >
 						<Button
-							// onClick={onSave}
 							type="submit"
 							variant="contained"
 							size="large"
@@ -309,6 +294,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 					</Grid>
 					<Grid item xs={12} md={6} lg={3}>
 						<Button
+							disabled={status === "checking"}
 							onClick={onCancel}
 							variant="contained"
 							size="large"
@@ -329,7 +315,6 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						</Button>
 					</Grid>
 				</Grid>
-				{formularioEnviado && <p className="exito" align="center">Formulario enviado con exito!</p>}
 				</Form>
 			</Box>
 		</Box>
