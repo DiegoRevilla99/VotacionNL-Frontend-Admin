@@ -40,7 +40,7 @@ export const HomePreparacion = () => {
 						}}
 					>
 						<Typography ml={4} variant="h5" align="left" paragraph>
-							¿QUÉ TIPO DE PLANTILLA DESEA USAR?
+							¿QUÉ TIPO DE ELECCIÓN DESEA USAR?
 						</Typography>
 
 						<Stack
@@ -80,7 +80,7 @@ export const HomePreparacion = () => {
 									},
 								}}
 							>
-								PLANTILLA DE LA JORNADA ELECTORAL
+								FORMALES
 							</Button>
 							<Button
 								onClick={plantilla2}
@@ -114,7 +114,7 @@ export const HomePreparacion = () => {
 									},
 								}}
 							>
-								PLANTILLA DEL COMITÉ
+								NO FORMALES
 							</Button>
 							<Button
 								onClick={plantilla3}
@@ -148,7 +148,7 @@ export const HomePreparacion = () => {
 									},
 								}}
 							>
-								PLANTILLA DE LA CONSULTA CIUDADANA
+								CONSULTA CIUDADANA
 							</Button>
 						</Stack>
 					</Box>

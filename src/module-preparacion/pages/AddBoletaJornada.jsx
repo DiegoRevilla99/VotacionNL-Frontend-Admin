@@ -16,6 +16,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Formik } from 'formik';
 import { object, string, number } from "yup";
 import { useNavigate, useParams } from "react-router-dom";
+import { ModalRegistroCandidato } from "../components/ModalRegistroCandidato";
 
 
 const validationSchema = object({
@@ -24,6 +25,9 @@ const validationSchema = object({
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
 	nombreCandidatura: string("").required(
 		"Por favor, ingresa un nombre de Candidatura"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	modalidadVotacion: string("").required(
+		"Por favor, ingresa una modalidad de Votación"
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
 	entidadFederativa: string("").required(
 		"Por favor, ingresa una entidad Federativa"
@@ -65,6 +69,7 @@ export const AddBoletaJornada = () => {
 	const [datos, setDatos] = useState({
 		encabezado: "",	//Text
 		nombreCandidatura: "",//Text
+		modalidadVotacion: "",//Text
 		entidadFederativa: "",//Text
 		municipio: "",//Text
 		distritoElectoralLocal: "",//Number
@@ -80,10 +85,12 @@ export const AddBoletaJornada = () => {
     const [statusCandidateModal, setStatusCandidateModal] = useState(false);
 	const [statusDeleteModal, setStatusDeleteModal] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [statusRegisterCandidateModal, setStatusModal] = useState(false);
 
 	const handleCloseMatchModal = () => setStatusMatchModal(false);
     const handleCloseCandidateModal = () => setStatusCandidateModal(false);
 	const handleCloseDeleteModal = () => setStatusDeleteModal(false);
+	const handleCloseModal = () => setStatusModal(false);
 
 	 const handleOpenMatchModal = () => {
 	 	// toastOffOperation();
@@ -99,6 +106,11 @@ export const AddBoletaJornada = () => {
         // toastOffOperation();
         setStatusDeleteModal(true);
     };
+
+	const handleOpenRegisterCandidateModal = () => {
+		// toastOffOperation();
+		setStatusModal(true);
+	};
 
 	const onCancel = () => {
 		navigate("/preparacion/jornada");
@@ -214,6 +226,18 @@ export const AddBoletaJornada = () => {
 								touched={touched.nombreCandidatura}
 							/>
 							{/* {touched.nombreCandidatura && errors.nombreCandidatura && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombreCandidatura}</Typography>} */}
+						</Grid>
+						<Grid item xs={12}>
+							<FielTextCustom
+							disabled={status === "checking"}
+								label="MODALIDAD DE VOTACIÓN"
+								name="modalidadVotacion"
+								value={values.modalidadVotacion}
+								handleChange={handleChange}
+								error={errors.modalidadVotacion}
+								touched={touched.modalidadVotacion}
+							/>
+							{/* {touched.modalidadVotacion && errors.modalidadVotacion && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.modalidadVotacion}</Typography>} */}
 						</Grid>
 						<Grid item xs={12}>
 							<Typography variant="h6" color="initial">
@@ -335,7 +359,8 @@ export const AddBoletaJornada = () => {
 						</Grid>
 						<Grid item xs={12} md={6} lg={4}>
 							<Button
-								onClick={handleOpenMatchModal}
+								
+								onClick={handleOpenCandidateModal}
 								variant="contained"
 								size="large"
 								disabled={status === "checking"}
@@ -352,18 +377,18 @@ export const AddBoletaJornada = () => {
 									},
 								}}
 							>
-								Agregar partido
+								Agregar candidato 
 							</Button>
 						</Grid>
 						<Grid item xs={12} md={6} lg={4}>
 							<Button
-								onClick={handleOpenCandidateModal}
+								onClick={handleOpenMatchModal}
 								variant="contained"
 								size="large"
 								
 								disabled={status === "checking"}
 								sx={{
-									width: { xl: "140%", lg: "140%", sm: "100%", xs: "100%" },
+									width: "100%",
 									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
 									transition: "all 0.5s ease",
 									backgroundColor: "#511079",
@@ -376,7 +401,32 @@ export const AddBoletaJornada = () => {
 									},
 								}}
 							>
-								Agregar candidato independiente
+								Agregar partido
+							</Button>
+						</Grid>
+						<Grid item xs={12} md={6} lg={4}>
+							<Button
+								onClick={handleOpenRegisterCandidateModal}
+								variant="contained"
+								size="large"
+								
+								disabled={status === "checking"}
+								sx={{
+									width: "100%",
+									height: "100%",
+									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+									transition: "all 0.5s ease",
+									backgroundColor: "#511079",
+									fontSize: { xl: "14px", lg: "14px", sm: "14px", xs: "14px" },
+									borderRadius: "25px 25px 25px 25px",
+									"&:hover": {
+										backgroundColor: "#7E328B !important",
+										transform: "translate(-5px, -5px)",
+										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+									},
+								}}
+							>
+								Asociaciar candidato a partido
 							</Button>
 						</Grid>
 						<Grid item xs={4} md={2} lg={2}>
@@ -469,7 +519,7 @@ export const AddBoletaJornada = () => {
 			<ModalBoletaPartido statusMatchModal={statusMatchModal} handleToggleModal={handleCloseMatchModal} />
             <ModalBoletaCandidato statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} />
 			<ModalEliminarPC statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} />
-			
+			<ModalRegistroCandidato statusRegisterCandidateModal={statusRegisterCandidateModal} handleToggleModal={handleCloseModal} />
 			
 		</form>
 		</Box>
