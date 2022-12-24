@@ -237,6 +237,7 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 								handleChange={handleChange}
 								error={errors.fechaNacimiento}
 								touched={touched.fechaNacimiento}
+								
 							/>
 						</Grid>  
 						

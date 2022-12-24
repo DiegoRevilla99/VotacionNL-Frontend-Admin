@@ -23,7 +23,6 @@ export const RadioButtMod = React.memo(
 						name="genero"
 						onChange={handleChange}
 						value={valuesTipo}
-                        defaultValue="femenino"
 						aria-labelledby="demo-radio-buttons-group-label"
 					>
 						<FormControlLabel

@@ -16,6 +16,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Formik } from 'formik';
 import { object, string, number } from "yup";
 import { useNavigate, useParams } from "react-router-dom";
+import { ModalAsociacionCP } from "../components/ModalAsociacionCP";
 
 
 
@@ -84,11 +85,13 @@ export const AddBoletaJornada = () => {
 
     const [statusCandidateModal, setStatusCandidateModal] = useState(false);
 	const [statusDeleteModal, setStatusDeleteModal] = useState(false);
+	const [statusAsociacionModal, setStatusAsociacionModal] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleCloseMatchModal = () => setStatusMatchModal(false);
     const handleCloseCandidateModal = () => setStatusCandidateModal(false);
 	const handleCloseDeleteModal = () => setStatusDeleteModal(false);
+	const handleCloseAsociacionModal = () => setStatusAsociacionModal(false);
 
 	 const handleOpenMatchModal = () => {
 	 	// toastOffOperation();
@@ -105,9 +108,9 @@ export const AddBoletaJornada = () => {
         setStatusDeleteModal(true);
     };
 
-	const handleOpenRegisterCandidateModal = () => {
+	const handleOpenAsociacionModal = () => {
 		// toastOffOperation();
-		setStatusModal(true);
+		setStatusAsociacionModal(true);
 	};
 
 	const onCancel = () => {
@@ -404,7 +407,7 @@ export const AddBoletaJornada = () => {
 						</Grid>
 						<Grid item xs={12} md={6} lg={4}>
 							<Button
-								// onClick={handleOpenRegisterCandidateModal}
+								onClick={handleOpenAsociacionModal}
 								variant="contained"
 								size="large"
 								
@@ -517,7 +520,7 @@ export const AddBoletaJornada = () => {
 			<ModalBoletaPartido statusMatchModal={statusMatchModal} handleToggleModal={handleCloseMatchModal} />
             <ModalBoletaCandidato statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} />
 			<ModalEliminarPC statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} />
-			
+			<ModalAsociacionCP statusAsociacionModal={statusAsociacionModal} handleToggleModal={handleCloseAsociacionModal} />
 		</form>
 		</Box>
 		)}
