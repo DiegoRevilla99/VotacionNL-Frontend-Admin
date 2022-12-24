@@ -9,14 +9,14 @@ import {
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { Formik, Form } from 'formik';
-import { useState } from "react";
-import { object, string } from "yup";
+import React, { useState } from "react";
+import { object, string, date } from "yup";
 import { ErrorField } from "../components/ErrorField";
-
 import { useDispatch } from "react-redux";
 import { saveCandidato } from "../../store/module-preparacion/jornada/jornadaThunks";
 import { useAddBoletasJornada } from "../hooks/useAddBoletasJornada";
-
+import { DatePickerMod } from "./DatePickerMod";
+import { RadioButtMod } from "./RadioButtMod";
 const style = {
 	position: "absolute",
 	top: "50%",
@@ -34,24 +34,30 @@ const style = {
 //Validaciones
 
 const validationSchema = object({
-	nombrePropietario: string("").required(
+	apellidoPCandidato: string("").required(
 		"Por favor, ingresa el nombre del propietario"
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	seudonimoCandidato: string("").required(
+		apellidoMCandidato: string("").required(
+		"Por favor, ingresa el nombre del propietario"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+		nombreCandidato: string("").required(
+		"Por favor, ingresa el nombre del propietario"
+		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	seudonimoCandidato: string(
 		"Por favor, ingresa el seudónimo del candidato"
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	nombreSuplente: string("").required(
-		"Por favor, ingresa el nombre del suplente"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+		fechaNacimiento: date().required(
+		"Por favor, ingresa la fecha de nacimiento"
+		).max(new Date(), "No puedes ingresar una fecha futura"),
+		genero: string("Selecciona el genero").required("Por favor, selecciona el genero"),
 });
 
 export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }) => {
-	const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
 	const { status } = useAddBoletasJornada();
+
 	const dispatch = useDispatch();
 
 	const onSave = () => {
-		setEmblema({ name: "Sin Archivo seleccionado" });
 		setFotografia({ name: "Sin Archivo seleccionado" });
 		handleToggleModal();
 	};
@@ -60,22 +66,13 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 		handleToggleModal();
 	};
 
-	 //Validacion del formato imagen 
-	 const [emblema, setEmblema] = useState({ name: "Sin Archivo seleccionado" });
 	 const [fotografia, setFotografia] = useState({
 	   name: "Sin Archivo seleccionado",
 	 });
-	 const cerrarM = () => {
-		abrirCerrarModal();
-		setEmblema({ name: "Sin Archivo seleccionado" });
-		setFotografia({ name: "Sin Archivo seleccionado" });
-	  };
 	  
 	const validando = (values, props) => {
 		const errors = {};
-		if (emblema.name === "Sin Archivo seleccionado") {
-		  errors.emblema = "Se necesita un emblema";
-		}
+
 		if (fotografia.name === "Sin Archivo seleccionado") {
 		  errors.fotografia = "Se necesita una fotografia";
 		}
@@ -92,11 +89,13 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 		>
 			<Formik
 				initialValues={{
-					emblema: "",
+					apellidoPCandidato: "",
+					apellidoMCandidato: "", 
+                    nombreCandidato: "", 
 					fotografia: "",
-					nombrePropietario: "",//Text
 					seudonimoCandidato: "",//Text
-					nombreSuplente: "",//Text
+					fechaNacimiento: "",//Date
+					genero: "",//Text
 				}}
 				validate = {validando}
 				validationSchema={validationSchema}
@@ -105,10 +104,10 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 					resetForm();
 				}}
 	>
-		{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (
+		{( {values, errors, touched, handleSubmit, handleChange, handleBlur, setFieldValue} ) => (
 			<Box sx={style}>
 				<Typography id="modal-modal-title" variant="h5" color="initial" align="center">
-					REGISTRO DE CANDIDATO/A INDEPENDIENTE
+					REGISTRO DE CANDIDATO/A 
 				</Typography>
 				<Box ml={"2rem"} mr={"2rem"}
 				
@@ -120,45 +119,54 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 				}}
 			>
 				<Form onSubmit={handleSubmit} >
-				<Typography variant="h7" mt={"1rem"}>
-				INSERTAR EMBLEMA DEL CANDIDATO/A <span style={{ color: "red" }}>*</span>
-					</Typography>
-					<Box
-						display="flex"
-						alignItems="center"
-						sx={{ width: "100%" }}
-						flexDirection="row"
-					>
+				<Typography variant="h7" mt={"2rem"}>
+					APELLIDO PATERNO <span style={{ color: "red" }}>*</span>
+						</Typography>
 						<TextField
-						label=""
-						disabled
-						fullWidth
-						variant="outlined"
-						size="small"
-						value={emblema.name}
-						></TextField>
-						<IconButton
-						disabled={status === "checking"}
-						color="primary"
-						aria-label="upload picture"
-						component="label"
-						size="large"
-						>
-						<input hidden
-							onChange={(e) => setEmblema(e.target.files[0])}
+							fullWidth
+							size="small"
+							id="outlined-basic" 
+							variant="outlined"
+							label=""
+							name="apellidoPCandidato"
+							value={values.apellidoPCandidato}
+							error = {touched.apellidoPCandidato && errors.apellidoPCandidato}
+							helperText={touched.apellidoPCandidato && errors.apellidoPCandidato}
+							onChange={handleChange}
 							onBlur={handleBlur}
-							accept="image/x-png,image/jpeg"
-							type="file"
-							name="emblema"
-							id="emblema"
 						/>
-						<PhotoCamera fontSize="" />
-						</IconButton>
-					</Box>
-					{touched.emblema &&
-					emblema.name === "Sin Archivo seleccionado" && (
-					<ErrorField>{errors.emblema}</ErrorField>
-					)}
+				<Typography variant="h7" mt={"2rem"}>
+					APELLIDO MATERNO <span style={{ color: "red" }}>*</span>
+						</Typography>
+						<TextField
+							fullWidth
+							size="small"
+							id="outlined-basic" 
+							variant="outlined"
+							label=""
+							name="apellidoMCandidato"
+							value={values.apellidoMCandidato}
+							error = {touched.apellidoMCandidato && errors.apellidoMCandidato}
+							helperText={touched.apellidoMCandidato && errors.apellidoMCandidato}
+							onChange={handleChange}
+							onBlur={handleBlur}
+						/>
+					<Typography variant="h7" mt={"2rem"}>
+					NOMBRE COMPLETO <span style={{ color: "red" }}>*</span>
+						</Typography>
+						<TextField
+							fullWidth
+							size="small"
+							id="outlined-basic" 
+							variant="outlined"
+							label=""
+							name="nombreCandidato"
+							value={values.nombreCandidato}
+							error = {touched.nombreCandidato && errors.nombreCandidato}
+							helperText={touched.nombreCandidato && errors.nombreCandidato}
+							onChange={handleChange}
+							onBlur={handleBlur}
+						/>
 				<Typography variant="h7" mt={"1rem"}>
 				INSERTAR FOTOGRAFÍA DEL CANDIDATO/A  <span style={{ color: "red" }}>*</span>
 					</Typography>
@@ -194,27 +202,16 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 					</Box>
 					{touched.fotografia &&
 						fotografia.name === "Sin Archivo seleccionado" && (
-						<ErrorField>{errors.fotografia}</ErrorField>
+								<Box
+									sx={{
+									fontSize: "12px",
+										color: "#791010" }}
+									>
+									{errors.fotografia}
+					  			</Box>
 						)}
 				<Typography variant="h7" mt={"1rem"}>
-				NOMBRE DEL PROPIETARIO/A <span style={{ color: "red" }}>*</span>
-					</Typography>
-					<TextField
-						fullWidth
-						size="small"
-						id="outlined-basic" 
-						variant="outlined"
-						label=""
-						name="nombrePropietario"
-						value={values.nombrePropietario}
-						error = {touched.nombrePropietario && errors.nombrePropietario}
-						helperText={touched.nombrePropietario && errors.nombrePropietario}
-						onChange={handleChange}
-						onBlur={handleBlur}
-					/>
-					{/* {touched.nombrePropietario && errors.nombrePropietario && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombrePropietario}</Typography>} */}
-				<Typography variant="h7" mt={"1rem"}>
-				SEUDÓNIMO DEL CANDIDATO/A <span style={{ color: "red" }}>*</span>
+				SEUDÓNIMO DEL CANDIDATO/A <span style={{ color: "gray" }}> (opcional)</span>
 					</Typography>
 					<TextField
 						name="seudonimoCandidato"
@@ -224,29 +221,47 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 						variant="outlined"
 						label=""
 						value={values.seudonimoCandidato}
-						error = {touched.seudonimoCandidato && errors.seudonimoCandidato}
-						helperText={touched.seudonimoCandidato && errors.seudonimoCandidato}
 						onChange={handleChange}
 						onBlur={handleBlur}
 					/>
-					{/* {touched.seudonimoCandidato && errors.seudonimoCandidato && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.seudonimoCandidato}</Typography>} */}
-				<Typography variant="h7" mt={"1rem"}>
-				NOMBRE DEL SUPLENTE <span style={{ color: "red" }}>*</span>
-					</Typography>
-					<TextField
-						fullWidth
-						size="small"
-						id="outlined-basic" 
-						variant="outlined"
-						label=""
-						name="nombreSuplente"
-						value={values.nombreSuplente}
-						error = {touched.nombreSuplente && errors.nombreSuplente}
-						helperText={touched.nombreSuplente && errors.nombreSuplente}
-						onChange={handleChange}
-						onBlur={handleBlur}
-					/>
-					{/* {touched.nombreSuplente && errors.nombreSuplente && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombreSuplente}</Typography>} */}
+						 <Typography variant="h7" mt={"2rem"}>
+						FECHA DE NACIMIENTO<span style={{ color: "red" }}>*</span>
+							</Typography>
+						 <Grid
+						>				
+							<DatePickerMod
+								label=""
+								name={"fechaNacimiento"}
+								value={values.fechaNacimiento}
+								setFieldValue={setFieldValue}
+								handleChange={handleChange}
+								error={errors.fechaNacimiento}
+								touched={touched.fechaNacimiento}
+							/>
+						</Grid>  
+						
+						 
+						
+							<Typography variant="h7" mt={"2rem"}>
+						    GENERO <span style={{ color: "red" }}>*</span>
+							</Typography>
+						<Box>
+								<RadioButtMod
+									valuesTipo={values.genero}
+									handleChange={handleChange}
+									errorsTipo={errors.genero}
+								/>
+								{touched.genero && (
+								<Box
+									sx={{
+									fontSize: "12px",
+										color: "#791010" }}
+									>
+									{errors.genero}
+					  			</Box>
+							)}
+						</Box>	
+						 
 					<Grid
 						container
 						direction="row"
@@ -259,6 +274,7 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 						<Grid item xs={12} md={6} lg={3} >
 							<Button
 								// onClick={onSave}
+								disabled={status === "checking"}
 								type="submit"
 								variant="contained"
 								size="large"

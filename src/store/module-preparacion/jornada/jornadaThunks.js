@@ -96,11 +96,11 @@ export const saveCandidato = (valores = {}, guardar = () => { }) => {
 
         if (result) {
             dispatch(onSuccessOperation());
-            dispatch(onToastSuccessOperation({ successMessage: "Partido se guardó con éxito" }));
+            dispatch(onToastSuccessOperation({ successMessage: "candidato se guardó con éxito" }));
             guardar();
         } else {
             dispatch(onErrorOperation());
-            dispatch(onToastErrorOperation({ errorMessage: "El partido no se pudo guardar" }));
+            dispatch(onToastErrorOperation({ errorMessage: "El candidato no se pudo guardar" }));
         }
     };
 };

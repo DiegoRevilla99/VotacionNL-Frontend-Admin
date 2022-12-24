@@ -16,7 +16,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Formik } from 'formik';
 import { object, string, number } from "yup";
 import { useNavigate, useParams } from "react-router-dom";
-import { ModalRegistroCandidato } from "../components/ModalRegistroCandidato";
+
 
 
 const validationSchema = object({
@@ -85,12 +85,10 @@ export const AddBoletaJornada = () => {
     const [statusCandidateModal, setStatusCandidateModal] = useState(false);
 	const [statusDeleteModal, setStatusDeleteModal] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [statusRegisterCandidateModal, setStatusModal] = useState(false);
 
 	const handleCloseMatchModal = () => setStatusMatchModal(false);
     const handleCloseCandidateModal = () => setStatusCandidateModal(false);
 	const handleCloseDeleteModal = () => setStatusDeleteModal(false);
-	const handleCloseModal = () => setStatusModal(false);
 
 	 const handleOpenMatchModal = () => {
 	 	// toastOffOperation();
@@ -406,7 +404,7 @@ export const AddBoletaJornada = () => {
 						</Grid>
 						<Grid item xs={12} md={6} lg={4}>
 							<Button
-								onClick={handleOpenRegisterCandidateModal}
+								// onClick={handleOpenRegisterCandidateModal}
 								variant="contained"
 								size="large"
 								
@@ -519,7 +517,6 @@ export const AddBoletaJornada = () => {
 			<ModalBoletaPartido statusMatchModal={statusMatchModal} handleToggleModal={handleCloseMatchModal} />
             <ModalBoletaCandidato statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} />
 			<ModalEliminarPC statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} />
-			<ModalRegistroCandidato statusRegisterCandidateModal={statusRegisterCandidateModal} handleToggleModal={handleCloseModal} />
 			
 		</form>
 		</Box>

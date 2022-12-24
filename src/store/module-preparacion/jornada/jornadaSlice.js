@@ -30,9 +30,13 @@ export const jornadaSlice = createSlice({
 			nombreSuplente: ""//Text
         },
         candidatoSelected: {
-            nombrePropietario: "",//Text
-            seudonimoCandidato: "",//Text
-            nombreSuplente: "",//Text
+            apellidoPCandidato: "", 
+            apellidoMCandidato: "", 
+            nombreCandidato: "", 
+            fotoCandidato: "",
+            seudonimoCandidato: "", 
+            fechaNacimiento: "", 
+            genero: ""
         },
         boletas: [],
         partidos: [],
@@ -86,4 +90,4 @@ export const jornadaSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { startLoadingBoletas, setJornadas, setBoletas, setPlanillas, setRepresentantes, onCheckingOperation, startLoadingJornadas, onSuccessOperation, onErrorOperation, onOffOperation } = jornadaSlice.actions;
+export const { startLoadingBoletas, setJornadas, setBoletas, setPartidos, setRepresentantes, onCheckingOperation, startLoadingJornadas, onSuccessOperation, onErrorOperation, onOffOperation } = jornadaSlice.actions;

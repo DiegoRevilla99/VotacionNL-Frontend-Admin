@@ -15,6 +15,7 @@ export const DatePickerMod = React.memo(
 						value={value}
 						onChange={(valueNew) => setFieldValue(name, valueNew, true)}
 						label={label}
+						maxDate={new Date()}
 						renderInput={(params) => (
 							<TextField
 								{...params}
@@ -23,7 +24,7 @@ export const DatePickerMod = React.memo(
 								error={Boolean(touched && error)}
 								variant="outlined"
 								size="small"
-								fullWidth
+								// fullWidth
 							/>
 						)}
 					/>
