@@ -5,11 +5,11 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import React from "react";
 import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
 
-export const GeneralTable = ({ data = [], columns }) => {
+export const GeneralTable = ({ data = [], columns, idName }) => {
 	return (
 		<div style={{ height: "100%", width: "100%" }}>
 			<DataGrid
-				getRowId={(row) => row.idJornada}
+				getRowId={(row) => row[idName]}
 				disableSelectionOnClick
 				rows={data}
 				columns={columns}

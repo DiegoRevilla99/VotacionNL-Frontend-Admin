@@ -14,6 +14,7 @@ export const DataGridTable = ({ handleOpenModal }) => {
 	};
 
 	const handleEdit = (id) => {
+		// console.log("ID SELECCIONADO:", id);
 		handleOpenModal();
 		editQuestion(id);
 	};

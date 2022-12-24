@@ -60,26 +60,26 @@ export const useConsultaCiudadanaStore = () => {
 
 	const addQuestion = (
 		id,
-		question,
-		type,
-		closeType,
-		answer1,
-		answer2,
-		answer3,
-		answer4,
-		answer5
+		pregunta,
+		tipoDeRespuesta,
+		tipoCerrada,
+		respuesta1,
+		respuesta2,
+		respuesta3,
+		respuesta4,
+		respuesta5
 	) => {
 		dispatch(
 			onAddQuestion({
 				id,
-				question,
-				type,
-				closeType,
-				answer1,
-				answer2,
-				answer3,
-				answer4,
-				answer5,
+				pregunta,
+				tipoDeRespuesta,
+				tipoCerrada,
+				respuesta1,
+				respuesta2,
+				respuesta3,
+				respuesta4,
+				respuesta5,
 			})
 		);
 	};

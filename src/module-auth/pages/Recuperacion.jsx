@@ -1,27 +1,15 @@
-import { Button, Grid, Hidden, TextField, Typography } from "@mui/material";
+import { Button, Grid, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { Formik } from "formik";
 import React from "react";
-import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { object, string } from "yup";
-import { onLoginWithEmailAndPassword } from "../../store/auth/authThunks";
 
 const validationSchema = object({
-	correo: string("Ingresa tu correo").email().required("Este campo es requerido"),
-	contrasenia: string("Ingresa tu contraseña").required("Este campo es requerido"),
+	correo: string("").email().required("Este campo es requerido"),
 });
 
-export const Login = () => {
-	const dispatch = useDispatch();
-	const onSubmit = (values) => {
-		dispatch(
-			onLoginWithEmailAndPassword(values.correo, values.contrasenia, () => {
-				navigate("/preparacion/inicio");
-			})
-		);
-	};
-
+export const Recuperacion = () => {
 	return (
 		<Box
 			sx={{
@@ -64,31 +52,7 @@ export const Login = () => {
 					>
 						<Grid
 							item
-							sm={6}
-							sx={{
-								display: { xs: "none", sm: "flex" },
-								backgroundColor: "#7E328B",
-								borderTopLeftRadius: "1rem",
-								borderBottomLeftRadius: "1rem",
-								padding: "2rem",
-								color: "white",
-							}}
-							display="flex"
-							justifyContent={"center"}
-							// alignContent={"center"}
-							alignItems="center"
-						>
-							{/* <Box display="flex" flexDirection={"column"}> */}
-							<img
-								src="https://www.ceenl.mx/VE2022/media/CEELOGO2.png"
-								// height={"150px"}
-								sx={{ height: { xs: "100px", sm: "80px" } }}
-							/>
-							{/* </Box> */}
-						</Grid>
-						<Grid
-							item
-							sm={6}
+							sm={12}
 							display="flex"
 							flexDirection="column"
 							justifyContent="center"
@@ -102,15 +66,26 @@ export const Login = () => {
 									textAlign={"center"}
 									mb={"2rem"}
 								>
-									BIENVENIDO AL PROTOTIPO DE SISTEMA DE VOTACIONES
+									¿OLVIDASTE TU CONTRASEÑA?
+								</Typography>
+
+								<Typography
+									variant="h6"
+									color="initial"
+									textAlign={"center"}
+									mb={"2rem"}
+								>
+									En el siguiente recuadro ingresa tu correo electrónico para
+									enviarte información respecto al reestablecimiento de tu
+									contraseña
 								</Typography>
 
 								<Formik
-									initialValues={{ correo: "", contrasenia: "" }}
+									initialValues={{ correo: "" }}
 									validationSchema={validationSchema}
 									onSubmit={(values) => {
 										console.log("FORMULARIO ENVIADO", values);
-										onSubmit(values);
+										// onSubmit(values);
 									}}
 								>
 									{({ handleChange, values, errors, touched, handleSubmit }) => (
@@ -121,36 +96,13 @@ export const Login = () => {
 												size="small"
 												id="correo"
 												label="Correo electrónico"
-												variant="standard"
+												variant="filled"
 												onChange={handleChange}
 												value={values.correo}
 												error={touched.correo && Boolean(errors.correo)}
 												helperText={touched.correo && errors.correo}
 												sx={{ marginBottom: "2rem" }}
 											/>
-											<TextField
-												name="contrasenia"
-												fullWidth
-												size="small"
-												id="contrasenia"
-												label="Contraseña"
-												variant="standard"
-												onChange={handleChange}
-												value={values.contrasenia}
-												error={
-													touched.contrasenia &&
-													Boolean(errors.contrasenia)
-												}
-												helperText={
-													touched.contrasenia && errors.contrasenia
-												}
-												sx={{ marginBottom: "2rem" }}
-											/>
-											<Box textAlign={"center"} mb={"2rem"}>
-												<Link to="/auth/recuperacion">
-													¿Olvidaste tu contraseña?
-												</Link>
-											</Box>
 
 											<Button
 												type="submit"
@@ -170,7 +122,7 @@ export const Login = () => {
 													},
 												}}
 											>
-												Acceder
+												Enviar
 											</Button>
 										</form>
 									)}

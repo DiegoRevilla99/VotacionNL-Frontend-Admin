@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import {
 	createConsultaCiudadana,
 	createPapeleta,
+	deleteBallot,
 	deleteConsultaCiudadana,
 	getBallotData,
 	getConfig,
@@ -20,14 +21,21 @@ import {
 import {
 	onAddBallot,
 	onAddConsultaCiudadana,
+	onAddQuestion,
 	onCheckingOperation,
+	onDeleteBallotData,
 	onDeleteConsultaCiudadanaData,
 	onEditBallot,
 	onErrorOperation,
+	onFillBallots,
 	onFillConsultasData,
 	onOffOperation,
+	onSetBallotSelectedNull,
 	onSetConfigSelected,
+	onSetConfigSelectedNull,
 	onSetConsultaSelected,
+	onSetQuestionsNull,
+	onSetQuestionsSelectedNull,
 	onSuccessOperation,
 	onUpdateBallot,
 } from "./consultaCiudadanaSlice";
@@ -117,31 +125,34 @@ export const onGetPapeletas = (idConsulta, navigate = () => {}) => {
 		// dispatch(onToastCheckingOperation("Guardando papeleta..."));
 		dispatch(onCheckingOperation());
 
-		const { ok } = await getPapeletas(data, idConsulta);
+		const { ok, data } = await getPapeletas(idConsulta);
 
 		if (ok) {
 			dispatch(onSuccessOperation());
-			dispatch(onToastSuccessOperation({ successMessage: "Pepeleta guardada con éxito" }));
-			dispatch(onAddBallot({ id, encabezado }));
-			navigate();
+			// dispatch(onToastSuccessOperation({ successMessage: "Pepeleta guardada con éxito" }));
+			dispatch(onSetBallotSelectedNull());
+			dispatch(onSetQuestionsSelectedNull());
+			dispatch(onSetQuestionsNull());
+			dispatch(onFillBallots(data));
+			// navigate();
 		} else {
 			dispatch(onErrorOperation());
-			dispatch(onToastErrorOperation({ errorMessage: "La papeleta no se pudo guardar" }));
+			dispatch(onToastErrorOperation({ errorMessage: "No se pudo obtener las papeletas" }));
 		}
 	};
 };
 
-export const onCreatePapeleta = (data, idConsulta, navigate = () => {}) => {
+export const onCreatePapeleta = (data, idConsulta, questions, navigate = () => {}) => {
 	return async (dispatch) => {
 		dispatch(onToastCheckingOperation("Guardando papeleta..."));
 		dispatch(onCheckingOperation());
 
-		const { ok } = await createPapeleta(data, idConsulta);
+		const { ok, idPapeleta } = await createPapeleta(data, idConsulta, questions);
 
 		if (ok) {
 			dispatch(onSuccessOperation());
 			dispatch(onToastSuccessOperation({ successMessage: "Pepeleta guardada con éxito" }));
-			dispatch(onAddBallot({ id, encabezado }));
+			dispatch(onAddBallot({ idPapeleta, encabezado: data.encabezadoConsulta }));
 			navigate();
 		} else {
 			dispatch(onErrorOperation());
@@ -155,12 +166,14 @@ export const onGetBallotData = (idBallot, navigate = () => {}) => {
 		// dispatch(onToastCheckingOperation("Guardando papeleta..."));
 		dispatch(onCheckingOperation());
 
-		const { ok, id, encabezadoConsulta } = await getBallotData(idBallot);
+		const { ok, data, dataQuestion } = await getBallotData(idBallot);
+		// const { ok1, questions } = await getQuestions(idBallot);
 
 		if (ok) {
 			dispatch(onSuccessOperation());
 			// dispatch(onToastSuccessOperation({ successMessage: "Pepeleta guardada con éxito" }));
-			dispatch(onEditBallot({ id, encabezadoConsulta }));
+			dispatch(onEditBallot({ idBallot, ...data }));
+			dispatch(onAddQuestion(dataQuestion));
 			navigate();
 		} else {
 			dispatch(onErrorOperation());
@@ -169,12 +182,18 @@ export const onGetBallotData = (idBallot, navigate = () => {}) => {
 	};
 };
 
-export const onUpdateBallotData = (idBallot, navigate = () => {}) => {
+export const onUpdateBallotData = (
+	values,
+	questions,
+	idConsulta,
+	idPapeleta,
+	navigate = () => {}
+) => {
 	return async (dispatch) => {
 		// dispatch(onToastCheckingOperation("Guardando papeleta..."));
 		dispatch(onCheckingOperation());
 
-		const { ok } = await updateBallotData({ idBallot, encabezadoConsulta });
+		const { ok } = await updateBallotData(values, questions, idConsulta, idPapeleta);
 
 		if (ok) {
 			dispatch(onSuccessOperation());
@@ -189,6 +208,26 @@ export const onUpdateBallotData = (idBallot, navigate = () => {}) => {
 		}
 	};
 };
+
+export const onDeleteBallot = (id) => {
+	return async (dispatch) => {
+		dispatch(onToastCheckingOperation("Eliminando papeleta..."));
+		// dispatch(onCheckingOperation());
+
+		const { ok } = await deleteBallot(id);
+
+		if (ok) {
+			dispatch(onDeleteBallotData(id));
+			// console.log("ENTRÓ A BORRAR LA CONSULTA");
+			// dispatch(onSuccessOperation());
+			dispatch(onToastSuccessOperation({ successMessage: "Papeleta eliminada con éxito" }));
+		} else {
+			dispatch(onErrorOperation());
+			dispatch(onToastErrorOperation({ errorMessage: "La papeleta no se pudo eliminar" }));
+		}
+	};
+};
+
 export const onSaveConfig = (id, data, navigate = () => {}) => {
 	return async (dispatch) => {
 		dispatch(onToastCheckingOperation("Guardando configuracion..."));
@@ -223,9 +262,9 @@ export const onGetConfig = (id) => {
 			// dispatch(
 			// 	onToastSuccessOperation({ successMessage: "Configuración guardada con éxito" })
 			// );
-			dispatch(onSetConfigSelected(data.data));
+			dispatch(onSetConfigSelected(data));
 			console.log("CONFIGURACION: ", data);
-			navigate();
+			// navigate();
 		} else {
 			dispatch(onErrorOperation());
 			// dispatch(

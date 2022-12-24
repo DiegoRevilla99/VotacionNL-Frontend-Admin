@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, Typography } from "@mui/material";
+import { Box, Divider, Grid, LinearProgress, Typography } from "@mui/material";
 import { Formik } from "formik";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -68,12 +68,12 @@ export const AddPapeleta = () => {
 			: {
 					encabezadoConsulta: consultaSelected.ballotSelected.encabezadoConsulta,
 					// asunto: "",
-					distritoElectoral: "",
-					municipio: "",
-					nombrePrimerFirmante: "",
-					cargoPrimerFirmante: "",
-					nombreSegundoFirmante: "",
-					cargoSegundoFirmante: "",
+					distritoElectoral: consultaSelected.ballotSelected.distritoElectoral,
+					municipio: consultaSelected.ballotSelected.municipio,
+					nombrePrimerFirmante: consultaSelected.ballotSelected.nombrePrimerFirmante,
+					cargoPrimerFirmante: consultaSelected.ballotSelected.cargoPrimerFirmante,
+					nombreSegundoFirmante: consultaSelected.ballotSelected.nombreSegundoFirmante,
+					cargoSegundoFirmante: consultaSelected.ballotSelected.cargoSegundoFirmante,
 			  };
 
 	const onCancel = () => {
@@ -92,15 +92,21 @@ export const AddPapeleta = () => {
 		if (Object.values(consultaSelected.ballotSelected).length === 0) {
 			if (questions.length > 0)
 				dispatch(
-					onCreatePapeleta(values, params.id, () => {
+					onCreatePapeleta(values, params.id, questions, () => {
 						navigate("/preparacion/consulta/" + params.id);
 					})
 				);
 		} else {
 			dispatch(
-				onUpdateBallotData(values.id, () => {
-					navigate("/preparacion/consulta/" + params.id);
-				})
+				onUpdateBallotData(
+					values,
+					questions,
+					params.id,
+					consultaSelected.ballotSelected.idBallot,
+					() => {
+						navigate("/preparacion/consulta/" + params.id);
+					}
+				)
 			);
 			// updateBallot(values.encabezadoConsulta);
 			// setBallotSelectedNull();
@@ -198,6 +204,7 @@ export const AddPapeleta = () => {
 										handleChange={handleChange}
 										error={errors.municipio}
 										touched={touched.municipio}
+										type="text"
 									/>
 								</Grid>
 								<Grid item xs={12} md={12} lg={4}>
@@ -208,6 +215,7 @@ export const AddPapeleta = () => {
 										handleChange={handleChange}
 										error={errors.distritoElectoral}
 										touched={touched.distritoElectoral}
+										type="number"
 									/>
 								</Grid>
 								<Grid item xs={12}>
@@ -223,6 +231,7 @@ export const AddPapeleta = () => {
 										handleChange={handleChange}
 										error={errors.nombrePrimerFirmante}
 										touched={touched.nombrePrimerFirmante}
+										type="text"
 									/>
 								</Grid>
 								<Grid item xs={12}>
@@ -233,6 +242,7 @@ export const AddPapeleta = () => {
 										handleChange={handleChange}
 										error={errors.cargoPrimerFirmante}
 										touched={touched.cargoPrimerFirmante}
+										type="text"
 									/>
 								</Grid>
 								<Grid item xs={12}>
@@ -243,6 +253,7 @@ export const AddPapeleta = () => {
 										handleChange={handleChange}
 										error={errors.nombreSegundoFirmante}
 										touched={touched.nombreSegundoFirmante}
+										type="text"
 									/>
 								</Grid>
 								<Grid item xs={12}>
@@ -253,6 +264,7 @@ export const AddPapeleta = () => {
 										handleChange={handleChange}
 										error={errors.cargoSegundoFirmante}
 										touched={touched.cargoSegundoFirmante}
+										type="text"
 									/>
 								</Grid>
 

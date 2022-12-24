@@ -1,8 +1,8 @@
 import { object, string } from "yup";
 export const validationSchema = object({
 	pregunta: string("Ingresa una pregunta").required("Este campo es requerido"),
-	tipo: string("Selecciona el tipo").required("Este campo es requerido"),
-	tipoCerrada: string().when("tipo", {
+	tipoDeRespuesta: string("Selecciona el tipo").required("Este campo es requerido"),
+	tipoCerrada: string().when("tipoDeRespuesta", {
 		is: "abierta",
 		then: string(),
 		otherwise: string().required("Debes seleccionar un tipo de respuesta cerrada"),
@@ -16,7 +16,7 @@ export const validationSchema = object({
 			otherwise: string().when("tipoCerrada", {
 				is: "personalizado3",
 				then: string("Ingresa la opción de respuesta").required("Este campo es requerido"),
-				otherwise: string().when("tipo", {
+				otherwise: string().when("tipoDeRespuesta", {
 					is: "abierta",
 					then: string(),
 				}),
@@ -32,7 +32,7 @@ export const validationSchema = object({
 			otherwise: string().when("tipoCerrada", {
 				is: "personalizado3",
 				then: string("Ingresa la opción de respuesta").required("Este campo es requerido"),
-				otherwise: string().when("tipo", {
+				otherwise: string().when("tipoDeRespuesta", {
 					is: "abierta",
 					then: string(),
 				}),
@@ -45,7 +45,7 @@ export const validationSchema = object({
 		otherwise: string().when("tipoCerrada", {
 			is: "personalizado3",
 			then: string("Ingresa la opción de respuesta").required("Este campo es requerido"),
-			otherwise: string().when("tipo", {
+			otherwise: string().when("tipoDeRespuesta", {
 				is: "abierta",
 				then: string(),
 			}),
@@ -54,7 +54,7 @@ export const validationSchema = object({
 	respuesta4: string().when("tipoCerrada", {
 		is: "personalizado3",
 		then: string("Ingresa la opción de respuesta").required("Este campo es requerido"),
-		otherwise: string().when("tipo", {
+		otherwise: string().when("tipoDeRespuesta", {
 			is: "abierta",
 			then: string(),
 		}),
@@ -62,7 +62,7 @@ export const validationSchema = object({
 	respuesta5: string().when("tipoCerrada", {
 		is: "personalizado3",
 		then: string("Ingresa la opción de respuesta").required("Este campo es requerido"),
-		otherwise: string().when("tipo", {
+		otherwise: string().when("tipoDeRespuesta", {
 			is: "abierta",
 			then: string(),
 		}),

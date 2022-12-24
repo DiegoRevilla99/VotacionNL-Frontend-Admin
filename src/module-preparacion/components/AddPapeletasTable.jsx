@@ -3,7 +3,6 @@ import React from "react";
 import { DataGridTable } from "../../ui/components/DataGridTable";
 
 export const AddPapeletasTable = React.memo(({ handleOpenModal, status }) => {
-	console.log("ME RENDERIZO TABLA");
 	return (
 		<>
 			<Grid item xs={12} md={6} lg={4}>

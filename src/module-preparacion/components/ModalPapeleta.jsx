@@ -20,7 +20,7 @@ const style = {
 };
 
 const config = (values) => {
-	if (!(values.tipo === "cerrada")) {
+	if (!(values.tipoDeRespuesta === "cerrada")) {
 		values.tipoCerrada = "";
 		values.respuesta1 = "";
 		values.respuesta2 = "";
@@ -64,7 +64,6 @@ export const ModalPapeleta = ({ statusModal, handleToggleModal }) => {
 		useConsultaCiudadanaStore();
 	const { toastSuccesOperation } = useUiStore();
 	const [isCerrada, setIsCerrada] = useState(false);
-	console.log("QUESTION", Object.values(questionSelected).length);
 
 	const onSave = (values) => {
 		setIsCerrada(false);
@@ -72,7 +71,7 @@ export const ModalPapeleta = ({ statusModal, handleToggleModal }) => {
 			addQuestion(
 				questions.length,
 				values.pregunta,
-				values.tipo,
+				values.tipoDeRespuesta,
 				values.tipoCerrada,
 				values.respuesta1,
 				values.respuesta2,
@@ -87,7 +86,7 @@ export const ModalPapeleta = ({ statusModal, handleToggleModal }) => {
 			updateQuestion(
 				questionSelected.id,
 				newValues.pregunta,
-				newValues.tipo,
+				newValues.tipoDeRespuesta,
 				newValues.tipoCerrada,
 				newValues.respuesta1,
 				newValues.respuesta2,
@@ -129,7 +128,7 @@ export const ModalPapeleta = ({ statusModal, handleToggleModal }) => {
 								Object.values(questionSelected).length === 0
 									? {
 											pregunta: "",
-											tipo: "",
+											tipoDeRespuesta: "",
 											tipoCerrada: "",
 											respuesta1: "",
 											respuesta2: "",
@@ -139,7 +138,7 @@ export const ModalPapeleta = ({ statusModal, handleToggleModal }) => {
 									  }
 									: {
 											pregunta: questionSelected["pregunta"],
-											tipo: questionSelected["tipoDeRespuesta"],
+											tipoDeRespuesta: questionSelected["tipoDeRespuesta"],
 											tipoCerrada: questionSelected["subtipo"],
 											respuesta1: questionSelected["respuesta1"],
 											respuesta2: questionSelected["respuesta2"],
@@ -184,10 +183,10 @@ export const ModalPapeleta = ({ statusModal, handleToggleModal }) => {
 									<TiposRespuestas
 										isCerrada={isCerrada}
 										setIsCerrada={setIsCerrada}
-										valuesTipo={values.tipo}
+										valuesTipo={values.tipoDeRespuesta}
 										valuesTipoCerrada={values.tipoCerrada}
 										handleChange={handleChange}
-										errorsTipo={errors.tipo}
+										errorsTipo={errors.tipoDeRespuesta}
 										errorsTipoCerrada={errors.tipoCerrada}
 										valuesRespuesta1={values.respuesta1}
 										valuesRespuesta2={values.respuesta2}

@@ -36,14 +36,14 @@ export const consultaCiudadanaSlice = createSlice({
 		onAddQuestion: (state, { payload }) => {
 			state.questions.push({
 				id: payload?.id,
-				pregunta: payload?.question,
-				tipoDeRespuesta: payload?.type,
-				subtipo: payload?.closeType,
-				respuesta1: payload?.answer1,
-				respuesta2: payload?.answer2,
-				respuesta3: payload?.answer3,
-				respuesta4: payload?.answer4,
-				respuesta5: payload?.answer5,
+				pregunta: payload?.pregunta,
+				tipoDeRespuesta: payload?.tipoDeRespuesta,
+				subtipo: payload?.tipoCerrada,
+				respuesta1: payload?.respuesta1,
+				respuesta2: payload?.respuesta2,
+				respuesta3: payload?.respuesta3,
+				respuesta4: payload?.respuesta4,
+				respuesta5: payload?.respuesta5,
 			});
 		},
 		onDeleteQuestion: (state, { payload }) => {
@@ -51,7 +51,8 @@ export const consultaCiudadanaSlice = createSlice({
 			state.questions.splice(state.questions.indexOf(questionFound), 1);
 		},
 		onEditQuestion: (state, { payload }) => {
-			state.questionSelected = state.questions[payload];
+			// console.log("ENCUENTRA", state.questions[payload]);
+			state.questionSelected = state.questions[0];
 		},
 		onUpdateQuestion: (state, { payload }) => {
 			const question = state.questions.find(
@@ -70,6 +71,9 @@ export const consultaCiudadanaSlice = createSlice({
 		onSetQuestionsSelectedNull: (state, { payload }) => {
 			state.questionSelected = {};
 		},
+		onSetQuestionsNull: (state, { payload }) => {
+			state.questions = [];
+		},
 		onFillConsultasData: (state, { payload }) => {
 			state.consultasData = payload;
 			// state.status = "success";
@@ -82,6 +86,14 @@ export const consultaCiudadanaSlice = createSlice({
 			const id = state.consultasData.findIndex((consulta) => consulta.idJornada === payload);
 			console.log("INDEX ENCONTRADO: ", id);
 			state.consultasData.splice(id, 1);
+		},
+		onDeleteBallotData: (state, { payload }) => {
+			console.log("PAYLOAD: ", payload);
+			const id = state.consultaSelected.ballots.findIndex(
+				(ballot) => ballot.idPapeleta === payload
+			);
+			console.log("INDEX ENCONTRADO: ", id);
+			state.consultaSelected.ballots.splice(id, 1);
 		},
 		onSetConsultaSelected: (state, { payload }) => {
 			console.log("PAYLOAD", payload);
@@ -98,6 +110,9 @@ export const consultaCiudadanaSlice = createSlice({
 		},
 		onAddBallot: (state, { payload }) => {
 			state.consultaSelected.ballots.push(payload);
+		},
+		onFillBallots: (state, { payload }) => {
+			state.consultaSelected.ballots = payload;
 		},
 		onEditBallot: (state, { payload }) => {
 			// state.consultaSelected.ballotSelected = state.consultaSelected.ballots[payload];
@@ -136,6 +151,9 @@ export const {
 	onDeleteConsultaCiudadanaData,
 	onSetConfigSelected,
 	onSetConfigSelectedNull,
+	onFillBallots,
+	onSetQuestionsNull,
+	onDeleteBallotData,
 } = consultaCiudadanaSlice.actions;
 
 // export default consultaCiudadanaSlice.reducer;

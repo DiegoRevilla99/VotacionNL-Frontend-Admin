@@ -22,8 +22,8 @@ export const AdminRoutes = () => {
 	console.log("STATUS: ", status);
 
 	useEffect(() => {
-		if (status === "success") {
-			setTimeout(() => toastOffOperation(), 1000);
+		if (status === "success" || status === "error") {
+			setTimeout(() => toastOffOperation(), 2000);
 		}
 	}, [status]);
 
@@ -43,6 +43,16 @@ export const AdminRoutes = () => {
 			>
 				<Alert severity="success" sx={{ width: "100%" }}>
 					{toastSuccessMessage}
+				</Alert>
+			</Snackbar>
+			<Snackbar
+				open={status === "error"}
+				autoHideDuration={4000}
+				TransitionProps={{ onExited: handleExited }}
+				TransitionComponent={Slide}
+			>
+				<Alert severity="error" sx={{ width: "100%" }}>
+					{toastErrorMessage}
 				</Alert>
 			</Snackbar>
 			<Snackbar

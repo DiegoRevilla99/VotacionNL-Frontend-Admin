@@ -51,8 +51,10 @@ export const ConfiguracionConsulta = () => {
 			finRecepcionVotos: new Date(values.finRecepcionVotos).toISOString(),
 			inicioAsignacionContrasenia: new Date(values.inicioAsignacionContrasenia).toISOString(),
 			finAsignacionContrasenia: new Date(values.finAsignacionContrasenia).toISOString(),
-			tiempoDuracionRespuesta: new Date(values.tiempoDuracionRespuesta).toLocaleTimeString(),
-			tiempoExtra: new Date(values.tiempoExtra).toLocaleTimeString(),
+			tiempoDuracionRespuesta: new Date(values.tiempoDuracionRespuesta)
+				.toTimeString()
+				.substring(0, 8),
+			tiempoExtra: new Date(values.tiempoExtra).toTimeString().substring(0, 8),
 			habilitarVerificacion: values.habilitarVerificacion,
 		};
 		console.log(data);
@@ -131,9 +133,25 @@ export const ConfiguracionConsulta = () => {
 										finAsignacionContrasenia: dayjs(
 											configSelected.finAssignPass
 										),
-										tiempoDuracionRespuesta: "",
-										tiempoExtra: "",
-										habilitarVerificacion: "",
+										tiempoDuracionRespuesta: dayjs(
+											new Date(
+												0,
+												0,
+												0,
+												0,
+												configSelected?.tiempoDuracionVoto?.substring(3, 5),
+												configSelected?.tiempoDuracionVoto?.substring(6, 8)
+											)
+										),
+										tiempoExtra: new Date(
+											0,
+											0,
+											0,
+											0,
+											configSelected?.tiempoExtraVoto?.substring(3, 5),
+											configSelected?.tiempoExtraVoto?.substring(6, 8)
+										),
+										habilitarVerificacion: configSelected.dispVerificacion,
 										isDisabled: true,
 								  }
 						}
@@ -282,7 +300,7 @@ export const ConfiguracionConsulta = () => {
 									</Grid>
 									<Grid item xs={6} md={3} mt="0.5rem">
 										<TimeFieldWithTitle
-											label={"TIEMPO DE DURACIÓN DEL VOTO"}
+											label={"TIEMPO DE DURACIÓN DEL VOTO (mm:ss)"}
 											name={"tiempoDuracionRespuesta"}
 											value={values.tiempoDuracionRespuesta}
 											setFieldValue={setFieldValue}
@@ -294,7 +312,7 @@ export const ConfiguracionConsulta = () => {
 									</Grid>
 									<Grid item xs={6} md={3} mt="0.5rem">
 										<TimeFieldWithTitle
-											label={"TIEMPO EXTRA PARA EL VOTANTE"}
+											label={"TIEMPO EXTRA PARA EL VOTANTE (mm:ss)"}
 											name={"tiempoExtra"}
 											value={values.tiempoExtra}
 											setFieldValue={setFieldValue}
@@ -318,7 +336,9 @@ export const ConfiguracionConsulta = () => {
 													true
 												)
 											}
+											checked={values.habilitarVerificacion}
 											value={values.habilitarVerificacion}
+											disabled={values.isDisabled}
 										/>
 									</Grid>
 								</Grid>

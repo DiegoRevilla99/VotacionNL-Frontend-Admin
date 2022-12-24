@@ -5,7 +5,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import React from "react";
 
 export const TimeFieldWithTitle = React.memo(
-	({ label, name, value, handleChange, touched, error, setFieldValue }) => {
+	({ label, name, value, handleChange, touched, error, setFieldValue, isDisabled }) => {
 		return (
 			<Box
 				sx={{
@@ -16,6 +16,7 @@ export const TimeFieldWithTitle = React.memo(
 			>
 				<LocalizationProvider dateAdapter={AdapterDayjs}>
 					<TimePicker
+						disabled={isDisabled}
 						views={["minutes", "seconds"]}
 						inputFormat="mm:ss"
 						value={value}

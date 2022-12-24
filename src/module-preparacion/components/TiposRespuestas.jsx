@@ -43,7 +43,7 @@ export const TiposRespuestas = React.memo(
 						</Typography>
 					</FormLabel>
 					<RadioGroup
-						name="tipo"
+						name="tipoDeRespuesta"
 						onChange={handleChange}
 						value={valuesTipo}
 						// error={touchedTipo && Boolean(errorsTipo)}
