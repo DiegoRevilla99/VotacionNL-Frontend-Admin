@@ -35,21 +35,21 @@ const style = {
 
 const validationSchema = object({
 	apellidoPCandidato: string("").required(
-		"Por favor, ingresa el nombre del propietario"
+		"Por favor, ingresa el apellido paterno del candidato/a"
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
 		apellidoMCandidato: string("").required(
-		"Por favor, ingresa el nombre del propietario"
+		"Por favor, ingresa el apellido materno del candidato/a"
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
 		nombreCandidato: string("").required(
-		"Por favor, ingresa el nombre del propietario"
+		"Por favor, ingresa el nombre completo del candidato/a"
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
 	seudonimoCandidato: string(
-		"Por favor, ingresa el seudónimo del candidato"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+		"Por favor, ingresa el seudónimo del candidato/a"
+		).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
 		fechaNacimiento: date().required(
-		"Por favor, ingresa la fecha de nacimiento"
+		"Por favor, ingresa la fecha de nacimiento del candidato/a"
 		).max(new Date(), "No puedes ingresar una fecha futura"),
-		genero: string("Selecciona el genero").required("Por favor, selecciona el genero"),
+		genero: string("").required("Por favor, selecciona el género"),
 });
 
 export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }) => {
@@ -202,7 +202,7 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 					</Box>
 					{touched.fotografia &&
 						fotografia.name === "Sin Archivo seleccionado" && (
-								<Box
+								<Box ml={2} 
 									sx={{
 									fontSize: "12px",
 										color: "#791010" }}
@@ -252,7 +252,7 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 									errorsTipo={errors.genero}
 								/>
 								{touched.genero && (
-								<Box
+								<Box ml={2}
 									sx={{
 									fontSize: "12px",
 										color: "#791010" }}
