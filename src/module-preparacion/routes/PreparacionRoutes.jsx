@@ -12,7 +12,6 @@ import { RegistroJornadaElectoral } from "../pages/RegistroJornadaElectoral";
 import { RegistroComite } from "../pages/RegistroComite";
 import { RegistroConsultaCiudadana } from "../pages/RegistroConsultaCiudadana";
 import { ConfiguracionJornada } from "../pages/ConfiguracionJornada";
-import { ConfiguracionBoleta } from "../pages/ConfiguracionBoleta";
 import { ConfigBoleta } from "../pages/formales/ConfigBoleta";
 import { ConfigBoletaMultiple } from "../pages/no-formales/ConfigBoletaMultiple";
 import { CrudPapeletas } from "../pages/CrudPapeletas";
@@ -22,45 +21,72 @@ import { AddBoletaJornadaGenerica } from "../pages/AddBoletaJornadaGenerica";
 import { ConfiguracionConsulta } from "../pages/ConfiguracionConsulta";
 
 export const PreparacionRoutes = () => {
-	return (
-		<PrivateRoute>
-			<Routes>
-				<Route path="inicio" element={<HomePreparacion></HomePreparacion>} />
+  return (
+    <PrivateRoute>
+      <Routes>
+        <Route path="inicio" element={<HomePreparacion></HomePreparacion>} />
 
-				<Route path="registroJornada" element={<RegistroJornadaElectoral />} />
-				<Route path="jornada" element={<CrudJornada />} />
-				<Route path="jornada/boleta" element={<AddBoletaJornada></AddBoletaJornada>} />
+        <Route path="registroJornada" element={<RegistroJornadaElectoral />} />
+        <Route path="jornada" element={<CrudJornada />} />
+        <Route
+          path="jornada/boleta"
+          element={<AddBoletaJornada></AddBoletaJornada>}
+        />
 
-				<Route path="comite" element={<CrudComite />} />
-				<Route path="comite/boleta" element={<AddBoletaComite></AddBoletaComite>} />
-				<Route path="comite/boleta/:nombre" element={<AddBoletaComite></AddBoletaComite>} />
-				<Route path="registroComite" element={<RegistroComite />} />
+        <Route path="comite" element={<CrudComite />} />
+        <Route
+          path="comite/boleta"
+          element={<AddBoletaComite></AddBoletaComite>}
+        />
+        <Route
+          path="comite/boleta/:nombre"
+          element={<AddBoletaComite></AddBoletaComite>}
+        />
+        <Route path="registroComite" element={<RegistroComite />} />
 
-				<Route path="consulta" element={<CrudConsulta />} />
-				<Route path="registroConsultaCiudadana" element={<RegistroConsultaCiudadana />} />
-				{/* <Route path="consulta/papeleta" element={<AddPapeleta />} /> */}
-				<Route path="consulta/:id" element={<CrudPapeletas />} />
-				{/* <Route path="registroConsultaCiudadana" element={<RegistroConsultaCiudadana />} /> */}
-				<Route path="consulta/:id/papeleta/:idPapeleta" element={<AddPapeleta />} />
+        <Route path="consulta" element={<CrudConsulta />} />
+        <Route
+          path="registroConsultaCiudadana"
+          element={<RegistroConsultaCiudadana />}
+        />
+        {/* <Route path="consulta/papeleta" element={<AddPapeleta />} /> */}
+        <Route path="consulta/:id" element={<CrudPapeletas />} />
+        {/* <Route path="registroConsultaCiudadana" element={<RegistroConsultaCiudadana />} /> */}
+        <Route
+          path="consulta/:id/papeleta/:idPapeleta"
+          element={<AddPapeleta />}
+        />
 
-				{/* CONFIGURACION FORMAL */}
-				<Route path="jornada/config" element={<ConfiguracionJornada />} />
-				<Route path="jornada/configboleta/:id" element={<ConfigBoleta />} />
+        {/* CONFIGURACION FORMAL */}
+        <Route path="jornada/config" element={<ConfiguracionJornada />} />
+        <Route path="jornada/configboleta/:id" element={<ConfigBoleta />} />
 
-				{/* CONFIGURACION NO FORMAL */}
-				<Route path="jornadaNoFormal/config" element={<ConfiguracionJornada />} />
-				<Route path="jornadaNoFormal/configboleta" element={<ConfigBoletaMultiple />} />
-				<Route
-					path="registroJornadaGenerica"
-					element={<RegistroJornadaElectoralGenerica />}
-				/>
-				<Route path="JornadaGenerica" element={<CrudJornadaGenerica />} />
-				<Route path="JornadaGenerica/boleta" element={<AddBoletaJornadaGenerica />} />
-				<Route path="jornada/configboleta" element={<ConfigBoletaMultiple />} />
-				<Route path="consulta/config/:idConsulta" element={<ConfiguracionConsulta />} />
+        {/* CONFIGURACION NO FORMAL */}
+        <Route
+          path="jornadaNoFormal/config"
+          element={<ConfiguracionJornada />}
+        />
+        <Route
+          path="jornadaNoFormal/configboleta"
+          element={<ConfigBoletaMultiple />}
+        />
+        <Route
+          path="registroJornadaGenerica"
+          element={<RegistroJornadaElectoralGenerica />}
+        />
+        <Route path="JornadaGenerica" element={<CrudJornadaGenerica />} />
+        <Route
+          path="JornadaGenerica/boleta"
+          element={<AddBoletaJornadaGenerica />}
+        />
+        <Route path="jornada/configboleta" element={<ConfigBoletaMultiple />} />
+        <Route
+          path="consulta/config/:idConsulta"
+          element={<ConfiguracionConsulta />}
+        />
 
-				<Route path="/*" element={<Navigate to="/preparacion/inicio" />} />
-			</Routes>
-		</PrivateRoute>
-	);
+        <Route path="/*" element={<Navigate to="/preparacion/inicio" />} />
+      </Routes>
+    </PrivateRoute>
+  );
 };

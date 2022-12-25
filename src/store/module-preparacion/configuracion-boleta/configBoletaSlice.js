@@ -3,10 +3,13 @@ import { createSlice } from '@reduxjs/toolkit';
 export const configBoletaSlice = createSlice({
     name: 'configBoleta',
     initialState: {
+        boleta: null,
+        errorBoleta: null,
         coaliciones: [],
         asociaciones: [],
         candidatos: [],
         partidos: [],
+        isLoadingBoleta: false,
         isLoadingCoaliciones: false,
         isLoadingPartidos: false,
         isLoadingAsociaciones: false,
@@ -15,6 +18,7 @@ export const configBoletaSlice = createSlice({
         successMessage: "",
     },
     reducers: {
+        //COALICIONES
         startLoadingCoaliciones: (state, /* action */) => {
             state.isLoadingCoaliciones = true;
         },
@@ -23,7 +27,24 @@ export const configBoletaSlice = createSlice({
             state.coaliciones = action.payload.coaliciones;
         },
 
+        //BOLETA SELECCIONADA
+        startLoadingBoleta: (state, /* action */) => {
+            state.isLoadingBoleta = true;
+        },
+        endLoadingBoleta: (state, /* action */) => {
+            state.isLoadingBoleta = false;
+        },
+        setBoleta: (state, action) => {
+            state.isLoadingBoleta = false;
+            state.boleta = action.payload.boleta;
+            state.errorBoleta = null;
+        },
+        setErrorBoleta: (state, action) => {
+            state.isLoadingBoleta = false;
+            state.errorBoleta = action.payload.errorBoleta;
+        },
 
+        //PARTIDOS
         startLoadingPartidos: (state, /* action */) => {
             state.isLoadingPartidos = true;
         },
@@ -59,4 +80,4 @@ export const configBoletaSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation, startLoadingCoaliciones, startLoadingPartidos, setPartidos, setCoaliciones } = configBoletaSlice.actions;
+export const { setErrorBoleta, endLoadingBoleta, setBoleta, startLoadingBoleta, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation, startLoadingCoaliciones, startLoadingPartidos, setPartidos, setCoaliciones } = configBoletaSlice.actions;

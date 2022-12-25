@@ -35,20 +35,13 @@ body,
 
 
 .agrupacion{
-  transition-duration: 500ms;
-  transition-property:  border-width;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
 }
 .agrupacion:hover{
-  /* background: #FFF ; */
-  
-  transition: box-shadow 0.3s ease-in-out;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.617);
-  transition: 0.3s !important;
-  
-  
-  
-  
-  
+  transition: box-shadow 0.8s ease-in-out !important;
+  transition: background 0.3s ease-in-out !important;
+  background: #F7EBFC !important; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.589) !important;
 }
 
  

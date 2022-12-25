@@ -1,4 +1,10 @@
-import { Box, Checkbox, Typography } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  FormControlLabel,
+  Radio,
+  Typography,
+} from "@mui/material";
 import React from "react";
 
 export const PartidoSelect = ({
@@ -7,23 +13,18 @@ export const PartidoSelect = ({
   claveElectoral = "",
   img = "url",
   onSelect = () => {},
-  onNotSelect = () => {},
+  valueRadio = "",
 }) => {
-  const [checked, setChecked] = React.useState(false);
-
   const handleChange = (event) => {
-    setChecked(event.target.checked);
-    if (event.target.checked) {
-      onSelect(claveElectoral);
-    } else {
-      onNotSelect(claveElectoral);
-    }
+    onSelect(event.target.value);
   };
+
+  const value = valueRadio === claveElectoral;
 
   return (
     <Box
       sx={{
-        boxShadow: checked ? 3 : 0,
+        boxShadow: value ? 3 : 0,
         display: "flex",
         justifyContent: "space-around",
         alignItems: "center",
@@ -32,7 +33,8 @@ export const PartidoSelect = ({
         m: 1,
         border: "1px solid rgba(0,0,0,0.2)",
         borderRadius: "8px",
-        background: checked ? "#E7C0F9" : "#FFF",
+        background: value ? "#E7C0F9" : "#FFF",
+        transition: "boxShadow,background 0.4s ease-in-out",
       }}
     >
       <Box
@@ -52,10 +54,12 @@ export const PartidoSelect = ({
           {partido}
         </Typography>
       </Box>
-      <Checkbox
-        checked={checked}
+      <Radio
+        checked={valueRadio === claveElectoral}
         onChange={handleChange}
-        inputProps={{ "aria-label": "controlled" }}
+        value={claveElectoral}
+        name="radio-buttons"
+        inputProps={{ "aria-label": "A" }}
       />
     </Box>
   );

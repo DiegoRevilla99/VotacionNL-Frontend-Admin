@@ -42,6 +42,39 @@ const candidatos = [
 ]
 
 
+const boleta = {
+    httpCode: "OK",
+    data: [
+        {
+            idEstructuraBoleta: 2,
+            encabezadoBoleta: "ELECCIONES MUN",
+            entidadFederativa: "OAXACA",
+            municipio: "SANTA LUCIA",
+            distritoElectoral: 12,
+            modalidadVotacionModel: {
+                idModalidadVotacion: 1,
+                modalidad: "PLANILLA",
+                mostrarCandidaturasNoReg: true,
+                mostrarVotoNulo: true,
+                minOpciones: 1,
+                maxOpciones: 3,
+                contabilizacion: "INDIVIDUAL"
+            }, jornadaModel: {
+                idJornada: "JEO-JUN23-GOB",
+                nombreJornada: "JORNADA ELECTORAL GOBERNADOR ORDINARIA 2023",
+                dateTimeCreation: "2019-07-04T20:38:38.604+00:00",
+                userCreation: "ALEJANDRO",
+                entidad: "OAXACA",
+                tipoJornada: "ORDINARIA",
+                formalidad: "FORMAL"
+            }
+        }
+    ],
+    mensaje: "Todos los registros existentes:",
+    code: 200
+}
+
+
 
 
 export const getCoalicionesAPI = () => {
@@ -50,6 +83,18 @@ export const getCoalicionesAPI = () => {
 
         setTimeout(() => {
             resolve(coaliciones);
+        }, 700);
+
+    });
+
+}
+
+export const getBoletaAPI = (idBoleta) => {
+
+    return new Promise((resolve, reject) => {
+
+        setTimeout(() => {
+            resolve(boleta);
         }, 700);
 
     });

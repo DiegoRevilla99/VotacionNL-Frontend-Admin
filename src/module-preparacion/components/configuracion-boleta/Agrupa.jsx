@@ -1,10 +1,10 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
-import { PlantillaHeader } from "../layout/PlantillaHeader";
+import { PlantillaHeader } from "../../layout/PlantillaHeader";
 import { Coalicion } from "./Coalicion";
 import { BoxPartido } from "./BoxPartido";
-import { AddCoalicion } from "./addCoalicion";
+import { AddCoalicion } from "./AddCoalicion";
 
 const useStyles = makeStyles({
   hr: {

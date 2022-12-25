@@ -3,19 +3,23 @@ import * as yup from "yup";
 import {
   Button,
   Checkbox,
+  FormControl,
   IconButton,
   Modal,
+  RadioGroup,
   TextField,
   Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, ErrorMessage } from "formik";
 
-import { useDispatch } from "react-redux";
-import { ErrorField } from "./ErrorField";
+import { useDispatch, useSelector } from "react-redux";
+import { ErrorField } from "../ErrorField";
 import { BoxPartido } from "./BoxPartido";
+import { getPartidos } from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
+import { PartidoSelect } from "./PartidoSelect";
 
 const useStyles = makeStyles({
   textField: {
@@ -55,26 +59,34 @@ const modalResponsive = {
 };
 
 let schema = yup.object().shape({
-  nombre: yup.string().required("Nombre de la asociacion es necesario"),
+  nombre: yup.string().required("Nombre de la coalición es necesario"),
+  emblema: yup.string().required("Emeblema de la coalición es necesario"),
 });
 
-export const ModalAsociacion = ({
+export const ModalCoalicion = ({
   isOpen = false,
   abrirCerrarModal = () => {},
-  titulo = "titulo",
   enviar = () => {
-    alert("Presionaste encviar del modal");
+    alert("Presionaste enviar del modal");
   },
+  idBoleta = null,
 }) => {
   const styles = useStyles();
-
   const dispatch = useDispatch();
 
-  const [emblema, setEmblema] = useState({ name: "Sin Archivo seleccionado" });
+  const [logo, setLogo] = useState({ name: "Sin Archivo seleccionado" });
+  const [candidato, setCandidato] = useState([]);
+  const { partidos = [], isLoadingPartidos } = useSelector(
+    (state) => state.configBoleta
+  );
+
+  const onSelectPartido = (claveElectoral) => {
+    setCandidato(claveElectoral);
+  };
 
   const cerrarM = () => {
     abrirCerrarModal();
-    setEmblema({ name: "Sin Archivo seleccionado" });
+    setLogo({ name: "Sin Archivo seleccionado" });
   };
 
   const validando = (values, props) => {
@@ -92,11 +104,20 @@ export const ModalAsociacion = ({
         initialValues={{
           nombre: "",
           emblema: "",
+          logo: "",
         }}
         validate={validando}
         validationSchema={schema}
         onSubmit={(valores) => {
-          enviar();
+          console.log("on");
+
+          const data = {
+            nombre: valores.nombre,
+            emblema: valores.emblema,
+            logo: logo.name,
+          };
+
+          enviar(data);
         }}
       >
         {({ touched, errors, handleBlur, handleChange, values }) => (
@@ -104,10 +125,10 @@ export const ModalAsociacion = ({
             <Box sx={{ width: "100%" }}>
               <div aling="left">
                 <Typography sx={{ fontWeight: "bold", mb: 3 }}>
-                  {titulo}
+                  COALICIÓN
                 </Typography>
               </div>
-              <Typography>NOMBRE DE LA ASOCIACIÓN</Typography>
+              <Typography>NOMBRE DE LA COALICIÓN</Typography>
               <TextField
                 required
                 label=""
@@ -126,7 +147,26 @@ export const ModalAsociacion = ({
                 component={() => <ErrorField>{errors.nombre}</ErrorField>}
               />
               <br />
-              <Typography>INSERTAR EMBLEMA DE LA ASOCIACIÓN</Typography>
+              <Typography>EMBLEMA</Typography>
+              <TextField
+                required
+                label=""
+                variant="outlined"
+                name="emblema"
+                id="emblema"
+                className={styles.textField}
+                value={values.emblema}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              ></TextField>
+              <br />
+
+              <ErrorMessage
+                name="nombre"
+                component={() => <ErrorField>{errors.emblema}</ErrorField>}
+              />
+              <br />
+              <Typography>INSERTAR LOGO DE LA COALICIÓN</Typography>
               <Box
                 display="flex"
                 alignItems="center"
@@ -138,7 +178,7 @@ export const ModalAsociacion = ({
                   disabled
                   variant="outlined"
                   size="small"
-                  value={emblema.name}
+                  value={logo.name}
                   className={styles.textField}
                 ></TextField>
                 <IconButton
@@ -149,12 +189,12 @@ export const ModalAsociacion = ({
                 >
                   <input
                     hidden
-                    onChange={(e) => setEmblema(e.target.files[0])}
+                    onChange={(e) => setLogo(e.target.files[0])}
                     onBlur={handleBlur}
                     accept="image/x-png,image/jpeg"
                     type="file"
-                    name="emblema"
-                    id="emblema"
+                    name="logo"
+                    id="logo"
                   />
                   <PhotoCamera fontSize="" />
                 </IconButton>
@@ -177,7 +217,7 @@ export const ModalAsociacion = ({
                 }}
               >
                 <Typography sx={{ fontWeight: "bold" }}>
-                  SELECCIONE LOS CANDIDATOS DE ESTA ASOCIACÍON
+                  SELECCIONE EL CANDIDATO CORRESPONDIENTES A ESTA COALICIÓN
                 </Typography>
 
                 <Box
@@ -191,10 +231,16 @@ export const ModalAsociacion = ({
                     p: 1,
                   }}
                 >
-                  {/* <BoxPartido name="Laura Yessenia Sanchez Lopez"> irial el checkBox</BoxPartido> */}
-
-                  <BoxPartido name="Kevin EdilbertoChavez Sanchez"></BoxPartido>
-                  <BoxPartido name="Jose Antonio Diego Revilla"></BoxPartido>
+                  {partidos.map((partido) => (
+                    <PartidoSelect
+                      key={partido.claveElectoral}
+                      claveElectoral={partido.claveElectoral}
+                      candidato={partido.nombreCandidato}
+                      partido={partido.partidoModel.nombre}
+                      onSelect={onSelectPartido}
+                      valueRadio={candidato}
+                    ></PartidoSelect>
+                  ))}
                 </Box>
               </Box>
               <br />
@@ -209,7 +255,7 @@ export const ModalAsociacion = ({
                   borderRadius: "15px",
                 }}
               >
-                CREAR COALICIÓN
+                CREAR
               </Button>
               <Button
                 variant="contained"
@@ -229,6 +275,10 @@ export const ModalAsociacion = ({
       </Formik>
     </Box>
   );
+
+  useEffect(() => {
+    dispatch(getPartidos(idBoleta));
+  }, []);
   return (
     <>
       <div className={styles.contenedor}>

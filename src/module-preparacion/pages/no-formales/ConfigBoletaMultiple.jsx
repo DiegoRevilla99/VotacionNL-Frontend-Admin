@@ -4,7 +4,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { Box } from "@mui/system";
 import React from "react";
-import { Agrupa } from "../../components/Agrupa";
+import { Agrupa } from "../../components/configuracion-boleta/Agrupa";
 import { PlantillaHeader } from "../../layout/PlantillaHeader";
 import { makeStyles } from "@mui/styles";
 import { Button, Stack, TextField, Typography } from "@mui/material";

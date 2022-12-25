@@ -1,5 +1,13 @@
-import { Box, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Typography,
+} from "@mui/material";
 import React from "react";
+import coalicionPhoto from "../../img/coalicion.png";
 
 export const BoxPartido = ({
   candidato = "Nombre candidato",
@@ -11,31 +19,27 @@ export const BoxPartido = ({
       sx={{
         boxShadow: 1,
         display: "flex",
-        justifyContent: "space-around",
+        justifyContent: "space-between",
         alignItems: "center",
-        width: "300px",
+        width: "250px",
         height: "80px",
         m: 1,
-        border: "1px solid rgba(0,0,0,0.2)",
+        border: "1px solid rgba(0,0,0,0.3)",
         borderRadius: "8px",
         // background: "#F1F1F1",
       }}
     >
-      <Box
-        sx={{
-          borderRadius: "15px",
-          width: "50px",
-          height: "50px",
-          background: "#000",
-          ml: 1,
-        }}
-      ></Box>
+      <img
+        style={{ width: "100px", height: "100%", boxShadow: 1 }}
+        alt="Logo"
+        src={coalicionPhoto}
+      />
       <Box sx={{ p: 2 }}>
         <Typography sx={{ fontSize: "15px", fontWeight: "bold" }}>
-          {candidato}
+          {partido}
         </Typography>
         <Typography sx={{ fontSize: "12px", fontStyle: "oblique" }}>
-          {partido}
+          {candidato}
         </Typography>
       </Box>
     </Box>

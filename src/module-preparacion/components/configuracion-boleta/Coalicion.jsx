@@ -7,11 +7,11 @@ import ClearSharpIcon from "@mui/icons-material/ClearSharp";
 import React from "react";
 import { BoxPartido } from "./BoxPartido";
 
-import "../../styles/generalContainer.css";
+import "../../../styles/generalContainer.css";
 
 export const Coalicion = ({
   color = "#511079",
-  colorb = "#F3E8F8",
+  colorb = "#F0DBF9",
   info = {},
 }) => {
   const { claveCoalicion, nombre, partidos } = info;
@@ -49,7 +49,7 @@ export const Coalicion = ({
           alignItems: "center",
           background: colorb,
           width: "100%",
-          p: 1,
+
           mb: 5,
           borderRadius: "8px",
           border: "1px solid rgba(0,0,0,0.1)",
