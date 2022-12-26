@@ -17,6 +17,7 @@ import { Formik } from 'formik';
 import { object, string, number } from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import { ModalAsociacionCP } from "../components/ModalAsociacionCP";
+import { ModalSustitutoBoleta } from "../components/ModalSustitutoBoleta";
 
 
 
@@ -64,7 +65,7 @@ export const AddBoletaJornada = () => {
 	const { nombreCandidatura } = useParams();
 	const navigate = useNavigate();
 	const { status } = useAddBoletasJornada();
-	const [statusMatchModal, setStatusMatchModal] = useState(false);
+
 
 	const dispatch = useDispatch();
 	const [datos, setDatos] = useState({
@@ -83,16 +84,18 @@ export const AddBoletaJornada = () => {
 	});
 	const [, forceUpdate] = React.useState();
 
+	const [statusMatchModal, setStatusMatchModal] = useState(false);
     const [statusCandidateModal, setStatusCandidateModal] = useState(false);
 	const [statusDeleteModal, setStatusDeleteModal] = useState(false);
 	const [statusAsociacionModal, setStatusAsociacionModal] = useState(false);
+	const [statusSubstituteModal, setStatusSubstituteModal] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleCloseMatchModal = () => setStatusMatchModal(false);
     const handleCloseCandidateModal = () => setStatusCandidateModal(false);
 	const handleCloseDeleteModal = () => setStatusDeleteModal(false);
 	const handleCloseAsociacionModal = () => setStatusAsociacionModal(false);
-
+	const handleCloseSubstituteModal = () => setStatusSubstituteModal(false);
 	 const handleOpenMatchModal = () => {
 	 	// toastOffOperation();
 	 	setStatusMatchModal(true);
@@ -111,6 +114,10 @@ export const AddBoletaJornada = () => {
 	const handleOpenAsociacionModal = () => {
 		// toastOffOperation();
 		setStatusAsociacionModal(true);
+	};
+
+	const handleOpenSubstituteModal = () => {
+		setStatusSubstituteModal(true);
 	};
 
 	const onCancel = () => {
@@ -383,6 +390,29 @@ export const AddBoletaJornada = () => {
 						</Grid>
 						<Grid item xs={12} md={6} lg={4}>
 							<Button
+								
+								onClick={handleOpenSubstituteModal}
+								variant="contained"
+								size="large"
+								disabled={status === "checking"}
+								sx={{
+									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+									transition: "all 0.5s ease",
+									backgroundColor: "#511079",
+									width: "100%",
+									borderRadius: "25px 25px 25px 25px",
+									"&:hover": {
+										backgroundColor: "#7E328B !important",
+										transform: "translate(-5px, -5px)",
+										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+									},
+								}}
+							>
+								Agregar suplente 
+							</Button>
+						</Grid>
+						<Grid item xs={12} md={6} lg={4}>
+							<Button
 								onClick={handleOpenMatchModal}
 								variant="contained"
 								size="large"
@@ -405,7 +435,7 @@ export const AddBoletaJornada = () => {
 								Agregar partido
 							</Button>
 						</Grid>
-						<Grid item xs={12} md={6} lg={4}>
+						<Grid item xs={12} md={6} lg={12}>
 							<Button
 								onClick={handleOpenAsociacionModal}
 								variant="contained"
@@ -427,7 +457,7 @@ export const AddBoletaJornada = () => {
 									},
 								}}
 							>
-								Asociaciar candidato a partido
+								Asociaciar participantes a partido
 							</Button>
 						</Grid>
 						<Grid item xs={4} md={2} lg={2}>
@@ -521,6 +551,7 @@ export const AddBoletaJornada = () => {
             <ModalBoletaCandidato statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} />
 			<ModalEliminarPC statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} />
 			<ModalAsociacionCP statusAsociacionModal={statusAsociacionModal} handleToggleModal={handleCloseAsociacionModal} />
+			<ModalSustitutoBoleta statusSubstituteModal={statusSubstituteModal} handleToggleModal={handleCloseSubstituteModal} />
 		</form>
 		</Box>
 		)}

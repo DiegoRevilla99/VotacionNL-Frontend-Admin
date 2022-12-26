@@ -26,7 +26,7 @@ const style = {
 	top: "50%",
 	left: "50%",
 	transform: "translate(-50%, -50%)",
-	width: "60rem",
+	width: "50rem",
 	bgcolor: "background.paper",
 	borderRadius: "2rem",
 	boxShadow: 3,
@@ -35,15 +35,16 @@ const style = {
 };
 const validationSchema = object({
 	candidato: string("").required(
-		"Por favor, ingresa el nombre del partido"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+		"Por favor, selecciona un candidato"
+		),
+	partido: string("").required(
+		"Por favor, selecciona un partido"
+		),
+	suplente: string("").required(
+		"Por favor, selecciona un suplente"
+		),
 });
 export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) => {
-	// const { addQuestion, questions, questionSelected, setQuestionsSelectedNull, updateQuestion } =
-	// 	useConsultaCiudadanaStore();
-	// const { toastSuccesOperation } = useUiStore();
-	// const [isCerrada, setIsCerrada] = useState(false);
-	// console.log("QUESTION", Object.values(questionSelected).length);
 
 	const onSave = (values) => {
 		handleToggleModal();
@@ -63,7 +64,7 @@ export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) 
 			<Box sx={style}>
 				<Box sx={{ overflowY: "auto", height: "100%" }}>
 					<Typography id="modal-modal-title" variant="h5" color="initial" align="center">
-						ASOCIACIÓN DE CANDIDATOS A PARTIDOS
+						ASOCIACIÓN DE PARTICIPANTES A PARTIDO
 					</Typography>
 					<Box m={"2rem"}>
 
@@ -71,6 +72,8 @@ export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) 
 							initialValues={
                                         {
 											candidato: "",
+											partido: "",
+											suplente: "",
 									  }
 							}
 							validationSchema={validationSchema}
@@ -80,12 +83,7 @@ export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) 
 						>
 							{({values, errors, touched, handleSubmit, handleChange, handleBlur}) => (
 								<Form  onSubmit={handleSubmit} >
-						<Stack
-							direction={{ xl: "row", lg: "row", sm: "column", xs: "column" }}
-							justifyContent="center"
-							alignItems="center"
-							spacing={{ xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
-						>
+
 							<Box
 							 sx={{
 								width: { xl: "100%", lg: "100%", sm: "100%", xs: "100%" },
@@ -133,7 +131,7 @@ export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) 
 											}}
 										/>
 							</Box>
-						</Stack>
+
 									
 
 

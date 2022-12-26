@@ -11,6 +11,7 @@ export const jornadaSlice = createSlice({
         boletaSelected: {
             encabezado: "",	//Text
 			nombreCandidatura: "",//Text
+            modalidadVotacion: "",//Text
 			entidadFederativa: "",//Text
 			municipio: "",//Text
 			distritoElectoralLocal: "",//Number
@@ -22,12 +23,11 @@ export const jornadaSlice = createSlice({
 			cargoSegundoFirmante: "",//Text
             partidos: [],
             candidatos: [],
+            suplentes: [],
         },
         partidoSelected: {
 			nombrePartido: "",	//Text
-			nombrePropietario: "",//Text
-			seudonimoCandidato: "",//Text
-			nombreSuplente: ""//Text
+			siglas: "",//Text
         },
         candidatoSelected: {
             apellidoPCandidato: "", 
@@ -38,9 +38,19 @@ export const jornadaSlice = createSlice({
             fechaNacimiento: "", 
             genero: ""
         },
+        suplenteSelected: {
+            apellidoPSuplente: "", 
+            apellidoMSuplente: "", 
+            nombreSuplente: "", 
+            fotoSuplente: "",
+            seudonimoSuplente: "", 
+            fechaNacimiento: "", 
+            genero: ""
+        },
         boletas: [],
         partidos: [],
         candidatos: [],
+        suplentes: [],
         status: "off",
         errorMessage: "",
         successMessage: "",
@@ -69,6 +79,10 @@ export const jornadaSlice = createSlice({
         setCandidatos: (state, action) => {
             state.isLoading = false;
             state.candidatos = action.payload.candidatos;
+        },
+        setSuplentes: (state, action) => {
+            state.isLoading = false;
+            state.suplentes = action.payload.suplentes;
         },
         onCheckingOperation: (state) => {
             state.status = "checking";

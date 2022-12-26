@@ -1,4 +1,4 @@
-import { addBoletaApi, addJornadaApi, addPartidoApi, editBoletaApi, getBoletasApi } from "../../../module-preparacion/helpers/ApiJornada";
+import { addBoletaApi, addJornadaApi, addPartidoApi, addCandidatoApi, addSuplenteApi, editBoletaApi, getBoletasApi } from "../../../module-preparacion/helpers/ApiJornada";
 import { onCheckingOperation, onErrorOperation, onSuccessOperation, setBoletas, startLoadingBoletas, startLoadingJornadas } from "./jornadaSlice";
 import {
     onToastCheckingOperation,
@@ -92,7 +92,7 @@ export const saveCandidato = (valores = {}, guardar = () => { }) => {
         dispatch(onToastCheckingOperation("Guardando candidato..."));
         dispatch(onCheckingOperation());
 
-        const result = await addPartidoApi(valores);
+        const result = await addCandidatoApi(valores);
 
         if (result) {
             dispatch(onSuccessOperation());
@@ -105,7 +105,24 @@ export const saveCandidato = (valores = {}, guardar = () => { }) => {
     };
 };
 
+export const saveSuplente = (valores = {}, guardar = () => { }) => {
 
+    return async (dispatch) => {
+        dispatch(onToastCheckingOperation("Guardando suplente..."));
+        dispatch(onCheckingOperation());
+
+        const result = await addSuplenteApi(valores);
+
+        if (result) {
+            dispatch(onSuccessOperation());
+            dispatch(onToastSuccessOperation({ successMessage: "suplente se guardó con éxito" }));
+            guardar();
+        } else {
+            dispatch(onErrorOperation());
+            dispatch(onToastErrorOperation({ errorMessage: "El suplente no se pudo guardar" }));
+        }
+    };
+};
 export const editBoleta = (valores = {}, guardar = () => { }) => {
 
     return async (dispatch) => {
