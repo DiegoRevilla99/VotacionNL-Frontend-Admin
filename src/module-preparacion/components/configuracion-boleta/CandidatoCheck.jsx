@@ -1,24 +1,37 @@
-import { Box, Checkbox, Typography } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  Checkbox,
+  FormControlLabel,
+  Radio,
+  Typography,
+} from "@mui/material";
+import React, { useEffect } from "react";
 
-export const PartidoSelect = ({
+export const CandidatoCheck = ({
   candidato = "Nombre candidato",
-  partido = "Nombre Partido",
   claveElectoral = "",
   img = "url",
   onSelect = () => {},
-  onNotSelect = () => {},
+  candidatosSeleted = [],
 }) => {
   const [checked, setChecked] = React.useState(false);
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
-    if (event.target.checked) {
-      onSelect(claveElectoral);
-    } else {
-      onNotSelect(claveElectoral);
-    }
+    onSelect(claveElectoral);
   };
+
+  useEffect(() => {
+    let cs = null;
+    cs = candidatosSeleted.find(
+      (candidato) => candidato.claveElectoral === claveElectoral
+    );
+    console.log(claveElectoral);
+    console.log(cs);
+    if (cs) {
+      setChecked(true);
+    }
+  }, []);
 
   return (
     <Box
@@ -33,6 +46,7 @@ export const PartidoSelect = ({
         border: "1px solid rgba(0,0,0,0.2)",
         borderRadius: "8px",
         background: checked ? "#E7C0F9" : "#FFF",
+        transition: "boxShadow,background 0.4s ease-in-out",
       }}
     >
       <Box
@@ -47,9 +61,6 @@ export const PartidoSelect = ({
       <Box sx={{ p: 2 }}>
         <Typography sx={{ fontSize: "15px", fontWeight: "bold" }}>
           {candidato}
-        </Typography>
-        <Typography sx={{ fontSize: "12px", fontStyle: "oblique" }}>
-          {partido}
         </Typography>
       </Box>
       <Checkbox

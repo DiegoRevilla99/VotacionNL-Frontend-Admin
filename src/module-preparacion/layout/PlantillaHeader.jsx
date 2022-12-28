@@ -24,7 +24,7 @@ const hijoResponsive = {
   pr: "2rem",
 };
 
-export const PlantillaHeader = ({ titulo = "Registro", children }) => {
+export const PlantillaHeader = ({ titulo = " ", children }) => {
   const classes = useStyles();
   return (
     <>
@@ -46,7 +46,7 @@ export const PlantillaHeader = ({ titulo = "Registro", children }) => {
             }}
           >
             <Typography sx={{ ml: "2rem" }} variant="h6">
-              {titulo}
+              {titulo != undefined ? titulo : ""}
             </Typography>
             <hr className={classes.hr} />
           </Box>

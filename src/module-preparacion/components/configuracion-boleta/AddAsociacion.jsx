@@ -1,10 +1,12 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { postCoalición } from "../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
+import { postAsociacion } from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
+
+import { ModalAsociacion } from "./ModalAsociación";
 import { ModalCoalicion } from "./ModalCoalicion";
 
-export const AddCoalicion = ({
+export const AddAsociacion = ({
   isOpen = false,
   abrirCerrarModal = () => {},
   idBoleta = null,
@@ -12,14 +14,15 @@ export const AddCoalicion = ({
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const enviar = (data) => {
-    dispatch(postCoalición(data, abrirCerrarModal));
+    //console.log("añadiendo asociciaiocn de desde addAsoci");
+    dispatch(postAsociacion(data, abrirCerrarModal));
   };
   return (
-    <ModalCoalicion
+    <ModalAsociacion
       idBoleta={idBoleta}
       isOpen={isOpen}
       abrirCerrarModal={abrirCerrarModal}
-      enviar={enviar}
-    ></ModalCoalicion>
+      agregar={enviar}
+    ></ModalAsociacion>
   );
 };

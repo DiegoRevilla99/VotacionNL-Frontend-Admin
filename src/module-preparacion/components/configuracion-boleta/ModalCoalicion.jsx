@@ -3,8 +3,10 @@ import * as yup from "yup";
 import {
   Button,
   Checkbox,
+  FormControl,
   IconButton,
   Modal,
+  RadioGroup,
   TextField,
   Typography,
 } from "@mui/material";
@@ -14,10 +16,11 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, ErrorMessage } from "formik";
 
 import { useDispatch, useSelector } from "react-redux";
-import { ErrorField } from "./ErrorField";
+import { ErrorField } from "../ErrorField";
 import { BoxPartido } from "./BoxPartido";
-import { getPartidos } from "../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
+
 import { PartidoSelect } from "./PartidoSelect";
+import { getCandidatos } from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
 
 const useStyles = makeStyles({
   textField: {
@@ -51,7 +54,7 @@ const modalResponsive = {
   transform: "translate(-47%,-50%)",
   padding: "2rem",
 
-  height: { xl: "85%", lg: "95%", sm: "97%", xs: "99%" },
+  height: { xl: "95%", lg: "98%", sm: "97%", xs: "99%" },
   overflowY: "scroll",
   alignItems: "start",
 };
@@ -64,40 +67,62 @@ let schema = yup.object().shape({
 export const ModalCoalicion = ({
   isOpen = false,
   abrirCerrarModal = () => {},
-  enviar = () => {
-    alert("Presionaste enviar del modal");
+  agregar = () => {
+    alert("Presionaste agregar del modal");
+  },
+  actualizar = () => {
+    alert("Presionaste actualizar del modal");
   },
   idBoleta = null,
+  coalicion = null,
 }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
-  const [logo, setLogo] = useState({ name: "Sin Archivo seleccionado" });
-  const [candidatos, setCandidatos] = useState([]);
-  const { partidos = [], isLoadingPartidos } = useSelector(
-    (state) => state.configBoleta
+  const [logo, setLogo] = useState(
+    coalicion ? { name: coalicion.logo } : { name: "Sin Archivo seleccionado" }
   );
+  const [candidato, setCandidato] = useState(
+    coalicion ? coalicion.candidato : { candidato: "Sin candidato" }
+  );
+  const {
+    candidatos = [],
+    isLoadingCandidatos,
+    coalicionSelected,
+  } = useSelector((state) => state.configBoleta);
 
-  const onSelectPartido = (claveElectoral) => {
-    setCandidatos([...candidatos, claveElectoral]);
-  };
-
-  const onNotSelectPartido = (claveElectoral) => {
-    const newCandidatos = candidatos.filter((candidato) => {
-      if (candidato !== claveElectoral) return candidato;
-    });
-    setCandidatos(newCandidatos);
+  const onSelectPartido = (info) => {
+    setCandidato(info);
   };
 
   const cerrarM = () => {
     abrirCerrarModal();
+    setCandidato({});
     setLogo({ name: "Sin Archivo seleccionado" });
   };
+  useEffect(() => {
+    dispatch(getCandidatos(idBoleta));
+  }, []);
+
+  useEffect(() => {
+    setLogo(
+      coalicion
+        ? { name: coalicion.logo }
+        : { name: "Sin Archivo seleccionado" }
+    );
+    setCandidato(
+      coalicion ? coalicion.candidato : { candidato: "Sin candidato" }
+    );
+  }, [isOpen]);
 
   const validando = (values, props) => {
     const errors = {};
-    if (emblema.name === "Sin Archivo seleccionado") {
-      errors.emblema = "Se necesita un emblema";
+    if (logo.name === "Sin Archivo seleccionado") {
+      errors.logo = "Se necesita un emblema";
+    }
+
+    if (candidato.candidato === "Sin candidato") {
+      errors.candidato = "Seleccione un candidato";
     }
 
     return errors;
@@ -107,22 +132,29 @@ export const ModalCoalicion = ({
     <Box sx={modalResponsive}>
       <Formik
         initialValues={{
-          nombre: "",
-          emblema: "",
-          logo: "",
+          nombre: coalicion ? coalicion.nombre : "",
+          emblema: coalicion ? coalicion.emblema : "",
+          logo: coalicion ? coalicion.logo : "",
+          candidato: "",
         }}
         validate={validando}
         validationSchema={schema}
         onSubmit={(valores) => {
-          console.log("on");
-
           const data = {
-            nombre: valores.nombre,
-            emblema: valores.emblema,
-            logo: logo.name,
+            coalicionModel: {
+              nombre: valores.nombre,
+              emblema: valores.emblema,
+              logo: logo.name,
+            },
+            partidos: candidato.partidos,
           };
 
-          enviar(data);
+          if (coalicion) {
+            actualizar(data, cerrarM);
+          } else {
+            agregar(data, cerrarM);
+          }
+          //enviar(data);
         }}
       >
         {({ touched, errors, handleBlur, handleChange, values }) => (
@@ -204,54 +236,65 @@ export const ModalCoalicion = ({
                   <PhotoCamera fontSize="" />
                 </IconButton>
               </Box>
-              {touched.emblema &&
-                emblema.name === "Sin Archivo seleccionado" && (
-                  <ErrorField>{errors.emblema}</ErrorField>
-                )}
+              {touched.logo && logo.name === "Sin Archivo seleccionado" && (
+                <ErrorField>{errors.logo}</ErrorField>
+              )}
 
               <Box
+                id="candidato"
+                name="candidato"
+                onBlur={handleBlur}
                 sx={{
                   boxShadow: 1,
                   width: "100%",
-                  height: "300px",
+                  height: { xl: "400px", lg: "350px" },
                   mt: 5,
-                  p: 2,
-                  border: "1px solid rgba(0,0,0,0.1)",
+                  p: 3,
+                  border: "1px solid rgba(0,0,0,0.4)",
                   borderRadius: "15px",
                   // background: "#F1F1F1",
                 }}
               >
                 <Typography sx={{ fontWeight: "bold" }}>
-                  SELECCIONE EL CANDIDATO CORRESPONDIENTES A ESTA COALICIÓN
+                  SELECCIONE EL CANDIDATO CORRESPONDIENTE A ESTA COALICIÓN
                 </Typography>
 
                 <Box
                   sx={{
                     display: "flex",
                     width: "100%",
-                    height: "200px",
+                    height: "100%",
                     overflowY: "scroll",
                     flexDirection: "row",
                     flexWrap: "wrap",
                     p: 1,
+                    mb: 1,
                   }}
                 >
-                  {partidos.map((partido) => (
+                  {candidatos.map((candidat) => (
                     <PartidoSelect
-                      key={partido.claveElectoral}
-                      claveElectoral={partido.claveElectoral}
-                      candidato={partido.nombreCandidato}
-                      partido={partido.partidoModel.nombre}
+                      key={candidat.claveElectoral}
+                      claveElectoral={candidat.claveElectoral}
+                      candidato={candidat.nombreCandidato}
+                      partidos={candidat.partidos}
                       onSelect={onSelectPartido}
-                      onNotSelect={onNotSelectPartido}
+                      valueRadio={candidato.claveElectoral}
                     ></PartidoSelect>
                   ))}
                 </Box>
+                {touched.candidato &&
+                  candidato.candidato === "Sin candidato" && (
+                    <ErrorField>{errors.candidato}</ErrorField>
+                  )}
               </Box>
               <br />
             </Box>
 
-            <Box display="flex" sx={{ width: "100%" }} justifyContent="end">
+            <Box
+              display="flex"
+              sx={{ mt: 1, p: 2, width: "100%" }}
+              justifyContent="end"
+            >
               <Button
                 type="submit"
                 variant="contained"
@@ -281,9 +324,6 @@ export const ModalCoalicion = ({
     </Box>
   );
 
-  useEffect(() => {
-    dispatch(getPartidos(idBoleta));
-  }, []);
   return (
     <>
       <div className={styles.contenedor}>

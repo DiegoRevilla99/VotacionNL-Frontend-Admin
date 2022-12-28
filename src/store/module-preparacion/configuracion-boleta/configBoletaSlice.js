@@ -3,18 +3,24 @@ import { createSlice } from '@reduxjs/toolkit';
 export const configBoletaSlice = createSlice({
     name: 'configBoleta',
     initialState: {
+        boleta: null,
+        errorBoleta: null,
         coaliciones: [],
+        coalicionSelected: null,
         asociaciones: [],
         candidatos: [],
         partidos: [],
+        isLoadingBoleta: false,
         isLoadingCoaliciones: false,
         isLoadingPartidos: false,
+        isLoadingCandidatos: false,
         isLoadingAsociaciones: false,
         status: "off",
         errorMessage: "",
         successMessage: "",
     },
     reducers: {
+        //COALICIONES
         startLoadingCoaliciones: (state, /* action */) => {
             state.isLoadingCoaliciones = true;
         },
@@ -22,14 +28,48 @@ export const configBoletaSlice = createSlice({
             state.isLoadingCoaliciones = false;
             state.coaliciones = action.payload.coaliciones;
         },
-
-
-        startLoadingPartidos: (state, /* action */) => {
-            state.isLoadingPartidos = true;
+        setCoalicionSelected: (state, action) => {
+            state.coalicionSelected = action.payload.coalicionSelected;
         },
-        setPartidos: (state, action) => {
-            state.isLoadingPartidos = false;
-            state.partidos = action.payload.partidos;
+
+        //ASOCIONES
+        startLoadingAsociaciones: (state, /* action */) => {
+            state.isLoadingAsociaciones = true;
+        },
+        setAsociaciones: (state, action) => {
+            state.isLoadingAsociaciones = false;
+            state.asociaciones = action.payload.asociaciones;
+        },
+
+
+
+        //BOLETA SELECCIONADA
+        startLoadingBoleta: (state, /* action */) => {
+            state.isLoadingBoleta = true;
+        },
+        endLoadingBoleta: (state, /* action */) => {
+            state.isLoadingBoleta = false;
+        },
+        setBoleta: (state, action) => {
+            state.isLoadingBoleta = false;
+            state.boleta = action.payload.boleta;
+            state.errorBoleta = null;
+        },
+
+
+        setErrorBoleta: (state, action) => {
+            state.isLoadingBoleta = false;
+            state.errorBoleta = action.payload.errorBoleta;
+        },
+
+        //CANDIDATOS
+        startLoadingCandidatos: (state, /* action */) => {
+            state.isLoadingCandidatos = true;
+        },
+
+        setCandidatos: (state, action) => {
+            state.isLoadingCandidatos = false;
+            state.candidatos = action.payload.candidatos;
         },
 
 
@@ -59,4 +99,4 @@ export const configBoletaSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation, startLoadingCoaliciones, startLoadingPartidos, setPartidos, setCoaliciones } = configBoletaSlice.actions;
+export const { startLoadingAsociaciones, setAsociaciones, setCoalicionSelected, setErrorBoleta, endLoadingBoleta, setBoleta, startLoadingBoleta, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation, startLoadingCoaliciones, startLoadingCandidatos, setCandidatos, setCoaliciones } = configBoletaSlice.actions;
