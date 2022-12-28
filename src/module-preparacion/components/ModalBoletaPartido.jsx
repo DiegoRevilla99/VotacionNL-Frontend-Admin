@@ -26,7 +26,7 @@ const style = {
 	left: "50%",
 	transform: "translate(-50%, -50%)",
 	width: { xl: "50rem", lg: "50rem", sm: "40rem", xs: "30rem" },
-	height: { xl: "39rem", lg: "38rem", sm: "41rem", xs: "42rem" },
+	height: { xl: "30rem", lg: "30rem", md:"28rem",  sm: "35rem", xs: "40rem" },
 	bgcolor: "background.paper",
 	border: '2px solid #fff',
 	borderRadius: "2rem",
@@ -40,19 +40,13 @@ const validationSchema = object({
 	nombrePartido: string("").required(
 		"Por favor, ingresa el nombre del partido"
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	nombrePropietario: string("").required(
-		"Por favor, ingresa el nombre del propietario"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	seudonimoCandidato: string("").required(
-		"Por favor, ingresa el seudónimo del candidato"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	nombreSuplente: string("").required(
-		"Por favor, ingresa el nombre del suplente"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	siglas: string("").required(
+		"Por favor, ingresa las siglas del partido"
+		).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
+
 });
 export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 
-	const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
 	const { status } = useAddBoletasJornada();
 	const dispatch = useDispatch();
 
@@ -94,9 +88,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 	<Formik
 		initialValues={{
 			nombrePartido: "",	//Text
-			nombrePropietario: "",//Text
-			seudonimoCandidato: "",//Text
-			nombreSuplente: "",//Text
+			siglas: "",//Text
 			emblema: "",
 			fotografia: "",
 		}}
@@ -139,6 +131,22 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						onBlur={handleBlur}
 					/>				
 					<Typography variant="h7" mt={"1rem"}>
+						SIGLAS <span style={{ color: "red" }}>*</span>
+					</Typography>
+					<TextField
+						fullWidth
+						size="small"
+						id="outlined-basic" 
+						variant="outlined"
+						label=""
+						name="siglas"
+						value={values.siglas}
+						error = {touched.siglas && errors.siglas}
+						helperText={touched.siglas && errors.siglas}
+						onChange={handleChange}
+						onBlur={handleBlur}
+					/>
+					<Typography variant="h7" mt={"1rem"}>
 					INSERTAR EMBLEMA DEL PARTIDO <span style={{ color: "red" }}>*</span>
 					</Typography>
 						<Box
@@ -175,7 +183,13 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						</Box>
 						{touched.emblema &&
 						emblema.name === "Sin Archivo seleccionado" && (
-						<ErrorField>{errors.emblema}</ErrorField>
+							<Box ml={2} 
+							sx={{
+							fontSize: "12px",
+								color: "#791010" }}
+							>
+							{errors.emblema}
+						  </Box>
 						)}
 					<Typography variant="h7" mt={"1rem"}>
 						INSERTAR FOTOGRAFÍA DEL PROPIETARIO/A <span style={{ color: "red" }}>*</span>
@@ -212,56 +226,15 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 					</Box>
 					{touched.fotografia &&
 						fotografia.name === "Sin Archivo seleccionado" && (
-						<ErrorField>{errors.fotografia}</ErrorField>
+							<Box ml={2} 
+							sx={{
+							fontSize: "12px",
+								color: "#791010" }}
+							>
+							{errors.fotografia}
+						  </Box>
 						)}
-					<Typography variant="h7" mt={"1rem"}>
-						NOMBRE DEL PROPIETARIO/A <span style={{ color: "red" }}>*</span>
-					</Typography>
-					<TextField
-						fullWidth
-						size="small"
-						id="outlined-basic" 
-						variant="outlined"
-						label=""
-						name="nombrePropietario"
-						value={values.nombrePropietario}
-						error = {touched.nombrePropietario && errors.nombrePropietario}
-						helperText={touched.nombrePropietario && errors.nombrePropietario}
-						onChange={handleChange}
-						onBlur={handleBlur}
-					/>
-					<Typography variant="h7" mt={"1rem"}>
-						SEUDÓNIMO DEL CANDIDATO/A <span style={{ color: "red" }}>*</span>
-					</Typography>
-					<TextField
-						fullWidth
-						size="small"
-						id="outlined-basic" 
-						variant="outlined"
-						label=""
-						name="seudonimoCandidato"
-						value={values.seudonimoCandidato}
-						error = {touched.seudonimoCandidato && errors.seudonimoCandidato}
-						helperText={touched.seudonimoCandidato && errors.seudonimoCandidato}
-						onChange={handleChange}
-						onBlur={handleBlur}
-					/>
-					<Typography variant="h7" mt={"1rem"}>
-						NOMBRE DEL SUPLENTE <span style={{ color: "red" }}>*</span>
-					</Typography>
-					<TextField
-						fullWidth
-						size="small"
-						id="outlined-basic" 
-						variant="outlined"
-						label=""
-						name="nombreSuplente"
-						value={values.nombreSuplente}
-						error = {touched.nombreSuplente && errors.nombreSuplente}
-						helperText={touched.nombreSuplente && errors.nombreSuplente}
-						onChange={handleChange}
-						onBlur={handleBlur}
-					/>
+				
 					<Grid
 						container
 						direction="row"

@@ -1,36 +1,87 @@
 const partidos = [
     {
         nombrePartido: "Partido",
-        nombrePropietario: "Juan",
-        seudonimoCandidato: "J",
-        nombreSuplente: "Juan Jr"
+        siglas: "Juan",
+
     },
     {
         nombrePartido: "Partido",
-        nombrePropietario: "Jaime",
-        seudonimoCandidato: "J",
-        nombreSuplente: "Tyron Jr"
+        siglas: "Jaime",
     },
     {
         nombrePartido: "Partido",
-        nombrePropietario: "Pancracio",
-        seudonimoCandidato: "P",
-        nombreSuplente: "Riñón Jr"
+        siglas: "Pancracio",
     },
     {
         nombrePartido: "Partido",
-        nombrePropietario: "Riky ricón",
-        seudonimoCandidato: "R",
-        nombreSuplente: "Jorge Jr"
+        siglas: "Riky ricón",
+    },
+
+]
+
+const candidatos = [
+    {
+        apellidoPCandidato: "apellidoP", 
+        apellidoMCandidato: "apellidoM", 
+        nombreCandidato: "name", 
+        seudonimoCandidato: "seudonimoOptional", 
+        fechaNacimientoCandidato: "12/14/2022", 
+        generoCandidato: "femenino"
+
+    },
+    {
+        apellidoPCandidato: "apellidoP", 
+        apellidoMCandidato: "apellidoM", 
+        nombreCandidato: "name", 
+        seudonimoCandidato: "seudonimoOptional", 
+        fechaNacimientoCandidato: "12/15/2001", 
+        generoCandidato: "masculino"
+    },
+    {
+        apellidoPCandidato: "apellidoP", 
+        apellidoMCandidato: "apellidoM", 
+        nombreCandidato: "name", 
+        seudonimoCandidato: "seudonimoOptional", 
+        fechaNacimientoCandidato: "12/16/2000", 
+        generoCandidato: "otro"
     },
 
 ]
 
 
+const suplentes = [
+    {
+        apellidoPSuplente: "apellidoPSuplente", 
+        apellidoMSuplente: "apellidoMSuplente", 
+        nombreSuplente: "nameSuplente", 
+        seudonimoSuplente: "seudonimoOptional", 
+        fechaNacimientoSuplente: "12/14/2022", 
+        generoSuplente: "femenino"
+
+    },
+    {
+        apellidoPSuplente: "apellidoPSuplente", 
+        apellidoMSuplente: "apellidoMSuplente", 
+        nombreSuplente: "nameSuplente", 
+        seudonimoSuplente: "seudonimoOptional", 
+        fechaNacimientoSuplente: "12/15/2001", 
+        generoSuplente: "masculino"
+    },
+    {
+        apellidoPSuplente: "apellidoPSuplente", 
+        apellidoMSuplente: "apellidoMSuplente", 
+        nombreSuplente: "nameSuplente", 
+        seudonimoSuplente: "seudonimoOptional", 
+        fechaNacimientoSuplente: "12/16/2000", 
+        generoSuplente: "otro"
+    },
+
+]
 const boletas = [
     {
         encabezado: "Encabezado",	//Text
         nombreCandidatura: "Gobernador",//Text
+        modalidadVotacion: "ejemploModalidad",//Text
         entidadFederativa: "Nuevo León",//Text
         municipio: "Monterrey",//Text
         distritoElectoralLocal: "10",//Number
@@ -41,10 +92,13 @@ const boletas = [
         segundoFirmante: "Papa Juan Pablo",//Text
         cargoSegundoFirmante: "Papa II",//Text
         partidos: partidos,
+        candidatos: candidatos,
+        suplentes: suplentes,
     },
     {
         encabezado: "Encabezado",	//Text
         nombreCandidatura: "Gobernador",//Text
+        modalidadVotacion: "ejemploModalidad",//Text
         entidadFederativa: "Nuevo León",//Text
         municipio: "Municipio02",//Text
         distritoElectoralLocal: "10",//Number
@@ -55,10 +109,13 @@ const boletas = [
         segundoFirmante: "Papa Juan Pablo",//Text
         cargoSegundoFirmante: "Papa II",//Text
         partidos: partidos,
+        candidatos: candidatos,
+        suplentes: suplentes,
     },
     {
         encabezado: "Encabezado",	//Text
         nombreCandidatura: "Gobernador",//Text
+        modalidadVotacion: "ejemploModalidad",//Text
         entidadFederativa: "Nuevo León",//Text
         municipio: "Municipio03",//Text
         distritoElectoralLocal: "10",//Number
@@ -69,6 +126,8 @@ const boletas = [
         segundoFirmante: "Papa Juan Pablo",//Text
         cargoSegundoFirmante: "Papa II",//Text
         partidos: partidos,
+        candidatos: candidatos,
+        suplentes: suplentes,
     }
 ]
 
@@ -138,6 +197,7 @@ const getBoletaById = (id) => {
             resolve({
                 encabezado: "Encabezado",	//Text
                 nombreCandidatura: "ejemplo",//Text
+                modalidadVotacion: "ejemploModalidad",//Text
                 entidadFederativa: "ejemplo",//Text
                 municipio: "ejemplo",//Text
                 distritoElectoralLocal: "01",//Number
@@ -164,7 +224,26 @@ const addPartido = (id) => {
 
     });
 }
+const addCandidato = (id) => {
+    return new Promise((resolve) => {
 
+        setTimeout(() => {
+
+            resolve("Candidato agregado");
+        }, 1000);
+
+    });
+}
+const addSuplente = (id) => {
+    return new Promise((resolve) => {
+
+        setTimeout(() => {
+
+            resolve("Suplente agregado");
+        }, 1000);
+
+    });
+}
 export const getJornadasApi = async () => {
     const respuesta = getJornadas.then((comi) => {
         return comi
@@ -265,4 +344,34 @@ export const addPartidoApi = async (data) => {
 
 }
 
+export const addCandidatoApi = async (data) => {
 
+    try {
+        console.log(data)
+        const respuesta = await addCandidato(data)
+        console.log("Respuesta");
+        console.log(respuesta)
+        return respuesta;
+    } catch (error) {
+        console.log("hay un error " + error)
+        return false
+    }
+
+
+}
+
+export const addSuplenteApi = async (data) => {
+
+    try {
+        console.log(data)
+        const respuesta = await addSuplente(data)
+        console.log("Respuesta");
+        console.log(respuesta)
+        return respuesta;
+    } catch (error) {
+        console.log("hay un error " + error)
+        return false
+    }
+
+
+}

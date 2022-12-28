@@ -7,10 +7,6 @@ import {
 } from "@mui/material";
 
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
-// import { useDispatch } from "react-redux";
-// import { useUiStore } from "../../hooks/useUiStore";
-
-// import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
 
 const style = {
 	position: "absolute",
@@ -27,13 +23,8 @@ const style = {
 };
 
 export const ModalEliminarBoleta = ({ statusDeleteModal, handleToggleModal }) => {
-	// const { addQuestion } = useConsultaCiudadanaStore();
-
-	// const { toastSuccesOperation } = useUiStore();
 
 	const onSave = () => {
-		// addQuestion("¿Pregunta 1?", ["Respuesta 1", "Respuesta 2"]);
-		// toastSuccesOperation("Pregunta registrada con éxito");
 		handleToggleModal();
 	};
 

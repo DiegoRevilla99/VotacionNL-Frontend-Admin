@@ -27,6 +27,14 @@ const styleButton = {
 };
 
 export const CrudJornada = () => {
+	// CONECTAR EL MODAL DE ELIMINAR BOLETA
+	const [statusDeleteModal, setStatusDeleteModal] = useState(false);
+	const handleCloseDeleteModal = () => setStatusDeleteModal(false);
+	const handleOpenDeleteModal = () => {
+		// toastOffOperation();
+		setStatusDeleteModal(true);
+	};
+	
   	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -68,15 +76,7 @@ export const CrudJornada = () => {
 		},
 	];
 
-	// CONECTAR EL MODAL DE ELIMINAR BOLETA
 
-
-	// const [statusDeleteModal, setStatusDeleteModal] = useState(false);
-	// const handleCloseDeleteModal = () => setStatusDeleteModal(false);
-	// const handleOpenDeleteModal = () => {
-	// 	// toastOffOperation();
-	// 	setStatusDeleteModal(true);
-	// };
 	return (
 		<>
 			<PlantillaCRUD 

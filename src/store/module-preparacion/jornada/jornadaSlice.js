@@ -11,6 +11,7 @@ export const jornadaSlice = createSlice({
         boletaSelected: {
             encabezado: "",	//Text
 			nombreCandidatura: "",//Text
+            modalidadVotacion: "",//Text
 			entidadFederativa: "",//Text
 			municipio: "",//Text
 			distritoElectoralLocal: "",//Number
@@ -22,21 +23,34 @@ export const jornadaSlice = createSlice({
 			cargoSegundoFirmante: "",//Text
             partidos: [],
             candidatos: [],
+            suplentes: [],
         },
         partidoSelected: {
 			nombrePartido: "",	//Text
-			nombrePropietario: "",//Text
-			seudonimoCandidato: "",//Text
-			nombreSuplente: ""//Text
+			siglas: "",//Text
         },
         candidatoSelected: {
-            nombrePropietario: "",//Text
-            seudonimoCandidato: "",//Text
-            nombreSuplente: "",//Text
+            apellidoPCandidato: "", 
+            apellidoMCandidato: "", 
+            nombreCandidato: "", 
+            fotoCandidato: "",
+            seudonimoCandidato: "", 
+            fechaNacimiento: "", 
+            genero: ""
+        },
+        suplenteSelected: {
+            apellidoPSuplente: "", 
+            apellidoMSuplente: "", 
+            nombreSuplente: "", 
+            fotoSuplente: "",
+            seudonimoSuplente: "", 
+            fechaNacimiento: "", 
+            genero: ""
         },
         boletas: [],
         partidos: [],
         candidatos: [],
+        suplentes: [],
         status: "off",
         errorMessage: "",
         successMessage: "",
@@ -66,6 +80,10 @@ export const jornadaSlice = createSlice({
             state.isLoading = false;
             state.candidatos = action.payload.candidatos;
         },
+        setSuplentes: (state, action) => {
+            state.isLoading = false;
+            state.suplentes = action.payload.suplentes;
+        },
         onCheckingOperation: (state) => {
             state.status = "checking";
         },
@@ -86,4 +104,4 @@ export const jornadaSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { startLoadingBoletas, setJornadas, setBoletas, setPlanillas, setRepresentantes, onCheckingOperation, startLoadingJornadas, onSuccessOperation, onErrorOperation, onOffOperation } = jornadaSlice.actions;
+export const { startLoadingBoletas, setJornadas, setBoletas, setPartidos, setRepresentantes, onCheckingOperation, startLoadingJornadas, onSuccessOperation, onErrorOperation, onOffOperation } = jornadaSlice.actions;
