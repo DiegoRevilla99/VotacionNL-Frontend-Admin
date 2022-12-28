@@ -372,7 +372,7 @@ export const AddBoletaJornada = () => {
 						<Grid item xs={12} md={6} lg={4}>
 							<Button
 								
-								onClick={handleOpenCandidateModal}
+								onClick={handleOpenRegisterModal}
 								variant="contained"
 								size="large"
 								disabled={status === "checking"}
@@ -389,30 +389,7 @@ export const AddBoletaJornada = () => {
 									},
 								}}
 							>
-								Agregar candidato 
-							</Button>
-						</Grid>
-						<Grid item xs={12} md={6} lg={4}>
-							<Button
-								
-								onClick={handleOpenSubstituteModal}
-								variant="contained"
-								size="large"
-								disabled={status === "checking"}
-								sx={{
-									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
-									transition: "all 0.5s ease",
-									backgroundColor: "#511079",
-									width: "100%",
-									borderRadius: "25px 25px 25px 25px",
-									"&:hover": {
-										backgroundColor: "#7E328B !important",
-										transform: "translate(-5px, -5px)",
-										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
-									},
-								}}
-							>
-								Agregar suplente 
+								Registrar candidato y suplente
 							</Button>
 						</Grid>
 						<Grid item xs={12} md={6} lg={4}>
@@ -439,7 +416,7 @@ export const AddBoletaJornada = () => {
 								Agregar partido
 							</Button>
 						</Grid>
-						<Grid item xs={12} md={6} lg={12}>
+						<Grid item xs={4} md={4} lg={4}>
 							<Button
 								onClick={handleOpenAsociacionModal}
 								variant="contained"
@@ -466,8 +443,8 @@ export const AddBoletaJornada = () => {
 						</Grid>
 						<Grid item xs={4} md={2} lg={2}>
 							<Button
-							// onClick={handleOpenDeleteModal}
-							onClick={handleOpenRegisterModal}
+							onClick={handleOpenDeleteModal}
+							// onClick={handleOpenRegisterModal}
 								variant="contained"
 								size="small"
 								disabled={status === "checking"}

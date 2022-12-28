@@ -251,7 +251,22 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 											</Button>
 											<Box sx={{ flex: '1 1 auto' }} />
 											<Button color="inherit"
-											type="submit">guardar y salir</Button>
+											type="submit"
+											sx={{
+												boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+													transition: "all 0.5s ease",
+													backgroundColor: "#511079",
+													color: "#FFFFFF",
+													width: "30%",
+													borderRadius: "25px 25px 25px 25px",
+													"&:hover": {
+														backgroundColor: "#7E328B !important",
+														transform: "translate(-5px, -5px)",
+														boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+													},
+											}
+												
+											}>guardar y salir</Button>
 
 										</Box>
 										</React.Fragment>
@@ -572,17 +587,39 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 
 											<Button 
 											disabled={status === "checking"}
+											sx={{
+												boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+												transition: "all 0.5s ease",
+												backgroundColor: "#511079",
+												color: "#FFFFFF",
+												width: "20%",
+												borderRadius: "25px 25px 25px 25px",
+												"&:hover": {
+													backgroundColor: "#7E328B !important",
+													transform: "translate(-5px, -5px)",
+													boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+												},
+											}}
 											onClick={handleNext}>
 											{activeStep === steps.length - 1 ? 'Guardar' : 'Siguiente'}
 											</Button>
 											
 											<Button
 												disabled={status === "checking"}
+												
 												onClick={onCancel}
 												sx={{
 													boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
 													transition: "all 0.5s ease",
-													color: "#791010",
+													backgroundColor: "#791010",
+													color: "#FFFFFF",
+													width: "20%",
+													borderRadius: "25px 25px 25px 25px",
+													"&:hover": {
+														backgroundColor: "#8B3232 !important",
+														transform: "translate(-5px, -5px)",
+														boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+													},
 												}}
 											>
 												Cancelar
