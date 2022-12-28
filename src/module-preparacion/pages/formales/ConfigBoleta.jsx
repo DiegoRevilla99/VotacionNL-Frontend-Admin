@@ -26,44 +26,7 @@ import { Agrupa } from "../../components/configuracion-boleta/Agrupa";
 import { AddCoalicion } from "../../components/configuracion-boleta/AddCoalicion";
 import { Representante } from "../../components/configuracion-boleta/formales/Representante";
 
-const useStyles = makeStyles({
-  hr: {
-    height: "3px",
-    color: "rgb(210, 210, 210)",
-    background: "rgb(210, 210, 210)",
-    width: "100%",
-    boxShadow: 3,
-  },
-  boton: {
-    boxShadow: 1,
-    color: "white",
-    height: 42,
-  },
-});
-const styleButton = {
-  borderRadius: 50,
-};
-
-const botones = {
-  display: "flex",
-  justifyContent: "end",
-  alignContent: "space-around",
-  width: "95%",
-  height: "50px",
-  pt: 2,
-};
-
-const boxOpciones = {
-  display: "flex",
-  flexDirection: { md: "row", sm: "column", xs: "column" },
-  width: "100%",
-  justifyContent: "center",
-  mt: 1,
-  mb: 5,
-};
-
 export const ConfigBoleta = () => {
-  const styles = useStyles();
   const { id } = useParams();
 
   const { boletaInfo, errorBoleta, isLoadingBoleta, changeCandNoReg } =
@@ -73,8 +36,17 @@ export const ConfigBoleta = () => {
 
   return (
     <>
-      {errorBoleta ? (
-        <PlantillaHeader titulo={"CONFIGURACIÓN BOLETA"}>
+      <PlantillaHeader titulo={"CONFIGURACIÓN BOLETA"}>
+        {isLoadingBoleta ? (
+          <Stack
+            justifyContent="center"
+            sx={{ color: "grey.500" }}
+            spacing={2}
+            direction="row"
+          >
+            <CircularProgress color="primary" />
+          </Stack>
+        ) : errorBoleta ? (
           <Box
             sx={{
               display: "flex",
@@ -85,13 +57,16 @@ export const ConfigBoleta = () => {
           >
             <Typography>No se encontro boleta</Typography>
           </Box>
-        </PlantillaHeader>
-      ) : (
-        <Representante
-          boletaInfo={boletaInfo}
-          changeCandNoReg={changeCandNoReg}
-        ></Representante>
-      )}
+        ) : boletaInfo.modalidad === "REPRESENTANTE" &&
+          boletaInfo.formalidad === "FORMAL" ? (
+          <Representante
+            boletaInfo={boletaInfo}
+            changeCandNoReg={changeCandNoReg}
+          ></Representante>
+        ) : (
+          <Typography>No esta permitida ver esta boleta</Typography>
+        )}
+      </PlantillaHeader>
     </>
   );
 };

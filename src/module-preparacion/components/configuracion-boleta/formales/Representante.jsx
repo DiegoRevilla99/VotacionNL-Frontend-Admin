@@ -22,6 +22,7 @@ import { Agrupa } from "../Agrupa";
 import { AddCoalicion } from "../AddCoalicion";
 import { useCoaliciones } from "../../../hooks/config-boleta/useCoaliciones";
 import { useBoleta } from "../../../hooks/config-boleta/useBoleta";
+import { EditCoalicion } from "../EditCoalicion";
 
 const useStyles = makeStyles({
   hr: {
@@ -52,7 +53,7 @@ const botones = {
 
 const boxOpciones = {
   display: "flex",
-  flexDirection: { md: "row", sm: "column", xs: "column" },
+  flexDirection: "row",
   width: "100%",
   justifyContent: "center",
   mt: 1,
@@ -91,101 +92,107 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
 
   return (
     <>
-      <PlantillaHeader
-        titulo={"CONFIGURACIÓN BOLETA DE " + boletaInfo.encabezadoBoleta}
+      <Stack
+        direction="column"
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{
+          width: "100%",
+          background: "#ffffff",
+          p: "2rem",
+          borderRadius: "20px",
+          boxShadow: 3,
+        }}
       >
-        <Stack
-          direction="column"
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{
-            width: "100%",
-            background: "#ffffff",
-            p: "2rem",
-            borderRadius: "20px",
-            boxShadow: 3,
-          }}
-        >
-          <Typography sx={{ mb: 2, fontWeight: "bold" }}>
-            BOLETA PARA {boletaInfo.modalidad}
-          </Typography>
+        <Typography sx={{ mb: 3, fontSize: "22px", fontWeight: "bold" }}>
+          OPCIONES DE {boletaInfo.modalidad}
+        </Typography>
 
-          <Box
+        <Box
+          className="animate__animated animate__fadeInDown "
+          sx={boxOpciones}
+        >
+          <FormGroup
             sx={{
               display: "flex",
-              width: "100%",
-              alignItems: "center",
+              flexDirection: "row",
               justifyContent: "center",
-              mb: 2,
-              mt: 2,
+              width: "100%",
+            }}
+          >
+            <FormControlLabel
+              control={<Switch checked={cnr} onChange={handleChangeCand} />}
+              label="Opción o candidatura no registrada"
+            />
+            <FormControlLabel
+              control={<Switch checked={vn} onChange={handleChangeVoto} />}
+              label="Mostrar voto nulo"
+            />
+          </FormGroup>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            width: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+            mb: 2,
+            mt: 2,
+          }}
+        >
+          <Button
+            className={styles.boton}
+            variant="contained"
+            style={styleButton}
+            sx={{
+              width: { sm: `270px`, xs: "150px" },
+              backgroundColor: "#511079",
+              color: "#fff",
+            }}
+            onClick={abrirCerrarModalCoalicion}
+          >
+            Agregar coalición
+          </Button>
+        </Box>
+        {isLoadingCoaliciones ? (
+          <Stack
+            justifyContent="center"
+            sx={{ color: "grey.500" }}
+            spacing={2}
+            direction="row"
+          >
+            <CircularProgress color="primary" />
+          </Stack>
+        ) : (
+          <Agrupa info={{ coaliciones: coaliciones }} tipo={1}></Agrupa>
+        )}
+
+        <Box sx={botones}>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+
+              justifyContent: "start",
             }}
           >
             <Button
+              type="submit"
               className={styles.boton}
               variant="contained"
+              color="primary"
               style={styleButton}
               sx={{
-                width: { sm: `270px`, xs: "150px" },
-                backgroundColor: "#511079",
-                color: "#fff",
+                width: { sm: `150px`, xs: "150px" },
               }}
-              onClick={abrirCerrarModalCoalicion}
             >
-              Agregar coalición
+              <ReplyAllIcon />
+              Regresar
             </Button>
           </Box>
-          {isLoadingCoaliciones ? (
-            <Stack
-              justifyContent="center"
-              sx={{ color: "grey.500" }}
-              spacing={2}
-              direction="row"
-            >
-              <CircularProgress color="primary" />
-            </Stack>
-          ) : (
-            <Agrupa info={{ coaliciones: coaliciones }} tipo={1}></Agrupa>
-          )}
-          <Typography sx={{ mt: 5, fontWeight: "bold" }}>OPCIONES</Typography>
-          <hr className={styles.hr} />
-          <Box sx={boxOpciones}>
-            <FormGroup>
-              <FormControlLabel
-                control={<Switch checked={cnr} onChange={handleChangeCand} />}
-                label="Opción o candidatura no registrada"
-              />
-              <FormControlLabel
-                control={<Switch checked={vn} onChange={handleChangeVoto} />}
-                label="Mostrar voto nulo"
-              />
-            </FormGroup>
-          </Box>
-          <Box sx={botones}>
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-
-                justifyContent: "start",
-              }}
-            >
-              <Button
-                type="submit"
-                className={styles.boton}
-                variant="contained"
-                color="primary"
-                style={styleButton}
-                sx={{
-                  width: { sm: `150px`, xs: "150px" },
-                }}
-              >
-                <ReplyAllIcon />
-                Regresar
-              </Button>
-            </Box>
-          </Box>
-        </Stack>
-      </PlantillaHeader>
+        </Box>
+      </Stack>
 
       <AddCoalicion
         isOpen={modalCoalicion}

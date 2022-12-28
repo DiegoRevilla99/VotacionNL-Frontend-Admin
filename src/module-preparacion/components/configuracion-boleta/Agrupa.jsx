@@ -5,6 +5,7 @@ import { PlantillaHeader } from "../../layout/PlantillaHeader";
 import { Coalicion } from "./Coalicion";
 import { BoxPartido } from "./BoxPartido";
 import { AddCoalicion } from "./AddCoalicion";
+import { Asociacion } from "./Asociacion";
 
 const useStyles = makeStyles({
   hr: {
@@ -24,7 +25,7 @@ const styleButton = {
 // 2=ASOCIACION    1=COALICION
 
 export const Agrupa = ({ tipo = 1, info = {} }) => {
-  const { coaliciones = [], asociaciones } = info;
+  const { coaliciones = [], asociaciones = [] } = info;
   const tipoAgrupacion = tipo == 1 ? "COALICIÓN" : "ASOCIACIÓN";
 
   const guardar = () => {
@@ -40,24 +41,30 @@ export const Agrupa = ({ tipo = 1, info = {} }) => {
       {tipo == 1 ? (
         coaliciones.length > 0 ? (
           <Box
-            sx={{ border: "1px solid rgba(0,0,0,0.2)", borderRadius: "15px" }}
+            sx={{
+              width: "100%",
+              boxShadow: 1,
+              border: "2px solid rgba(0,0,0,0.5)",
+              borderRadius: "10px",
+              background: "#F8F8F8",
+            }}
           >
             <Box
               sx={{
-                // boxShadow: 1,
                 width: "100%",
                 mt: 1,
                 p: 1,
-                // border: "1px solid rgba(0,0,0,0.3)",
-                borderRadius: "15px",
-                // background: "#F1F1F1",
+                borderRadius: "10px",
+                background: "#F8F8F8",
               }}
             >
               <Box
                 sx={{
                   display: "flex",
                   width: "100%",
-                  flexDirection: "column",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
                   alignItems: "center",
                   p: 1,
                 }}
@@ -75,7 +82,15 @@ export const Agrupa = ({ tipo = 1, info = {} }) => {
           <Box>No hay coaliciones</Box>
         )
       ) : asociaciones ? (
-        <Box sx={{ border: "1px solid rgba(0,0,0,0.2)", borderRadius: "15px" }}>
+        <Box
+          sx={{
+            width: "100%",
+            boxShadow: 1,
+            border: "2px solid rgba(0,0,0,0.5)",
+            borderRadius: "10px",
+            background: "#F8F8F8",
+          }}
+        >
           <Box
             sx={{
               // boxShadow: 1,
@@ -96,12 +111,11 @@ export const Agrupa = ({ tipo = 1, info = {} }) => {
                 p: 1,
               }}
             >
-              {partidos.map((coalicion) => (
-                <Coalicion
-                  name={coalicion.name}
-                  key={coalicion.name}
-                  partidos={coalicion.partidos}
-                ></Coalicion>
+              {asociaciones.map((asociacion) => (
+                <Asociacion
+                  key={asociacion.idAsociacion}
+                  info={asociacion}
+                ></Asociacion>
               ))}
             </Box>
           </Box>

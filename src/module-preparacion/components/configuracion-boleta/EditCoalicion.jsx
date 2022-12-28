@@ -1,26 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { postCoalición } from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
+import { putCoalición } from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
+
 import { ModalCoalicion } from "./ModalCoalicion";
 
-export const AddCoalicion = ({
+export const EditCoalicion = ({
   isOpen = false,
   abrirCerrarModal = () => {},
-  idBoleta = null,
+  coalicion = null,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const enviar = (data) => {
-    dispatch(postCoalición(data, abrirCerrarModal));
+    dispatch(putCoalición(data, abrirCerrarModal));
   };
+  const [coalicions, setCoalicions] = useState(coalicion);
   return (
     <ModalCoalicion
-      idBoleta={idBoleta}
+      coalicion={coalicions}
       isOpen={isOpen}
-      coalicion={null}
       abrirCerrarModal={abrirCerrarModal}
-      agregar={enviar}
+      actualizar={enviar}
     ></ModalCoalicion>
   );
 };

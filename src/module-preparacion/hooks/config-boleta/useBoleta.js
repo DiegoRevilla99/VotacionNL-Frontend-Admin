@@ -13,19 +13,18 @@ export const useBoleta = (id) => {
 
     if (boleta) {
         const { encabezadoBoleta } = boleta;
-        const { mostrarCandidaturasNoReg, mostrarVotoNulo, modalidad } = boleta.modalidadVotacionModel;
+        const { mostrarCandidaturasNoReg, mostrarVotoNulo, modalidad, minOpciones, maxOpciones } = boleta.modalidadVotacionModel;
+        const { formalidad } = boleta.jornadaModel;
         boletaInfo = {
             encabezadoBoleta,
             mostrarCandidaturasNoReg,
             mostrarVotoNulo,
             modalidad,
+            formalidad,
+            minOpciones,
+            maxOpciones
         }
     }
-
-
-
-
-
 
 
     useEffect(() => {

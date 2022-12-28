@@ -67,7 +67,7 @@ export const PreparacionRoutes = () => {
           element={<ConfiguracionJornada />}
         />
         <Route
-          path="jornadaNoFormal/configboleta"
+          path="jornadaNoFormal/configboleta/:id"
           element={<ConfigBoletaMultiple />}
         />
         <Route

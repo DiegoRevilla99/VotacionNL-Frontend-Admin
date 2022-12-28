@@ -6,12 +6,14 @@ export const configBoletaSlice = createSlice({
         boleta: null,
         errorBoleta: null,
         coaliciones: [],
+        coalicionSelected: null,
         asociaciones: [],
         candidatos: [],
         partidos: [],
         isLoadingBoleta: false,
         isLoadingCoaliciones: false,
         isLoadingPartidos: false,
+        isLoadingCandidatos: false,
         isLoadingAsociaciones: false,
         status: "off",
         errorMessage: "",
@@ -26,6 +28,20 @@ export const configBoletaSlice = createSlice({
             state.isLoadingCoaliciones = false;
             state.coaliciones = action.payload.coaliciones;
         },
+        setCoalicionSelected: (state, action) => {
+            state.coalicionSelected = action.payload.coalicionSelected;
+        },
+
+        //ASOCIONES
+        startLoadingAsociaciones: (state, /* action */) => {
+            state.isLoadingAsociaciones = true;
+        },
+        setAsociaciones: (state, action) => {
+            state.isLoadingAsociaciones = false;
+            state.asociaciones = action.payload.asociaciones;
+        },
+
+
 
         //BOLETA SELECCIONADA
         startLoadingBoleta: (state, /* action */) => {
@@ -39,18 +55,21 @@ export const configBoletaSlice = createSlice({
             state.boleta = action.payload.boleta;
             state.errorBoleta = null;
         },
+
+
         setErrorBoleta: (state, action) => {
             state.isLoadingBoleta = false;
             state.errorBoleta = action.payload.errorBoleta;
         },
 
-        //PARTIDOS
-        startLoadingPartidos: (state, /* action */) => {
-            state.isLoadingPartidos = true;
+        //CANDIDATOS
+        startLoadingCandidatos: (state, /* action */) => {
+            state.isLoadingCandidatos = true;
         },
-        setPartidos: (state, action) => {
-            state.isLoadingPartidos = false;
-            state.partidos = action.payload.partidos;
+
+        setCandidatos: (state, action) => {
+            state.isLoadingCandidatos = false;
+            state.candidatos = action.payload.candidatos;
         },
 
 
@@ -80,4 +99,4 @@ export const configBoletaSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { setErrorBoleta, endLoadingBoleta, setBoleta, startLoadingBoleta, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation, startLoadingCoaliciones, startLoadingPartidos, setPartidos, setCoaliciones } = configBoletaSlice.actions;
+export const { startLoadingAsociaciones, setAsociaciones, setCoalicionSelected, setErrorBoleta, endLoadingBoleta, setBoleta, startLoadingBoleta, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation, startLoadingCoaliciones, startLoadingCandidatos, setCandidatos, setCoaliciones } = configBoletaSlice.actions;

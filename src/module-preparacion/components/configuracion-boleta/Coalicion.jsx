@@ -4,24 +4,45 @@ import DeleteForeverSharpIcon from "@mui/icons-material/DeleteForeverSharp";
 import EditIcon from "@mui/icons-material/Edit";
 import HighlightOffSharpIcon from "@mui/icons-material/HighlightOffSharp";
 import ClearSharpIcon from "@mui/icons-material/ClearSharp";
-import React from "react";
+import React, { useState } from "react";
 import { BoxPartido } from "./BoxPartido";
-
 import "../../../styles/generalContainer.css";
+import { EditCoalicion } from "./EditCoalicion";
+import { useParams } from "react-router-dom";
+import { ModalConfirmation } from "./ModalConfirmation";
+import { deleteCoalicion } from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
+import { useDispatch } from "react-redux";
 
 export const Coalicion = ({
   color = "#511079",
-  colorb = "#F0DBF9",
+  colorb = "#F8F8F8",
   info = {},
 }) => {
-  const { claveCoalicion, nombre, partidos } = info;
+  const { id } = useParams();
+  const dispatch = useDispatch();
 
+  const { claveCoalicion, nombre, partidos, candidato } = info;
+  const [coalicionI, setCoalicionI] = useState(info);
+  const [modalCoalicion, setModalCoalicion] = useState(false);
+  const [confirmation, setConfirmation] = useState(false);
   const editar = () => {
-    alert("estas editando la coalicion con clave: " + claveCoalicion);
+    abrirCerrarModalCoalicion();
   };
 
-  const eliminar = () => {
-    alert("estas eliminando la coalicion con clave: " + claveCoalicion);
+  const eliminarbtn = () => {
+    abrirCerrarConfirmation();
+  };
+
+  const eliminarCoalicion = () => {
+    dispatch(deleteCoalicion(id, abrirCerrarConfirmation));
+  };
+
+  const abrirCerrarModalCoalicion = () => {
+    setModalCoalicion(!modalCoalicion);
+  };
+
+  const abrirCerrarConfirmation = () => {
+    setConfirmation(!confirmation);
   };
 
   const styles = {
@@ -34,53 +55,64 @@ export const Coalicion = ({
   };
 
   return (
-    <Box
-      sx={{
-        mb: 2,
-      }}
-    >
-      <fieldset
-        className="agrupacion"
-        style={{
-          display: "flex",
-          boxShadow: 2,
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          background: colorb,
-          width: "100%",
-
-          mb: 5,
-          borderRadius: "8px",
-          border: "1px solid rgba(0,0,0,0.1)",
+    <>
+      <Box
+        sx={{
+          ml: 1,
         }}
       >
-        <legend style={{ textAlign: "right" }}>
-          <IconButton aria-label="edit" onClick={editar}>
-            <EditIcon fontSize="large" color="primary" />
-          </IconButton>
-          <IconButton aria-label="delete" onClick={eliminar}>
-            <HighlightOffSharpIcon fontSize="large" color="primary" />
-          </IconButton>
-        </legend>
-        <Typography sx={{ fontWeight: "bold" }}>{nombre}</Typography>
-        <Box
-          sx={{
+        <fieldset
+          className="agrupacion animate__animated animate__slideInDown"
+          style={{
             display: "flex",
-            width: "100%",
+            boxShadow: 1,
+            flexDirection: "column",
             justifyContent: "center",
-            flexWrap: "wrap",
+            alignItems: "center",
+            background: colorb,
+            width: "100%",
+
+            mb: 5,
+            borderRadius: "8px",
+            border: "1px solid rgba(0,0,0,0.9)",
           }}
         >
-          {partidos.map(({ candidato, partido }) => (
-            <BoxPartido
-              key={candidato}
-              candidato={candidato}
-              partido={partido}
-            ></BoxPartido>
-          ))}
-        </Box>
-      </fieldset>
-    </Box>
+          <legend style={{ textAlign: "right" }}>
+            <IconButton aria-label="edit" onClick={editar}>
+              <EditIcon fontSize="large" color="primary" />
+            </IconButton>
+            <IconButton aria-label="delete" onClick={eliminarbtn}>
+              <HighlightOffSharpIcon fontSize="large" color="primary" />
+            </IconButton>
+          </legend>
+          <Typography sx={{ fontWeight: "bold" }}>{nombre}</Typography>
+          <Typography sx={{}}>{candidato.nombreCandidato}</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            {partidos.map(({ clavePartido, nombre }) => (
+              <BoxPartido key={clavePartido} partido={nombre}></BoxPartido>
+            ))}
+          </Box>
+        </fieldset>
+      </Box>
+
+      <EditCoalicion
+        isOpen={modalCoalicion}
+        abrirCerrarModal={abrirCerrarModalCoalicion}
+        idBoleta={id}
+        coalicion={coalicionI}
+      ></EditCoalicion>
+      <ModalConfirmation
+        isOpen={confirmation}
+        abrirCerrarModal={abrirCerrarConfirmation}
+        confirmar={eliminarCoalicion}
+      />
+    </>
   );
 };

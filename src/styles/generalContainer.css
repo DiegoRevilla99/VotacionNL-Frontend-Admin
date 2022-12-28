@@ -35,13 +35,18 @@ body,
 
 
 .agrupacion{
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
 }
 .agrupacion:hover{
-  transition: box-shadow 0.8s ease-in-out !important;
-  transition: background 0.3s ease-in-out !important;
-  background: #F7EBFC !important; 
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.589) !important;
+  
+ 
+  background: #fff !important; 
+  box-shadow: 5px 4px 0px 2px rgba(0, 0, 0, 0.3) !important;
+  border-color: #511079 !important;
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+  transition: box-shadow 0.7s ease-in !important;
+  transition: background, border 0.2s ease-in !important;
+
 }
 
  

@@ -9,11 +9,7 @@ import {
 import React from "react";
 import coalicionPhoto from "../../img/coalicion.png";
 
-export const BoxPartido = ({
-  candidato = "Nombre candidato",
-  partido = "Nombre Partido",
-  img = "url",
-}) => {
+export const BoxPartido = ({ partido = "Nombre Partido", img = "url" }) => {
   return (
     <Box
       sx={{
@@ -37,9 +33,6 @@ export const BoxPartido = ({
       <Box sx={{ p: 2 }}>
         <Typography sx={{ fontSize: "15px", fontWeight: "bold" }}>
           {partido}
-        </Typography>
-        <Typography sx={{ fontSize: "12px", fontStyle: "oblique" }}>
-          {candidato}
         </Typography>
       </Box>
     </Box>
