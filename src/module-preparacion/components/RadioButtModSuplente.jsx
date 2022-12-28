@@ -7,20 +7,20 @@ import {
 	RadioGroup,
     Typography,
 } from "@mui/material";
-export const RadioButtMod = React.memo(
+export const RadioButtModSuplente = React.memo(
 	({
 		valuesTipo,
 		handleChange,
-        errorsgeneroCandidato,
+        errorsgeneroSuplente,
         // isOther,
 	}) => {
 		console.log("ME RENDERIZO TIPOS");
 		return (
 			<>
-				<FormControl  error={Boolean(errorsgeneroCandidato)}>
+				<FormControl  error={Boolean(errorsgeneroSuplente)}>
 					<RadioGroup
                     row
-						name="generoCandidato"
+						name="generoSuplente"
 						onChange={handleChange}
 						value={valuesTipo}
 						aria-labelledby="demo-radio-buttons-group-label"

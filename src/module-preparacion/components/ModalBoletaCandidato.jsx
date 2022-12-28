@@ -103,8 +103,8 @@ export const ModalBoletaCandidato = ({ statusCandidateModal, handleToggleModal }
 					dispatch(saveCandidato(values, onSave));
 					resetForm();
 				}}
-	>
-		{( {values, errors, touched, handleSubmit, handleChange, handleBlur, setFieldValue} ) => (
+			>
+			{( {values, errors, touched, handleSubmit, handleChange, handleBlur, setFieldValue} ) => (
 			<Box sx={style}>
 				<Typography id="modal-modal-title" variant="h5" color="initial" align="center">
 					REGISTRO DE CANDIDATO/A 

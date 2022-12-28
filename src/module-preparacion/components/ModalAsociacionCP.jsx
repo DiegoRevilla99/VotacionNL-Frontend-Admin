@@ -40,9 +40,6 @@ const validationSchema = object({
 	partido: string("").required(
 		"Por favor, selecciona un partido"
 		),
-	suplente: string("").required(
-		"Por favor, selecciona un suplente"
-		),
 });
 export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) => {
 
@@ -73,7 +70,6 @@ export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) 
                                         {
 											candidato: "",
 											partido: "",
-											suplente: "",
 									  }
 							}
 							validationSchema={validationSchema}
@@ -86,7 +82,7 @@ export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) 
 
 							<Box
 							 sx={{
-								width: { xl: "100%", lg: "100%", sm: "100%", xs: "100%" },
+								width: "100%",
 							 }}
 							>
 								<Typography variant= {{ xl: "2rem", lg: "1.5rem", sm: "1rem", xs: "0.8rem" }}>
@@ -102,34 +98,43 @@ export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) 
 								>
 									<MenuItem 
 									// onClick={}
-									value = "Candidado I">
+									value = "candidado I">
 										Candidado I
 									</MenuItem>
 									<MenuItem 
 									// onClick={}
-									value = "Candidado II">
+									value = "candidado II">
 										Candidado II
 									</MenuItem>
 								</TextField>
 							</Box>
 							<Box
 							 sx={{
-								width: { xl: "100%", lg: "100%", sm: "100%", xs: "100%" },
+								width: "100%",
 							 }}
 							>
 									<Typography variant= "1rem">
 										Selecciona un partido <span style={{ color: "red" }}>*</span>
 									</Typography>
-										<TextField
-										select
-										size="small"
-										value="partido"
-										fullWidth
-										// variant="filled"
-											sx={{
-
-											}}
-										/>
+									<TextField
+									select
+									size="small"
+									value={values.partido}
+									onChange={handleChange}
+									fullWidth
+									// variant="filled"
+								>
+									<MenuItem 
+									// onClick={}
+									value = "partido I">
+										Partido I
+									</MenuItem>
+									<MenuItem 
+									// onClick={}
+									value = "partido II">
+										Partido II
+									</MenuItem>
+								</TextField>
 							</Box>
 
 									

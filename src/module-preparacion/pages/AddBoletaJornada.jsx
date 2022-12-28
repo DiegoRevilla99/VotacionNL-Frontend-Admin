@@ -18,7 +18,7 @@ import { object, string, number } from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import { ModalAsociacionCP } from "../components/ModalAsociacionCP";
 import { ModalSustitutoBoleta } from "../components/ModalSustitutoBoleta";
-
+import { ModalRegisterCS } from "../components/ModalRegisterCS";
 
 
 const validationSchema = object({
@@ -28,9 +28,7 @@ const validationSchema = object({
 	nombreCandidatura: string("").required(
 		"Por favor, ingresa un nombre de Candidatura"
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	modalidadVotacion: string("").required(
-		"Por favor, ingresa una modalidad de Votación"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// modalidadVotacion: string(""),
 	entidadFederativa: string("").required(
 		"Por favor, ingresa una entidad Federativa"
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
@@ -71,7 +69,7 @@ export const AddBoletaJornada = () => {
 	const [datos, setDatos] = useState({
 		encabezado: "",	//Text
 		nombreCandidatura: "",//Text
-		modalidadVotacion: "",//Text
+		modalidadVotacion: "1",//Text
 		entidadFederativa: "",//Text
 		municipio: "",//Text
 		distritoElectoralLocal: "",//Number
@@ -87,6 +85,7 @@ export const AddBoletaJornada = () => {
 	const [statusMatchModal, setStatusMatchModal] = useState(false);
     const [statusCandidateModal, setStatusCandidateModal] = useState(false);
 	const [statusDeleteModal, setStatusDeleteModal] = useState(false);
+	const [statusRegisterModal, setStatusRegisterModal] = useState(false);
 	const [statusAsociacionModal, setStatusAsociacionModal] = useState(false);
 	const [statusSubstituteModal, setStatusSubstituteModal] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
@@ -94,8 +93,14 @@ export const AddBoletaJornada = () => {
 	const handleCloseMatchModal = () => setStatusMatchModal(false);
     const handleCloseCandidateModal = () => setStatusCandidateModal(false);
 	const handleCloseDeleteModal = () => setStatusDeleteModal(false);
+	const handleCloseRegisterModal = () => setStatusRegisterModal(false);
 	const handleCloseAsociacionModal = () => setStatusAsociacionModal(false);
 	const handleCloseSubstituteModal = () => setStatusSubstituteModal(false);
+
+	const handleOpenRegisterModal = () => {
+		setStatusRegisterModal(true);
+	};
+
 	 const handleOpenMatchModal = () => {
 	 	// toastOffOperation();
 	 	setStatusMatchModal(true);
@@ -235,9 +240,9 @@ export const AddBoletaJornada = () => {
 							/>
 							{/* {touched.nombreCandidatura && errors.nombreCandidatura && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombreCandidatura}</Typography>} */}
 						</Grid>
-						<Grid item xs={12}>
+						{/* <Grid item xs={12}>
 							<FielTextCustom
-							disabled={status === "checking"}
+								disabled={status === "checking"}
 								label="MODALIDAD DE VOTACIÓN"
 								name="modalidadVotacion"
 								value={values.modalidadVotacion}
@@ -245,8 +250,7 @@ export const AddBoletaJornada = () => {
 								error={errors.modalidadVotacion}
 								touched={touched.modalidadVotacion}
 							/>
-							{/* {touched.modalidadVotacion && errors.modalidadVotacion && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.modalidadVotacion}</Typography>} */}
-						</Grid>
+						</Grid> */}
 						<Grid item xs={12}>
 							<Typography variant="h6" color="initial">
 								DATOS GEOELECTORALES
@@ -462,7 +466,8 @@ export const AddBoletaJornada = () => {
 						</Grid>
 						<Grid item xs={4} md={2} lg={2}>
 							<Button
-							onClick={handleOpenDeleteModal}
+							// onClick={handleOpenDeleteModal}
+							onClick={handleOpenRegisterModal}
 								variant="contained"
 								size="small"
 								disabled={status === "checking"}
@@ -550,6 +555,7 @@ export const AddBoletaJornada = () => {
 			<ModalBoletaPartido statusMatchModal={statusMatchModal} handleToggleModal={handleCloseMatchModal} />
             <ModalBoletaCandidato statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} />
 			<ModalEliminarPC statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} />
+			<ModalRegisterCS statusRegisterModal={statusRegisterModal} handleToggleModal={handleCloseRegisterModal} />
 			<ModalAsociacionCP statusAsociacionModal={statusAsociacionModal} handleToggleModal={handleCloseAsociacionModal} />
 			<ModalSustitutoBoleta statusSubstituteModal={statusSubstituteModal} handleToggleModal={handleCloseSubstituteModal} />
 		</form>

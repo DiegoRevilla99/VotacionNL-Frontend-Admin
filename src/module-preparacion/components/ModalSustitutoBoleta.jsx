@@ -46,10 +46,10 @@ const validationSchema = object({
 	seudonimoSuplente: string(
 		"Por favor, ingresa el seudónimo del Suplente"
 		).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
-		fechaNacimiento: date().required(
+		fechaNacimientoSuplente: date().required(
 		"Por favor, ingresa la fecha de nacimiento del Suplente"
 		).max(new Date(), "No puedes ingresar una fecha futura"),
-		genero: string("").required("Por favor, selecciona el género"),
+		generoSuplente: string("").required("Por favor, selecciona el género"),
 });
 
 export const ModalSustitutoBoleta = ({ statusSubstituteModal, handleToggleModal }) => {
@@ -58,7 +58,7 @@ export const ModalSustitutoBoleta = ({ statusSubstituteModal, handleToggleModal 
 	const dispatch = useDispatch();
 
 	const onSave = () => {
-		setFotografia({ name: "Sin Archivo seleccionado" });
+		setFotografiaSuplente({ name: "Sin Archivo seleccionado" });
 		handleToggleModal();
 	};
 
@@ -66,15 +66,15 @@ export const ModalSustitutoBoleta = ({ statusSubstituteModal, handleToggleModal 
 		handleToggleModal();
 	};
 
-	 const [fotografia, setFotografia] = useState({
+	 const [fotografiaSuplente, setFotografiaSuplente] = useState({
 	   name: "Sin Archivo seleccionado",
 	 });
 	  
 	const validando = (values, props) => {
 		const errors = {};
 
-		if (fotografia.name === "Sin Archivo seleccionado") {
-		  errors.fotografia = "Se necesita una fotografia";
+		if (fotografiaSuplente.name === "Sin Archivo seleccionado") {
+		  errors.fotografiaSuplente = "Se necesita una fotografiaSuplente";
 		}
 		return errors;
 	  };
@@ -92,10 +92,10 @@ export const ModalSustitutoBoleta = ({ statusSubstituteModal, handleToggleModal 
 					apellidoPSuplente: "",
 					apellidoMSuplente: "", 
                     nombreSuplente: "", 
-					fotografia: "",
+					fotografiaSuplente: "",
 					seudonimoSuplente: "",//Text
-					fechaNacimiento: "",//Date
-					genero: "",//Text
+					fechaNacimientoSuplente: "",//Date
+					generoSuplente: "",//Text
 				}}
 				validate = {validando}
 				validationSchema={validationSchema}
@@ -180,7 +180,7 @@ export const ModalSustitutoBoleta = ({ statusSubstituteModal, handleToggleModal 
 						fullWidth
 						label=""
 						disabled
-						value={fotografia.name}
+						value={fotografiaSuplente.name}
 						variant="outlined"
 						size="small"
 						></TextField>
@@ -193,21 +193,21 @@ export const ModalSustitutoBoleta = ({ statusSubstituteModal, handleToggleModal 
 							>
 							<input
 								hidden
-								onChange={(e) => setFotografia(e.target.files[0])}
+								onChange={(e) => setFotografiaSuplente(e.target.files[0])}
 								accept="image/png,image/jpg"
 								type="file"
 							/>
 							<PhotoCamera fontSize="" />
 						</IconButton>
 					</Box>
-					{touched.fotografia &&
-						fotografia.name === "Sin Archivo seleccionado" && (
+					{touched.fotografiaSuplente &&
+						fotografiaSuplente.name === "Sin Archivo seleccionado" && (
 								<Box ml={2} 
 									sx={{
 									fontSize: "12px",
 										color: "#791010" }}
 									>
-									{errors.fotografia}
+									{errors.fotografiaSuplente}
 					  			</Box>
 						)}
 				<Typography variant="h7" mt={"1rem"}>
@@ -231,12 +231,12 @@ export const ModalSustitutoBoleta = ({ statusSubstituteModal, handleToggleModal 
 						>				
 							<DatePickerMod
 								label=""
-								name={"fechaNacimiento"}
-								value={values.fechaNacimiento}
+								name={"fechaNacimientoSuplente"}
+								value={values.fechaNacimientoSuplente}
 								setFieldValue={setFieldValue}
 								handleChange={handleChange}
-								error={errors.fechaNacimiento}
-								touched={touched.fechaNacimiento}
+								error={errors.fechaNacimientoSuplente}
+								touched={touched.fechaNacimientoSuplente}
 								
 							/>
 						</Grid>  
@@ -244,21 +244,21 @@ export const ModalSustitutoBoleta = ({ statusSubstituteModal, handleToggleModal 
 						 
 						
 							<Typography variant="h7" mt={"2rem"}>
-						    GENERO <span style={{ color: "red" }}>*</span>
+						    GÉNERO <span style={{ color: "red" }}>*</span>
 							</Typography>
 						<Box>
 								<RadioButtMod
-									valuesTipo={values.genero}
+									valuesTipo={values.generoSuplente}
 									handleChange={handleChange}
-									errorsTipo={errors.genero}
+									errorsTipo={errors.generoSuplente}
 								/>
-								{touched.genero && (
+								{touched.generoSuplente && (
 								<Box ml={2}
 									sx={{
 									fontSize: "12px",
 										color: "#791010" }}
 									>
-									{errors.genero}
+									{errors.generoSuplente}
 					  			</Box>
 							)}
 						</Box>	

@@ -25,8 +25,8 @@ const candidatos = [
         apellidoMCandidato: "apellidoM", 
         nombreCandidato: "name", 
         seudonimoCandidato: "seudonimoOptional", 
-        fechaNacimiento: "12/14/2022", 
-        genero: "femenino"
+        fechaNacimientoCandidato: "12/14/2022", 
+        generoCandidato: "femenino"
 
     },
     {
@@ -34,16 +34,16 @@ const candidatos = [
         apellidoMCandidato: "apellidoM", 
         nombreCandidato: "name", 
         seudonimoCandidato: "seudonimoOptional", 
-        fechaNacimiento: "12/15/2001", 
-        genero: "masculino"
+        fechaNacimientoCandidato: "12/15/2001", 
+        generoCandidato: "masculino"
     },
     {
         apellidoPCandidato: "apellidoP", 
         apellidoMCandidato: "apellidoM", 
         nombreCandidato: "name", 
         seudonimoCandidato: "seudonimoOptional", 
-        fechaNacimiento: "12/16/2000", 
-        genero: "otro"
+        fechaNacimientoCandidato: "12/16/2000", 
+        generoCandidato: "otro"
     },
 
 ]
@@ -55,8 +55,8 @@ const suplentes = [
         apellidoMSuplente: "apellidoMSuplente", 
         nombreSuplente: "nameSuplente", 
         seudonimoSuplente: "seudonimoOptional", 
-        fechaNacimiento: "12/14/2022", 
-        genero: "femenino"
+        fechaNacimientoSuplente: "12/14/2022", 
+        generoSuplente: "femenino"
 
     },
     {
@@ -64,16 +64,16 @@ const suplentes = [
         apellidoMSuplente: "apellidoMSuplente", 
         nombreSuplente: "nameSuplente", 
         seudonimoSuplente: "seudonimoOptional", 
-        fechaNacimiento: "12/15/2001", 
-        genero: "masculino"
+        fechaNacimientoSuplente: "12/15/2001", 
+        generoSuplente: "masculino"
     },
     {
         apellidoPSuplente: "apellidoPSuplente", 
         apellidoMSuplente: "apellidoMSuplente", 
         nombreSuplente: "nameSuplente", 
         seudonimoSuplente: "seudonimoOptional", 
-        fechaNacimiento: "12/16/2000", 
-        genero: "otro"
+        fechaNacimientoSuplente: "12/16/2000", 
+        generoSuplente: "otro"
     },
 
 ]
