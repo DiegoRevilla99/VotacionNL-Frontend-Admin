@@ -251,6 +251,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 											</Button>
 											<Box sx={{ flex: '1 1 auto' }} />
 											<Button color="inherit"
+											disabled={status === "checking"}
 											type="submit"
 											sx={{
 												boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",

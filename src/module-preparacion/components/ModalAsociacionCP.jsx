@@ -8,7 +8,8 @@ import {
 	Stack,
 	MenuItem, 
 } from "@mui/material";
-import { useState } from "react";
+// import { useState } from "react";
+import * as React from 'react';
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { Formik, Form } from 'formik';
@@ -21,17 +22,21 @@ import { useAddBoletasJornada } from "../hooks/useAddBoletasJornada";
 import CircularProgress from "@mui/material/CircularProgress";
 import { editBoleta, saveBoleta } from "../../store/module-preparacion/jornada/jornadaThunks";
 
+
+
+
 const style = {
 	position: "absolute",
 	top: "50%",
 	left: "50%",
 	transform: "translate(-50%, -50%)",
 	width: "50rem",
+
 	bgcolor: "background.paper",
 	borderRadius: "2rem",
 	boxShadow: 3,
 	p: 4,
-	height: "90%",
+	height: "55%",
 };
 const validationSchema = object({
 	candidato: string("").required(
@@ -43,6 +48,9 @@ const validationSchema = object({
 });
 export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) => {
 
+	const [candidato, setCandidato] = React.useState("");
+	const [partido, setPartido] = React.useState("");
+
 	const onSave = (values) => {
 		handleToggleModal();
 	};
@@ -51,6 +59,13 @@ export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) 
 		handleToggleModal();
 	};
 
+	const handleChangeCandidato = (event) => {
+		setCandidato(event.target.value);
+
+	};
+	const handleChangePartido = (event) => {
+		setPartido(event.target.value);
+	};
 	return (
 		<Modal
 			open={statusAsociacionModal}
@@ -61,15 +76,15 @@ export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) 
 			<Box sx={style}>
 				<Box sx={{ overflowY: "auto", height: "100%" }}>
 					<Typography id="modal-modal-title" variant="h5" color="initial" align="center">
-						ASOCIACIÓN DE PARTICIPANTES A PARTIDO
+						ASOCIACIÓN DE PARTICIPANTES A PARTIDOS
 					</Typography>
 					<Box m={"2rem"}>
 
 						<Formik
 							initialValues={
                                         {
-											candidato: "",
-											partido: "",
+											// candidato: "",
+											// partido: "",
 									  }
 							}
 							validationSchema={validationSchema}
@@ -91,8 +106,9 @@ export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) 
 								<TextField
 									select
 									size="small"
-									value={values.candidato}
-									onChange={handleChange}
+									// value={values.candidato}
+									value={candidato}
+									onChange={handleChangeCandidato}
 									fullWidth
 									// variant="filled"
 								>
@@ -108,7 +124,7 @@ export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) 
 									</MenuItem>
 								</TextField>
 							</Box>
-							<Box
+							<Box mb={2}
 							 sx={{
 								width: "100%",
 							 }}
@@ -119,8 +135,9 @@ export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) 
 									<TextField
 									select
 									size="small"
-									value={values.partido}
-									onChange={handleChange}
+									// value={values.partido}
+									value={partido}
+									onChange={handleChangePartido}
 									fullWidth
 									// variant="filled"
 								>
@@ -138,6 +155,8 @@ export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) 
 							</Box>
 
 									
+
+
 
 
 
