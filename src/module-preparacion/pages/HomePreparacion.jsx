@@ -9,10 +9,10 @@ import { useNavigate } from "react-router-dom";
 export const HomePreparacion = () => {
 	const navigate = useNavigate();
 	const plantilla1 = () => {
-		navigate("/preparacion/registroJornada");
+		navigate("/preparacion/registroJornadaFormal");
 	};
 	const plantilla2 = () => {
-		navigate("/preparacion/registroComite");
+		navigate("/preparacion/registroJornadaNoFormal");
 	};
 	const plantilla3 = () => {
 		navigate("/preparacion/registroConsultaCiudadana");
