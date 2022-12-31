@@ -6,6 +6,9 @@ import { PrivateRoute } from "../../router/PrivateRoute";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { JornadasFormales } from "../pages/JornadasFormales";
 import { MenuRoutes } from "../routes/MenuRoutes";
+import { EmpadronamientoRoutes } from "../routes/EmpadronamientoRoutes";
+import { JornadasNoFormales } from "../pages/JornadasNoFormales";
+import { Consultas } from "../pages/Consultas";
 
 function LinkTab(props) {
   const navigate = useNavigate();
@@ -29,20 +32,55 @@ export const TabsLayout = () => {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Tabs value={value} onChange={handleChange} aria-label="nav tabs example">
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+
+        alignItems: "center",
+        mt: 0,
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <Tabs
+        sx={{}}
+        value={value}
+        onChange={handleChange}
+        aria-label="nav tabs example"
+        textColor="primary"
+        indicatorColor="primary"
+        centered
+      >
         <LinkTab label="Formales" href="/empadronamiento/inicio/formal" />
-        <LinkTab label="No formales" href="/trash" />
-        <LinkTab label="Consultas" href="/spam" />
+        <LinkTab label="No formales" href="/empadronamiento/inicio/noformal" />
+        <LinkTab label="Consultas" href="/empadronamiento/inicio/consultas" />
       </Tabs>
-      <PrivateRoute>
-        <Routes>
-          <Route
-            path="/empadronamiento/inicio/*"
-            element={<MenuRoutes />}
-          ></Route>
-        </Routes>
-      </PrivateRoute>
+
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "95%",
+          height: "calc(100% - 100px)",
+          background: "#fff",
+          boxShadow: 1,
+          borderRadius: "20px",
+          mt: 0,
+          p: 2,
+        }}
+      >
+        <PrivateRoute>
+          <Routes>
+            <Route path="formal" element={<JornadasFormales />} />
+            <Route path="noformal" element={<JornadasNoFormales />} />
+            <Route path="consultas" element={<Consultas />} />
+
+            {/* <Route path="/*" element={<Navigate to="/empadronamiento/inicio" />} /> */}
+          </Routes>
+        </PrivateRoute>
+      </Box>
     </Box>
   );
 };
