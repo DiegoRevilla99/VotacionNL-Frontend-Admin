@@ -59,22 +59,20 @@ export const saveConsultaPrueba = () => {
 
 export const onGetConsultasCiudadanas = () => {
 	return async (dispatch) => {
-		// dispatch(onToastCheckingOperation("Guardando consulta..."));
 		dispatch(onCheckingOperation());
 
-		const { ok, data } = await getConsultasCiudadanas();
+		const { ok, data, errorMessage } = await getConsultasCiudadanas();
 
 		if (ok) {
-			console.log("ENTRA");
-			// dispatch(onAddConsultaCiudadana({ id: id, titulo: titulo }));
 			dispatch(onSuccessOperation());
-			// dispatch(onToastSuccessOperation({ successMessage: "Consulta guardada con éxito" }));
-			// dispatch(onSetConsultaSelected({ id, titulo, ballots: [] }));
 			dispatch(onFillConsultasData(data));
-			// navigate(id);
 		} else {
 			dispatch(onErrorOperation());
-			dispatch(onToastErrorOperation({ errorMessage: "La consulta no se pudo guardar" }));
+			dispatch(
+				onToastErrorOperation({
+					errorMessage: errorMessage || "La consulta no se pudo guardar",
+				})
+			);
 		}
 	};
 };
