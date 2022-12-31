@@ -4,13 +4,11 @@ import { PrivateRoute } from "../../router/PrivateRoute";
 import { InicioPage } from "../pages/InicioPage";
 import { JornadasFormales } from "../pages/JornadasFormales";
 
-export const EmpadronamientoRoutes = () => {
+export const MenuRoutes = () => {
   return (
     <PrivateRoute>
       <Routes>
-        <Route path="inicio" element={<InicioPage></InicioPage>} />
-
-        <Route path="/*" element={<Navigate to="/empadronamiento/inicio" />} />
+        <Route path="formal" element={<JornadasFormales />} />
       </Routes>
     </PrivateRoute>
   );

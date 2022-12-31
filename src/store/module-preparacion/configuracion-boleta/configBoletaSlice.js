@@ -19,6 +19,7 @@ export const configBoletaSlice = createSlice({
         errorMessage: "",
         successMessage: "",
     },
+
     reducers: {
         //COALICIONES
         startLoadingCoaliciones: (state, /* action */) => {

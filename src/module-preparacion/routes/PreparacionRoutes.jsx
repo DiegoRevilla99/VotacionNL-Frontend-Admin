@@ -67,7 +67,7 @@ export const PreparacionRoutes = () => {
 
         {/* CONFIGURACION NO FORMAL */}
         <Route
-          path="jornadaNoFormal/config"
+          path="jornadaNoFormal/config/:id"
           element={<ConfiguracionJornada />}
         />
         <Route
