@@ -1,5 +1,6 @@
 import React from "react";
+import { TabsLayout } from "../layout/TabsLayout";
 
 export const InicioPage = () => {
-  return <div>Inicio de empadronamiento</div>;
+  return <TabsLayout></TabsLayout>;
 };
