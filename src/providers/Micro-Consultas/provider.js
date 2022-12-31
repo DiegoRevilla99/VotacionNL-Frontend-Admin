@@ -6,22 +6,18 @@ let idPapeleta = 0;
 export const getConsultasCiudadanas = async () => {
 	try {
 		const { data } = await consultasAPI.get("jornada/consulta/");
-
-		console.log("RESP: ", data);
-		// await timeout(1000);
-		// idConsultas++;
-		return { ok: true, data: data.data };
+		return { ok: true, data: data.data, errorMessage: "" };
 	} catch (error) {
 		console.log(error);
-		return { ok: false };
+		return { ok: false, errorMessage: error.message };
 	}
 };
 
 export const createConsultaCiudadana = async (titulo, entidad) => {
-	const id = "JEO-JUN23-GOB" + Math.floor(Math.random() * 10000);
+	// const id = "JEO-JUN23-GOB" + Math.floor(Math.random() * 10000);
 	try {
 		const { data } = await consultasAPI.post("jornada/consulta/", {
-			idJornada: id,
+			// idJornada: id,
 			nombreJornada: titulo,
 			dateTimeCreation: "2019-07-04T20:38:38.604+00:00",
 			entidad: entidad,
