@@ -13,9 +13,9 @@ import { useState } from "react";
 import { object, string } from "yup";
 import { ErrorField } from "../components/ErrorField";
 
-import { useDispatch } from "react-redux";
-import { saveCandidato } from "../../store/module-preparacion/jornada/jornadaThunks";
-import { useAddBoletasJornada } from "../hooks/useAddBoletasJornada";
+// import { useDispatch } from "react-redux";
+// import { saveCandidato } from "../../store/module-preparacion/jornada/jornadaThunks";
+// import { useAddBoletasJornada } from "../hooks/useAddBoletasJornada";
 
 const style = {
 	position: "absolute",
@@ -47,9 +47,9 @@ const validationSchema = object({
 });
 
 export const ModalBoletaCandidatoGenerico = ({ statusCandidateModal, handleToggleModal }) => {
-	const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
-	const { status } = useAddBoletasJornada();
-	const dispatch = useDispatch();
+	// const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
+	// const { status } = useAddBoletasJornada();
+	// const dispatch = useDispatch();
 
 	const onSave = () => {
 		setEmblema({ name: "Sin Archivo seleccionado" });
@@ -102,7 +102,7 @@ export const ModalBoletaCandidatoGenerico = ({ statusCandidateModal, handleToggl
 				validate = {validando}
 				validationSchema={validationSchema}
 				onSubmit={(values, {resetForm}) => {
-					dispatch(saveCandidato(values, onSave));
+					// dispatch(saveCandidato(values, onSave));
 					resetForm();
 				}}
 	>

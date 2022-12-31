@@ -4,6 +4,9 @@ export const jornadaSlice = createSlice({
     name: 'jornada',
     initialState: {
         jornadas: [],
+        errorBoleta: null,
+        errorPartido: null,
+        errorCandidate: null,
         jornadaSelected: {
             nombre: "",
             boletas: []
@@ -29,61 +32,93 @@ export const jornadaSlice = createSlice({
 			nombrePartido: "",	//Text
 			siglas: "",//Text
         },
-        candidatoSelected: {
+        candidatoandSuplenteSelected: {
             apellidoPCandidato: "", 
             apellidoMCandidato: "", 
             nombreCandidato: "", 
-            fotoCandidato: "",
+            fotografiaCandidato: "",
             seudonimoCandidato: "", 
-            fechaNacimiento: "", 
-            genero: ""
-        },
-        suplenteSelected: {
+            fechaNacimientoCandidato: "", 
+            generoCandidato: "",
             apellidoPSuplente: "", 
             apellidoMSuplente: "", 
             nombreSuplente: "", 
-            fotoSuplente: "",
+            fotografiaSuplente: "",
             seudonimoSuplente: "", 
-            fechaNacimiento: "", 
-            genero: ""
+            fechaNacimientoSuplente: "", 
+            generoSuplente: ""
         },
         boletas: [],
         partidos: [],
-        candidatos: [],
-        suplentes: [],
+        candidatoandSuplente: [],
+
         status: "off",
         errorMessage: "",
         successMessage: "",
         isLoadingBoletas: false,
         isLoadingJornadas: false,
+        isLoadingPartidos: false,
+        isLoadingCandidatosandSuplente: false,
     },
     reducers: {
         startLoadingJornadas: (state, /* action */) => {
             state.isLoadingJornadas = true;
         },
-        startLoadingBoletas: (state, /* action */) => {
-            state.isLoadingBoletas = true;
-        },
         setJornadas: (state, action) => {
             state.isLoading = false;
             state.jornadas = action.payload.jornadas;
         },
+        
+        // BOLETA
+        startLoadingBoletas: (state, /* action */) => {
+            state.isLoadingBoletas = true;
+        },
+        endLoadingBoletas: (state, /* action */) => {
+            state.isLoadingBoletas = false;
+        },
+        setErrorBoletas: (state, action) => {
+            state.isLoadingBoletas = false;
+            state.errorBoleta = action.payload.errorBoleta;
+        },
         setBoletas: (state, action) => {
             state.isLoadingBoletas = false;
             state.boletas = action.payload.boletas;
+        },        
+
+
+        //CANDIDATOS
+        startLoadingCandidatosandSuplente: (state, /* action */) => {
+            state.isLoadingCandidatosandSuplente = true;
         },
+        setCandidatosandSuplente: (state, action) => {
+            state.isLoadingCandidatosandSuplente = false;
+            state.candidatoandSuplente = action.payload.candidatoandSuplente;
+        },
+        setErrorCandidateandSuplente: (state, action) => {
+            state.isLoadingCandidatosandSuplente = false;
+            state.errorCandidateandSuplente = action.payload.errorCandidateandSuplente;
+        },
+        endLoadingCandidateandSuplente: (state, /* action */) => {
+            state.isLoadingCandidatosandSuplente = false;
+        },
+
+        //PARTIDOS
         setPartidos: (state, action) => {
-            state.isLoading = false;
+            state.isLoadingPartidos = false;
             state.partidos = action.payload.partidos;
         },
-        setCandidatos: (state, action) => {
-            state.isLoading = false;
-            state.candidatos = action.payload.candidatos;
+        setErrorPartidos: (state, action) => {
+            state.isLoadingPartidos = false;
+            state.errorPartido = action.payload.errorPartido;
         },
-        setSuplentes: (state, action) => {
-            state.isLoading = false;
-            state.suplentes = action.payload.suplentes;
+        startLoadingPartidos: (state, /* action */) => {
+            state.isLoadingPartidos = true;
         },
+        endLoadingPartidos: (state, /* action */) => {
+            state.isLoadingPartidos = false;
+        },
+
+
         onCheckingOperation: (state) => {
             state.status = "checking";
         },
@@ -104,4 +139,21 @@ export const jornadaSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { startLoadingBoletas, setJornadas, setBoletas, setPartidos, setRepresentantes, onCheckingOperation, startLoadingJornadas, onSuccessOperation, onErrorOperation, onOffOperation } = jornadaSlice.actions;
+export const { 
+    startLoadingBoletas, 
+    setJornadas, 
+    setBoletas, 
+    setPartidos, 
+    setErrorPartidos,
+    endLoadingBoletas,
+    setErrorBoletas,
+    setErrorCandidateandSuplente,
+    endLoadingCandidateandSuplente,
+    setRepresentantes, 
+    onCheckingOperation, 
+    startLoadingJornadas, 
+    startLoadingCandidatosandSuplente, 
+    setCandidatosandSuplente,
+    onSuccessOperation, 
+    onErrorOperation, 
+    onOffOperation } = jornadaSlice.actions;

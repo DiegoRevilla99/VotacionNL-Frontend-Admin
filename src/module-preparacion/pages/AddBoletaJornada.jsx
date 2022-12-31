@@ -3,7 +3,7 @@ import { Stack } from "@mui/system";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useUiStore } from "../../hooks/useUiStore";
-import { savePartido, saveCandidato } from "../../store/module-preparacion/jornada/jornadaThunks";
+// import { saveCandidatoandSuplente } from "../../store/module-preparacion/jornada/jornadaThunks";
 import { editBoleta, saveBoleta } from "../../store/module-preparacion/jornada/jornadaThunks";
 import { useAddBoletasJornada } from "../hooks/useAddBoletasJornada";
 import { getBoletaByIdApi } from "../helpers/ApiJornada";
@@ -19,6 +19,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ModalAsociacionCP } from "../components/ModalAsociacionCP";
 
 import { ModalRegisterCS } from "../components/ModalRegisterCS";
+import { DataGridTableJornada } from "../../ui/components/DataGridTableJornada";
+import { DataGridTablePartido } from "../../ui/components/DataGridTablePartido";
 
 
 const validationSchema = object({
@@ -465,10 +467,28 @@ export const AddBoletaJornada = () => {
 									pb: "1rem",
 								}}
 							>
+
+
+								{/* <DataGridTableJornada /> */}
 								<DataGridTable />
+
 							</Box>
 						</Grid>
-
+						<Grid item xs={12}>
+							<Box
+								sx={{
+									height: "25rem",
+									backgroundColor: "#f0f0f0",
+									borderRadius: "2rem",
+									p: "2rem",
+									pt: "1rem",
+									pb: "1rem",
+								}}
+							>
+								{/* <DataGridTablePartido /> */}
+								
+							</Box>
+						</Grid>
 					</Grid>
 					<Grid mt={"1rem"} container direction="row" justifyContent="flex-end" spacing={2}>
 						<Grid item xs={12} md={6} lg={3}>

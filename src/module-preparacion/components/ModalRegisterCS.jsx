@@ -16,7 +16,7 @@ import { ErrorField } from "../components/ErrorField";
 import { object, string, date } from "yup";
 import BookOnlineRoundedIcon from '@mui/icons-material/BookOnlineRounded';
 import { useDispatch } from "react-redux";
-import { saveCandidato, saveSuplente } from "../../store/module-preparacion/jornada/jornadaThunks";
+import { saveCandidatoandSuplente } from "../../store/module-preparacion/jornada/jornadaThunks";
 import { useAddBoletasJornada } from "../hooks/useAddBoletasJornada";
 import CircularProgress from "@mui/material/CircularProgress";
 import { editBoleta, saveBoleta } from "../../store/module-preparacion/jornada/jornadaThunks";
@@ -91,6 +91,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		setFotografia({ name: "Sin Archivo seleccionado" });
 		setFotografiaSuplente({ name: "Sin Archivo seleccionado" });
 		handleToggleModal();
+		setActiveStep(0);
 	};
 
 	const onCancel = () => {
@@ -166,8 +167,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 							validationSchema={validationSchema}
 							validate = {validando}
 							onSubmit={(values, {resetForm}) => {
-								dispatch(saveCandidato(values, onSave));
-								dispatch(saveSuplente(values, onSave));
+								dispatch(saveCandidatoandSuplente(values, onSave));
 								resetForm();
 							}}
 						>
@@ -602,7 +602,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 												},
 											}}
 											onClick={handleNext}>
-											{activeStep === steps.length - 1 ? 'Guardar' : 'Siguiente'}
+											{activeStep === steps.length - 1 ? 'Finalizar' : 'Siguiente'}
 											</Button>
 											
 											<Button
