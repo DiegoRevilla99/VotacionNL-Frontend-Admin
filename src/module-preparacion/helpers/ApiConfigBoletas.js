@@ -119,27 +119,33 @@ const asociaciones = [
 
 const candidatos = [
     {
-        claveElectoral: "DIRUAL05",
-        apellidoPCandidato: "DIAZ",
-        apellidoMCandidato: "RUIZ",
-        nombreCandidato: "JOSE ANTONIO DIEGO REVILLA",
-        fotoCandidato: "TOÑO,jpg",
+        // claveElectoral: "DIRUAL05",
+        // apellidoPCandidato: "DIAZ",
+        // apellidoMCandidato: "RUIZ",
+        // nombreCandidato: "JOSE ANTONIO DIEGO REVILLA",
+        // fotoCandidato: "TOÑO,jpg",
+        // seudonimoCandidato: "TOÑO",
+        claveElectoral: "DIRUAL09999",
+        apellidoPCandidato: "DIEGO",
+        apellidoMCandidato: "JOSE",
+        nombreCandidato: "REVILLA",
+        fotoCandidato: "TOÑO.jgp",
         seudonimoCandidato: "TOÑO",
         partidos: [
-            {
-                clavePartido: "PRI-01",
-                nombre: "PARTIDO REVOLUCIONARIO INSTITUCIONAL",
-                siglas: "PRI",
-                emblema: "POR MEXICO",
-                logo: "PRI.PNG",
-            },
-            {
-                clavePartido: "PAN-01",
-                nombre: "PARTIDO ACCION NACIONAL",
-                siglas: "PAN",
-                emblema: "POR MEXICO",
-                logo: "PAN.PNG",
-            }
+            // {
+            //     clavePartido: "PRI-01",
+            //     nombre: "PARTIDO REVOLUCIONARIO INSTITUCIONAL",
+            //     siglas: "PRI",
+            //     emblema: "POR MEXICO",
+            //     logo: "PRI.PNG",
+            // },
+            // {
+            //     clavePartido: "PAN-01",
+            //     nombre: "PARTIDO ACCION NACIONAL",
+            //     siglas: "PAN",
+            //     emblema: "POR MEXICO",
+            //     logo: "PAN.PNG",
+            // }
         ]
     },
     {
@@ -169,6 +175,7 @@ const candidatos = [
     },
     {
         claveElectoral: "DIRUAL06",
+        // claveElectoral: "DIRUAL09999",
         apellidoPCandidato: "DIAZ",
         apellidoMCandidato: "RUIZ",
         nombreCandidato: "KEVIN EDILBERTO CHAVEZ SANCHEZ",

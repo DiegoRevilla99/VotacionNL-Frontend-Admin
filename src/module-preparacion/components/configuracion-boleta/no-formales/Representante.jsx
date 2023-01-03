@@ -97,7 +97,7 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
         justifyContent="space-between"
         alignItems="center"
         sx={{
-          minHeight: { lg: "700px" },
+          // minHeight: { lg: "700px" },
           width: "100%",
           background: "#ffffff",
           p: "2rem",
