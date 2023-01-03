@@ -1,25 +1,23 @@
 import { jornadasAPI } from "./configJornada";
 
+let idConsultas = 0;
 let idBoleta = 0;
 
 export const getJornadas = async () => {
 	try {
 		const { data } = await jornadasAPI.get("jornada/electoral/");
-
-		console.log("RESP: ", data);
-		return { ok: true, data: data.data };
+		return { ok: true, data: data.data, errorMessage: "" };
 	} catch (error) {
-		console.log(error);
-		return { ok: false };
+		return { ok: false, errorMessage: error.message };
 	}
 };
 
-export const createJornada = async (titulo, entidad) => {
-	const id = "JEO-JUN23-GOB" + Math.floor(Math.random() * 10000);
+export const createJornada = async (title, entidad) => {
+	// const id = "JEO-JUN23-GOB" + Math.floor(Math.random() * 10000);
 	try {
 		const { data } = await jornadasAPI.post("jornada/electoral/", {
-			idJornada: id,
-			nombreJornada: titulo,
+			// idJornada: id,
+			nombreJornada: title,
 			dateTimeCreation: "2019-07-04T20:38:38.604+00:00",
             userCreation: "DEFAULT",
 			entidad: entidad,
@@ -30,7 +28,6 @@ export const createJornada = async (titulo, entidad) => {
 	} catch (error) {
 		return { ok: false };
 	}
-
 };
 
 export const deleteJornada = async (id) => {
@@ -46,58 +43,47 @@ export const deleteJornada = async (id) => {
 export const getBoletasJornada = async (idConsulta) => {
 	try {
 		// **FETCH
-		const { data } = await consultasAPI.get(
-			// "jornada/electoral/jornada/" + idConsulta + "/boletas"
-            "jornada/electoral/jornada/" + idConsulta + "/boletas"
+		const { data } = await jornadasAPI.get(
+            "jornada/electoral/jornada/" + idConsulta + "/estructurasboletas"
 		);
-
-		// console.log("RESPUESTA BOLETA: ", resp);
-
 		return { ok: true, data: data.data };
 	} catch (error) {
 		return { ok: false };
+
 	}
 };
 
-export const getBoleta = (idBoleta) => {
-    return async (dispatch, getState) => {
-        dispatch(startLoadingBoleta());
-        // const { data } = await getBoletaAPI(idBoleta);
-        jornadasAPI.get(`${idBoleta}`).then((response) => {
-
-            const { httpCode, mensaje, data } = response.data;
-
-            if (httpCode === "NOT_FOUND") {
-                dispatch(setErrorBoleta({ errorBoleta: mensaje }));
-            } else {
-
-                dispatch(setBoleta({ boleta: data }));
-            }
-        }).catch((error) => {
-            console.log(error)
-            dispatch(endLoadingBoleta());
-        })
-    }
-}
-
-
-
-export const getCandidatoData = async (idCandidato) => {
-
+export const getBoletaData = async (idBoleta) => {
 	try {
-        // **FETCH
-        const { data } = await jornadasAPI.get("jornada/electoral/estructurasboletas/" + idCandidato);
-        // **FETCH suplente
-		// const { data:data2 } = await jornadasAPI.get(
-        //     "jornada/electoral/suplente/" + idCandidato
-        //     );
-        // **FETCH candidato
-		const { data:data1 } = await jornadasAPI.get(
-            "jornada/electoral/candidatos/" + idCandidato + "/candidato"
-            );
-        console.log("CANDIDATO 1"+data1);
+		// **FETCH
+		// const { data } = await consultasAPI.get("jornada/consulta/estructurapapeleta/" + idBallot);
+		const { data } = await jornadasAPI.get(
+            "jornada/electoral/estructurasboletas/" + idBoleta);
 
-        const formatCandidate ={
+		// **Fetch de candidatos
+		const { data: data1 } = await jornadasAPI.get(
+			"jornada/electoral/candidatos/" + idBoleta 
+			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/candidatos
+		);
+		// **Fetch de suplentes
+		const { data: data2 } = await jornadasAPI.get(
+			"jornada/electoral/suplente/" + idBoleta
+			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/suplente
+		);
+		// **Fetch de candidatos
+		const { data: data3 } = await jornadasAPI.get(
+			"jornada/electoral/partido/" + idBoleta
+			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/partido
+		);
+
+
+		console.log("DATA CANDIDATO", data1);
+		console.log("DATA SUPLENTE", data2);
+		console.log("DATA PARTIDO", data3);
+
+
+		const formatCandidato = {
+			// MY FORMAT || API FORMAT
 			id: data1.data.claveElectoral,
 			apellidoPCandidato: data1.data.apellidoPCandidato,
             apellidoMCandidato: data1.data.apellidoMCandidato,
@@ -107,87 +93,77 @@ export const getCandidatoData = async (idCandidato) => {
             fechaNacimientoCandidato:data1.data.fechaNacimiento,
             generoCandidato: data1.data.genero,
 		};
+		const formatSuplente = {
+			// MY FORMAT || API FORMAT
+			id: data1.data.claveElectoral,
+			apellidoPSuplente: data1.data.apellidoPSuplente,
+            apellidoMSuplente: data1.data.apellidoMSuplente,
+            nombreSuplente: data1.data.nombreSuplente,
+            fotografiaSuplente: data1.data.fotoSuplente,
+            seudonimoSuplente: data1.data.seudonimoSuplente,
+            fechaNacimientoSuplente:data1.data.fechaNacimiento,
+            generoSuplente: data1.data.genero,
+		};
+		const formatPartido = {
+			// MY FORMAT || API FORMAT
+			id: data1.data.clavePartido,
+			nombrePartido: data1.data.nombre,
+            siglas: data1.data.siglas,
+            emblema: data1.data.emblema,
+            fotografiaPartido: data1.data.logo,
+		};
+        const format = {
+			// MY FORMAT || API FORMAT
+			id: data.data.idEstructuraBoleta,
+            encabezado: data.data.encabezadoBoleta,
+            nombreCandidatura: data.data.nombreCandidatura,
+            modalidadVotacion: data.data.modalidadVotacion,
+            entidadFederativa: data.data.entidadFederativa,
+            municipio: data.data.municipio,
+            distritoElectoralLocal:data.data.distritoElectoralLocal,
+            distritoElectoral:data.data.distritoElectoral,
+            tipoCasilla: data.data.tipoCasilla,
+            primerFirmante: data.data.primerFirmante,
+            cargoPrimerFirmante: data.data.cargoPrimerFirmante,
+            segundoFirmante: data.data.segundoFirmante,
+            cargoSegundoFirmante:data.data.cargoSegundoFirmante,
+        }
 
-        // const formatSuplente = {
-        //     id: data2.data.claveElectoral,
-		// 	apellidoPSuplente: data2.data.apellidoPCandidato,
-        //     apellidoMSuplente: data2.data.apellidoMCandidato,
-        //     nombreSuplente: data2.data.nombreCandidato,
-        //     fotografiaSuplente: data2.data.fotoCandidato,
-        //     seudonimoSuplente: data2.data.seudonimoCandidatoa,
-        //     fechaNacimientoSuplente:data2.data.fechaNacimiento,
-        //     generoSuplente: data2.data.genero,
-        // }
-
-
-        // "idJornada": "JEO-JUN23-GOB",
-        // "nombreJornada": "JORNADA ELECTORAL GOBERNADOR ORDINARIA 2023",
-        // "dateTimeCreation": "2019-07-04T20:38:38.604+00:00",
-        // "userCreation": "ALEJANDRO",
-        // "entidad": "OAXACA",
-        // "tipoJornada": "ORDINARIA",
-        // "formalidad": "FORMAL"
-
-        // encabezado: "",	//Text
-		// nombreCandidatura: "",//Text
-		// modalidadVotacion: "1",//Text
-		// entidadFederativa: "",//Text
-		// municipio: "",//Text
-		// distritoElectoralLocal: "",//Number
-		// distritoElectoral: "",//Number
-		// tipoCasilla: "",//text
-		// primerFirmante: "",//Text
-		// cargoPrimerFirmante: "",//Text
-		// segundoFirmante: "",//Text
-		// cargoSegundoFirmante: "",//Text
-        
-        // const format = {
-        //     encabezado: data.data.idJornada,
-        //     nombreCandidatura: data.data.nombreJornada,
-        //     modalidadVotacion: data.data.
-        //     entidadFederativa: data.data.entidad,
-        //     municipio: data.data.
-        //     distritoElectoralLocal:data.data.
-        //     distritoElectoral:data.data.
-        //     tipoCasilla: data.data.
-        //     primerFirmante: data.data.
-        //     cargoPrimerFirmante: data.data.
-        //     segundoFirmante: data.data.
-        //     cargoSegundoFirmante:data.data.
-        // }
-
-		return { ok: true, candidatosP: formatCandidate };
+		return { ok: true, data: format, dataCandidato: formatCandidato, dataSuplente: formatSuplente, dataPartido: formatPartido };
 	} catch (error) {
 		return { ok: false, errorMessage: error.message };
+	
 	}
 };
 
-export const createBoleta = async (data, idConsulta, candidato) => {
+export const createBoleta = async (data, idConsulta, candidato, suplente, partido) => {
 	try {
-		// console.log("DATA QUE LLEGA", questions);
+		// Boletas
 		const { data: data1 } = await jornadasAPI.post("jornada/electoral/estructurasboletas/", {
-
-        //     encabezado: data.data.idJornada,
-        //     nombreCandidatura: data.data.nombreJornada,
-        //     modalidadVotacion: data.data.
-        //     entidadFederativa: data.data.entidad,
-        //     municipio: data.data.
-        //     distritoElectoralLocal:data.data.
-        //     distritoElectoral:data.data.
-        //     tipoCasilla: data.data.
-        //     primerFirmante: data.data.
-        //     cargoPrimerFirmante: data.data.
-        //     segundoFirmante: data.data.
-        //     cargoSegundoFirmante:data.data.
-
+            encabezadoBoleta: data.encabezado,
+            nombreCandidatura: data.nombreCandidatura,
+            modalidadVotacion: data.modalidadVotacion,
+            entidadFederativa: data.entidadFederativa,
+            municipio: data.municipio,
+            distritoElectoralLocal:data.distritoElectoralLocal,
+            distritoElectoral:data.distritoElectoral,
+            tipoCasilla: data.tipoCasilla,
+            primerFirmante: data.primerFirmante,
+            cargoPrimerFirmante: data.cargoPrimerFirmante,
+            segundoFirmante: data.segundoFirmante,
+            cargoSegundoFirmante:data.cargoSegundoFirmante,
+			jornadaModel: {
+				idJornada: idConsulta,
+			},
 		});
-
+		// Candidato
 		const { data: candidateRespData } = await jornadasAPI.post(
 			// "jornada/electoral/boleta/" + data1.data.idPapeleta + "/pregunta",
-			"jornada/electoral/boleta/" + data1.data.idBoleta + "/boleta",
+			"jornada/electoral/boleta/" + data1.data.idBoleta + "/",
 			{
+				// API FORMAT || MY FORMAT
                 apellidoPCandidato: candidato[0].apellidoPCandidato,
-                apellidoMCandidato: Cadidato[0].apellidoMCandidato,
+                apellidoMCandidato: candidato[0].apellidoMCandidato,
                 nombreCandidato: candidato[0].nombreCandidato,
                 fotoCandidato: candidato[0].fotografia,
                 seudonimoCandidato: candidato[0].seudonimoCandidato,
@@ -195,8 +171,36 @@ export const createBoleta = async (data, idConsulta, candidato) => {
                 genero: candidato[0].generoCandidato,
 			}
 		);
-
 		console.log("Data de respuesta", candidateRespData);
+		// Suplente
+		const { data: suplenteRespData } = await jornadasAPI.post(
+			// "jornada/electoral/boleta/" + data1.data.idPapeleta + "/pregunta",
+			"jornada/electoral/boleta/" + data1.data.idBoleta + "/",
+			{
+				// API FORMAT || MY FORMAT
+				apellidoPSuplente: suplente[0].apellidoPSuplente,
+				apellidoMSuplente: suplente[0].apellidoMSuplente,
+				nombreSuplente: suplente[0].nombreSuplente,
+				fotoSuplente: suplente[0].fotografiaSuplente,
+				seudonimoSuplente: suplente[0].seudonimoSuplente,
+				fechaNacimiento: suplente[0].fechaNacimientoSuplente,
+				genero: suplente[0].generoSuplente,
+			}
+		);
+		console.log("Data de respuesta", suplenteRespData);
+		// Partido
+		const { data: partidoRespData } = await jornadasAPI.post(
+			// "jornada/electoral/boleta/" + data1.data.idPapeleta + "/pregunta",
+			"jornada/electoral/boleta/" + data1.data.idBoleta + "/",
+			{
+				// API FORMAT || MY FORMAT
+				nombre: partido[0].nombrePartido,
+				siglas: partido[0].siglas,
+				emblema: partido[0].emblema,
+				logo: partido[0].fotografiaPartido,
+			}
+		);
+		console.log("Data de respuesta", partidoRespData);
 
 		return { ok: true, idBoleta: data1.data.idBoleta };
 	} catch (error) {
@@ -206,54 +210,78 @@ export const createBoleta = async (data, idConsulta, candidato) => {
 };
 
 
-export const updateBoletaData = async (data, candidato, idConsulta, idBoleta) => {
+export const updateBoletaData = async (data, idConsulta, idBoleta, candidato, suplente, partido) => {
 	try {
 		const { data: data1 } = await jornadasAPI.put(
 			"jornada/electoral/estructurasboletas/" + idBoleta,
 			{
-				nombre: data.encabezadoConsulta,
-				distrito: data.distritoElectoral,
+				encabezadoBoleta: data.encabezado,
+				nombreCandidatura: data.nombreCandidatura,
+				modalidadVotacion: data.modalidadVotacion,
+				entidadFederativa: data.entidadFederativa,
 				municipio: data.municipio,
-				primerFirmanteNombre: data.nombrePrimerFirmante,
-				primerFirmanteCargo: data.cargoPrimerFirmante,
-				segundoFirmanteNombre: data.nombreSegundoFirmante,
-				segundoFirmanteCargo: data.cargoSegundoFirmante,
+				distritoElectoralLocal:data.distritoElectoralLocal,
+				distritoElectoral:data.distritoElectoral,
+				tipoCasilla: data.tipoCasilla,
+				primerFirmante: data.primerFirmante,
+				cargoPrimerFirmante: data.cargoPrimerFirmante,
+				segundoFirmante: data.segundoFirmante,
+				cargoSegundoFirmante:data.cargoSegundoFirmante,
 				jornadaModel: {
 					idJornada: idConsulta,
 				},
-        //     encabezado: data.data.idJornada,
-        //     nombreCandidatura: data.data.nombreJornada,
-        //     modalidadVotacion: data.data.
-        //     entidadFederativa: data.data.entidad,
-        //     municipio: data.data.
-        //     distritoElectoralLocal:data.data.
-        //     distritoElectoral:data.data.
-        //     tipoCasilla: data.data.
-        //     primerFirmante: data.data.
-        //     cargoPrimerFirmante: data.data.
-        //     segundoFirmante: data.data.
-        //     cargoSegundoFirmante:data.data.
 			}
 		);
-
+			// Candidato
 		const { data: candidateRespData } = await jornadasAPI.put(
-			"jornada/electoral/boleta/" + questions[0].id,
+			"jornada/electoral/boleta/" + candidato[0].id,
 			{
                 apellidoPCandidato: candidato[0].apellidoPCandidato,
-                apellidoMCandidato: Cadidato[0].apellidoMCandidato,
+                apellidoMCandidato: candidato[0].apellidoMCandidato,
                 nombreCandidato: candidato[0].nombreCandidato,
                 fotoCandidato: candidato[0].fotografia,
                 seudonimoCandidato: candidato[0].seudonimoCandidato,
                 fechaNacimiento: candidato[0].fechaNacimientoCandidato,
                 genero: candidato[0].generoCandidato,
-			    // NO SPE QUE ES ESTO
-				// estructuraPapeletaModel: {
-				// 	idPapeleta: idPapeleta,
-				// },
+				estrutucturaBoletaModel: {
+					idBoleta: idBoleta,
+				},
 			}
 		);
-
 		console.log("Data de respuesta", candidateRespData);
+
+		// Suplente
+		const { data: suplenteRespData } = await jornadasAPI.put(
+			"jornada/electoral/boleta/" + suplente[0].id,
+			{
+				apellidoPSuplente: suplente[0].apellidoPSuplente,
+				apellidoMSuplente: suplente[0].apellidoMSuplente,
+				nombreSuplente: suplente[0].nombreSuplente,
+				fotoSuplente: suplente[0].fotografiaSuplente,
+				seudonimoSuplente: suplente[0].seudonimoSuplente,
+				fechaNacimiento: suplente[0].fechaNacimientoSuplente,
+				genero: suplente[0].generoSuplente,
+				estrutucturaBoletaModel: {
+					idBoleta: idBoleta,
+				},
+			}
+		);
+		console.log("Data de respuesta", suplenteRespData);
+
+		// Partido
+		const { data: partidoRespData } = await jornadasAPI.put(
+			"jornada/electoral/boleta/" + partido[0].id,
+			{
+				nombre: partido[0].nombrePartido,
+				siglas: partido[0].siglas,
+				emblema: partido[0].emblema,
+				logo: partido[0].fotografiaPartido,
+				estrutucturaBoletaModel: {
+					idBoleta: idBoleta,
+				},
+			}
+		);
+		console.log("Data de respuesta", partidoRespData);
 
 		return { ok: true };
 	} catch (error) {

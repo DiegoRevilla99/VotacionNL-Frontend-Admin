@@ -4,7 +4,7 @@ import { comiteSlice } from "./module-preparacion/comite/comiteSlice";
 import { configBoletaSlice } from "./module-preparacion/configuracion-boleta/configBoletaSlice";
 import { configJornadaSlice } from "./module-preparacion/configuracion-jornada/configJornadaSlice";
 import { consultaCiudadanaSlice } from "./module-preparacion/consulta-ciudadana/consultaCiudadanaSlice";
-import { jornadaSlice } from "./module-preparacion/jornada/jornadaSlice";
+import { SliceJornada } from "./module-preparacion/jornada/SliceJornada";
 import { uiSlice } from "./ui/uiSlice";
 
 export const store = configureStore({
@@ -12,7 +12,7 @@ export const store = configureStore({
 		consultaCiudadana: consultaCiudadanaSlice.reducer,
 		comite: comiteSlice.reducer,
 		configBoleta: configBoletaSlice.reducer,
-		jornada: jornadaSlice.reducer,
+		jornada: SliceJornada.reducer,
 		configJornada: configJornadaSlice.reducer,
 		ui: uiSlice.reducer,
 		auth: authSlice.reducer,

@@ -1,17 +1,27 @@
 import { Box, Divider, Grid, Typography, TextField, Paper, Button } from "@mui/material";
+import { Stack } from "@mui/system";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { FielTextCustom } from "../components/FielTextCustom";
-import { DataGridTable } from "../../ui/components/DataGridTable";
+import { useUiStore } from "../../hooks/useUiStore";
+// import { saveCandidatoandSuplente } from "../../store/module-preparacion/jornada/jornadaThunks";
 import { editBoleta, saveBoleta } from "../../store/module-preparacion/jornada/jornadaThunks";
 import { useAddBoletasJornada } from "../hooks/useAddBoletasJornada";
+import { getBoletaByIdApi } from "../helpers/ApiJornada";
+import { FielTextCustom } from "../components/FielTextCustom";
+import { DataGridTable } from "../../ui/components/DataGridTable";
+import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
 
-import { ModalBoletaCandidatoGenerico } from "../components/ModalBoletaCandidatoGenerico";
-import { ModalEliminarCandidatoGenerico } from "../components/ModalEliminarCandidatoGenerico";
+import { ModalEliminarPC } from "../components/ModalEliminarPC";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Formik } from 'formik';
 import { object, string, number } from "yup";
 import { useNavigate, useParams } from "react-router-dom";
+import { ModalAsociacionCP } from "../components/ModalAsociacionCP";
+
+import { ModalRegisterCS } from "../components/ModalRegisterCS";
+import { DataGridTableJornada } from "../../ui/components/DataGridTableJornada";
+import { DataGridTablePartido } from "../../ui/components/DataGridTablePartido";
+
 
 const validationSchema = object({
 	encabezado: string("").required(
@@ -20,6 +30,7 @@ const validationSchema = object({
 	nombreCandidatura: string("").required(
 		"Por favor, ingresa un nombre de Candidatura"
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// modalidadVotacion: string(""),
 	entidadFederativa: string("").required(
 		"Por favor, ingresa una entidad Federativa"
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
@@ -49,16 +60,18 @@ const validationSchema = object({
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
 });
 
-export const AddBoletaJornadaGenerica = () => {
+export const AddBoletaJornada = () => {
+
 	const { nombreCandidatura } = useParams();
 	const navigate = useNavigate();
 	const { status } = useAddBoletasJornada();
-	const [statusMatchModal, setStatusMatchModal] = useState(false);
+
 
 	const dispatch = useDispatch();
 	const [datos, setDatos] = useState({
 		encabezado: "",	//Text
 		nombreCandidatura: "",//Text
+		modalidadVotacion: "1",//Text
 		entidadFederativa: "",//Text
 		municipio: "",//Text
 		distritoElectoralLocal: "",//Number
@@ -71,31 +84,45 @@ export const AddBoletaJornadaGenerica = () => {
 	});
 	const [, forceUpdate] = React.useState();
 
-    const [statusCandidateModal, setStatusCandidateModal] = useState(false);
+	const [statusMatchModal, setStatusMatchModal] = useState(false);
+
 	const [statusDeleteModal, setStatusDeleteModal] = useState(false);
+	const [statusRegisterModal, setStatusRegisterModal] = useState(false);
+	const [statusAsociacionModal, setStatusAsociacionModal] = useState(false);
+
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleCloseMatchModal = () => setStatusMatchModal(false);
-    const handleCloseCandidateModal = () => setStatusCandidateModal(false);
+
 	const handleCloseDeleteModal = () => setStatusDeleteModal(false);
+	const handleCloseRegisterModal = () => setStatusRegisterModal(false);
+	const handleCloseAsociacionModal = () => setStatusAsociacionModal(false);
+
+
+	const handleOpenRegisterModal = () => {
+	    // toastOffOperation();
+		setStatusRegisterModal(true);
+	};
 
 	 const handleOpenMatchModal = () => {
 	 	// toastOffOperation();
 	 	setStatusMatchModal(true);
 	 };
 
-     const handleOpenCandidateModal = () => {
-        // toastOffOperation();
-        setStatusCandidateModal(true);
-    };
-
 	const handleOpenDeleteModal = () => {
         // toastOffOperation();
         setStatusDeleteModal(true);
     };
-	const onCancel = () => {
-		navigate("/preparacion/JornadaGenerica");
+
+	const handleOpenAsociacionModal = () => {
+		// toastOffOperation();
+		setStatusAsociacionModal(true);
 	};
+
+	const onCancel = () => {
+		navigate("/preparacion/jornada");
+	};
+
 	const setInfo = async () => {
 		console.log(nombreCandidatura);
 		if (nombreCandidatura != undefined) {
@@ -116,9 +143,8 @@ export const AddBoletaJornadaGenerica = () => {
 	  }, [datos]);
 
 	  const guardar = () => {
-		navigate("/preparacion/JornadaGenerica");
+		navigate("/preparacion/jornada");
 	  };
-
 	// INICIO DEL RETURN
 
 	return (
@@ -143,8 +169,8 @@ export const AddBoletaJornadaGenerica = () => {
 			  dispatch(saveBoleta(valores, guardar));
 			}
 		  }}
-		>
-			{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (
+	>
+		{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (
 			<Box 
 			sx={{
 				height: "100%",
@@ -156,7 +182,7 @@ export const AddBoletaJornadaGenerica = () => {
 				
 				<Box sx={{ m: "0.5rem", ml: "2rem" }}>
 					<Typography variant="h6" align="left" color="initial">
-						REGISTRO DE BOLETA DE LA JORNADA GENÉRICA
+						REGISTRO DE BOLETA
 					</Typography>
 				</Box>
 				<Divider />
@@ -208,6 +234,17 @@ export const AddBoletaJornadaGenerica = () => {
 							/>
 							{/* {touched.nombreCandidatura && errors.nombreCandidatura && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombreCandidatura}</Typography>} */}
 						</Grid>
+						{/* <Grid item xs={12}>
+							<FielTextCustom
+								disabled={status === "checking"}
+								label="MODALIDAD DE VOTACIÓN"
+								name="modalidadVotacion"
+								value={values.modalidadVotacion}
+								handleChange={handleChange}
+								error={errors.modalidadVotacion}
+								touched={touched.modalidadVotacion}
+							/>
+						</Grid> */}
 						<Grid item xs={12}>
 							<Typography variant="h6" color="initial">
 								DATOS GEOELECTORALES
@@ -328,7 +365,8 @@ export const AddBoletaJornadaGenerica = () => {
 						</Grid>
 						<Grid item xs={12} md={6} lg={4}>
 							<Button
-								onClick={handleOpenCandidateModal}
+								
+								onClick={handleOpenRegisterModal}
 								variant="contained"
 								size="large"
 								disabled={status === "checking"}
@@ -345,18 +383,18 @@ export const AddBoletaJornadaGenerica = () => {
 									},
 								}}
 							>
-								Agregar candidato
+								Registrar candidato y suplente
 							</Button>
 						</Grid>
-						{/* <Grid item xs={12} md={6} lg={4}>
+						<Grid item xs={12} md={6} lg={4}>
 							<Button
-								onClick={handleOpenCandidateModal}
+								onClick={handleOpenMatchModal}
 								variant="contained"
 								size="large"
 								
 								disabled={status === "checking"}
 								sx={{
-									width: { xl: "140%", lg: "140%", sm: "100%", xs: "100%" },
+									width: "100%",
 									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
 									transition: "all 0.5s ease",
 									backgroundColor: "#511079",
@@ -369,9 +407,34 @@ export const AddBoletaJornadaGenerica = () => {
 									},
 								}}
 							>
-								Agregar candidato independiente
+								Agregar partido
 							</Button>
-						</Grid> */}
+						</Grid>
+						<Grid item xs={12} md={6} lg={4}>
+							<Button
+								onClick={handleOpenAsociacionModal}
+								variant="contained"
+								size="large"
+								
+								disabled={status === "checking"}
+								sx={{
+									width: "100%",
+									height: "100%",
+									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+									transition: "all 0.5s ease",
+									backgroundColor: "#511079",
+									fontSize: { xl: "14px", lg: "14px", sm: "15px", xs: "15px" },
+									borderRadius: "25px 25px 25px 25px",
+									"&:hover": {
+										backgroundColor: "#7E328B !important",
+										transform: "translate(-5px, -5px)",
+										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+									},
+								}}
+							>
+								Asociaciar participantes a partido
+							</Button>
+						</Grid>
 						<Grid item xs={4} md={2} lg={2}>
 							<Button
 							onClick={handleOpenDeleteModal}
@@ -405,15 +468,32 @@ export const AddBoletaJornadaGenerica = () => {
 									pb: "1rem",
 								}}
 							>
+
+
+								{/* <DataGridTableJornada /> */}
 								<DataGridTable />
+
 							</Box>
 						</Grid>
-
+						<Grid item xs={12}>
+							<Box
+								sx={{
+									height: "25rem",
+									backgroundColor: "#f0f0f0",
+									borderRadius: "2rem",
+									p: "2rem",
+									pt: "1rem",
+									pb: "1rem",
+								}}
+							>
+								{/* <DataGridTablePartido /> */}
+								
+							</Box>
+						</Grid>
 					</Grid>
 					<Grid mt={"1rem"} container direction="row" justifyContent="flex-end" spacing={2}>
 						<Grid item xs={12} md={6} lg={3}>
 							<Button
-								// onClick={onSubmit}
 								type="submit"
 								variant="contained"
 								size="large"
@@ -460,16 +540,24 @@ export const AddBoletaJornadaGenerica = () => {
 						
 					</Grid>
 				</Box>
-            <ModalBoletaCandidatoGenerico statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} />
-			<ModalEliminarCandidatoGenerico statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} />
-			
-			
+			{/* MODAL PARA REGISTRAR LOS PARTIDOS */}
+			<ModalBoletaPartido statusMatchModal={statusMatchModal} handleToggleModal={handleCloseMatchModal} />
+			{/* ELIMINAR EL SIGUIENTE MODAL */}
+            {/* <ModalBoletaCandidato statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} /> */}
+			{/* MODAL PARA CONFIRMAR LA ELIMINACIÓN */}
+			<ModalEliminarPC statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} />
+			{/* MODAL PARA REGISTRAR A LOS CANDIDATOS Y SUPLENTES */}
+			<ModalRegisterCS statusRegisterModal={statusRegisterModal} handleToggleModal={handleCloseRegisterModal} />
+			{/* MODAL PARA REGISTRAR ASOCIAR CANDIDATOS Y PARTIDOS */}
+			<ModalAsociacionCP statusAsociacionModal={statusAsociacionModal} handleToggleModal={handleCloseAsociacionModal} />
+			{/* ELIMINAR EL SIGUIENTE MODAL */}
+			{/* <ModalSustitutoBoleta statusSubstituteModal={statusSubstituteModal} handleToggleModal={handleCloseSubstituteModal} /> */}
 		</form>
 		</Box>
 		)}
 		</Formik>
-		  )}
+		)}
 	</>
-		
+		  
 	);
 };

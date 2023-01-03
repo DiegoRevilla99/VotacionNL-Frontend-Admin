@@ -1,24 +1,20 @@
 import { Box, Button, Divider, Grid, IconButton, LinearProgress, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { ModalRegistroConsultaCiudadana } from "../components/ModalRegistroConsultaCiudadana";
 import { GeneralTable } from "../components/GeneralTable";
-import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
+import { useJornadaStore } from "../hooks/useJornadaStore";
 import { Stack } from "@mui/system";
 import BallotIcon from "@mui/icons-material/Ballot";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useDispatch } from "react-redux";
 import {
-	onDeleteConsultaCiudadana,
-	onGetConfig,
-	onGetConsultasCiudadanas,
-} from "../../store/module-preparacion/consulta-ciudadana/thunks";
-import DeleteIcon from "@mui/icons-material/Delete";
+	onDeleteJornada,
+	onGetjornadas,
+} from "../../store/module-preparacion/jornada/ThunksJornada";
 import {
-	onSetConfigSelectedNull,
-	onSetConsultaSelected,
-} from "../../store/module-preparacion/consulta-ciudadana/consultaCiudadanaSlice";
-import { ModalRegistroJornadaNoFormal } from "../components/ModalRegistroJornadaNoFormal";
+	onSetJornadaSelected,
+} from "../../store/module-preparacion/jornada/SliceJornada";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { ModalRegistroJornadaFormal } from "../components/ModalRegistroJornadaFormal";
 
 export const RegistroJornadaFormal = () => {
@@ -26,7 +22,7 @@ export const RegistroJornadaFormal = () => {
 	const [modalStatus, setModalStatus] = useState(false);
 
 	// ToDo:AQUI OBTENGAN LAS VARIABLES STATUS Y DATA DE SUS ESTADOS GLOBALES
-	const { consultasData, status } = useConsultaCiudadanaStore();
+	const { jornadasData, status } = useJornadaStore();
 
 	const dispatch = useDispatch();
 	const columns = [
@@ -43,7 +39,7 @@ export const RegistroJornadaFormal = () => {
 						<Button
 							variant="outlined"
 							startIcon={<BallotIcon />}
-							onClick={() => handleEdit(params.id)}
+							onClick={() => handleEdit(params.id, params.row.nombreJornada)}
 						>
 							Ver
 						</Button>
@@ -67,19 +63,19 @@ export const RegistroJornadaFormal = () => {
 	];
 
 	// USEEFFECT QUE PUEDES USAR PARA HACER UN GET DE LAS JORNADAS AL RENDERIZAR LA PAGINA
-	// useEffect(() => {
-	// 	if (consultasData.length === 0) dispatch(onGetConsultasCiudadanas());
-	// }, []);
+	useEffect(() => {
+		if (jornadasData.length === 0) dispatch(onGetjornadas());
+	}, []);
 
 	// METODO PARA BORRAR UN REGISTRO
 	const handleDelete = (id) => {
-		// dispatch(onDeleteConsultaCiudadana(id));
+		dispatch(onDeleteJornada(id));
 	};
 
 	// MÉTODO PARA EDITAR UN REGISTRO
-	const handleEdit = (id) => {
-		// dispatch(onSetConsultaSelected({ id, titulo, ballots: [] }));
-		// navigate("/preparacion/consulta/" + id);
+	const handleEdit = (id, title) => {
+		dispatch(onSetJornadaSelected({ id, title, boletas: [] }));
+		navigate("/preparacion/jornada/" + id);
 	};
 
 	// MÉTODO PARA IR A LA PAGINA DE CONFIGURACIÓN DEL REGISTRO
@@ -177,7 +173,7 @@ export const RegistroJornadaFormal = () => {
                                 CADA REGISTRO SE DEBE LLAMAR "idJornada" o si el id de cada registro 
                                 tiene otro nombre, cambien el atributo idName al nombre que quieran */}
 								<GeneralTable
-									data={consultasData}
+									data={jornadasData}
 									columns={columns}
 									idName={"idJornada"}
 								/>

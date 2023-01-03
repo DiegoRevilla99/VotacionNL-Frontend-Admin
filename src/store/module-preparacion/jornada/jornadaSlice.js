@@ -68,6 +68,9 @@ export const jornadaSlice = createSlice({
             state.isLoading = false;
             state.jornadas = action.payload.jornadas;
         },
+        addJornada: (state, action) => {
+            state.jornadas.push(action.payload.jornada);
+        },
         
         // BOLETA
         startLoadingBoletas: (state, /* action */) => {
@@ -84,7 +87,6 @@ export const jornadaSlice = createSlice({
             state.isLoadingBoletas = false;
             state.boletas = action.payload.boletas;
         },        
-
 
         //CANDIDATOS
         startLoadingCandidatosandSuplente: (state, /* action */) => {

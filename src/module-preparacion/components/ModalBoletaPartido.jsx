@@ -18,7 +18,10 @@ import { savePartido } from "../../store/module-preparacion/jornada/jornadaThunk
 import { useAddBoletasJornada } from "../hooks/useAddBoletasJornada";
 import CircularProgress from "@mui/material/CircularProgress";
 import { editBoleta, saveBoleta } from "../../store/module-preparacion/jornada/jornadaThunks";
-
+import { useJornadaStore } from "../hooks/useJornadaStore";
+import { onCreateBoleta } from "../../store/module-preparacion/jornada/ThunksJornada";
+import { useNavigate, useParams } from "react-router-dom";
+import { useUiStore } from "../../hooks/useUiStore";
 
 const style = {
 	position: "absolute",
@@ -47,22 +50,40 @@ const validationSchema = object({
 });
 export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 
-	const { status } = useAddBoletasJornada();
 	const dispatch = useDispatch();
+	const params = useParams();
+	const { 
+		status, 
+		partidos, 
+		partidoSelected, 
+		addPartido, 
+		setPartidoSelectedNull, 
+		updatePartido
+	} = useJornadaStore();
 
-	const onSave = () => {
+	const onSubmit = (values) => {
 		setEmblema({ name: "Sin Archivo seleccionado" });
-		setFotografia({ name: "Sin Archivo seleccionado" });
+		setfotografiaPartido({ name: "Sin Archivo seleccionado" });
+			addPartido(
+				partidos.length,
+				values.nombrePartido,
+				values.siglas,
+				values.emblema,
+				values.fotografiaPartido
+			)
+		console.log(values);
+		setPartidoSelectedNull();
 		handleToggleModal();
 	};
 
 	const onCancel = () => {
+		setPartidoSelectedNull();
 		handleToggleModal();
 	};
 
 	//Validacion del formato imagen 
 	const [emblema, setEmblema] = useState({ name: "Sin Archivo seleccionado" });
-	const [fotografia, setFotografia] = useState({
+	const [fotografiaPartido, setfotografiaPartido] = useState({
 	  name: "Sin Archivo seleccionado",
 	});
 	 
@@ -71,8 +92,8 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 	   if (emblema.name === "Sin Archivo seleccionado") {
 		 errors.emblema = "Se necesita un emblema";
 	   }
-	   if (fotografia.name === "Sin Archivo seleccionado") {
-		 errors.fotografia = "Se necesita una fotografia";
+	   if (fotografiaPartido.name === "Sin Archivo seleccionado") {
+		 errors.fotografiaPartido = "Se necesita una fotografiaPartido";
 	   }
 	   return errors;
 	 };
@@ -90,12 +111,13 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 			nombrePartido: "",	//Text
 			siglas: "",//Text
 			emblema: "",
-			fotografia: "",
+			fotografiaPartido: "",
 		}}
 		validate = {validando}
 		validationSchema={validationSchema}
 		onSubmit={(values, {resetForm}) => {
-			dispatch(savePartido(values, onSave));
+			// dispatch(savePartido(values, onSave));
+			onSubmit(values);
 			resetForm();
 		}}
 	>
@@ -113,7 +135,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						height: "100%",
 						overflowY: "auto",
 					}}>
-					<Form  onSubmit={handleSubmit} >
+					<form  onSubmit={handleSubmit} >
 					<Typography variant= {{ xl: "2rem", lg: "1.5rem", sm: "1rem", xs: "0.8rem" }}>
 						NOMBRE DEL PARTIDO <span style={{ color: "red" }}>*</span>
 					</Typography>
@@ -192,7 +214,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						  </Box>
 						)}
 					<Typography variant="h7" mt={"1rem"}>
-						INSERTAR FOTOGRAFÍA DEL PROPIETARIO/A <span style={{ color: "red" }}>*</span>
+						INSERTAR FOTOGRAFÍA DEL PARTIDO <span style={{ color: "red" }}>*</span>
 					</Typography>
 					<Box
 						display="flex"
@@ -203,7 +225,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						<TextField
 						fullWidth
 						label=""
-						value={fotografia.name}
+						value={fotografiaPartido.name}
 						disabled
 						variant="outlined"
 						size="small"
@@ -217,21 +239,21 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 							>
 							<input
 								hidden
-								onChange={(e) => setFotografia(e.target.files[0])}
+								onChange={(e) => setfotografiaPartido(e.target.files[0])}
 								accept="image/png,image/jpg"
 								type="file"
 							/>
 							<PhotoCamera fontSize="" />
 						</IconButton>
 					</Box>
-					{touched.fotografia &&
-						fotografia.name === "Sin Archivo seleccionado" && (
+					{touched.fotografiaPartido &&
+						fotografiaPartido.name === "Sin Archivo seleccionado" && (
 							<Box ml={2} 
 							sx={{
 							fontSize: "12px",
 								color: "#791010" }}
 							>
-							{errors.fotografia}
+							{errors.fotografiaPartido}
 						  </Box>
 						)}
 				
@@ -288,7 +310,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						</Button>
 					</Grid>
 				</Grid>
-				</Form>
+				</form>
 			</Box>
 		</Box>
 	

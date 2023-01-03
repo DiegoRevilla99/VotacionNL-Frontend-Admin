@@ -1,11 +1,41 @@
-import { addBoletaApi, addJornadaApi, addPartidoApi, addCandidatoandSuplenteApi, editBoletaApi } from "../../../module-preparacion/helpers/ApiJornada";
-import { onCheckingOperation, onErrorOperation, onSuccessOperation, setBoletas, setCandidatosandSuplente,setErrorPartidos,  setErrorBoletas, setErrorCandidateandSuplente, setPartidos, startLoadingBoletas, startLoadingCandidatosandSuplente, startLoadingJornadas } from "./jornadaSlice";
+import { 
+    addBoletaApi, 
+    addJornadaApi, 
+    addPartidoApi, 
+    addCandidatoandSuplenteApi, 
+    editBoletaApi 
+} from "../../../module-preparacion/helpers/ApiJornada";
+import { onCheckingOperation, 
+    onErrorOperation, 
+    onSuccessOperation,
+    setBoletas, 
+    setCandidatosandSuplente,
+    setErrorPartidos,  
+    setErrorBoletas, 
+    setErrorCandidateandSuplente, 
+    setPartidos, 
+    startLoadingBoletas,
+    startLoadingCandidatosandSuplente, 
+    startLoadingJornadas,
+    setJornadas,
+} from "./jornadaSlice";
 import {
     onToastCheckingOperation,
     onToastErrorOperation,
     onToastOffOperation,
     onToastSuccessOperation,
 } from "../../ui/uiSlice";
+
+import {
+    getJornadas,
+    createJornada,
+    deleteJornada,
+    getBoletasJornada,
+    getBoletaData,
+    createBoleta,
+    updateBoletaData,
+    deleteBoleta,
+} from "../../../providers/Micro-Preparacion/providerJornada"
 
 import { jornadasAPI } from "../../../providers/Micro-Preparacion/configJornada";
 
@@ -231,3 +261,34 @@ export const getCandidatosSuplentes = (idBoleta) => {
         })
     }
 }
+
+
+export const onGetjornadas = () => {
+    return async (dispatch) => {
+        dispatch(onCheckingOperation());
+        const [ ok, data, errorMessage ] = await getJornadas(); // PROVIDER
+        if (ok) {
+            dispatch(onSuccessOperation());
+            dispatch(setJornadas({ jornadas: data }));// SLICE
+        } else {
+            dispatch(onErrorOperation());
+            dispatch(onToastErrorOperation({ errorMessage: errorMessage || "No se pudo obtener las jornadas" }));
+        }
+    }
+};
+
+
+export const onGetBoletas = () => {
+    return async (dispatch) => {
+        dispatch(onCheckingOperation());
+        const [ ok, data, errorMessage ] = await getBoletaData();// PROVIDER
+        if (ok) {
+            dispatch(onSuccessOperation());
+            dispatch(setBoletas({ partidos: data }));// SLICE
+        } else {
+            dispatch(onErrorOperation());
+            dispatch(onToastErrorOperation({ errorMessage: errorMessage || "No se pudo obtener los partidos" }));
+        }
+    }
+};
+

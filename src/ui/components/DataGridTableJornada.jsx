@@ -5,23 +5,18 @@ import { Box, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 // import { getCandidatosSuplentes } from "../../store/module-preparacion/jornada/jornadaThunks";
+import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
 
 export const DataGridTableJornada = ({ handleOpenModal }) => {
-	const { questions, deleteQuestion, editQuestion } = useConsultaCiudadanaStore();
-	// const { candidato } = getCandidatosSuplentes();
-	console.log("candidato : ", candidato);
-    // const { candidatosP } = getCandidatos();
+	const { candidatos, deleteCandidato, editCandidato} = useJornadaStore();
 
-	const handleDelete = (id) => {
+    const handleDelete = (id) => {
 		console.log("ID: ", id);
-		// deleteQuestion(id);
+		deleteCandidato(id);
 	};
-	
-
 	const handleEdit = (id) => {
-		// console.log("ID SELECCIONADO:", id);
 		handleOpenModal();
-		// editQuestion(id);
+		editCandidato(id);
 	};
 
 
@@ -61,8 +56,7 @@ export const DataGridTableJornada = ({ handleOpenModal }) => {
 	return (
 		<div style={{ height: "100%", width: "100%" }}>
 			<DataGrid
-				// rows={candidatosP}
-                rows={questions}
+                rows={candidatos}
 				columns={columns}
 				pageSize={5}
 				rowsPerPageOptions={[5]}

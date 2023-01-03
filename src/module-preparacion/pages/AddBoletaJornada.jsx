@@ -21,6 +21,9 @@ import { ModalAsociacionCP } from "../components/ModalAsociacionCP";
 import { ModalRegisterCS } from "../components/ModalRegisterCS";
 import { DataGridTableJornada } from "../../ui/components/DataGridTableJornada";
 import { DataGridTablePartido } from "../../ui/components/DataGridTablePartido";
+import { useJornadaStore } from "../hooks/useJornadaStore";
+import { onCreateBoleta, onUpdateBoletaData } from "../../store/module-preparacion/jornada/ThunksJornada";
+import { onUpdateBoleta } from "../../store/module-preparacion/jornada/SliceJornada";
 
 
 const validationSchema = object({
@@ -62,51 +65,80 @@ const validationSchema = object({
 
 export const AddBoletaJornada = () => {
 
-	const { nombreCandidatura } = useParams();
-	const navigate = useNavigate();
-	const { status } = useAddBoletasJornada();
-
+	const [isSubmited, setIsSubmited] = useState(false);
+	const { toastOffOperation } = useUiStore();
+	// const { status, questions, consultaSelected } = useConsultaCiudadanaStore();
+	const { 
+		status,
+		candidatos,
+        candidatosSelected,
+        suplentes,
+        suplentesSelected,
+        partidos,
+        partidoSelected,
+        candidatoAndSuplente,
+        candidatoandSuplenteSelected,
+		
+		jornadaSelected,
+	} = useJornadaStore();
 
 	const dispatch = useDispatch();
-	const [datos, setDatos] = useState({
-		encabezado: "",	//Text
-		nombreCandidatura: "",//Text
-		modalidadVotacion: "1",//Text
-		entidadFederativa: "",//Text
-		municipio: "",//Text
-		distritoElectoralLocal: "",//Number
-		distritoElectoral: "",//Number
-		tipoCasilla: "",//text
-		primerFirmante: "",//Text
-		cargoPrimerFirmante: "",//Text
-		segundoFirmante: "",//Text
-		cargoSegundoFirmante: "",//Text
-	});
+	const navigate = useNavigate();
+	const params = useParams();
+
+	const values = Object.values(jornadaSelected.boletaSelected).length === 0 ? {
+		encabezado: "",
+		nombreCandidatura: "",
+		modalidadVotacion: "1",
+		entidadFederativa: "",
+		municipio: "",
+		distritoElectoralLocal: "",
+		distritoElectoral: "",
+		tipoCasilla: "",
+		primerFirmante: "",
+		cargoPrimerFirmante: "",
+		segundoFirmante: "",
+		cargoSegundoFirmante: "",
+	} : {
+		encabezado: jornadaSelected.boletaSelected.encabezado,
+		nombreCandidatura: jornadaSelected.boletaSelected.nombreCandidatura,
+		modalidadVotacion: jornadaSelected.boletaSelected.modalidadVotacion,
+		entidadFederativa: jornadaSelected.boletaSelected.entidadFederativa,
+		municipio: jornadaSelected.boletaSelected.municipio,
+		distritoElectoralLocal: jornadaSelected.boletaSelected.distritoElectoralLocal,
+		distritoElectoral: jornadaSelected.boletaSelected.distritoElectoral,
+		tipoCasilla: jornadaSelected.boletaSelected.tipoCasilla,
+		primerFirmante: jornadaSelected.boletaSelected.primerFirmante,
+		cargoPrimerFirmante: jornadaSelected.boletaSelected.cargoPrimerFirmante,
+		segundoFirmante: jornadaSelected.boletaSelected.segundoFirmante,
+		cargoSegundoFirmante: jornadaSelected.boletaSelected.cargoSegundoFirmante,
+	
+	};
+
+
 	const [, forceUpdate] = React.useState();
+	const [isLoading, setIsLoading] = useState(false);
 
 	const [statusMatchModal, setStatusMatchModal] = useState(false);
-
 	const [statusDeleteModal, setStatusDeleteModal] = useState(false);
 	const [statusRegisterModal, setStatusRegisterModal] = useState(false);
 	const [statusAsociacionModal, setStatusAsociacionModal] = useState(false);
 
-	const [isLoading, setIsLoading] = useState(false);
-
 	const handleCloseMatchModal = () => setStatusMatchModal(false);
-
 	const handleCloseDeleteModal = () => setStatusDeleteModal(false);
 	const handleCloseRegisterModal = () => setStatusRegisterModal(false);
 	const handleCloseAsociacionModal = () => setStatusAsociacionModal(false);
 
 
 	const handleOpenRegisterModal = () => {
+	    // toastOffOperation();
 		setStatusRegisterModal(true);
 	};
 
-	 const handleOpenMatchModal = () => {
-	 	// toastOffOperation();
-	 	setStatusMatchModal(true);
-	 };
+	const handleOpenMatchModal = () => {
+	// toastOffOperation();
+	setStatusMatchModal(true);
+	};
 
 	const handleOpenDeleteModal = () => {
         // toastOffOperation();
@@ -119,32 +151,37 @@ export const AddBoletaJornada = () => {
 	};
 
 	const onCancel = () => {
-		navigate("/preparacion/jornada");
+		navigate("/preparacion/jornada/"+ params.id);
 	};
 
-	const setInfo = async () => {
-		console.log(nombreCandidatura);
-		if (nombreCandidatura != undefined) {
-		  setIsLoading(true);
-		  const info = await getBoletaByIdApi(nombreCandidatura);
-		  setIsLoading(false);
-		  console.log("datps desde set info");
-		  setDatos(info);
-		}
-	  };
-	  useEffect(() => {
-		setInfo();
-	  }, []);
-	
-	  useEffect(() => {
-		console.log("se actualizo datos");
-		forceUpdate();
-	  }, [datos]);
+	const onSubmit = (values) => {
+		dispatch(
+			onCreateBoleta(values, params.id, partidos));
+		console.log("PARTIDOOOOOS: ", partidos);
+		console.log("VALORRRRRRRRRRRRRRRRR: ", values);
+		// setIsSubmited(true);
+		// if(Object.values(jornadaSelected.boletaSelected).length === 0){
+		// 	if (partidos.length > 0) 
+		// 		dispatch(
+		// 			onCreateBoleta(values, params.id, partidos, () => {
+		// 				navigate("/preparacion/jornada/"+ params.id);
+		// 			}));
+		// } else {
+		// 	dispatch(
+		// 		onUpdateBoletaData(
+		// 			values,
+		// 			params.id,
+		// 			partidos,
+		// 			jornadaSelected.boletaSelected.id,
+		// 			() => { navigate("/preparacion/jornada/"+ params.id); }
+		// 		)
+		// 		);
+		// }
+			// navigate("/preparacion/jornada/"+ params.id);
+	};
 
-	  const guardar = () => {
-		navigate("/preparacion/jornada");
-	  };
-	// INICIO DEL RETURN
+
+	
 
 	return (
 		<>
@@ -159,14 +196,10 @@ export const AddBoletaJornada = () => {
             </Stack>
           ) : (
             <Formik
-		initialValues={datos}
+		initialValues={values}
 		validationSchema={validationSchema}
-		onSubmit={(valores) => {
-			if (nombreCandidatura != undefined) {
-			  dispatch(editBoleta(valores, guardar));
-			} else {
-			  dispatch(saveBoleta(valores, guardar));
-			}
+		onSubmit={(values) => {
+			onSubmit(values);
 		  }}
 	>
 		{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (
@@ -469,8 +502,8 @@ export const AddBoletaJornada = () => {
 							>
 
 
-								{/* <DataGridTableJornada /> */}
-								<DataGridTable />
+								<DataGridTableJornada />
+								{/* <DataGridTable /> */}
 
 							</Box>
 						</Grid>
@@ -485,7 +518,7 @@ export const AddBoletaJornada = () => {
 									pb: "1rem",
 								}}
 							>
-								{/* <DataGridTablePartido /> */}
+								<DataGridTablePartido />
 								
 							</Box>
 						</Grid>

@@ -24,6 +24,8 @@ import { DatePickerMod } from "./DatePickerMod";
 import { RadioButtMod } from "./RadioButtMod";
 import { DatePickerModSuplente } from "./DatePickerModSuplente";
 import { RadioButtModSuplente } from "./RadioButtModSuplente";
+import { useJornadaStore } from "../hooks/useJornadaStore";
+import { useNavigate, useParams } from "react-router-dom";
 // import * as React from 'react';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -83,13 +85,28 @@ const validationSchema = object({
 });
 export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 
-	const { status } = useAddBoletasJornada();
-
 	const dispatch = useDispatch();
+	const params = useParams();
+	const { 
+		status, 
+		partidos, 
+		partidoSelected, 
+		addPartido, 
+		setPartidoSelectedNull, 
+		updatePartido
+	} = useJornadaStore();
 
-	const onSave = () => {
+	const onSubmit = () => {
 		setFotografia({ name: "Sin Archivo seleccionado" });
 		setFotografiaSuplente({ name: "Sin Archivo seleccionado" });
+
+		// addPartido(
+		// 	partidos.length,
+		// 	values.nombrePartido,
+		// 	values.siglas,
+		// 	values.emblema,
+		// 	values.fotografiaPartido
+		// )
 		handleToggleModal();
 		setActiveStep(0);
 	};
@@ -167,7 +184,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 							validationSchema={validationSchema}
 							validate = {validando}
 							onSubmit={(values, {resetForm}) => {
-								dispatch(saveCandidatoandSuplente(values, onSave));
+								onSubmit(values)
 								resetForm();
 							}}
 						>
