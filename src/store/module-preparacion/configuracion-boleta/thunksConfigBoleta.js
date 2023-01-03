@@ -2,7 +2,7 @@ import { CoalicionApi } from "../../../module-preparacion/api/CoalicionApi";
 import { EstructuraBoletaApi } from "../../../module-preparacion/api/EstructuraBoletaApi";
 import { addBoletaApi, addComiteApi, addPlanillaApi, editBoletaApi, getBoletasApi } from "../../../module-preparacion/helpers/ApiComite";
 import { deleteCoalicionAPI, getAsociacionesAPI, getBoletaAPI, getCandidatosAPI, getCoalicionesAPI, postAsociacionAPI, putComiteAPI, putPlanillaAPI } from "../../../module-preparacion/helpers/ApiConfigBoletas";
-
+import { JornadaApi } from "../../../module-preparacion/api/JornadaApi.js"
 import {
     onToastCheckingOperation,
     onToastErrorOperation,
@@ -13,13 +13,15 @@ import { endLoadingBoleta, onCheckingOperation, onErrorOperation, onSuccessOpera
 
 
 
-export const getCoaliciones = () => {
+export const getCoaliciones = (idBoleta) => {
 
     return async (dispatch, getState) => {
 
         dispatch(startLoadingCoaliciones());
-        const coaliciones = await getCoalicionesAPI();
-        dispatch(setCoaliciones({ coaliciones: coaliciones }));
+        //const coaliciones = await getCoalicionesAPI();
+        const coaliciones = await JornadaApi.get(`boleta/${idBoleta}/coaliciones`)
+        console.log(coaliciones)
+        dispatch(setCoaliciones({ coaliciones: coaliciones.data.data }));
     }
 }
 
@@ -125,9 +127,10 @@ export const postCoalición = (data, funcion) => {
         dispatch(onToastCheckingOperation("Guardando Coalicion..."));
         dispatch(onCheckingOperation());
 
-        // const response = await CoalicionApi.post("", data);
-        const response = await postAsociacionAPI(data);
-
+        const response = await CoalicionApi.post("", data);
+        //const response = await postAsociacionAPI(data);
+        console.log(data)
+        console.log(response)
 
 
         if (response) {

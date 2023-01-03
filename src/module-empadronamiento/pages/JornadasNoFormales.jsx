@@ -16,15 +16,15 @@ import { BreadCrumbsCustom } from "../components/BreadCrumbsCustom";
 
 const datos = [
   {
-    id: "JO-EL-GO-OR-20-OAX-2022",
-    nombreJornada: "JORNADA ELECTORAL GOBERNADOR ORDINARIA 2022",
+    id: "GO-OR-20-OAX-2025",
+    nombreJornada: "JORNADA PARA 2025",
   },
   {
-    id: "JO-EL-GO-OR-20-OAX-2023",
-    nombreJornada: "JORNADA ELECTORAL GOBERNADOR ORDINARIA 2022",
+    id: "GO-OR-20-OAX-2027",
+    nombreJornada: "JORNADA PARA 2027",
   },
 ];
-export const JornadasFormales = () => {
+export const JornadasNoFormales = () => {
   let location = useLocation();
   console.log(location.pathname);
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ export const JornadasFormales = () => {
     },
   ];
   const goTo = () => {
-    navigate("JO-EL-GO-OR-20-OAX-2022");
+    navigate("GO-OR-20-OAX-2025");
   };
   return (
     <>
@@ -71,7 +71,7 @@ export const JornadasFormales = () => {
           alignItems: "center",
         }}
       >
-        <BreadCrumbsCustom currentRoute="JORNADAS ELECTORALES" />
+        <BreadCrumbsCustom currentRoute="JORNADAS NO FORMALES" />
         {/* <Typography sx={{ mt: 4 }} textAlign="center">
           LISTA JORNADAS
         </Typography> */}

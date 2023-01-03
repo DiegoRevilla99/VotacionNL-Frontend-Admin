@@ -8,9 +8,9 @@ export const EmpadronamientoRoutes = () => {
   return (
     <PrivateRoute>
       <Routes>
-        <Route path="inicio" element={<InicioPage></InicioPage>} />
+        <Route path="inicio/*" element={<InicioPage></InicioPage>} />
 
-        <Route path="/*" element={<Navigate to="/empadronamiento/inicio" />} />
+        {/* <Route path="/*" element={<Navigate to="/empadronamiento/inicio" />} /> */}
       </Routes>
     </PrivateRoute>
   );

@@ -55,6 +55,7 @@ const boxOpciones = {
   display: "flex",
   flexDirection: "row",
   width: "100%",
+  height: "50px",
   justifyContent: "center",
   mt: 1,
   mb: 5,
