@@ -123,12 +123,12 @@ export const onGetBoletas = (idJornada, navigate = () => {} ) => {
     }
 };
 
-export const onCreateBoleta = (data, idJornada, candidatos, suplentes, partidos, navigate = () => {}) => {
+export const onCreateBoleta = (data, idJornada, candidatoAndSuplente, partidos, navigate = () => {}) => {
     return async (dispatch) => {
         dispatch(onCheckingOperation());
         dispatch(onToastCheckingOperation("Guardando boleta..."));
 
-        const {ok, idBoleta } = await createBoleta(data, idJornada, candidatos, suplentes, partidos);// PROVIDER
+        const {ok, idBoleta } = await createBoleta(data, idJornada, candidatoAndSuplente, partidos);// PROVIDER
         if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onToastSuccessOperation({ successMessage: "Boleta creada con éxito" }));
@@ -141,6 +141,24 @@ export const onCreateBoleta = (data, idJornada, candidatos, suplentes, partidos,
     }
 };
 
+// export const onCreateBoleta = (data, idJornada, candidatos, suplentes, partidos, navigate = () => {}) => {
+//     return async (dispatch) => {
+//         dispatch(onCheckingOperation());
+//         dispatch(onToastCheckingOperation("Guardando boleta..."));
+
+//         const {ok, idBoleta } = await createBoleta(data, idJornada, candidatos, suplentes, partidos);// PROVIDER
+//         if (ok) {
+//             dispatch(onSuccessOperation());
+//             dispatch(onToastSuccessOperation({ successMessage: "Boleta creada con éxito" }));
+//             dispatch(onAddBoleta({idBoleta, encabezado: data.encabezadoJornada}));// SLICE
+//             navigate();
+//         } else {
+//             dispatch(onErrorOperation());
+//             dispatch(onToastErrorOperation({ errorMessage: "No se pudo crear la boleta" }));
+//         }
+//     }
+// };
+
 export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
     return async (dispatch) => {
         dispatch(onCheckingOperation());
@@ -149,8 +167,8 @@ export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
             dispatch(onSuccessOperation());
             dispatch(onEditBoleta({idBoleta, ...data}));// SLICE
             dispatch(onAddPartido(dataPartido));// SLICE
-            dispatch(onAddCandidato(dataCandidato));// SLICE
-            dispatch(onAddSuplente(dataSuplente));// SLICE
+            // dispatch(onAddCandidato(dataCandidato));// SLICE
+            // dispatch(onAddSuplente(dataSuplente));// SLICE
             navigate();
         } else {
             dispatch(onErrorOperation());

@@ -92,6 +92,7 @@ export const useJornadaStore = () => {
         dispatch(onEditSuplente(id));
     };
     const editPartido = (id) => {
+        console.log("EL ID DEL PARTIDO", id);
         dispatch(onEditPartido(id));
     };
     const editCandidatoAndSuplente = (id) => {
@@ -175,20 +176,22 @@ export const useJornadaStore = () => {
     const addPartido = (
         id,
         nombrePartido,
-        emblemPartido,
+        siglasPartido,
+        emblemaPartido,
         fotografiaPartido,
     ) => {
         dispatch(onAddPartido({
                 id,
                 nombrePartido,
-                emblemPartido,
+                siglasPartido,
+                emblemaPartido,
                 fotografiaPartido,
             })
         );
     };
 
     const addCandidatoAndSuplente = (
-        idCandidato,
+        id,
         apellidoPCandidato,
         apellidoMCandidato,
         nombreCandidato,
@@ -196,7 +199,7 @@ export const useJornadaStore = () => {
         seudonimoCandidato,
         fechaNacimientoCandidato,
         generoCandidato,
-        idSuplente,
+        // idSuplente,
         apellidoPSuplente,
         apellidoMSuplente,
         nombreSuplente,
@@ -206,7 +209,7 @@ export const useJornadaStore = () => {
         generoSuplente,
     ) => {
         dispatch(onAddCandidatoAndSuplente({
-            idCandidato,
+            id,
             apellidoPCandidato,
             apellidoMCandidato,
             nombreCandidato,
@@ -214,7 +217,7 @@ export const useJornadaStore = () => {
             seudonimoCandidato,
             fechaNacimientoCandidato,
             generoCandidato,
-            idSuplente,
+            // idSuplente,
             apellidoPSuplente,
             apellidoMSuplente,
             nombreSuplente,
@@ -272,12 +275,14 @@ export const useJornadaStore = () => {
     const updatePartido = (
         id,
         nameParty,
+        siglasParty,
         emblemParty,
         fotografiaParty,
     ) => {
         dispatch(onUpdatePartido({
             id,
             nameParty,
+            siglasParty,
             emblemParty,
             fotografiaParty,
         }));
@@ -321,8 +326,8 @@ export const useJornadaStore = () => {
         }));
     };
 
-    const updateBoleta = (encabezadoConsulta) => {
-        dispatch(onUpdateBoleta({ encabezadoConsulta }));
+    const updateBoleta = (encabezadoJornada) => {
+        dispatch(onUpdateBoleta({ encabezadoJornada }));
     };
 
     const fillJornadasData = () => {
@@ -334,10 +339,10 @@ export const useJornadaStore = () => {
     };
 
     const setBoletasSelectedNull = () => {
-        dispatch(onSetCandidatoSelectedNull());
-        dispatch(onSetSuplenteSelectedNull());
+        // dispatch(onSetCandidatoSelectedNull());
+        // dispatch(onSetSuplenteSelectedNull());
         dispatch(onSetPartidoSelectedNull());
-        // dispatch(onSetCandidatoAndSuplenteSelectedNull()); NEW
+        dispatch(onSetCandidatoAndSuplenteSelectedNull()); NEW
     };
 
 
@@ -374,8 +379,13 @@ export const useJornadaStore = () => {
         editSuplente,
         editPartido,
         editCandidatoAndSuplente,
+        deletePartido,
+        deleteCandidato,
+        deleteSuplente,
+        deleteCandidatoAndSuplente,
         fillJornadasData,
         setBoletasSelectedNull,
         setPartidoSelectedNull,
+        setCandidatoAndSuplenteSelectedNull,
 	};
 };

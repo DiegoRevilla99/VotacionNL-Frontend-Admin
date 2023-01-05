@@ -17,7 +17,7 @@ import { ConfigBoletaMultiple } from "../pages/no-formales/ConfigBoletaMultiple"
 import { CrudPapeletas } from "../pages/CrudPapeletas";
 import { RegistroJornadaElectoralGenerica } from "../pages/RegistroJornadaElectoralGenerica";
 import { CrudJornadaGenerica } from "../pages/CrudJornadaGenerica";
-// import { AddBoletaJornadaGenerica } from "../pages/AddBoletaJornadaGenerica";
+import { AddBoletaJornadaGenerica } from "../pages/AddBoletaJornadaGenerica";
 import { ConfiguracionConsulta } from "../pages/ConfiguracionConsulta";
 import { RegistroJornadaNoFormal } from "../pages/RegistroJornadaNoFormal";
 import { RegistroJornadaFormal } from "../pages/RegistroJornadaFormal";
@@ -32,6 +32,8 @@ export const PreparacionRoutes = () => {
 				<Route path="jornada" element={<CrudJornada />} />
 				{/* <Route path="jornada/boleta" element={<AddBoletaJornada></AddBoletaJornada>} /> */}
 				<Route path="jornada/:id" element={<CrudJornada></CrudJornada>} />
+				<Route path="jornada/noFormal/:id" element={<CrudJornadaGenerica></CrudJornadaGenerica>} />
+				<Route path="jornada/noFormal/:id/boletanf/:id" element={<AddBoletaJornadaGenerica></AddBoletaJornadaGenerica>} />
 
 				<Route path="registroJornada" element={<RegistroJornadaElectoral />} />
 				<Route path="registroJornadaFormal" element={<RegistroJornadaFormal />} />

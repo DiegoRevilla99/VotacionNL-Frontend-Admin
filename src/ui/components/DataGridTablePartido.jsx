@@ -1,32 +1,30 @@
 import { DataGrid } from "@mui/x-data-grid";
-// import { useConsultaCiudadanaStore } from "../../module-preparacion/hooks/useConsultaCiudadanaStore";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Box, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-// import { getPartidos } from "../../store/module-preparacion/jornada/jornadaThunks";
 import { useDispatch } from "react-redux";
 import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
 
 export const DataGridTablePartido = ({ handleOpenModal }) => {
-	// const { questions, deleteQuestion, editQuestion } = useConsultaCiudadanaStore();
 	const { partidos, deletePartido, editPartido} = useJornadaStore();
 
     const handleDelete = (id) => {
 		console.log("ID: ", id);
 		deletePartido(id);
 	};
+
 	const handleEdit = (id) => {
 		handleOpenModal();
 		editPartido(id);
 	};
 
 	const columns = [
-		{ field: "clavePartido", headerName: "Clave del partido", width: 130 },
-		{ field: "nombre", headerName: "Nombre", width: 180 },
-		{ field: "siglas", headerName: "Siglas", width: 70 },
-		{ field: "emblema", headerName: "emblema", width: 90 },
-		{ field: "logo", headerName: "logo", width: 70 },
+		{ field: "id", headerName: "Clave", width: 70 },
+		{ field: "nombrePartido", headerName: "Nombre", width: 200 },
+		{ field: "siglasPartido", headerName: "Siglas", width: 80 },
+		{ field: "emblemaPartido", headerName: "emblema", width: 90 },
+		{ field: "fotografiaPartido", headerName: "logo", width: 70 },
 		{
 			field: "actions",
 			headerName: "Acciones",

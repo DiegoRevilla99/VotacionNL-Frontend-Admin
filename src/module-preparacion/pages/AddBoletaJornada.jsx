@@ -21,9 +21,12 @@ import { ModalAsociacionCP } from "../components/ModalAsociacionCP";
 import { ModalRegisterCS } from "../components/ModalRegisterCS";
 import { DataGridTableJornada } from "../../ui/components/DataGridTableJornada";
 import { DataGridTablePartido } from "../../ui/components/DataGridTablePartido";
+import { AddPartidosMod } from "../components/AddPartidosMod";
+
 import { useJornadaStore } from "../hooks/useJornadaStore";
 import { onCreateBoleta, onUpdateBoletaData } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { onUpdateBoleta } from "../../store/module-preparacion/jornada/SliceJornada";
+import { AddCandidatoMod } from "../components/AddCandidatoMod";
 
 
 const validationSchema = object({
@@ -155,29 +158,11 @@ export const AddBoletaJornada = () => {
 	};
 
 	const onSubmit = (values) => {
-		dispatch(
-			onCreateBoleta(values, params.id, partidos));
-		console.log("PARTIDOOOOOS: ", partidos);
+		// dispatch(
+		// 	onCreateBoleta(values, params.id, candidatoAndSuplente, partidos));
+		// console.log("PARTIDOOOOOS: ", partidos);
+		// console.log("CANDIDATOS: ", candidatoAndSuplente);
 		console.log("VALORRRRRRRRRRRRRRRRR: ", values);
-		// setIsSubmited(true);
-		// if(Object.values(jornadaSelected.boletaSelected).length === 0){
-		// 	if (partidos.length > 0) 
-		// 		dispatch(
-		// 			onCreateBoleta(values, params.id, partidos, () => {
-		// 				navigate("/preparacion/jornada/"+ params.id);
-		// 			}));
-		// } else {
-		// 	dispatch(
-		// 		onUpdateBoletaData(
-		// 			values,
-		// 			params.id,
-		// 			partidos,
-		// 			jornadaSelected.boletaSelected.id,
-		// 			() => { navigate("/preparacion/jornada/"+ params.id); }
-		// 		)
-		// 		);
-		// }
-			// navigate("/preparacion/jornada/"+ params.id);
 	};
 
 
@@ -395,7 +380,7 @@ export const AddBoletaJornada = () => {
 							/>
 							{/* {touched.cargoSegundoFirmante && errors.cargoSegundoFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.cargoSegundoFirmante}</Typography>} */}
 						</Grid>
-						<Grid item xs={12} md={6} lg={4}>
+						{/* <Grid item xs={12} md={6} lg={4}>
 							<Button
 								
 								onClick={handleOpenRegisterModal}
@@ -417,31 +402,8 @@ export const AddBoletaJornada = () => {
 							>
 								Registrar candidato y suplente
 							</Button>
-						</Grid>
-						<Grid item xs={12} md={6} lg={4}>
-							<Button
-								onClick={handleOpenMatchModal}
-								variant="contained"
-								size="large"
-								
-								disabled={status === "checking"}
-								sx={{
-									width: "100%",
-									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
-									transition: "all 0.5s ease",
-									backgroundColor: "#511079",
-									fontSize: { xl: "15px", lg: "15px", sm: "15px", xs: "15px" },
-									borderRadius: "25px 25px 25px 25px",
-									"&:hover": {
-										backgroundColor: "#7E328B !important",
-										transform: "translate(-5px, -5px)",
-										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
-									},
-								}}
-							>
-								Agregar partido
-							</Button>
-						</Grid>
+						</Grid> */}
+
 						<Grid item xs={12} md={6} lg={4}>
 							<Button
 								onClick={handleOpenAsociacionModal}
@@ -489,39 +451,36 @@ export const AddBoletaJornada = () => {
 								eliminar
 							</Button>
 						</Grid>
-						<Grid item xs={12}>
-							<Box
-								sx={{
-									height: "25rem",
-									backgroundColor: "#f0f0f0",
-									borderRadius: "2rem",
-									p: "2rem",
-									pt: "1rem",
-									pb: "1rem",
-								}}
-							>
-
-
-								<DataGridTableJornada />
-								{/* <DataGridTable /> */}
-
-							</Box>
-						</Grid>
-						<Grid item xs={12}>
-							<Box
-								sx={{
-									height: "25rem",
-									backgroundColor: "#f0f0f0",
-									borderRadius: "2rem",
-									p: "2rem",
-									pt: "1rem",
-									pb: "1rem",
-								}}
-							>
-								<DataGridTablePartido />
-								
-							</Box>
-						</Grid>
+						<Grid item xs={12} md={6} lg={4}>
+			<Button
+					onClick={statusRegisterModal}
+					variant="contained"
+					size="large"
+					disabled={status === "checking"}
+					sx={{
+						boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+						transition: "all 0.5s ease",
+						backgroundColor: "#511079",
+						width: "100%",
+						borderRadius: "25px 25px 25px 25px",
+						"&:hover": {
+							backgroundColor: "#7E328B !important",
+							transform: "translate(-5px, -5px)",
+							boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+						},
+					}}
+				>
+					Agregar candidato con suplente
+				</Button>
+			</Grid>
+								{/* <AddCandidatoMod
+									handleOpenModal={statusRegisterModal}
+									status={status}
+								/>  */}
+								<AddPartidosMod 
+									handleOpenModal={handleOpenMatchModal}
+									status={status}
+								/> 
 					</Grid>
 					<Grid mt={"1rem"} container direction="row" justifyContent="flex-end" spacing={2}>
 						<Grid item xs={12} md={6} lg={3}>

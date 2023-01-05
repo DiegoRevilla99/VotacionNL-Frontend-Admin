@@ -3,10 +3,10 @@ import { Formik } from "formik";
 import { object, string } from "yup";
 import React from "react";
 import { ButtonsContainer } from "./ButtonsContainer";
-import { onCreateConsultaCiudadana } from "../../store/module-preparacion/consulta-ciudadana/thunks";
+import { onCreateJornada } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
+import { useJornadaStore } from "../hooks/useJornadaStore";
 
 const style = {
 	position: "absolute",
@@ -22,7 +22,7 @@ const style = {
 };
 
 const validationSchema = object({
-	titulo: string("Ingresa un título").required("Este campo es requerido"),
+	title: string("Ingresa un título").required("Este campo es requerido"),
 	entidad: string("Ingresa la entidad donde se llevará a cabo la jornada").required(
 		"Este campo es requerido"
 	),
@@ -33,13 +33,15 @@ export const ModalRegistroJornadaNoFormal = ({ modalStatus, closeModal, openModa
 	const navigate = useNavigate();
 	// !!TU ESTADO GLOBAL
 	// const { status } = useConsultaCiudadanaStore();
+	const { status } = useJornadaStore();
 
 	const onSubmit = (values) => {
 		// !!AQUI PON LA RUTA Y EL GUARDADO DE TU JORNADA ELECTORAL
-		// dispatch(
-		// onCreateConsultaCiudadana(values.titulo, values.entidad, (id) => {
-		// 	navigate("/preparacion/consulta/" + id);
-		// })
+		dispatch(
+			onCreateJornada(values.title, values.entidad, (id) => {
+				navigate("/preparacion/jornada/noFormal/" + id);//EDITAR LA RUTA
+			})
+		);
 	};
 
 	return (
@@ -57,7 +59,7 @@ export const ModalRegistroJornadaNoFormal = ({ modalStatus, closeModal, openModa
 					<Box m={"2rem"}>
 						<Formik
 							initialValues={{
-								titulo: "",
+								title: "",
 								entidad: "",
 							}}
 							validationSchema={validationSchema}
@@ -71,16 +73,16 @@ export const ModalRegistroJornadaNoFormal = ({ modalStatus, closeModal, openModa
 										TÍTULO DE LA JORNADA NO FORMAL
 									</Typography>
 									<TextField
-										name="titulo"
+										name="title"
 										fullWidth
 										size="small"
-										id="titulo"
+										id="title"
 										label="Título de la jornada"
 										variant="filled"
 										onChange={handleChange}
-										value={values.titulo}
-										error={touched.titulo && Boolean(errors.titulo)}
-										helperText={touched.titulo && errors.titulo}
+										value={values.title}
+										error={touched.title && Boolean(errors.title)}
+										helperText={touched.title && errors.title}
 										sx={{ marginBottom: "2rem" }}
 									/>
 
@@ -92,7 +94,7 @@ export const ModalRegistroJornadaNoFormal = ({ modalStatus, closeModal, openModa
 										name="entidad"
 										fullWidth
 										size="small"
-										id="titulo"
+										id="entidad"
 										label="Entidad donde se llevará a la jornada"
 										variant="filled"
 										onChange={handleChange}
