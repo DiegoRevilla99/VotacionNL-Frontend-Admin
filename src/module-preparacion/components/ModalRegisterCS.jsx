@@ -30,61 +30,24 @@ import { useNavigate, useParams } from "react-router-dom";
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-
-
 const steps = ['Registrar al candidato', 'Registrar al suplente'];
-
 const style = {
 	position: "absolute",
 	top: "50%",
 	left: "50%",
 	transform: "translate(-50%, -50%)",
-	width: "50rem",
+	width: { xl: "50rem", lg: "50rem", sm: "40rem", xs: "30rem" },
+	height: { xl: "30rem", lg: "30rem", md:"28rem",  sm: "35rem", xs: "40rem" },
 	bgcolor: "background.paper",
+	border: '2px solid #fff',
 	borderRadius: "2rem",
 	boxShadow: 3,
 	p: 4,
-	height: "90%",
 };
-const validationSchema = object({
-	// // Datos del candidato
-	// apellidoPCandidato: string("").required(
-	// 	"Por favor, ingresa el apellido paterno del candidato/a"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// 	apellidoMCandidato: string("").required(
-	// 	"Por favor, ingresa el apellido materno del candidato/a"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// 	nombreCandidato: string("").required(
-	// 	"Por favor, ingresa el nombre completo del candidato/a"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// seudonimoCandidato: string(
-	// 	"Por favor, ingresa el seudónimo del candidato/a"
-	// 	).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
-	// 	fechaNacimientoCandidato: date().required(
-	// 	"Por favor, ingresa la fecha de nacimiento del candidato/a"
-	// 	).max(new Date(), "No puedes ingresar una fecha futura"),
-	// 	generoCandidato: string("").required("Por favor, selecciona el género"),
-	// // Datos del suplente
 
-	// apellidoPSuplente: string("").required(
-	// 	"Por favor, ingresa el apellido paterno del Suplente"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// 	apellidoMSuplente: string("").required(
-	// 	"Por favor, ingresa el apellido materno del Suplente"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// 	nombreSuplente: string("").required(
-	// 	"Por favor, ingresa el nombre completo del Suplente"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// seudonimoSuplente: string(
-	// 	"Por favor, ingresa el seudónimo del Suplente"
-	// 	).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
-	// 	fechaNacimientoSuplente: date().required(
-	// 	"Por favor, ingresa la fecha de nacimiento del Suplente"
-	// 	).max(new Date(), "No puedes ingresar una fecha futura"),
-	// 	generoSuplente: string("").required("Por favor, selecciona el género"),
+const validationSchema = object({
 });
 export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
-
 	const dispatch = useDispatch();
 	const params = useParams();
 	const {
@@ -98,7 +61,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 	const onSubmit = (values) => {
 		setFotografia({ name: "Sin Archivo seleccionado" });
 		setFotografiaSuplente({ name: "Sin Archivo seleccionado" });
-		console.log("AQUI ANDAMOS EN EL ONSUBMIT",candidatoandSuplentes);
+		console.log("AQUI ANDAMOS EN EL ONSUBMIT",values);
 		addCandidatoAndSuplente(
 			candidatoandSuplentes.length,
 			values.apellidoPCandidato,
@@ -157,9 +120,10 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
     const handleBack = () => {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
-
 	return (
-		<Modal
+
+		<>
+<Modal
 			open={statusRegisterModal}
 			onClose={onCancel}
 			aria-labelledby="modal-modal-title"
@@ -667,5 +631,6 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 				</Box>
 			</Box>
 		</Modal>
+	</>
 	);
 };

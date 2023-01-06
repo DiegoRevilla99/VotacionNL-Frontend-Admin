@@ -383,7 +383,7 @@ export const AddBoletaJornada = () => {
 
 
 								<AddCandidatoMod
-									handleOpenModal={statusRegisterModal}
+									handleOpenModal={handleOpenRegisterModal}
 									status={status}
 								/> 
 
