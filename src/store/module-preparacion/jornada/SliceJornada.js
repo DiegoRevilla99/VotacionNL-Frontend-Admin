@@ -8,7 +8,7 @@ export const SliceJornada = createSlice({
         successMessage: "",
         partidos: [],
         partidoSelected: {},
-        candidatoandSuplente: [],
+        candidatoandSuplentes: [],
         candidatoandSuplenteSelected: {},
         candidatos:[],
         candidatoSelected: {},
@@ -63,18 +63,21 @@ export const SliceJornada = createSlice({
             });
         },
         onAddPartido: (state, { payload }) => {
+
             state.partidos.push({
                 id: payload?.id,
-                nombre: payload?.nombre,
-                siglas: payload?.siglas,
-                emblema: payload?.emblema,
-                fotografia: payload?.fotografia,
+                nombrePartido: payload?.nombrePartido,
+                siglasPartido: payload?.siglasPartido,
+                emblemaPartido: payload?.emblemaPartido,
+                fotografiaPartido: payload?.fotografiaPartido,
             });
+
+            console.log("state.partidos en SLICE", state.partidos[0]);
         },
 
         onAddCandidatoAndSuplente: (state, { payload }) => {
-            state.candidatoandSuplente.push({
-                idCandidato: payload?.idCandidato,
+            state.candidatoandSuplentes.push({
+                id: payload?.id,
                 apellidoPCandidato: payload?.apellidoPCandidato,
                 apellidoMCandidato: payload?.apellidoMCandidato,
                 nombreCandidato: payload?.nombreCandidato,
@@ -82,7 +85,7 @@ export const SliceJornada = createSlice({
                 seudonimoCandidato: payload?.seudonimoCandidato,
                 fechaNacimientoCandidato: payload?.fechaNacimientoCandidato,
                 generoCandidato: payload?.generoCandidato,
-                idSuplente: payload?.idSuplente,
+                // idSuplente: payload?.idSuplente,
                 apellidoPSuplente: payload?.apellidoPSuplente,
                 apellidoMSuplente: payload?.apellidoMSuplente,
                 nombreSuplente: payload?.nombreSuplente,
@@ -91,6 +94,7 @@ export const SliceJornada = createSlice({
                 fechaNacimientoSuplente: payload?.fechaNacimientoSuplente,
                 generoSuplente: payload?.generoSuplente,
             });
+            console.log("CANDIDATOS CON SUPLENTES en SLICE", state.candidatoandSuplentes[0]);
         },
 
         onDeleteCandidato: (state, { payload }) => {
@@ -106,11 +110,11 @@ export const SliceJornada = createSlice({
             state.partidos.splice(state.partidos.indexOf(partidoFound), 1);
         },
         onDeleteCandidatoAndSuplente: (state, { payload }) => {
-            const candidatoandSuplenteFound = state.candidatoandSuplente.find(
+            const candidatoandSuplenteFound = state.candidatoandSuplentes.find(
                 (candidatoandSuplente) => candidatoandSuplente.id === payload?.id
             );
-            state.candidatoandSuplente.splice(
-                state.candidatoandSuplente.indexOf(candidatoandSuplenteFound),
+            state.candidatoandSuplentes.splice(
+                state.candidatoandSuplentes.indexOf(candidatoandSuplenteFound),
                 1
             );
         },
@@ -122,66 +126,74 @@ export const SliceJornada = createSlice({
         },
         onEditPartido: (state, { payload }) => {
             state.partidoSelected = state.partidos[0];
+            // const index = state.partidos.findIndex(partido => partido.id === state.partidoSelected.id);
+            // state.partidos.splice(index, 1, {
+            //   id: payload.id,
+            //   nombrePartido: payload.nombrePartido,
+            //   siglasPartido: payload.siglasPartido,
+            //   emblemaPartido: payload.emblemaPartido,
+            //   fotografiaPartido: payload.fotografiaPartido
+            // });
         },
         onEditCandidatoAndSuplente: (state, { payload }) => {
-            state.candidatoandSuplenteSelected = state.candidatoandSuplente[0];
+            state.candidatoandSuplenteSelected = state.candidatoandSuplentes[0];
         },
         onUpdateCandidato: (state, { payload }) => {
             const candidato = state.candidatos.find(
                 (candidato) => candidato.id === state.candidatoSelected.id
             );
             candidato.id = payload?.id;
-            candidato.apellidoPCandidato = payload?.apellidoPCandidato;
-            candidato.apellidoMCandidato = payload?.apellidoMCandidato;
-            candidato.nombreCandidato = payload?.nombreCandidato;
-            candidato.fotografiaCandidato = payload?.fotografiaCandidato;
-            candidato.seudonimoCandidato = payload?.seudonimoCandidato;
-            candidato.fechaNacimientoCandidato = payload?.fechaNacimientoCandidato;
-            candidato.generoCandidato = payload?.generoCandidato;
+            candidato.apellidoPCandidato = payload?.apellidoPCandidate;
+            candidato.apellidoMCandidato = payload?.apellidoMCandidate;
+            candidato.nombreCandidato = payload?.nameCandidate;
+            candidato.fotografiaCandidato = payload?.fotografiaCandidate;
+            candidato.seudonimoCandidato = payload?.seudonimoCandidate;
+            candidato.fechaNacimientoCandidato = payload?.fechaNacimientoCandidate;
+            candidato.generoCandidato = payload?.generoCandidate;
         },
         onUpdateSuplente: (state, { payload }) => {
             const suplente = state.suplentes.find(
                 (suplente) => suplente.id === state.suplenteSelected.id
             );
             suplente.id = payload?.id;
-            suplente.apellidoPSuplente = payload?.apellidoPSuplente;
-            suplente.apellidoMSuplente = payload?.apellidoMSuplente;
-            suplente.nombreSuplente = payload?.nombreSuplente;
-            suplente.fotografiaSuplente = payload?.fotografiaSuplente;
-            suplente.seudonimoSuplente = payload?.seudonimoSuplente;
-            suplente.fechaNacimientoSuplente = payload?.fechaNacimientoSuplente;
-            suplente.generoSuplente = payload?.generoSuplente;
+            suplente.apellidoPSuplente = payload?.apellidoPSubstitute;
+            suplente.apellidoMSuplente = payload?.apellidoMSubstitute;
+            suplente.nombreSuplente = payload?.nameSubstitute;
+            suplente.fotografiaSuplente = payload?.fotografiaSubstitute;
+            suplente.seudonimoSuplente = payload?.seudonimoSubstitute;
+            suplente.fechaNacimientoSuplente = payload?.fechaNacimientoSubstitute;
+            suplente.generoSuplente = payload?.generoSubstitute;
         },
         onUpdatePartido: (state, { payload }) => {
             const partido = state.partidos.find(
                 (partido) => partido.id === state.partidoSelected.id
             );
             partido.id = payload?.id;
-            partido.nombre = payload?.nombre;
-            partido.siglas = payload?.siglas;
-            partido.emblema = payload?.emblema;
-            partido.fotografia = payload?.fotografia;
+            partido.nombre = payload?.nameParty;
+            partido.siglas = payload?.siglasParty;
+            partido.emblema = payload?.emblemParty;
+            partido.fotografia = payload?.fotografiaParty;
         },
         onUpdateCandidatoAndSuplente: (state, { payload }) => {
-            const candidatoandSuplente = state.candidatoandSuplente.find(
+            const candidatoandSuplente = state.candidatoandSuplentes.find(
                 (candidatoandSuplente) => candidatoandSuplente.id === state.candidatoandSuplenteSelected.id
             );
-            candidatoandSuplente.idCandidato = payload?.idCandidato;
-            candidatoandSuplente.apellidoPCandidato = payload?.apellidoPCandidato;
-            candidatoandSuplente.apellidoMCandidato = payload?.apellidoMCandidato;
-            candidatoandSuplente.nombreCandidato = payload?.nombreCandidato;
-            candidatoandSuplente.fotografiaCandidato = payload?.fotografiaCandidato;
-            candidatoandSuplente.seudonimoCandidato = payload?.seudonimoCandidato;
-            candidatoandSuplente.fechaNacimientoCandidato = payload?.fechaNacimientoCandidato;
-            candidatoandSuplente.generoCandidato = payload?.generoCandidato;
-            candidatoandSuplente.idSuplente = payload?.idSuplente;
-            candidatoandSuplente.apellidoPSuplente = payload?.apellidoPSuplente;
-            candidatoandSuplente.apellidoMSuplente = payload?.apellidoMSuplente;
-            candidatoandSuplente.nombreSuplente = payload?.nombreSuplente;
-            candidatoandSuplente.fotografiaSuplente = payload?.fotografiaSuplente;
-            candidatoandSuplente.seudonimoSuplente = payload?.seudonimoSuplente;
-            candidatoandSuplente.fechaNacimientoSuplente = payload?.fechaNacimientoSuplente;
-            candidatoandSuplente.generoSuplente = payload?.generoSuplente;
+            candidatoandSuplente.idCandidato = payload?.idCandidate;
+            candidatoandSuplente.apellidoPCandidato = payload?.apellidoPCandidate;
+            candidatoandSuplente.apellidoMCandidato = payload?.apellidoMCandidate;
+            candidatoandSuplente.nombreCandidato = payload?.nameCandidate;
+            candidatoandSuplente.fotografiaCandidato = payload?.fotografiaCandidate;
+            candidatoandSuplente.seudonimoCandidato = payload?.seudonimoCandidate;
+            candidatoandSuplente.fechaNacimientoCandidato = payload?.fechaNacimientoCandidate;
+            candidatoandSuplente.generoCandidato = payload?.generoCandidate;
+            candidatoandSuplente.idSuplente = payload?.idSubstitute;
+            candidatoandSuplente.apellidoPSuplente = payload?.apellidoPSubstitute;
+            candidatoandSuplente.apellidoMSuplente = payload?.apellidoMSubstitute;
+            candidatoandSuplente.nombreSuplente = payload?.nameSubstitute;
+            candidatoandSuplente.fotografiaSuplente = payload?.fotografiaSubstitute;
+            candidatoandSuplente.seudonimoSuplente = payload?.seudonimoSubstitute;
+            candidatoandSuplente.fechaNacimientoSuplente = payload?.fechaNacimientoSubstitute;
+            candidatoandSuplente.generoSuplente = payload?.generoSubstitute;
         },
         onSetCandidatoSelectedNull: (state, { payload }) => {
             state.candidatoSelected = {};
@@ -205,7 +217,7 @@ export const SliceJornada = createSlice({
             state.partidos = [];
         },
         onSetCandidatoAndSuplenteNull: (state, { payload }) => {
-            state.candidatoandSuplente = [];
+            state.candidatoandSuplentes = [];
         },
         onFillJornadasData: (state, { payload }) => {
             state.jornadasData = payload;
@@ -234,6 +246,7 @@ export const SliceJornada = createSlice({
         },
         onAddBoleta: (state, { payload }) => {
             state.jornadaSelected.boletas.push(payload);
+            console.log(state.jornadaSelected.boletas);
         },
         onFillBoletas: (state, { payload }) => {
             state.jornadaSelected.boletas = payload;
@@ -243,9 +256,9 @@ export const SliceJornada = createSlice({
         },
         onUpdateBoleta: (state, { payload }) => {
             const boleta = state.jornadaSelected.boletas.find(
-                (boleta) => boleta.idBoleta === state.jornadaSelected.boletaSelected.idBoleta
+                (boleta) => boleta.id === state.jornadaSelected.boletaSelected.id
             );
-            boleta.encabezadoBoleta = payload.encabezadoBoleta;
+            boleta.encabezadoJornada = payload.encabezadoJornada;
         },
         onSetBoletasSelectedNull: (state, { payload }) => {
             state.jornadaSelected.boletaSelected = {};

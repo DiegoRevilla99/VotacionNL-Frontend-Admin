@@ -60,7 +60,7 @@ const validationSchema = object({
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
 });
 
-export const AddBoletaJornada = () => {
+export const AddBoletaJornadaGenerica = () => {
 
 	const { nombreCandidatura } = useParams();
 	const navigate = useNavigate();

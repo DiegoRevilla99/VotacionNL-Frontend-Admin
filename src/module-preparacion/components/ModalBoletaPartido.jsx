@@ -43,8 +43,8 @@ const validationSchema = object({
 	nombrePartido: string("").required(
 		"Por favor, ingresa el nombre del partido"
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	siglas: string("").required(
-		"Por favor, ingresa las siglas del partido"
+	siglasPartido: string("").required(
+		"Por favor, ingresa las siglasPartido del partido"
 		).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
 
 });
@@ -64,13 +64,14 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 	const onSubmit = (values) => {
 		setEmblema({ name: "Sin Archivo seleccionado" });
 		setfotografiaPartido({ name: "Sin Archivo seleccionado" });
-			addPartido(
-				partidos.length,
-				values.nombrePartido,
-				values.siglas,
-				values.emblema,
-				values.fotografiaPartido
-			)
+		console.log("hola", partidos.length);
+		addPartido(
+			partidos.length,
+			values.nombrePartido,
+			values.siglasPartido,
+			values.emblemaPartido,
+			values.fotografiaPartido
+		);
 		console.log(values);
 		setPartidoSelectedNull();
 		handleToggleModal();
@@ -82,15 +83,15 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 	};
 
 	//Validacion del formato imagen 
-	const [emblema, setEmblema] = useState({ name: "Sin Archivo seleccionado" });
+	const [emblemaPartido, setEmblema] = useState({ name: "Sin Archivo seleccionado" });
 	const [fotografiaPartido, setfotografiaPartido] = useState({
 	  name: "Sin Archivo seleccionado",
 	});
 	 
    const validando = (values, props) => {
 	   const errors = {};
-	   if (emblema.name === "Sin Archivo seleccionado") {
-		 errors.emblema = "Se necesita un emblema";
+	   if (emblemaPartido.name === "Sin Archivo seleccionado") {
+		 errors.emblemaPartido = "Se necesita un emblemaPartido";
 	   }
 	   if (fotografiaPartido.name === "Sin Archivo seleccionado") {
 		 errors.fotografiaPartido = "Se necesita una fotografiaPartido";
@@ -109,8 +110,8 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 	<Formik
 		initialValues={{
 			nombrePartido: "",	//Text
-			siglas: "",//Text
-			emblema: "",
+			siglasPartido: "",//Text
+			emblemaPartido: "",
 			fotografiaPartido: "",
 		}}
 		validate = {validando}
@@ -153,7 +154,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						onBlur={handleBlur}
 					/>				
 					<Typography variant="h7" mt={"1rem"}>
-						SIGLAS <span style={{ color: "red" }}>*</span>
+						siglasPartido <span style={{ color: "red" }}>*</span>
 					</Typography>
 					<TextField
 						fullWidth
@@ -161,15 +162,15 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						id="outlined-basic" 
 						variant="outlined"
 						label=""
-						name="siglas"
-						value={values.siglas}
-						error = {touched.siglas && errors.siglas}
-						helperText={touched.siglas && errors.siglas}
+						name="siglasPartido"
+						value={values.siglasPartido}
+						error = {touched.siglasPartido && errors.siglasPartido}
+						helperText={touched.siglasPartido && errors.siglasPartido}
 						onChange={handleChange}
 						onBlur={handleBlur}
 					/>
 					<Typography variant="h7" mt={"1rem"}>
-					INSERTAR EMBLEMA DEL PARTIDO <span style={{ color: "red" }}>*</span>
+					INSERTAR emblemaPartido DEL PARTIDO <span style={{ color: "red" }}>*</span>
 					</Typography>
 						<Box
 							display="flex"
@@ -183,7 +184,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 							fullWidth
 							variant="outlined"
 							size="small"
-							value={emblema.name}
+							value={emblemaPartido.name}
 							></TextField>
 							<IconButton
 							disabled={status === "checking"}
@@ -197,20 +198,20 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 								onBlur={handleBlur}
 								accept="image/x-png,image/jpeg"
 								type="file"
-								name="emblema"
-								id="emblema"
+								name="emblemaPartido"
+								id="emblemaPartido"
 							/>
 							<PhotoCamera fontSize="" />
 							</IconButton>
 						</Box>
-						{touched.emblema &&
-						emblema.name === "Sin Archivo seleccionado" && (
+						{touched.emblemaPartido &&
+						emblemaPartido.name === "Sin Archivo seleccionado" && (
 							<Box ml={2} 
 							sx={{
 							fontSize: "12px",
 								color: "#791010" }}
 							>
-							{errors.emblema}
+							{errors.emblemaPartido}
 						  </Box>
 						)}
 					<Typography variant="h7" mt={"1rem"}>

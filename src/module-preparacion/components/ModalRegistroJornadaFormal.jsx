@@ -3,13 +3,10 @@ import { Formik } from "formik";
 import { object, string } from "yup";
 import React from "react";
 import { ButtonsContainer } from "./ButtonsContainer";
-import { onCreateConsultaCiudadana } from "../../store/module-preparacion/consulta-ciudadana/thunks";
 import { onCreateJornada } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
 import { useJornadaStore } from "../hooks/useJornadaStore";
-
 
 const style = {
 	position: "absolute",
@@ -40,10 +37,6 @@ export const ModalRegistroJornadaFormal = ({ modalStatus, closeModal, openModal 
 
 	const onSubmit = (values) => {
 		// TODO:AQUI PON EL REDIRECCIONAMIENTO Y LAS ACCIONES DE GUARDADO DE TU JORNADA ELECTORAL
-		// dispatch(
-		// onCreateConsultaCiudadana(values.titulo, values.entidad, (id) => {
-		// 	navigate("/preparacion/consulta/" + id);
-		// })
 		dispatch(
 			onCreateJornada(values.title, values.entidad, (id) => {
 				navigate("/preparacion/jornada/" + id);

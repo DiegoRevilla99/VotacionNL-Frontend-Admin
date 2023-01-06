@@ -47,76 +47,88 @@ const style = {
 	height: "90%",
 };
 const validationSchema = object({
-	// Datos del candidato
-	apellidoPCandidato: string("").required(
-		"Por favor, ingresa el apellido paterno del candidato/a"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-		apellidoMCandidato: string("").required(
-		"Por favor, ingresa el apellido materno del candidato/a"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-		nombreCandidato: string("").required(
-		"Por favor, ingresa el nombre completo del candidato/a"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	seudonimoCandidato: string(
-		"Por favor, ingresa el seudónimo del candidato/a"
-		).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
-		fechaNacimientoCandidato: date().required(
-		"Por favor, ingresa la fecha de nacimiento del candidato/a"
-		).max(new Date(), "No puedes ingresar una fecha futura"),
-		generoCandidato: string("").required("Por favor, selecciona el género"),
-	// Datos del suplente
+	// // Datos del candidato
+	// apellidoPCandidato: string("").required(
+	// 	"Por favor, ingresa el apellido paterno del candidato/a"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// 	apellidoMCandidato: string("").required(
+	// 	"Por favor, ingresa el apellido materno del candidato/a"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// 	nombreCandidato: string("").required(
+	// 	"Por favor, ingresa el nombre completo del candidato/a"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// seudonimoCandidato: string(
+	// 	"Por favor, ingresa el seudónimo del candidato/a"
+	// 	).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
+	// 	fechaNacimientoCandidato: date().required(
+	// 	"Por favor, ingresa la fecha de nacimiento del candidato/a"
+	// 	).max(new Date(), "No puedes ingresar una fecha futura"),
+	// 	generoCandidato: string("").required("Por favor, selecciona el género"),
+	// // Datos del suplente
 
-	apellidoPSuplente: string("").required(
-		"Por favor, ingresa el apellido paterno del Suplente"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-		apellidoMSuplente: string("").required(
-		"Por favor, ingresa el apellido materno del Suplente"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-		nombreSuplente: string("").required(
-		"Por favor, ingresa el nombre completo del Suplente"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	seudonimoSuplente: string(
-		"Por favor, ingresa el seudónimo del Suplente"
-		).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
-		fechaNacimientoSuplente: date().required(
-		"Por favor, ingresa la fecha de nacimiento del Suplente"
-		).max(new Date(), "No puedes ingresar una fecha futura"),
-		generoSuplente: string("").required("Por favor, selecciona el género"),
+	// apellidoPSuplente: string("").required(
+	// 	"Por favor, ingresa el apellido paterno del Suplente"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// 	apellidoMSuplente: string("").required(
+	// 	"Por favor, ingresa el apellido materno del Suplente"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// 	nombreSuplente: string("").required(
+	// 	"Por favor, ingresa el nombre completo del Suplente"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// seudonimoSuplente: string(
+	// 	"Por favor, ingresa el seudónimo del Suplente"
+	// 	).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
+	// 	fechaNacimientoSuplente: date().required(
+	// 	"Por favor, ingresa la fecha de nacimiento del Suplente"
+	// 	).max(new Date(), "No puedes ingresar una fecha futura"),
+	// 	generoSuplente: string("").required("Por favor, selecciona el género"),
 });
 export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 
 	const dispatch = useDispatch();
 	const params = useParams();
-	const { 
-		status, 
-		partidos, 
-		partidoSelected, 
-		addPartido, 
-		setPartidoSelectedNull, 
-		updatePartido
+	const {
+		status,
+		candidatoandSuplentes,
+        candidatoandSuplenteSelected,
+		addCandidatoAndSuplente,
+		setCandidatoAndSuplenteSelectedNull,
 	} = useJornadaStore();
 
-	const onSubmit = () => {
+	const onSubmit = (values) => {
 		setFotografia({ name: "Sin Archivo seleccionado" });
 		setFotografiaSuplente({ name: "Sin Archivo seleccionado" });
-
-		// addPartido(
-		// 	partidos.length,
-		// 	values.nombrePartido,
-		// 	values.siglas,
-		// 	values.emblema,
-		// 	values.fotografiaPartido
-		// )
-		handleToggleModal();
+		console.log("AQUI ANDAMOS EN EL ONSUBMIT",candidatoandSuplentes);
+		addCandidatoAndSuplente(
+			candidatoandSuplentes.length,
+			values.apellidoPCandidato,
+			values.apellidoMCandidato,
+			values.nombreCandidato,
+			values.fotografiaCandidato,
+			values.seudonimoCandidato,
+			values.fechaNacimientoCandidato,
+			values.generoCandidato,
+			values.apellidoPSuplente,
+			values.apellidoMSuplente,
+			values.nombreSuplente,
+			values.fotografiaSuplente,
+			values.seudonimoSuplente,
+			values.fechaNacimientoSuplente,
+			values.generoSuplente
+		);
+		setCandidatoAndSuplenteSelectedNull();
 		setActiveStep(0);
+		handleToggleModal();
+
 	};
 
 	const onCancel = () => {
+		setCandidatoAndSuplenteSelectedNull();
 		setActiveStep(0);
 		handleToggleModal();
 	};
 
-	 const [fotografia, setFotografia] = useState({
+	 const [fotografiaCandidato, setFotografia] = useState({
 	   name: "Sin Archivo seleccionado",
 	 });
 	 const [fotografiaSuplente, setFotografiaSuplente] = useState({
@@ -126,8 +138,8 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 	const validando = (values, props) => {
 		const errors = {};
 
-		if (fotografia.name === "Sin Archivo seleccionado") {
-		  errors.fotografia = "Se necesita una fotografia";
+		if (fotografiaCandidato.name === "Sin Archivo seleccionado") {
+		  errors.fotografiaCandidato = "Se necesita una fotografiaCandidato";
 		}
 		if (fotografiaSuplente.name === "Sin Archivo seleccionado") {
 			errors.fotografiaSuplente = "Se necesita una fotografiaSuplente";
@@ -167,7 +179,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 								apellidoPCandidato: "",
 								apellidoMCandidato: "", 
 								nombreCandidato: "", 
-								fotografia: "",
+								fotografiaCandidato: "",
 								seudonimoCandidato: "",//Text
 								fechaNacimientoCandidato: "",//Date
 								generoCandidato: "",//Text
@@ -219,7 +231,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 										{errors.nombreCandidato? "Verifica el nombre del candidato" : ""}
 										</Box>
 										<Box ml={2} sx={{fontSize: "12px", color: "#791010" }}>
-										{errors.fotografia? "Verifica la fotografia paterno del candidato" : ""}
+										{errors.fotografiaCandidato? "Verifica la fotografia del candidato" : ""}
 
 										</Box>
 										<Box ml={2} sx={{fontSize: "12px", color: "#791010" }}>
@@ -356,7 +368,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 													fullWidth
 													label=""
 													disabled
-													value={fotografia.name}
+													value={fotografiaCandidato.name}
 													variant="outlined"
 													size="small"
 													></TextField>
@@ -376,14 +388,14 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														<PhotoCamera fontSize="" />
 													</IconButton>
 												</Box>
-												{touched.fotografia &&
-													fotografia.name === "Sin Archivo seleccionado" && (
+												{touched.fotografiaCandidato &&
+													fotografiaCandidato.name === "Sin Archivo seleccionado" && (
 															<Box ml={2} 
 																sx={{
 																fontSize: "12px",
 																	color: "#791010" }}
 																>
-																{errors.fotografia}
+																{errors.fotografiaCandidato}
 															</Box>
 													)}
 											<Typography variant="h7" mt={"1rem"}>

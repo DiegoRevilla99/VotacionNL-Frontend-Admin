@@ -1,33 +1,34 @@
 import { DataGrid } from "@mui/x-data-grid";
-import { useConsultaCiudadanaStore } from "../../module-preparacion/hooks/useConsultaCiudadanaStore";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Box, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-// import { getCandidatosSuplentes } from "../../store/module-preparacion/jornada/jornadaThunks";
 import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
 
 export const DataGridTableJornada = ({ handleOpenModal }) => {
-	const { candidatos, deleteCandidato, editCandidato} = useJornadaStore();
+	const { candidatoandSuplentes, deleteCandidatoAndSuplente, editCandidatoAndSuplente} = useJornadaStore();
 
     const handleDelete = (id) => {
 		console.log("ID: ", id);
-		deleteCandidato(id);
+		deleteCandidatoAndSuplente(id);
 	};
 	const handleEdit = (id) => {
 		handleOpenModal();
-		editCandidato(id);
+		editCandidatoAndSuplente(id);
 	};
 
 
 	const columns = [
-		{ field: "claveElectoral", headerName: "clave Electoral", width: 130 },
+		{ field: "id", headerName: "clave Electoral", width: 130 },
 		{ field: "nombreCandidato", headerName: "Nombre", width: 140 },
 		{ field: "apellidoPCandidato", headerName: "Apellido Paterno", width: 120 },
 		{ field: "apellidoMCandidato", headerName: "Apellido Materno", width: 150 },
-        { field: "seudonimoCandidato", headerName: "Seudonimo", width: 100 },
-		{ field: "fechaNacimientoCandidato", headerName: "Fecha de Nacimiento", width: 100 },
-		{ field: "generoCandidato", headerName: "Género", width: 100 },
+        // { field: "seudonimoCandidato", headerName: "Seudonimo", width: 100 },
+		// { field: "fechaNacimientoCandidato", headerName: "Fecha de Nacimiento", width: 100 },
+		// { field: "generoCandidato", headerName: "Género", width: 100 },
+		{ field: "nombreSuplente", headerName: "Nombre Suplente", width: 140 },
+		{ field: "apellidoPSuplente", headerName: "Apellido Paterno Suplente", width: 120 },
+		{ field: "apellidoMSuplente", headerName: "Apellido Materno Suplente", width: 150 },
 
 		{
 			field: "actions",
@@ -56,7 +57,7 @@ export const DataGridTableJornada = ({ handleOpenModal }) => {
 	return (
 		<div style={{ height: "100%", width: "100%" }}>
 			<DataGrid
-                rows={candidatos}
+                rows={candidatoandSuplentes}
 				columns={columns}
 				pageSize={5}
 				rowsPerPageOptions={[5]}
