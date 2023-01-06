@@ -144,13 +144,46 @@ export const getBoletaData2 = async (idTicket) => {
 		// **Fetch de candidatos + suplentes + partidos
 		const { data: data1 } = await jornadasAPI.get(
 			"jornada/electoral/estructuraboleta/" + idTicket + "/datos_asociados"
-			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/10/datos_asociados
+			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/4/datos_asociados
 		);
 		console.log("DATA candidatos + suplentes + partidos", data1);
 
 		const formatcasupa = {
 			// MY FORMAT || API FORMAT
-
+			candidatoModel: {
+				claveElectoral,
+				apellidoPCandidato,
+				apellidoMCandidato,
+				nombreCandidato,
+				fotoCandidato,
+				seudonimoCandidato,
+				fechaNacimiento,
+				genero,
+			  },
+			  partidoModels: [
+				{
+				  clavePartido,
+				  nombre,
+				  siglas,
+				  emblema,
+				  logo,
+				},
+			  ],
+			  suplenteModel: {
+				claveElectoral,
+				apellidoPSuplente,
+				apellidoMSuplente,
+				nombreSuplente,
+				fotoSuplente,
+				seudonimoSuplente,
+				fechaNacimiento,
+				genero,
+				candidatoModel: {
+				  claveElectoral,
+				}
+			  }
+    
+    
 		};
 
         const format = {
@@ -170,7 +203,7 @@ export const getBoletaData2 = async (idTicket) => {
             cargoSegundoFirmante:data.data.cargoSegundoFirmante,
         }
 
-		return { ok: true, data: format, dataCandidato: formatCandidato, dataSuplente: formatSuplente, dataPartido: formatPartido };
+		return { ok: true, data: format, datacasupa: formatcasupa };
 	} catch (error) {
 		return { ok: false, errorMessage: error.message };
 	

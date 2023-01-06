@@ -64,6 +64,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 	const onSubmit = (values) => {
 		setEmblema({ name: "Sin Archivo seleccionado" });
 		setfotografiaPartido({ name: "Sin Archivo seleccionado" });
+		console.log("hola", partidos.length);
 		addPartido(
 			partidos.length,
 			values.nombrePartido,

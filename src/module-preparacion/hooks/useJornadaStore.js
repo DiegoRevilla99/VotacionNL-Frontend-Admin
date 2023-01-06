@@ -47,7 +47,7 @@ export const useJornadaStore = () => {
         suplentesSelected,
         partidos,
         partidoSelected,
-        candidatoAndSuplente,
+        candidatoandSuplentes,
         candidatoandSuplenteSelected,
 		jornadasData,
         jornadaSelected,
@@ -199,7 +199,6 @@ export const useJornadaStore = () => {
         seudonimoCandidato,
         fechaNacimientoCandidato,
         generoCandidato,
-        // idSuplente,
         apellidoPSuplente,
         apellidoMSuplente,
         nombreSuplente,
@@ -208,6 +207,7 @@ export const useJornadaStore = () => {
         fechaNacimientoSuplente,
         generoSuplente,
     ) => {
+        console.log("EL ID DEL CANDIDATO", id);
         dispatch(onAddCandidatoAndSuplente({
             id,
             apellidoPCandidato,
@@ -217,7 +217,6 @@ export const useJornadaStore = () => {
             seudonimoCandidato,
             fechaNacimientoCandidato,
             generoCandidato,
-            // idSuplente,
             apellidoPSuplente,
             apellidoMSuplente,
             nombreSuplente,
@@ -356,7 +355,7 @@ export const useJornadaStore = () => {
         suplentesSelected,
         partidos,
         partidoSelected,
-        candidatoAndSuplente,
+        candidatoandSuplentes,
         candidatoandSuplenteSelected,
 		jornadasData,
         jornadaSelected,

@@ -123,12 +123,12 @@ export const onGetBoletas = (idJornada, navigate = () => {} ) => {
     }
 };
 
-export const onCreateBoleta = (data, idJornada, candidatoAndSuplente, partidos, navigate = () => {}) => {
+export const onCreateBoleta = (data, idJornada, candidatoandSuplentes, partidos, navigate = () => {}) => {
     return async (dispatch) => {
         dispatch(onCheckingOperation());
         dispatch(onToastCheckingOperation("Guardando boleta..."));
 
-        const {ok, idBoleta } = await createBoleta(data, idJornada, candidatoAndSuplente, partidos);// PROVIDER
+        const {ok, idBoleta } = await createBoleta(data, idJornada, candidatoandSuplentes, partidos);// PROVIDER
         if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onToastSuccessOperation({ successMessage: "Boleta creada con éxito" }));

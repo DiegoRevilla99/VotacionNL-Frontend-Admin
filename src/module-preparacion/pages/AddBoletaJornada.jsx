@@ -380,31 +380,14 @@ export const AddBoletaJornada = () => {
 							/>
 							{/* {touched.cargoSegundoFirmante && errors.cargoSegundoFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.cargoSegundoFirmante}</Typography>} */}
 						</Grid>
-						{/* <Grid item xs={12} md={6} lg={4}>
-							<Button
-								
-								onClick={handleOpenRegisterModal}
-								variant="contained"
-								size="large"
-								disabled={status === "checking"}
-								sx={{
-									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
-									transition: "all 0.5s ease",
-									backgroundColor: "#511079",
-									width: "100%",
-									borderRadius: "25px 25px 25px 25px",
-									"&:hover": {
-										backgroundColor: "#7E328B !important",
-										transform: "translate(-5px, -5px)",
-										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
-									},
-								}}
-							>
-								Registrar candidato y suplente
-							</Button>
-						</Grid> */}
 
-						<Grid item xs={12} md={6} lg={4}>
+
+								<AddCandidatoMod
+									handleOpenModal={statusRegisterModal}
+									status={status}
+								/> 
+
+							<Grid item xs={12} md={6} lg={4}>
 							<Button
 								onClick={handleOpenAsociacionModal}
 								variant="contained"
@@ -451,32 +434,6 @@ export const AddBoletaJornada = () => {
 								eliminar
 							</Button>
 						</Grid>
-						<Grid item xs={12} md={6} lg={4}>
-			<Button
-					onClick={statusRegisterModal}
-					variant="contained"
-					size="large"
-					disabled={status === "checking"}
-					sx={{
-						boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
-						transition: "all 0.5s ease",
-						backgroundColor: "#511079",
-						width: "100%",
-						borderRadius: "25px 25px 25px 25px",
-						"&:hover": {
-							backgroundColor: "#7E328B !important",
-							transform: "translate(-5px, -5px)",
-							boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
-						},
-					}}
-				>
-					Agregar candidato con suplente
-				</Button>
-			</Grid>
-								{/* <AddCandidatoMod
-									handleOpenModal={statusRegisterModal}
-									status={status}
-								/>  */}
 								<AddPartidosMod 
 									handleOpenModal={handleOpenMatchModal}
 									status={status}
@@ -504,8 +461,8 @@ export const AddBoletaJornada = () => {
 							>
 								Guardar
 							</Button>
-
 						</Grid>
+						
 						<Grid item xs={12} md={6} lg={3}>
 							<Button
 								onClick={onCancel}

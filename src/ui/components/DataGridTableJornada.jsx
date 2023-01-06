@@ -6,7 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
 
 export const DataGridTableJornada = ({ handleOpenModal }) => {
-	const { candidatoAndSuplente, deleteCandidatoAndSuplente, editCandidatoAndSuplente} = useJornadaStore();
+	const { candidatoandSuplentes, deleteCandidatoAndSuplente, editCandidatoAndSuplente} = useJornadaStore();
 
     const handleDelete = (id) => {
 		console.log("ID: ", id);
@@ -19,7 +19,7 @@ export const DataGridTableJornada = ({ handleOpenModal }) => {
 
 
 	const columns = [
-		// { field: "id", headerName: "clave Electoral", width: 130 },
+		{ field: "id", headerName: "clave Electoral", width: 130 },
 		{ field: "nombreCandidato", headerName: "Nombre", width: 140 },
 		{ field: "apellidoPCandidato", headerName: "Apellido Paterno", width: 120 },
 		{ field: "apellidoMCandidato", headerName: "Apellido Materno", width: 150 },
@@ -57,7 +57,7 @@ export const DataGridTableJornada = ({ handleOpenModal }) => {
 	return (
 		<div style={{ height: "100%", width: "100%" }}>
 			<DataGrid
-                rows={candidatoAndSuplente}
+                rows={candidatoandSuplentes}
 				columns={columns}
 				pageSize={5}
 				rowsPerPageOptions={[5]}
