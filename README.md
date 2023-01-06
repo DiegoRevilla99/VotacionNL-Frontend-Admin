@@ -1,5 +1,5 @@
 # VOTACIÓN NUEVO LEON
-## Frontend de la parte de la Admin
+### Frontend de la parte del Admininistrador
 
 Integrantes:
 - Kevin Edilberto Chavez Sanchez
