@@ -46,7 +46,7 @@ export const TabsLayout = () => {
       }}
     >
       <Tabs
-        sx={{}}
+        sx={{ mt: 1 }}
         value={value}
         onChange={handleChange}
         aria-label="nav tabs example"
@@ -54,12 +54,25 @@ export const TabsLayout = () => {
         indicatorColor="primary"
         centered
       >
-        <LinkTab label="Formales" href="/empadronamiento/inicio/formal" />
-        <LinkTab label="No formales" href="/empadronamiento/inicio/noformal" />
-        <LinkTab label="Consultas" href="/empadronamiento/inicio/consultas" />
+        <LinkTab
+          sx={{ fontSize: "16px" }}
+          label="Formales"
+          href="/empadronamiento/inicio/formal"
+        />
+        <LinkTab
+          sx={{ fontSize: "16px" }}
+          label="No formales"
+          href="/empadronamiento/inicio/noformal"
+        />
+        <LinkTab
+          sx={{ fontSize: "16px" }}
+          label="Consultas"
+          href="/empadronamiento/inicio/consultas"
+        />
       </Tabs>
 
       <Paper
+        className="animate__animated animate__fadeInUp"
         elevation={2}
         sx={{
           display: "flex",

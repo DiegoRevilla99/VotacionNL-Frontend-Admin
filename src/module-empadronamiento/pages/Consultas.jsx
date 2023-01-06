@@ -71,7 +71,7 @@ export const Consultas = () => {
           alignItems: "center",
         }}
       >
-        <BreadCrumbsCustom currentRoute="JORNADAS NO FORMALES" />
+        <BreadCrumbsCustom currentRoute="CONSULTAS" />
         {/* <Typography sx={{ mt: 4 }} textAlign="center">
           LISTA JORNADAS
         </Typography> */}

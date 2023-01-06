@@ -2,6 +2,7 @@ import {
   Button,
   CircularProgress,
   FormControlLabel,
+  Skeleton,
   Stack,
   Switch,
   TextField,
@@ -161,6 +162,7 @@ export const ConfiguracionJornada = () => {
       ) : (
         configJornada && (
           <Stack
+            className="animate__animated animate__bounceInUp "
             direction="column"
             justifyContent="center"
             alignItems="center"

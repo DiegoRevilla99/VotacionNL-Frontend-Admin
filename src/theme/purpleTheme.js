@@ -13,6 +13,7 @@ export const purpleTheme = createTheme({
 			'"Apple Color Emoji"',
 			'"Segoe UI Emoji"',
 			'"Segoe UI Symbol"',
+			'Raleway, Arial',
 		].join(','),
 	},
 	palette: {
@@ -21,6 +22,7 @@ export const purpleTheme = createTheme({
 		},
 		secondary: {
 			main: "#9E9E9E",
+
 		},
 		error: {
 			main: "#791010",
