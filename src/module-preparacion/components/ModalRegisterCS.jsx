@@ -307,7 +307,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 											<Box sx={{ mt: 4, mb: 1, ml: 2, mr: 2}}>
 											
 											<Typography variant="h7" mt={"2rem"}>
-												APELLIDO PATERNO <span style={{ color: "red" }}>*</span>
+												PRIMER APELLIDO <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<TextField
 														fullWidth
@@ -323,7 +323,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														onBlur={handleBlur}
 													/>
 											<Typography variant="h7" mt={"2rem"}>
-												APELLIDO MATERNO <span style={{ color: "red" }}>*</span>
+												SEGUNDO APELLIDO <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<TextField
 														fullWidth
@@ -339,7 +339,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														onBlur={handleBlur}
 													/>
 												<Typography variant="h7" mt={"2rem"}>
-												NOMBRE COMPLETO <span style={{ color: "red" }}>*</span>
+												NOMBRES <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<TextField
 														fullWidth
@@ -457,7 +457,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 											<>
 											<Box sx={{ mt: 4, mb: 1, ml: 2, mr: 2}}>
 											<Typography variant="h7" mt={"2rem"}>
-												APELLIDO PATERNO <span style={{ color: "red" }}>*</span>
+												PRIMER APELLIDO <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<TextField
 														fullWidth
@@ -473,7 +473,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														onBlur={handleBlur}
 													/>
 											<Typography variant="h7" mt={"2rem"}>
-												APELLIDO MATERNO <span style={{ color: "red" }}>*</span>
+												SEGUNDO APELLIDO <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<TextField
 														fullWidth
@@ -489,7 +489,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														onBlur={handleBlur}
 													/>
 												<Typography variant="h7" mt={"2rem"}>
-												NOMBRE COMPLETO <span style={{ color: "red" }}>*</span>
+												NOMBRES <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<TextField
 														fullWidth

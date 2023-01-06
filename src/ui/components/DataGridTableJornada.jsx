@@ -4,13 +4,12 @@ import { Box, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
-
-export const DataGridTableJornada = ({ handleOpenModal }) => {
+import { Tooltip } from '@mui/material';
+export const DataGridTableJornada = ({ handleOpenModal, handleOpenDeleteCandidatoModal}) => {
 	const { candidatoandSuplentes, deleteCandidatoAndSuplente, editCandidatoAndSuplente} = useJornadaStore();
 
     const handleDelete = (id) => {
-		console.log("ID: ", id);
-		deleteCandidatoAndSuplente(id);
+		handleOpenDeleteCandidatoModal(id);
 	};
 	const handleEdit = (id) => {
 		handleOpenModal();
@@ -19,16 +18,16 @@ export const DataGridTableJornada = ({ handleOpenModal }) => {
 
 
 	const columns = [
-		{ field: "id", headerName: "clave Electoral", width: 130 },
-		{ field: "nombreCandidato", headerName: "Nombre", width: 140 },
-		{ field: "apellidoPCandidato", headerName: "Apellido Paterno", width: 120 },
-		{ field: "apellidoMCandidato", headerName: "Apellido Materno", width: 150 },
+		{ field: "id", headerName: "clave Electoral", width: 100 },
+		{ field: "nombreCandidato", headerName: "Nombres Candidato", width: 140 },
+		{ field: "apellidoPCandidato", headerName: "Primer Apellido", width: 120 },
+		{ field: "apellidoMCandidato", headerName: "Segundo Apellido", width: 120 },
         // { field: "seudonimoCandidato", headerName: "Seudonimo", width: 100 },
 		// { field: "fechaNacimientoCandidato", headerName: "Fecha de Nacimiento", width: 100 },
 		// { field: "generoCandidato", headerName: "Género", width: 100 },
-		{ field: "nombreSuplente", headerName: "Nombre Suplente", width: 140 },
-		{ field: "apellidoPSuplente", headerName: "Apellido Paterno Suplente", width: 120 },
-		{ field: "apellidoMSuplente", headerName: "Apellido Materno Suplente", width: 150 },
+		{ field: "nombreSuplente", headerName: "Nombres Suplente", width: 140 },
+		{ field: "apellidoPSuplente", headerName: "Primer Apellido Suplente", width: 120 },
+		{ field: "apellidoMSuplente", headerName: "Segundo Apellido Suplente", width: 120 },
 
 		{
 			field: "actions",
@@ -39,15 +38,21 @@ export const DataGridTableJornada = ({ handleOpenModal }) => {
 			renderCell: (params) => {
 				return (
 					<Box>
-						<IconButton sx={{ color: "#511079" }} onClick={() => handleEdit(params.id)}>
-							<EditIcon />
-						</IconButton>
-						<IconButton
-							sx={{ color: "#791010" }}
-							onClick={() => handleDelete(params.id)}
-						>
-							<DeleteIcon />
-						</IconButton>
+						<Tooltip title="Editar">
+							<IconButton 
+							sx={{ color: "#511079" }} 
+							onClick={() => handleEdit(params.id)}>
+								<EditIcon />
+							</IconButton>
+						</Tooltip>
+						<Tooltip title="Eliminar">
+							<IconButton
+								sx={{ color: "#791010" }}
+								onClick={() => handleDelete(params.id)}
+							>
+								<DeleteIcon />
+							</IconButton>
+						</Tooltip>
 					</Box>
 				);
 			},

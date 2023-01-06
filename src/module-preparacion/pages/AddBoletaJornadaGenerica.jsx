@@ -11,7 +11,7 @@ import { FielTextCustom } from "../components/FielTextCustom";
 import { DataGridTable } from "../../ui/components/DataGridTable";
 import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
 
-import { ModalEliminarPC } from "../components/ModalEliminarPC";
+// import { ModalEliminarPC } from "../components/ModalEliminarPC";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Formik } from 'formik';
 import { object, string, number } from "yup";
@@ -86,7 +86,7 @@ export const AddBoletaJornadaGenerica = () => {
 
 	const [statusMatchModal, setStatusMatchModal] = useState(false);
 
-	const [statusDeleteModal, setStatusDeleteModal] = useState(false);
+	// const [statusDeleteModal, setStatusDeleteModal] = useState(false);
 	const [statusRegisterModal, setStatusRegisterModal] = useState(false);
 	const [statusAsociacionModal, setStatusAsociacionModal] = useState(false);
 
@@ -94,7 +94,7 @@ export const AddBoletaJornadaGenerica = () => {
 
 	const handleCloseMatchModal = () => setStatusMatchModal(false);
 
-	const handleCloseDeleteModal = () => setStatusDeleteModal(false);
+	// const handleCloseDeleteModal = () => setStatusDeleteModal(false);
 	const handleCloseRegisterModal = () => setStatusRegisterModal(false);
 	const handleCloseAsociacionModal = () => setStatusAsociacionModal(false);
 
@@ -109,10 +109,10 @@ export const AddBoletaJornadaGenerica = () => {
 	 	setStatusMatchModal(true);
 	 };
 
-	const handleOpenDeleteModal = () => {
-        // toastOffOperation();
-        setStatusDeleteModal(true);
-    };
+	// const handleOpenDeleteModal = () => {
+    //     // toastOffOperation();
+    //     setStatusDeleteModal(true);
+    // };
 
 	const handleOpenAsociacionModal = () => {
 		// toastOffOperation();
@@ -437,7 +437,8 @@ export const AddBoletaJornadaGenerica = () => {
 						</Grid>
 						<Grid item xs={4} md={2} lg={2}>
 							<Button
-							onClick={handleOpenDeleteModal}
+							// onClick={handleOpenDeleteModal}
+							
 								variant="contained"
 								size="small"
 								disabled={status === "checking"}
@@ -468,8 +469,6 @@ export const AddBoletaJornadaGenerica = () => {
 									pb: "1rem",
 								}}
 							>
-
-
 								{/* <DataGridTableJornada /> */}
 								<DataGridTable />
 
@@ -545,7 +544,7 @@ export const AddBoletaJornadaGenerica = () => {
 			{/* ELIMINAR EL SIGUIENTE MODAL */}
             {/* <ModalBoletaCandidato statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} /> */}
 			{/* MODAL PARA CONFIRMAR LA ELIMINACIÓN */}
-			<ModalEliminarPC statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} />
+			{/* <ModalEliminarPC statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} /> */}
 			{/* MODAL PARA REGISTRAR A LOS CANDIDATOS Y SUPLENTES */}
 			<ModalRegisterCS statusRegisterModal={statusRegisterModal} handleToggleModal={handleCloseRegisterModal} />
 			{/* MODAL PARA REGISTRAR ASOCIAR CANDIDATOS Y PARTIDOS */}

@@ -10,14 +10,11 @@ import { getBoletaByIdApi } from "../helpers/ApiJornada";
 import { FielTextCustom } from "../components/FielTextCustom";
 import { DataGridTable } from "../../ui/components/DataGridTable";
 import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
-
-import { ModalEliminarPC } from "../components/ModalEliminarPC";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Formik } from 'formik';
 import { object, string, number } from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import { ModalAsociacionCP } from "../components/ModalAsociacionCP";
-
 import { ModalRegisterCS } from "../components/ModalRegisterCS";
 import { DataGridTableJornada } from "../../ui/components/DataGridTableJornada";
 import { DataGridTablePartido } from "../../ui/components/DataGridTablePartido";
@@ -27,6 +24,8 @@ import { useJornadaStore } from "../hooks/useJornadaStore";
 import { onCreateBoleta, onUpdateBoletaData } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { onUpdateBoleta } from "../../store/module-preparacion/jornada/SliceJornada";
 import { AddCandidatoMod } from "../components/AddCandidatoMod";
+import { ModalEliminarPartido } from "../components/ModalEliminarPartido";
+import { ModalEliminarCandidato } from "../components/ModalEliminarCandidato";
 
 
 const validationSchema = object({
@@ -123,12 +122,15 @@ export const AddBoletaJornada = () => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const [statusMatchModal, setStatusMatchModal] = useState(false);
-	const [statusDeleteModal, setStatusDeleteModal] = useState(false);
+	const [statusDeletePartidoModal, setStatusDeletePartidoModal] = useState(false);
+	const [statusDeleteCandidatoModal, setStatusDeleteCandidatoModal] = useState(false);
 	const [statusRegisterModal, setStatusRegisterModal] = useState(false);
 	const [statusAsociacionModal, setStatusAsociacionModal] = useState(false);
 
 	const handleCloseMatchModal = () => setStatusMatchModal(false);
-	const handleCloseDeleteModal = () => setStatusDeleteModal(false);
+
+	const handleCloseDeletePartidoModal = () => setStatusDeletePartidoModal(false);
+	const handleCloseDeleteCandidatoModal = () => setStatusDeleteCandidatoModal(false);
 	const handleCloseRegisterModal = () => setStatusRegisterModal(false);
 	const handleCloseAsociacionModal = () => setStatusAsociacionModal(false);
 
@@ -143,10 +145,15 @@ export const AddBoletaJornada = () => {
 	setStatusMatchModal(true);
 	};
 
-	const handleOpenDeleteModal = () => {
-        // toastOffOperation();
-        setStatusDeleteModal(true);
-    };
+	const handleOpenDeletePartidoModal = () => {
+		// toastOffOperation();
+		setStatusDeletePartidoModal(true);
+	};
+
+	const handleOpenDeleteCandidatoModal = () => {
+		// toastOffOperation();
+		setStatusDeleteCandidatoModal(true);
+	};
 
 	const handleOpenAsociacionModal = () => {
 		// toastOffOperation();
@@ -381,13 +388,17 @@ export const AddBoletaJornada = () => {
 							{/* {touched.cargoSegundoFirmante && errors.cargoSegundoFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.cargoSegundoFirmante}</Typography>} */}
 						</Grid>
 
-
-								<AddCandidatoMod
-									handleOpenModal={handleOpenRegisterModal}
-									status={status}
-								/> 
-
-							<Grid item xs={12} md={6} lg={4}>
+						<AddCandidatoMod
+							handleOpenModal={handleOpenRegisterModal}
+							handleOpenDeleteCandidatoModal={handleOpenDeleteCandidatoModal}
+							status={status}
+						/> 
+						<AddPartidosMod 
+							handleOpenModal={handleOpenMatchModal}
+							handleOpenDeletePartidoModal={handleOpenDeletePartidoModal}
+							status={status}
+						/> 
+						<Grid item xs={12} md={6} lg={4}>
 							<Button
 								onClick={handleOpenAsociacionModal}
 								variant="contained"
@@ -409,35 +420,9 @@ export const AddBoletaJornada = () => {
 									},
 								}}
 							>
-								Asociaciar participantes a partido
+								Afiliar participantes a partido
 							</Button>
 						</Grid>
-						<Grid item xs={4} md={2} lg={2}>
-							<Button
-							onClick={handleOpenDeleteModal}
-								variant="contained"
-								size="small"
-								disabled={status === "checking"}
-								sx={{
-									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
-									transition: "all 0.5s ease",
-									backgroundColor: "#791010",
-									width: "100%",
-									borderRadius: "25px 25px 25px 25px",
-									"&:hover": {
-										backgroundColor: "#8B3232 !important",
-										transform: "translate(-5px, -5px)",
-										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
-									},
-								}}
-							>
-								eliminar
-							</Button>
-						</Grid>
-								<AddPartidosMod 
-									handleOpenModal={handleOpenMatchModal}
-									status={status}
-								/> 
 					</Grid>
 					<Grid mt={"1rem"} container direction="row" justifyContent="flex-end" spacing={2}>
 						<Grid item xs={12} md={6} lg={3}>
@@ -493,7 +478,8 @@ export const AddBoletaJornada = () => {
 			{/* ELIMINAR EL SIGUIENTE MODAL */}
             {/* <ModalBoletaCandidato statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} /> */}
 			{/* MODAL PARA CONFIRMAR LA ELIMINACIÓN */}
-			<ModalEliminarPC statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} />
+			<ModalEliminarPartido statusDeletePartidoModal={statusDeletePartidoModal} handleToggleModal={handleCloseDeletePartidoModal} />
+			<ModalEliminarCandidato statusDeleteCandidatoModal={statusDeleteCandidatoModal} handleToggleModal={handleCloseDeleteCandidatoModal} />
 			{/* MODAL PARA REGISTRAR A LOS CANDIDATOS Y SUPLENTES */}
 			<ModalRegisterCS statusRegisterModal={statusRegisterModal} handleToggleModal={handleCloseRegisterModal} />
 			{/* MODAL PARA REGISTRAR ASOCIAR CANDIDATOS Y PARTIDOS */}

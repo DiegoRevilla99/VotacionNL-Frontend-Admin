@@ -2,7 +2,7 @@ import { Box, Button, Grid } from "@mui/material";
 import React from "react";
 import { DataGridTableJornada } from "../../ui/components/DataGridTableJornada";
 
-export const AddCandidatoMod = React.memo(({ handleOpenModal, status }) => {
+export const AddCandidatoMod = React.memo(({ handleOpenModal,handleOpenDeleteCandidatoModal,  status }) => {
 	return (
 		<>
 			<Grid item xs={12} md={6} lg={4}>
@@ -39,7 +39,7 @@ export const AddCandidatoMod = React.memo(({ handleOpenModal, status }) => {
 						pb: "1rem",
 					}}
 				>
-					<DataGridTableJornada handleOpenModal={handleOpenModal} />
+					<DataGridTableJornada handleOpenModal={handleOpenModal} handleOpenDeleteCandidatoModal={handleOpenDeleteCandidatoModal}/>
 				</Box>
 			</Grid>
 		</>

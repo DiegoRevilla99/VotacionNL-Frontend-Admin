@@ -5,13 +5,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from "react-redux";
 import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
+import { Tooltip } from '@mui/material';
 
-export const DataGridTablePartido = ({ handleOpenModal }) => {
+export const DataGridTablePartido = ({ handleOpenModal, handleOpenDeletePartidoModal }) => {
 	const { partidos, deletePartido, editPartido} = useJornadaStore();
 
     const handleDelete = (id) => {
-		console.log("ID: ", id);
-		deletePartido(id);
+		handleOpenDeletePartidoModal(id);
+		// deletePartido(id);
 	};
 
 	const handleEdit = (id) => {
@@ -34,15 +35,21 @@ export const DataGridTablePartido = ({ handleOpenModal }) => {
 			renderCell: (params) => {
 				return (
 					<Box>
-						<IconButton sx={{ color: "#511079" }} onClick={() => handleEdit(params.id)}>
-							<EditIcon />
-						</IconButton>
-						<IconButton
-							sx={{ color: "#791010" }}
-							onClick={() => handleDelete(params.id)}
-						>
-							<DeleteIcon />
-						</IconButton>
+						<Tooltip title="Editar">
+							<IconButton 
+							sx={{ color: "#511079" }} 
+							onClick={() => handleEdit(params.id)}>
+								<EditIcon />
+							</IconButton>
+						</Tooltip>
+						<Tooltip title="Eliminar">
+							<IconButton
+								sx={{ color: "#791010" }}
+								onClick={() => handleDelete(params.id)}
+							>
+								<DeleteIcon />
+							</IconButton>
+						</Tooltip>
 					</Box>
 				);
 			},

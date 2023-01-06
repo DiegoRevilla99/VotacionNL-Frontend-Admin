@@ -3,7 +3,7 @@ import React from "react";
 import { DataGridTablePartido } from "../../ui/components/DataGridTablePartido";
 
 
-export const AddPartidosMod = React.memo(({ handleOpenModal, status }) => {
+export const AddPartidosMod = React.memo(({ handleOpenModal, handleOpenDeletePartidoModal, status }) => {
 	return (
 		<>
 			<Grid item xs={12} md={6} lg={4}>
@@ -39,7 +39,7 @@ export const AddPartidosMod = React.memo(({ handleOpenModal, status }) => {
 						pb: "1rem",
 					}}
 				>
-					<DataGridTablePartido handleOpenModal={handleOpenModal} />
+					<DataGridTablePartido handleOpenModal={handleOpenModal} handleOpenDeletePartidoModal={handleOpenDeletePartidoModal} />
 				</Box>
 			</Grid>
 		</>
