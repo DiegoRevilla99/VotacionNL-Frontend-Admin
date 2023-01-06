@@ -16,8 +16,8 @@ export const getConsultasCiudadanas = async () => {
 export const createConsultaCiudadana = async (titulo, entidad) => {
 	// const id = "JEO-JUN23-GOB" + Math.floor(Math.random() * 10000);
 	try {
+		console.log(titulo, entidad);
 		const { data } = await consultasAPI.post("jornada/consulta/", {
-			// idJornada: id,
 			nombreJornada: titulo,
 			dateTimeCreation: "2019-07-04T20:38:38.604+00:00",
 			entidad: entidad,
@@ -29,6 +29,7 @@ export const createConsultaCiudadana = async (titulo, entidad) => {
 		// idConsultas++;
 		return { ok: true, id: data.data.idJornada };
 	} catch (error) {
+		console.log(error.message);
 		return { ok: false };
 	}
 };
@@ -164,6 +165,7 @@ export const createPapeleta = async (data, idConsulta, questions) => {
 			{
 				descPregunta: questions[0].pregunta,
 				tipoRespuesta: questions[0].tipoDeRespuesta,
+				subtipo: questions[0].tipoCerrada,
 				opcion1: questions[0].respuesta1,
 				opcion2: questions[0].respuesta2,
 				opcion3: questions[0].respuesta3,

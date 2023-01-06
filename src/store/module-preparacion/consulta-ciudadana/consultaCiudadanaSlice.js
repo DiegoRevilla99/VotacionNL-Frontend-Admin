@@ -112,7 +112,7 @@ export const consultaCiudadanaSlice = createSlice({
 			state.consultaSelected.ballots.push(payload);
 		},
 		onFillBallots: (state, { payload }) => {
-			state.consultaSelected.ballots = payload;
+			state.consultaSelected.ballots = payload || [];
 		},
 		onEditBallot: (state, { payload }) => {
 			// state.consultaSelected.ballotSelected = state.consultaSelected.ballots[payload];
