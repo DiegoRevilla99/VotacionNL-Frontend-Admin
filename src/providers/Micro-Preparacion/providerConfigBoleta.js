@@ -34,7 +34,7 @@ export const getCandidatosProvider = async (idBoleta) => {
 
     //const partidos = await getCandidatosAPI();
     return JornadaApi.get(`boleta/${idBoleta}/candidatos_sin_coaliciones`).then((response) => {
-        console.log(response)
+
         return { ok: true, data: response.data, errorMessage: "" };
     }).catch((error) => {
         return { ok: false, data: "", errorMessage: error.message };
