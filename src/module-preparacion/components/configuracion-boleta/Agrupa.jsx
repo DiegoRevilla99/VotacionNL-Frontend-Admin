@@ -1,5 +1,5 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { PlantillaHeader } from "../../layout/PlantillaHeader";
 import { Coalicion } from "./Coalicion";
@@ -69,11 +69,8 @@ export const Agrupa = ({ tipo = 1, info = {} }) => {
                   p: 1,
                 }}
               >
-                {coaliciones.map((coalicion) => (
-                  <Coalicion
-                    key={coalicion.claveCoalicion}
-                    info={coalicion}
-                  ></Coalicion>
+                {coaliciones.map((coalicion, i) => (
+                  <Coalicion key={i} info={coalicion}></Coalicion>
                 ))}
               </Box>
             </Box>

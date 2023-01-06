@@ -16,13 +16,8 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, ErrorMessage } from "formik";
 
 import { useDispatch, useSelector } from "react-redux";
-import { ErrorField } from "../ErrorField";
-import { BoxPartido } from "./BoxPartido";
 
-import { PartidoSelect } from "./PartidoSelect";
-import { getCandidatos } from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
-import { CandidatoCheck } from "./CandidatoCheck";
-import { useParams } from "react-router-dom";
+import { ErrorField } from "../../module-preparacion/components/ErrorField";
 
 const useStyles = makeStyles({
   textField: {
@@ -54,7 +49,7 @@ const modalResponsive = {
   top: "50%",
   left: "50%",
   transform: "translate(-47%,-50%)",
-  padding: "2rem",
+  padding: "3rem",
 
   height: { xl: "95%", lg: "98%", sm: "97%", xs: "99%" },
   overflowY: "scroll",
@@ -62,68 +57,57 @@ const modalResponsive = {
 };
 
 let schema = yup.object().shape({
-  nombreAsociacion: yup
-    .string()
-    .required("Nombre de la asociación es necesario"),
-  emblema: yup.string().required("Emeblema de la asociación es necesario"),
+  nombre: yup.string().required("Nombre de la coalición es necesario"),
+  emblema: yup.string().required("Emeblema de la coalición es necesario"),
 });
 
-export const ModalAsociacion = ({
+export const ModalVotante = ({
   isOpen = false,
   abrirCerrarModal = () => {},
   agregar = () => {
-    alert("Presionaste enviar del modal");
+    alert("Presionaste agregar del modal");
   },
   actualizar = () => {
-    alert("Presionaste enviar del modal");
+    alert("Presionaste actualizar del modal");
   },
   idBoleta = null,
-  asociacion = null,
+  coalicion = null,
 }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
-  const { id } = useParams();
 
   const [logo, setLogo] = useState(
-    asociacion
-      ? { name: asociacion.logo }
-      : { name: "Sin Archivo seleccionado" }
+    coalicion ? { name: coalicion.logo } : { name: "Sin Archivo seleccionado" }
   );
-  const [candidatosS, setCandidatosS] = useState(
-    asociacion ? asociacion.candidatos : []
+  const [candidato, setCandidato] = useState(
+    coalicion ? coalicion.candidato : { candidato: "Sin candidato" }
   );
-  const { candidatos = [], isLoadingCandidatos } = useSelector(
-    (state) => state.configBoleta
-  );
+  const {
+    candidatos = [],
+    isLoadingCandidatos,
+    coalicionSelected,
+  } = useSelector((state) => state.configBoleta);
 
-  const onSelectCandidato = (candidato) => {
-    console.log("cnadidato: " + candidato);
-    let candi = null;
-    candi = candidatosS.find((c) => c === candidato);
-    if (candi) {
-      setCandidatosS(candidatosS.filter((c) => c !== candidato));
-    } else {
-      setCandidatosS([...candidatosS, candidato]);
-    }
+  const onSelectPartido = (info) => {
+    setCandidato(info);
   };
 
   const cerrarM = () => {
     abrirCerrarModal();
-    setCandidatosS({});
+    setCandidato({});
     setLogo({ name: "Sin Archivo seleccionado" });
   };
-  useEffect(() => {
-    console.log("ME estoy renderizando en Modal Asociacion jornada");
-    dispatch(getCandidatos(id));
-  }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     setLogo(
-      asociacion
-        ? { name: asociacion.logo }
+      coalicion
+        ? { name: coalicion.logo }
         : { name: "Sin Archivo seleccionado" }
     );
-    setCandidatosS(asociacion ? asociacion.candidatos : []);
+    setCandidato(
+      coalicion ? coalicion.candidato : { candidato: "Sin candidato" }
+    );
   }, [isOpen]);
 
   const validando = (values, props) => {
@@ -131,11 +115,9 @@ export const ModalAsociacion = ({
     if (logo.name === "Sin Archivo seleccionado") {
       errors.logo = "Se necesita un emblema";
     }
-    console.log(candidatosS);
-    if (candidatosS.length === 0) {
-      console.log("entre a error");
 
-      errors.candidatos = "Seleccione un candidato";
+    if (candidato.candidato === "Sin candidato") {
+      errors.candidato = "Seleccione un candidato";
     }
 
     return errors;
@@ -145,67 +127,66 @@ export const ModalAsociacion = ({
     <Box sx={modalResponsive}>
       <Formik
         initialValues={{
-          nombreAsociacion: asociacion ? asociacion.nombreAsociacion : "",
-          emblema: asociacion ? asociacion.emblema : "",
-          logo: asociacion ? asociacion.logo : "",
-          candidatos: [],
+          nombre: coalicion ? coalicion.nombre : "",
+          emblema: coalicion ? coalicion.emblema : "",
+          logo: coalicion ? coalicion.logo : "",
+          candidato: "",
         }}
         validate={validando}
         validationSchema={schema}
         onSubmit={(valores) => {
-          console.log("creando asociacion");
-
           const data = {
-            asociacionModel: {
-              nombreAsociacion: valores.nombreAsociacion,
+            coalicionModel: {
+              nombre: valores.nombre,
               emblema: valores.emblema,
               logo: logo.name,
             },
-            candidatos: candidatosS,
+            partidos: candidato.partidos,
           };
-          console.log(data);
-          if (asociacion) {
+
+          if (coalicion) {
             actualizar(data, cerrarM);
           } else {
             agregar(data, cerrarM);
           }
-          // enviar(data);
+          //enviar(data);
         }}
       >
         {({ touched, errors, handleBlur, handleChange, values }) => (
           <Form className={styles.fomi}>
             <Box sx={{ width: "100%" }}>
               <div aling="left">
-                <Typography sx={{ fontWeight: "bold", mb: 3 }}>
-                  ASOCIACIÓN
+                <Typography
+                  textAlign="center"
+                  sx={{ fontWeight: "bold", mb: 3 }}
+                >
+                  DATOS DEL VOTANTE
                 </Typography>
               </div>
-              <Typography>NOMBRE DE LA ASOCIACIÓN</Typography>
+              <Typography>NOMBRE DEL VOTANTE</Typography>
               <TextField
                 required
                 label=""
-                variant="outlined"
-                name="nombreAsociacion"
-                id="nombreAsociacion"
+                variant="filled"
+                name="nombre"
+                id="nombre"
                 className={styles.textField}
-                value={values.nombreAsociacion}
+                value={values.nombre}
                 onChange={handleChange}
                 onBlur={handleBlur}
               ></TextField>
               <br />
 
               <ErrorMessage
-                name="nombreAsociacion"
-                component={() => (
-                  <ErrorField>{errors.nombreAsociacion}</ErrorField>
-                )}
+                name="nombre"
+                component={() => <ErrorField>{errors.nombre}</ErrorField>}
               />
               <br />
-              <Typography>EMBLEMA</Typography>
+              <Typography>APELLIDO PATERNO</Typography>
               <TextField
                 required
                 label=""
-                variant="outlined"
+                variant="filled"
                 name="emblema"
                 id="emblema"
                 className={styles.textField}
@@ -216,11 +197,68 @@ export const ModalAsociacion = ({
               <br />
 
               <ErrorMessage
-                name="emblema"
+                name="nombre"
                 component={() => <ErrorField>{errors.emblema}</ErrorField>}
               />
               <br />
-              <Typography>INSERTAR LOGO DE LA ASOCIACIÓN</Typography>
+              <Typography>APELLIDO MATERNO</Typography>
+              <TextField
+                required
+                label=""
+                variant="filled"
+                name="emblema"
+                id="emblema"
+                className={styles.textField}
+                value={values.emblema}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              ></TextField>
+              <br />
+
+              <ErrorMessage
+                name="nombre"
+                component={() => <ErrorField>{errors.emblema}</ErrorField>}
+              />
+              <br />
+              <Typography>CURP</Typography>
+              <TextField
+                required
+                label=""
+                variant="filled"
+                name="emblema"
+                id="emblema"
+                className={styles.textField}
+                value={values.emblema}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              ></TextField>
+              <br />
+
+              <ErrorMessage
+                name="nombre"
+                component={() => <ErrorField>{errors.emblema}</ErrorField>}
+              />
+              <br />
+              <Typography>FECHA NACIMIENTO</Typography>
+              <TextField
+                required
+                label=""
+                variant="filled"
+                name="emblema"
+                id="emblema"
+                className={styles.textField}
+                value={values.emblema}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              ></TextField>
+              <br />
+
+              <ErrorMessage
+                name="nombre"
+                component={() => <ErrorField>{errors.emblema}</ErrorField>}
+              />
+              <br />
+              <Typography>INSERTAR LOGO DE LA COALICIÓN</Typography>
               <Box
                 display="flex"
                 alignItems="center"
@@ -257,51 +295,6 @@ export const ModalAsociacion = ({
                 <ErrorField>{errors.logo}</ErrorField>
               )}
 
-              <Box
-                id="candidato"
-                name="candidato"
-                onBlur={handleBlur}
-                sx={{
-                  boxShadow: 1,
-                  width: "100%",
-                  height: { xl: "400px", lg: "350px" },
-                  mt: 5,
-                  p: 3,
-                  border: "1px solid rgba(0,0,0,0.4)",
-                  borderRadius: "15px",
-                  // background: "#F1F1F1",
-                }}
-              >
-                <Typography sx={{ fontWeight: "bold" }}>
-                  SELECCIONE LOS CANDIDATO CORRESPONDIENTES A ESTA ASOCIACION
-                </Typography>
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    width: "100%",
-                    height: "100%",
-                    overflowY: "scroll",
-                    flexDirection: "row",
-                    flexWrap: "wrap",
-                    p: 1,
-                    mb: 1,
-                  }}
-                >
-                  {candidatos.map((candidat) => (
-                    <CandidatoCheck
-                      key={candidat.claveElectoral}
-                      claveElectoral={candidat.claveElectoral}
-                      candidato={candidat.nombreCandidato}
-                      onSelect={onSelectCandidato}
-                      candidatosSeleted={candidatosS}
-                    ></CandidatoCheck>
-                  ))}
-                </Box>
-                {touched.candidatos && candidatosS.length === 0 && (
-                  <ErrorField>{errors.candidatos}</ErrorField>
-                )}
-              </Box>
               <br />
             </Box>
 

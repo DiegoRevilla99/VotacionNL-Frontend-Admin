@@ -35,7 +35,6 @@ export const ConfigBoletaMultiple = () => {
     useBoleta(id);
 
   const { modalidad } = boletaInfo;
-  useEffect(() => {}, []);
 
   const isType = (type) => {
     if (type === "REPRESENTANTE")
@@ -46,7 +45,7 @@ export const ConfigBoletaMultiple = () => {
         ></Representante>
       );
 
-    if (type === "COMITE") return <Comite boletaInfo={boletaInfo}></Comite>;
+    if (type === "COMITÉ") return <Comite boletaInfo={boletaInfo}></Comite>;
 
     if (type === "PLANILLA")
       return (

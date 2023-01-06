@@ -32,6 +32,9 @@ export const configBoletaSlice = createSlice({
         setCoalicionSelected: (state, action) => {
             state.coalicionSelected = action.payload.coalicionSelected;
         },
+        endLoadingCoaliciones: (state, /* action */) => {
+            state.isLoadingCoaliciones = false;
+        },
 
         //ASOCIONES
         startLoadingAsociaciones: (state, /* action */) => {
@@ -100,4 +103,4 @@ export const configBoletaSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { startLoadingAsociaciones, setAsociaciones, setCoalicionSelected, setErrorBoleta, endLoadingBoleta, setBoleta, startLoadingBoleta, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation, startLoadingCoaliciones, startLoadingCandidatos, setCandidatos, setCoaliciones } = configBoletaSlice.actions;
+export const { endLoadingCoaliciones, startLoadingAsociaciones, setAsociaciones, setCoalicionSelected, setErrorBoleta, endLoadingBoleta, setBoleta, startLoadingBoleta, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation, startLoadingCoaliciones, startLoadingCandidatos, setCandidatos, setCoaliciones } = configBoletaSlice.actions;

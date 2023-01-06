@@ -18,10 +18,12 @@ const datos = [
   {
     id: "JO-EL-GO-OR-20-OAX-2022",
     nombreJornada: "JORNADA ELECTORAL GOBERNADOR ORDINARIA 2022",
+    modalidad: "REPRESENTANTE",
   },
   {
-    id: "JO-EL-GO-OR-20-OAX-2023",
+    id: "GO-OR-20-OAX-2023",
     nombreJornada: "JORNADA ELECTORAL GOBERNADOR ORDINARIA 2022",
+    modalidad: "REPRESENTANTE",
   },
 ];
 export const JornadasFormales = () => {
@@ -29,11 +31,13 @@ export const JornadasFormales = () => {
   console.log(location.pathname);
   const navigate = useNavigate();
   const columns = [
-    { field: "id", headerName: "ID", flex: 2 },
+    { field: "id", headerName: "ID", flex: 2, sortable: true },
+    { field: "modalidad", headerName: "Modalidad", flex: 2 },
     {
       field: "nombreJornada",
       headerName: "Jornada",
       flex: 5,
+      sortable: true,
     },
     {
       field: "configuracion",
@@ -75,7 +79,7 @@ export const JornadasFormales = () => {
         {/* <Typography sx={{ mt: 4 }} textAlign="center">
           LISTA JORNADAS
         </Typography> */}
-        <Box sx={{ mt: 2, width: "100%", height: "100%" }}>
+        <Box sx={{ width: "100%", height: "100%" }}>
           <GeneralTable data={datos} columns={columns} idName={"id"} />
         </Box>
       </Box>

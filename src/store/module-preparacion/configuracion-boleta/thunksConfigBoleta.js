@@ -9,64 +9,28 @@ import {
     onToastOffOperation,
     onToastSuccessOperation,
 } from "../../ui/uiSlice";
-import { endLoadingBoleta, onCheckingOperation, onErrorOperation, onSuccessOperation, setBoleta, setCandidatos, setCoaliciones, setErrorBoleta, startLoadingBoleta, startLoadingCoaliciones, startLoadingCandidatos, startLoadingAsociaciones, setAsociaciones } from "./configBoletaSlice";
-
-
-
-export const getCoaliciones = (idBoleta) => {
-
-    return async (dispatch, getState) => {
-
-        dispatch(startLoadingCoaliciones());
-        //const coaliciones = await getCoalicionesAPI();
-        const coaliciones = await JornadaApi.get(`boleta/${idBoleta}/coaliciones`)
-        console.log(coaliciones)
-        dispatch(setCoaliciones({ coaliciones: coaliciones.data.data }));
-    }
-}
-
-export const getAsociaciones = () => {
-
-    return async (dispatch, getState) => {
-
-        dispatch(startLoadingAsociaciones());
-        const asociaciones = await getAsociacionesAPI();
-        dispatch(setAsociaciones({ asociaciones: asociaciones }));
-    }
-}
+import { endLoadingBoleta, onCheckingOperation, onErrorOperation, onSuccessOperation, setBoleta, setCandidatos, setCoaliciones, setErrorBoleta, startLoadingBoleta, startLoadingCoaliciones, startLoadingCandidatos, startLoadingAsociaciones, setAsociaciones, endLoadingCoaliciones } from "./configBoletaSlice";
+import { getBoletaProvider, getCandidatosProvider, getCoalicionesProvider, postCoalicionProvider } from "../../../providers/Micro-Preparacion/providerConfigBoleta";
 
 
 export const getBoleta = (idBoleta) => {
-
     return async (dispatch, getState) => {
-
         dispatch(startLoadingBoleta());
-        // const { data } = await getBoletaAPI(idBoleta);
-
-        EstructuraBoletaApi.get(`${idBoleta}`).then((response) => {
-
-            const { httpCode, mensaje, data } = response.data;
-
-            if (httpCode === "NOT_FOUND") {
-                dispatch(setErrorBoleta({ errorBoleta: mensaje }));
-            } else {
-
-                dispatch(setBoleta({ boleta: data }));
-            }
-
-
-        }).catch((error) => {
-            console.log(error)
-            dispatch(endLoadingBoleta());
-        })
-
-
-
+        const { ok, data, errorMessage } = await getBoletaProvider(idBoleta);
+        if (ok) {
+            if (errorMessage === "NOT_FOUND") {
+                dispatch(setErrorBoleta({ errorBoleta: "No se encontro" }));
+            } else dispatch(setBoleta({ boleta: data }));
+        }
+        else dispatch(endLoadingBoleta());
 
     }
 }
 
-export const updateBoleta = (idBoleta, data) => {
+/** 
+* TODO: Rehacer para update candidatura no registrada y mostrar voto nulo
+*/
+/* export const updateBoleta = (idBoleta, data) => {
 
     return async (dispatch, getState) => {
 
@@ -92,34 +56,36 @@ export const updateBoleta = (idBoleta, data) => {
             dispatch(endLoadingBoleta());
         })
 
-        //dispatch(endLoadingBoleta());
-        //dispatch(setBoleta({ boleta: data.data }));
-
-
     }
-}
+} */
 
 export const getCandidatos = (idBoleta) => {
-
     return async (dispatch, getState) => {
 
         dispatch(startLoadingCandidatos());
-        // const { data } = await EstructuraBoletaApi.get(`${idBoleta}/candidatos`);
-        // const partidos = data.data
-        const partidos = await getCandidatosAPI();
-        // const newPartidos = partidos.filter((candidato) => {
-        //     if (candidato.partidoModel.coalicionModel.claveCoalicion == 12) return candidato
-        // })
-
-
-
-        dispatch(setCandidatos({ candidatos: partidos }));
+        const { ok, data, errorMessage } = await getCandidatosProvider(idBoleta);
+        if (ok) {
+            dispatch(setCandidatos({ candidatos: data }));
+        }
     }
 }
 
 
 
-// POST
+//---------CRUD COALICIÓN---------
+
+export const getCoaliciones = (idBoleta) => {
+    return async (dispatch, getState) => {
+        dispatch(startLoadingCoaliciones());
+        const { ok, data, errorMessage } = await getCoalicionesProvider(idBoleta);
+        if (ok) dispatch(setCoaliciones({ coaliciones: data }));
+        else dispatch(endLoadingCoaliciones());
+    }
+}
+
+/** 
+* TODO: Por comprobar funcionalidad
+*/
 export const postCoalición = (data, funcion) => {
 
     return async (dispatch, getState) => {
@@ -127,13 +93,8 @@ export const postCoalición = (data, funcion) => {
         dispatch(onToastCheckingOperation("Guardando Coalicion..."));
         dispatch(onCheckingOperation());
 
-        const response = await CoalicionApi.post("", data);
-        //const response = await postAsociacionAPI(data);
-        console.log(data)
-        console.log(response)
-
-
-        if (response) {
+        const { ok, data, errorMessage } = await postCoalicionProvider(data);
+        if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onToastSuccessOperation({ successMessage: "Coalición guardada con éxito" }));
             funcion();
@@ -145,29 +106,9 @@ export const postCoalición = (data, funcion) => {
     }
 }
 
-export const postAsociacion = (data, funcion) => {
-
-    return async (dispatch, getState) => {
-
-        dispatch(onToastCheckingOperation("Guardando Asociacion..."));
-        dispatch(onCheckingOperation());
-
-        const response = await postAsociacionAPI(data);
-
-
-
-        if (response) {
-            dispatch(onSuccessOperation());
-            dispatch(onToastSuccessOperation({ successMessage: "Asociacion guardada con éxito" }));
-            funcion();
-
-        } else {
-            dispatch(onErrorOperation());
-            dispatch(onToastErrorOperation({ errorMessage: "La Asociacion no se pudo guardar" }));
-        }
-    }
-}
-
+/** 
+* TODO: Por REFACTORIZAR
+*/
 export const deleteCoalicion = (data, funcion) => {
 
     return async (dispatch, getState) => {
@@ -191,17 +132,31 @@ export const deleteCoalicion = (data, funcion) => {
     }
 }
 
-export const putCoalición = (data, funcion) => {
+/** 
+* TODO: Por REFACTORIZAR
+*/
+export const putCoalición = (id, data, funcion) => {
 
     return async (dispatch, getState) => {
+        dispatch(onToastCheckingOperation("Editando Coalicion..."));
+        dispatch(onCheckingOperation());
+        const response = await JornadaApi.put(`coalicion/${id}`, data)
 
+        if (response) {
+            dispatch(onSuccessOperation());
+            dispatch(onToastSuccessOperation({ successMessage: "Coalición editada con éxito" }));
+            funcion();
 
-        console.log("Actualizando coalicion")
-
-
+        } else {
+            dispatch(onErrorOperation());
+            dispatch(onToastErrorOperation({ errorMessage: "La coalicion no se pudo editar" }));
+        }
     }
 }
 
+/** 
+* TODO: Por REFACTORIZAR
+*/
 export const putComite = (data, funcion = () => { }) => {
 
     return async (dispatch, getState) => {
@@ -224,6 +179,54 @@ export const putComite = (data, funcion = () => { }) => {
     }
 }
 
+
+
+
+
+//---------ASOCIACIONES---------
+
+/** 
+* TODO: Separar el codigo con el provider  
+*/
+export const postAsociacion = (data, funcion) => {
+
+    return async (dispatch, getState) => {
+
+        dispatch(onToastCheckingOperation("Guardando Asociacion..."));
+        dispatch(onCheckingOperation());
+
+        const response = await postAsociacionAPI(data);
+
+
+
+        if (response) {
+            dispatch(onSuccessOperation());
+            dispatch(onToastSuccessOperation({ successMessage: "Asociacion guardada con éxito" }));
+            funcion();
+
+        } else {
+            dispatch(onErrorOperation());
+            dispatch(onToastErrorOperation({ errorMessage: "La Asociacion no se pudo guardar" }));
+        }
+    }
+}
+
+/** 
+* TODO: Separar el codigo con el provider  
+*/
+export const getAsociaciones = () => {
+
+    return async (dispatch, getState) => {
+        dispatch(startLoadingAsociaciones());
+        const asociaciones = await getAsociacionesAPI();
+        dispatch(setAsociaciones({ asociaciones: asociaciones }));
+    }
+}
+
+
+/** 
+* TODO: Por REFACTORIZAR
+*/
 export const putPlanilla = (data, funcion = () => { }) => {
 
     return async (dispatch, getState) => {

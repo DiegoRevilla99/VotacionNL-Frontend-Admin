@@ -94,6 +94,7 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
   return (
     <>
       <Stack
+        className="animate__animated animate__bounceInUp "
         direction="column"
         justifyContent="space-between"
         alignItems="center"
@@ -109,10 +110,7 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
           OPCIONES DE {boletaInfo.modalidad}
         </Typography>
 
-        <Box
-          className="animate__animated animate__fadeInDown "
-          sx={boxOpciones}
-        >
+        <Box sx={boxOpciones}>
           <FormGroup
             sx={{
               display: "flex",

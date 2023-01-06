@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getBoleta, getCoaliciones, updateBoleta } from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
+import { getBoleta, getCoaliciones } from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
 
 
 export const useBoleta = (id) => {
@@ -55,7 +55,7 @@ export const useBoleta = (id) => {
 
         let newData = { encabezadoBoleta, entidadFederativa, municipio, distritoElectoral, jornadaModel, modalidadVotacionModel: newMod }
         console.log(newData)
-        dispatch(updateBoleta(id, newData))
+        // dispatch(updateBoleta(id, newData))
     }
 
 
