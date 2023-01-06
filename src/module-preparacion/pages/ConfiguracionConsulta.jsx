@@ -60,7 +60,7 @@ export const ConfiguracionConsulta = () => {
 
 		dispatch(
 			onSaveConfig(params.idConsulta, data, () => {
-				navigate("/preparacion/consulta/");
+				navigate("/preparacion/registroConsultaCiudadana");
 			})
 		);
 	};
