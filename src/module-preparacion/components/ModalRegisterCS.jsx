@@ -46,6 +46,41 @@ const style = {
 };
 
 const validationSchema = object({
+		// // Datos del candidato
+	// apellidoPCandidato: string("").required(
+	// 	"Por favor, ingresa el apellido paterno del candidato/a"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// 	apellidoMCandidato: string("").required(
+	// 	"Por favor, ingresa el apellido materno del candidato/a"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// 	nombreCandidato: string("").required(
+	// 	"Por favor, ingresa el nombre completo del candidato/a"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// seudonimoCandidato: string(
+	// 	"Por favor, ingresa el seudónimo del candidato/a"
+	// 	).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
+	// 	fechaNacimientoCandidato: date().required(
+	// 	"Por favor, ingresa la fecha de nacimiento del candidato/a"
+	// 	).max(new Date(), "No puedes ingresar una fecha futura"),
+	// 	generoCandidato: string("").required("Por favor, selecciona el género"),
+	// // Datos del suplente
+
+	// apellidoPSuplente: string("").required(
+	// 	"Por favor, ingresa el apellido paterno del Suplente"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// 	apellidoMSuplente: string("").required(
+	// 	"Por favor, ingresa el apellido materno del Suplente"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// 	nombreSuplente: string("").required(
+	// 	"Por favor, ingresa el nombre completo del Suplente"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// seudonimoSuplente: string(
+	// 	"Por favor, ingresa el seudónimo del Suplente"
+	// 	).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
+	// 	fechaNacimientoSuplente: date().required(
+	// 	"Por favor, ingresa la fecha de nacimiento del Suplente"
+	// 	).max(new Date(), "No puedes ingresar una fecha futura"),
+	// 	generoSuplente: string("").required("Por favor, selecciona el género"),
 });
 export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 	const dispatch = useDispatch();
