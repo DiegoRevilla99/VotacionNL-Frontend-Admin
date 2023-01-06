@@ -238,8 +238,7 @@ export const onSaveConfig = (id, data, navigate = () => {}) => {
 			dispatch(
 				onToastSuccessOperation({ successMessage: "Configuración guardada con éxito" })
 			);
-			console.log("CONFIGURACION HECHA");
-			// navigate();
+			navigate();
 		} else {
 			dispatch(onErrorOperation());
 			dispatch(

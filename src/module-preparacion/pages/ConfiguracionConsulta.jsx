@@ -57,7 +57,6 @@ export const ConfiguracionConsulta = () => {
 			tiempoExtra: new Date(values.tiempoExtra).toTimeString().substring(0, 8),
 			habilitarVerificacion: values.habilitarVerificacion,
 		};
-		console.log(data);
 
 		dispatch(
 			onSaveConfig(params.idConsulta, data, () => {
