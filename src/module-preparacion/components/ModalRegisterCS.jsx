@@ -98,6 +98,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 	const onSubmit = (values) => {
 		setFotografia({ name: "Sin Archivo seleccionado" });
 		setFotografiaSuplente({ name: "Sin Archivo seleccionado" });
+		console.log("AQUI ANDAMOS EN EL ONSUBMIT",candidatoandSuplentes);
 		addCandidatoAndSuplente(
 			candidatoandSuplentes.length,
 			values.apellidoPCandidato,
