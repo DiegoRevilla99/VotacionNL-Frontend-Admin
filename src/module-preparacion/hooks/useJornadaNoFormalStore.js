@@ -1,29 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-    onAddCandidato,
-    onAddSuplente,
-    onAddPartido,
-    onAddCandidatoAndSuplente,
-    onSetCandidatoSelectedNull,
-    onSetSuplenteSelectedNull,
-    onSetPartidoSelectedNull,
-    onSetCandidatoAndSuplenteSelectedNull,
-    onSetCandidatoNull,
-    onSetSuplenteNull,
-    onSetPartidoNull,
-    onSetCandidatoAndSuplenteNull,
-    onFillJornadasData,
-    onAddJornadas,
-    onEditBoleta,
-    onUpdateBoleta,
-    onUpdateCandidatoAndSuplente,
-    onUpdatePartido,
-    onUpdateSuplente,
-    onUpdateCandidato,
     onCheckingOperation,
     onSuccessOperation,
     onErrorOperation,
     onOffOperation,
+    onAddCandidato,
+    onAddSuplente,
+    onAddPartido,
+    onAddCandidatoAndSuplente,
     onDeleteCandidato,
     onDeleteSuplente,
     onDeletePartido,
@@ -32,9 +16,30 @@ import {
     onEditSuplente,
     onEditPartido,
     onEditCandidatoAndSuplente,
-} from "../../store/module-preparacion/jornada/SliceJornada";
+    onUpdateCandidato,
+    onUpdateSuplente,
+    onUpdatePartido,
+    onUpdateCandidatoAndSuplente,
+    onSetCandidatoSelectedNull,
+    onSetSuplenteSelectedNull,
+    onSetPartidoSelectedNull,
+    onSetCandidatoAndSuplenteSelectedNull,
+    onSetCandidatoNull,
+    onSetSuplenteNull,
+    onSetPartidoNull,
+    onSetCandidatoAndSuplenteNull,
+    onFillJornadasNoFormalesData,
+    onAddJornadasNoFormales,
+    onDeleteJornadaData,
+    onDeleteBoletaData,
+    onSetjornadaNoFormalSelected,
+    onAddBoleta,
+    onFillBoletas,
+    onEditBoleta,
+    onSetBoletasSelectedNull,
+} from "../../store/module-preparacion/jornada/SliceJornadaNoFormal";
 
-export const useJornadaStore = () => {
+export const useJornadaNoFormalStore = () => {
 	const dispatch = useDispatch();
 
 	const {
@@ -49,9 +54,8 @@ export const useJornadaStore = () => {
         partidoSelected,
         candidatoandSuplentes,
         candidatoandSuplenteSelected,
-		jornadasData,
         jornadasNoFormalesData,
-        jornadaSelected,
+        jornadaNoFormalSelected,
 	} = useSelector((state) => state.jornada);
 
 	const checkingOperation = () => {
@@ -325,17 +329,14 @@ export const useJornadaStore = () => {
             generoSubstitute,
         }));
     };
+    // JORNADAS NO FORMALES
 
-    const updateBoleta = (encabezadoJornada) => {
-        dispatch(onUpdateBoleta({ encabezadoJornada }));
+    const fillJornadasNoFormalesData = () => {
+        dispatch(onFillJornadasNoFormalesData());
     };
 
-    const fillJornadasData = () => {
-        dispatch(onFillJornadasData());
-    };
-
-    const addJornada = (jornadaData) => {
-        dispatch(onAddJornadas(jornadaData));
+    const addJornadaNoFormal = (jornadaData) => {
+        dispatch(onAddJornadasNoFormales(jornadaData));
     };
 
     const setBoletasSelectedNull = () => {
@@ -358,15 +359,13 @@ export const useJornadaStore = () => {
         partidoSelected,
         candidatoandSuplentes,
         candidatoandSuplenteSelected,
-		jornadasData,
-        jornadasNoFormalesData,
-        jornadaSelected,
+		jornadasNoFormalesData,
+        jornadaNoFormalSelected,
 
         checkingOperation,
         succesOperation,
         errorOperation,
         offOperation,
-        addJornada,
         addCandidato,
         addSuplente,
         addPartido,
@@ -375,7 +374,6 @@ export const useJornadaStore = () => {
         updateSuplente,
         updatePartido,
         updateCandidatoAndSuplente,
-        updateBoleta,
         editCandidato,
         editSuplente,
         editPartido,
@@ -384,7 +382,7 @@ export const useJornadaStore = () => {
         deleteCandidato,
         deleteSuplente,
         deleteCandidatoAndSuplente,
-        fillJornadasData,
+        fillJornadasNoFormalesData,
         setBoletasSelectedNull,
         setPartidoSelectedNull,
         setCandidatoAndSuplenteSelectedNull,

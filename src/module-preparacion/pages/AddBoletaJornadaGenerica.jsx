@@ -3,9 +3,6 @@ import { Stack } from "@mui/system";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useUiStore } from "../../hooks/useUiStore";
-// import { saveCandidatoandSuplente } from "../../store/module-preparacion/jornada/jornadaThunks";
-import { editBoleta, saveBoleta } from "../../store/module-preparacion/jornada/jornadaThunks";
-import { useAddBoletasJornada } from "../hooks/useAddBoletasJornada";
 import { getBoletaByIdApi } from "../helpers/ApiJornada";
 import { FielTextCustom } from "../components/FielTextCustom";
 import { DataGridTable } from "../../ui/components/DataGridTable";
@@ -17,7 +14,7 @@ import { Formik } from 'formik';
 import { object, string, number } from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import { ModalAsociacionCP } from "../components/ModalAsociacionCP";
-
+import { useJornadaStore } from "../hooks/useJornadaStore";
 import { ModalRegisterCS } from "../components/ModalRegisterCS";
 import { DataGridTableJornada } from "../../ui/components/DataGridTableJornada";
 import { DataGridTablePartido } from "../../ui/components/DataGridTablePartido";
@@ -64,7 +61,19 @@ export const AddBoletaJornadaGenerica = () => {
 
 	const { nombreCandidatura } = useParams();
 	const navigate = useNavigate();
-	const { status } = useAddBoletasJornada();
+	const { 
+		status,
+		candidatos,
+        candidatosSelected,
+        suplentes,
+        suplentesSelected,
+        partidos,
+        partidoSelected,
+        candidatoAndSuplente,
+        candidatoandSuplenteSelected,
+		
+		jornadaSelected,
+	} = useJornadaStore();
 
 
 	const dispatch = useDispatch();
@@ -163,11 +172,7 @@ export const AddBoletaJornadaGenerica = () => {
 		initialValues={datos}
 		validationSchema={validationSchema}
 		onSubmit={(valores) => {
-			if (nombreCandidatura != undefined) {
-			  dispatch(editBoleta(valores, guardar));
-			} else {
-			  dispatch(saveBoleta(valores, guardar));
-			}
+			console.log("valores", valores);
 		  }}
 	>
 		{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (

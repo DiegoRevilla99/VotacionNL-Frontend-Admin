@@ -5,6 +5,7 @@ import { configBoletaSlice } from "./module-preparacion/configuracion-boleta/con
 import { configJornadaSlice } from "./module-preparacion/configuracion-jornada/configJornadaSlice";
 import { consultaCiudadanaSlice } from "./module-preparacion/consulta-ciudadana/consultaCiudadanaSlice";
 import { SliceJornada } from "./module-preparacion/jornada/SliceJornada";
+import { SliceJornadaNoFormal } from "./module-preparacion/jornada/SliceJornadaNoFormal";
 import { uiSlice } from "./ui/uiSlice";
 
 export const store = configureStore({
@@ -12,7 +13,8 @@ export const store = configureStore({
 		consultaCiudadana: consultaCiudadanaSlice.reducer,
 		comite: comiteSlice.reducer,
 		configBoleta: configBoletaSlice.reducer,
-		jornada: SliceJornada.reducer,
+		jornada: SliceJornada.reducer, // Eliminar despu[es]
+		jornadaNoFormal: SliceJornadaNoFormal.reducer,
 		configJornada: configJornadaSlice.reducer,
 		ui: uiSlice.reducer,
 		auth: authSlice.reducer,

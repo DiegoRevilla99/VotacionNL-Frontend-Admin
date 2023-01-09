@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const SliceJornada = createSlice({
+export const SliceJornadaNoFormal = createSlice({
     name: 'jornada',
     initialState: {
         status: "off",
@@ -14,21 +14,16 @@ export const SliceJornada = createSlice({
         candidatoSelected: {},
         suplentes: [],
         suplenteSelected: {},
-        jornadasData: [],
         jornadasNoFormalesData: [],
-        jornadaSelected: {
+        jornadaNoFormalSelected: {
             id: "",
             title: "",
             nombre: "",
-            boletas: [],
-            boletaSelected: {},
+            boletasNoFormales: [],
+            boletaNoFormalSelected: {},
         },
     },
     reducers: {
-        // Eliminar
-        onFillJornadasNoFormalesData: (state, { payload }) => {
-            state.jornadasNoFormalesData = payload;
-        },
         onCheckingOperation: (state) => {
             state.status = "checking";
         },
@@ -224,49 +219,49 @@ export const SliceJornada = createSlice({
         onSetCandidatoAndSuplenteNull: (state, { payload }) => {
             state.candidatoandSuplentes = [];
         },
-        onFillJornadasData: (state, { payload }) => {
-            state.jornadasData = payload;
+        onFillJornadasNoFormalesData: (state, { payload }) => {
+            state.jornadasNoFormalesData = payload;
         },
-        onAddJornadas: (state, { payload }) => {
-            state.jornadasData.push(payload);
+        onAddJornadasNoFormales: (state, { payload }) => {
+            state.jornadasNoFormalesData.push(payload);
         },
         onDeleteJornadaData: (state, { payload }) => {
             console.log(payload);
-            const id = state.jornadasData.findIndex((consulta) => consulta.idJornada === payload);
+            const id = state.jornadasNoFormalesData.findIndex((consulta) => consulta.idJornada === payload);
             console.log(id);
-            state.jornadasData.splice(id, 1);
+            state.jornadasNoFormalesData.splice(id, 1);
         },
         onDeleteBoletaData: (state, { payload }) => {
             console.log(payload);
-            const id = state.jornadaSelected.boletas.findIndex(
+            const id = state.jornadaNoFormalSelected.boletasNoFormales.findIndex(
                 (consulta) => consulta.idBoleta === payload);
             console.log(id);
-            state.jornadaSelected.boletas.splice(id, 1);
+            state.jornadaNoFormalSelected.boletasNoFormales.splice(id, 1);
         },
-        onSetJornadaSelected: (state, { payload }) => {
+        onSetjornadaNoFormalSelected: (state, { payload }) => {
             console.log(payload);
-            state.jornadaSelected.id = payload.idJornada;
-            state.jornadaSelected.title = payload.title;
-            state.jornadaSelected.boletas = payload.boletas;
+            state.jornadaNoFormalSelected.id = payload.idJornada;
+            state.jornadaNoFormalSelected.title = payload.title;
+            state.jornadaNoFormalSelected.boletasNoFormales = payload.boletasNoFormales;
         },
         onAddBoleta: (state, { payload }) => {
-            state.jornadaSelected.boletas.push(payload);
-            console.log(state.jornadaSelected.boletas);
+            state.jornadaNoFormalSelected.boletasNoFormales.push(payload);
+            console.log(state.jornadaNoFormalSelected.boletasNoFormales);
         },
         onFillBoletas: (state, { payload }) => {
-            state.jornadaSelected.boletas = payload;
+            state.jornadaNoFormalSelected.boletasNoFormales = payload;
         },
         onEditBoleta: (state, { payload }) => {
-            state.jornadaSelected.boletaSelected = payload;
+            state.jornadaNoFormalSelected.boletaNoFormalSelected = payload;
         },
         onUpdateBoleta: (state, { payload }) => {
-            const boleta = state.jornadaSelected.boletas.find(
-                (boleta) => boleta.id === state.jornadaSelected.boletaSelected.id
+            const boleta = state.jornadaNoFormalSelected.boletasNoFormales.find(
+                (boleta) => boleta.id === state.jornadaNoFormalSelected.boletaNoFormalSelected.id
             );
             boleta.encabezadoJornada = payload.encabezadoJornada;
         },
         onSetBoletasSelectedNull: (state, { payload }) => {
-            state.jornadaSelected.boletaSelected = {};
+            state.jornadaNoFormalSelected.boletaNoFormalSelected = {};
         },
     },
 });
@@ -274,25 +269,26 @@ export const SliceJornada = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { 
-    onFillJornadasFormalesData,
-    onFillJornadasNoFormalesData,
-    onFillCandidatosData,
-    onFillSuplentesData,
-    onFillPartidosData,
-    onFillCandidatoAndSuplenteData,
-    onAddBoleta,
+    onCheckingOperation,
+    onSuccessOperation,
+    onErrorOperation,
+    onOffOperation,
     onAddCandidato,
     onAddSuplente,
     onAddPartido,
     onAddCandidatoAndSuplente,
+    onDeleteCandidato,
+    onDeleteSuplente,
+    onDeletePartido,
+    onDeleteCandidatoAndSuplente,
     onEditCandidato,
     onEditSuplente,
     onEditPartido,
     onEditCandidatoAndSuplente,
-    onSetCandidatoSelected,
-    onSetSuplenteSelected,
-    onSetPartidoSelected,
-    onSetCandidatoAndSuplenteSelected,
+    onUpdateCandidato,
+    onUpdateSuplente,
+    onUpdatePartido,
+    onUpdateCandidatoAndSuplente,
     onSetCandidatoSelectedNull,
     onSetSuplenteSelectedNull,
     onSetPartidoSelectedNull,
@@ -301,25 +297,14 @@ export const {
     onSetSuplenteNull,
     onSetPartidoNull,
     onSetCandidatoAndSuplenteNull,
-    onFillJornadasData,
-    onAddJornadas,
+    onFillJornadasNoFormalesData,
+    onAddJornadasNoFormales,
     onDeleteJornadaData,
     onDeleteBoletaData,
-    onDeleteCandidato,
-    onDeleteSuplente,
-    onDeletePartido,
-    onDeleteCandidatoAndSuplente,
-    onSetJornadaSelected,
+    onSetjornadaNoFormalSelected,
+    onAddBoleta,
     onFillBoletas,
     onEditBoleta,
     onUpdateBoleta,
-    onUpdateCandidatoAndSuplente,
-    onUpdatePartido,
-    onUpdateSuplente,
-    onUpdateCandidato,
     onSetBoletasSelectedNull,
-    onCheckingOperation,
-    onSuccessOperation,
-    onErrorOperation,
-    onOffOperation,
-} = SliceJornada.actions;
+} = SliceJornadaNoFormal.actions;

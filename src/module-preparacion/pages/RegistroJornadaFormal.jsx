@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 import {
   onDeleteJornada,
   onGetjornadas,
+  // onGetJornadasFormales,
 } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { onSetJornadaSelected } from "../../store/module-preparacion/jornada/SliceJornada";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -28,6 +29,7 @@ export const RegistroJornadaFormal = () => {
   const [modalStatus, setModalStatus] = useState(false);
 
   // ToDo:AQUI OBTENGAN LAS VARIABLES STATUS Y DATA DE SUS ESTADOS GLOBALES
+  // const { jornadasData, status } = useJornadaStore();
   const { jornadasData, status } = useJornadaStore();
 
   const dispatch = useDispatch();
@@ -74,6 +76,7 @@ export const RegistroJornadaFormal = () => {
 
   // USEEFFECT QUE PUEDES USAR PARA HACER UN GET DE LAS JORNADAS AL RENDERIZAR LA PAGINA
   useEffect(() => {
+    // if (jornadasData.length === 0) dispatch(onGetjornadas());
     if (jornadasData.length === 0) dispatch(onGetjornadas());
   }, []);
 
@@ -187,6 +190,7 @@ export const RegistroJornadaFormal = () => {
                                 CADA REGISTRO SE DEBE LLAMAR "idJornada" o si el id de cada registro 
                                 tiene otro nombre, cambien el atributo idName al nombre que quieran */}
                 <GeneralTable
+                // data = {jornadasData}
                   data={jornadasData}
                   columns={columns}
                   idName={"idJornada"}

@@ -3,25 +3,6 @@ import { jornadasAPI } from "./configJornada";
 let idJornadas = 0;
 let idBoleta = 0;
 
-export const getJornadas = async () => {
-	try {
-		const { data } = await jornadasAPI.get("jornada/electoral/");
-		return { ok: true, data: data.data, errorMessage: "" };
-	} catch (error) {
-		return { ok: false, errorMessage: error.message };
-	}
-};
-
-export const getJornadasFormales = async () => {
-	try {
-		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/formales
-		const { data } = await jornadasAPI.get("jornada/electoral/formales");
-		return { ok: true, data: data.data, errorMessage: "" };
-	} catch (error) {
-		return { ok: false, errorMessage: error.message };
-	}
-};
-
 export const getJornadasNoFormales = async () => {
 	try {
 		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/no_formales

@@ -1,7 +1,5 @@
 import { id } from "date-fns/locale";
 import {
-    getJornadas,
-    getJornadasFormales,
     getJornadasNoFormales,
     createJornada,
     deleteJornada,
@@ -10,7 +8,7 @@ import {
     createBoleta,
     updateBoletaData,
     deleteBoleta,
-} from "../../../providers/Micro-Preparacion/providerJornada"
+} from "../../../providers/Micro-Preparacion/providerJornadaNoFormal"
 import {
 	onToastCheckingOperation,
 	onToastErrorOperation,
@@ -19,19 +17,26 @@ import {
 } from "../../ui/uiSlice";
 
 import {
-    onFillCandidatosData,
-    onFillSuplentesData,
-    onFillPartidosData,
-    onFillCandidatoAndSuplenteData,
-    onAddBoleta,
+    onCheckingOperation,
+    onSuccessOperation,
+    onErrorOperation,
+    onOffOperation,
     onAddCandidato,
     onAddSuplente,
     onAddPartido,
     onAddCandidatoAndSuplente,
-    onSetCandidatoSelected,
-    onSetSuplenteSelected,
-    onSetPartidoSelected,
-    onSetCandidatoAndSuplenteSelected,
+    onDeleteCandidato,
+    onDeleteSuplente,
+    onDeletePartido,
+    onDeleteCandidatoAndSuplente,
+    onEditCandidato,
+    onEditSuplente,
+    onEditPartido,
+    onEditCandidatoAndSuplente,
+    onUpdateCandidato,
+    onUpdateSuplente,
+    onUpdatePartido,
+    onUpdateCandidatoAndSuplente,
     onSetCandidatoSelectedNull,
     onSetSuplenteSelectedNull,
     onSetPartidoSelectedNull,
@@ -40,44 +45,27 @@ import {
     onSetSuplenteNull,
     onSetPartidoNull,
     onSetCandidatoAndSuplenteNull,
-    onFillJornadasData,
-    onAddJornadas,
+    onFillJornadasNoFormalesData,
+    onAddJornadasNoFormales,
     onDeleteJornadaData,
     onDeleteBoletaData,
-    onSetJornadaSelected,
+    onSetjornadaNoFormalSelected,
+    onAddBoleta,
     onFillBoletas,
     onEditBoleta,
     onUpdateBoleta,
     onSetBoletasSelectedNull,
-    onCheckingOperation,
-    onSuccessOperation,
-    onErrorOperation,
-} from "./SliceJornada";
+} from "./SliceJornadaNoFormal";
 
-export const onGetAlljornadas = () => {
+// Jornadas No Formales
+
+export const onGetJornadasNoFormales = () => {
     return async (dispatch) => {
         dispatch(onCheckingOperation());
-        const {ok, data, errorMessage } = await getJornadas(); // PROVIDER
+        const {ok, data, errorMessage } = await getJornadasNoFormales(); // PROVIDER
         if (ok) {
             dispatch(onSuccessOperation());
-            dispatch(onFillJornadasData(data));// SLICE
-        } else {
-            dispatch(onErrorOperation());
-            dispatch(onToastErrorOperation({ 
-                errorMessage: errorMessage || "No se pudo obtener las jornadas" }));
-        }
-    }
-};
-
-// Jornadas Formales
-
-export const onGetjornadas = () => {
-    return async (dispatch) => {
-        dispatch(onCheckingOperation());
-        const {ok, data, errorMessage } = await getJornadasFormales(); // PROVIDER
-        if (ok) {
-            dispatch(onSuccessOperation());
-            dispatch(onFillJornadasData(data));// SLICE
+            dispatch(onFillJornadasNoFormalesData(data));// SLICE
         } else {
             dispatch(onErrorOperation());
             dispatch(onToastErrorOperation({ 
@@ -232,6 +220,5 @@ export const onDeleteBoleta = (idBoleta) => {
         }
     }
 };
-
 
 
