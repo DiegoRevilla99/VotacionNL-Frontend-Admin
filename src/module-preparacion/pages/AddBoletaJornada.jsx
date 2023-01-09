@@ -23,6 +23,7 @@ import { onUpdateBoleta } from "../../store/module-preparacion/jornada/SliceJorn
 import { AddCandidatoMod } from "../components/AddCandidatoMod";
 import { ModalEliminarPartido } from "../components/ModalEliminarPartido";
 import { ModalEliminarCandidato } from "../components/ModalEliminarCandidato";
+import { DataGridRowGrouping } from "../../ui/components/DataGridRowGrouping";
 
 
 const validationSchema = object({
@@ -420,6 +421,9 @@ export const AddBoletaJornada = () => {
 								Afiliar participantes a partido
 							</Button>
 						</Grid>
+
+						<DataGridRowGrouping/>
+
 					</Grid>
 					<Grid mt={"1rem"} container direction="row" justifyContent="flex-end" spacing={2}>
 						<Grid item xs={12} md={6} lg={3}>
@@ -472,15 +476,16 @@ export const AddBoletaJornada = () => {
 				</Box>
 			{/* MODAL PARA REGISTRAR LOS PARTIDOS */}
 			<ModalBoletaPartido statusMatchModal={statusMatchModal} handleToggleModal={handleCloseMatchModal} />
-			{/* ELIMINAR EL SIGUIENTE MODAL */}
-            {/* <ModalBoletaCandidato statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} /> */}
-			{/* MODAL PARA CONFIRMAR LA ELIMINACIÓN */}
-			<ModalEliminarPartido statusDeletePartidoModal={statusDeletePartidoModal} handleToggleModal={handleCloseDeletePartidoModal} />
-			<ModalEliminarCandidato statusDeleteCandidatoModal={statusDeleteCandidatoModal} handleToggleModal={handleCloseDeleteCandidatoModal} />
 			{/* MODAL PARA REGISTRAR A LOS CANDIDATOS Y SUPLENTES */}
 			<ModalRegisterCS statusRegisterModal={statusRegisterModal} handleToggleModal={handleCloseRegisterModal} />
 			{/* MODAL PARA REGISTRAR ASOCIAR CANDIDATOS Y PARTIDOS */}
 			<ModalAsociacionCP statusAsociacionModal={statusAsociacionModal} handleToggleModal={handleCloseAsociacionModal} />
+
+			{/* MODAL PARA CONFIRMAR LA ELIMINACIÓN */}
+			<ModalEliminarPartido statusDeletePartidoModal={statusDeletePartidoModal} handleToggleModal={handleCloseDeletePartidoModal} />
+			<ModalEliminarCandidato statusDeleteCandidatoModal={statusDeleteCandidatoModal} handleToggleModal={handleCloseDeleteCandidatoModal} />
+			{/* ELIMINAR EL SIGUIENTE MODAL */}
+            {/* <ModalBoletaCandidato statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} /> */}
 			{/* ELIMINAR EL SIGUIENTE MODAL */}
 			{/* <ModalSustitutoBoleta statusSubstituteModal={statusSubstituteModal} handleToggleModal={handleCloseSubstituteModal} /> */}
 		</form>
