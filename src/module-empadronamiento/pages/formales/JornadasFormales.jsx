@@ -167,9 +167,9 @@ export const JornadasFormales = () => {
             background: "#fff",
             boxShadow: 1,
             borderRadius: "20px",
-            mt: 0,
+            mt: 2,
             width: "95%",
-            height: "calc(100% - 80px)",
+            height: "calc(100% - 100px)",
           }}
         >
           <GeneralTable data={datos} columns={columns} idName={"id"} />
