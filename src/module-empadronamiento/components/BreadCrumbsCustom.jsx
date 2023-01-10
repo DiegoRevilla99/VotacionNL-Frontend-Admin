@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import HomeIcon from "@mui/icons-material/Home";
 const useStyles = makeStyles({
   hr: {
     backgroundColor: "#F7F6F6",
@@ -15,17 +16,10 @@ export const BreadCrumbsCustom = ({ routes = [], currentRoute = "" }) => {
   const classes = useStyles();
   const breadcrumbs = routes.map((route) => (
     <Link key={route.name} underline="hover" to={route.url}>
-      <Typography
-        variant="button"
-        sx={{
-          color: "#511079",
-          fontWeight: "bold",
-          fontFamily: "'Nunito', sans-serif",
-          fontSize: { md: "16px", xs: "10px" },
-        }}
-      >
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        {route.name === "INICIO" && <HomeIcon sx={{ mr: 0.5 }} />}
         {route.name}
-      </Typography>
+      </Box>
     </Link>
   ));
 
@@ -39,10 +33,7 @@ export const BreadCrumbsCustom = ({ routes = [], currentRoute = "" }) => {
         mt: { xl: 2, md: 0, xs: 0 },
       }}
     >
-      <Breadcrumbs
-        separator={<NavigateNextIcon fontSize="small" />}
-        aria-label="breadcrumb"
-      >
+      <Breadcrumbs separator={<NavigateNextIcon />} aria-label="breadcrumb">
         {breadcrumbs}
         <Typography
           sx={{

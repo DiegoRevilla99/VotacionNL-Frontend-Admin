@@ -19,6 +19,7 @@ import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import ReportIcon from "@mui/icons-material/Report";
 import SendIcon from "@mui/icons-material/Send";
+import AttachEmailIcon from "@mui/icons-material/AttachEmail";
 import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
 import { GeneralTable } from "../../module-preparacion/components/GeneralTable";
 import { ModalVotante } from "./ModalVotante";
@@ -27,19 +28,23 @@ import { AddVotante } from "./AddVotante";
 const datos = [
   {
     id: "1",
+    curp: "SALL991216MOCNPR00",
     informacion: "Laura Yessenia Sanchez Lopez",
   },
   {
     id: "2",
+    curp: "SALL991216MOCNPR00",
     informacion: "Jose Antonio Diego Revilla",
   },
   {
     id: "3",
+    curp: "SALL991216MOCNPR00",
     informacion: "Kevin Edilberto Chavez Sanchez",
   },
 ];
 const columns = [
-  { field: "id", headerName: "ID", flex: 2 },
+  { field: "id", headerName: "ID", flex: 1 },
+  { field: "curp", headerName: "CURP", flex: 3 },
   {
     field: "informacion",
     headerName: "Información",
@@ -48,7 +53,7 @@ const columns = [
   {
     field: "Acciones",
     headerName: "Acciones",
-    flex: 5,
+    flex: 3,
     sortable: false,
     disableColumnMenu: true,
     renderCell: (params) => {
@@ -74,10 +79,16 @@ const opciones = {
 };
 const registros = {
   display: "flex",
-  width: "100%",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  background: "#fff",
+  boxShadow: 1,
+  borderRadius: "20px",
   mt: 0,
+  width: "100%",
   p: 2,
-  height: "100%",
+  height: "calc(100% - 110px)",
 };
 
 export const RegisterVoters = () => {
@@ -110,11 +121,10 @@ export const RegisterVoters = () => {
     <>
       <Box
         sx={{
-          mt: 2,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "start",
           width: "100%",
           height: "100%",
         }}
@@ -140,7 +150,7 @@ export const RegisterVoters = () => {
             >
               <ListItemButton
                 sx={{
-                  boxShadow: 1,
+                  boxShadow: 0,
                   background: "#F7F6F6",
                   borderRadius: "1px",
                 }}
@@ -197,9 +207,9 @@ export const RegisterVoters = () => {
             <Button
               sx={{ color: "#fff" }}
               variant="contained"
-              endIcon={<SendIcon />}
+              endIcon={<AttachEmailIcon />}
             >
-              ENVIAR ENLACE
+              ENVIAR
             </Button>
             <Badge color="warning" badgeContent={99}>
               <Button
@@ -212,10 +222,11 @@ export const RegisterVoters = () => {
             </Badge>
           </Box>
         </Box>
-        <Typography sx={{ fontWeight: "bold", mt: { xl: 5, md: 2 } }}>
-          VOTANTES REGISTRADOS
-        </Typography>
+
         <Box sx={registros}>
+          <Typography sx={{ fontWeight: "bold", mt: 1, mb: { xl: 5, md: 2 } }}>
+            VOTANTES REGISTRADOS
+          </Typography>
           <GeneralTable data={datos} columns={columns} idName={"id"} />
         </Box>
       </Box>

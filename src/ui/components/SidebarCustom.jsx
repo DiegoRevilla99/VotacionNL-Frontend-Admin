@@ -114,7 +114,7 @@ export const SidebarCustom = () => {
                 icon={<PersonAddAltOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
-                to={"empadronamiento/inicio/formal"}
+                to={"empadronamiento/"}
               ></Item>
               <Item
                 title="Jornada"

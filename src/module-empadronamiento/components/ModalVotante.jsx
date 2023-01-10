@@ -7,6 +7,9 @@ import {
   IconButton,
   Modal,
   RadioGroup,
+  Step,
+  StepButton,
+  Stepper,
   TextField,
   Typography,
 } from "@mui/material";
@@ -61,35 +64,69 @@ let schema = yup.object().shape({
   emblema: yup.string().required("Emeblema de la coalición es necesario"),
 });
 
+const steps = ["INFORMACIÓN", "DIRECCION", "CONTACTO"];
+
 export const ModalVotante = ({
   isOpen = false,
   abrirCerrarModal = () => {},
   agregar = () => {
-    alert("Presionaste agregar del modal");
+    alert("Presionaste agregar votante");
   },
   actualizar = () => {
-    alert("Presionaste actualizar del modal");
+    alert("Presionaste actualizar votante");
   },
-  idBoleta = null,
-  coalicion = null,
+  votante = null,
 }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
-  const [logo, setLogo] = useState(
-    coalicion ? { name: coalicion.logo } : { name: "Sin Archivo seleccionado" }
-  );
-  const [candidato, setCandidato] = useState(
-    coalicion ? coalicion.candidato : { candidato: "Sin candidato" }
-  );
-  const {
-    candidatos = [],
-    isLoadingCandidatos,
-    coalicionSelected,
-  } = useSelector((state) => state.configBoleta);
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [completed, setCompleted] = React.useState({});
 
-  const onSelectPartido = (info) => {
-    setCandidato(info);
+  const totalSteps = () => {
+    return steps.length;
+  };
+
+  const completedSteps = () => {
+    return Object.keys(completed).length;
+  };
+
+  const isLastStep = () => {
+    return activeStep === totalSteps() - 1;
+  };
+
+  const allStepsCompleted = () => {
+    return completedSteps() === totalSteps();
+  };
+
+  const handleNext = () => {
+    const newActiveStep =
+      isLastStep() && !allStepsCompleted()
+        ? // It's the last step, but not all steps have been completed,
+          // find the first step that has been completed
+          steps.findIndex((step, i) => !(i in completed))
+        : activeStep + 1;
+    setActiveStep(newActiveStep);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleStep = (step) => () => {
+    setActiveStep(step);
+  };
+
+  const handleComplete = () => {
+    const newCompleted = completed;
+    newCompleted[activeStep] = true;
+    setCompleted(newCompleted);
+    handleNext();
+  };
+
+  const handleReset = () => {
+    setActiveStep(0);
+    setCompleted({});
   };
 
   const cerrarM = () => {
@@ -99,26 +136,17 @@ export const ModalVotante = ({
   };
   useEffect(() => {}, []);
 
-  useEffect(() => {
-    setLogo(
-      coalicion
-        ? { name: coalicion.logo }
-        : { name: "Sin Archivo seleccionado" }
-    );
-    setCandidato(
-      coalicion ? coalicion.candidato : { candidato: "Sin candidato" }
-    );
-  }, [isOpen]);
+  useEffect(() => {}, [isOpen]);
 
   const validando = (values, props) => {
     const errors = {};
-    if (logo.name === "Sin Archivo seleccionado") {
+    /* if (logo.name === "Sin Archivo seleccionado") {
       errors.logo = "Se necesita un emblema";
     }
 
     if (candidato.candidato === "Sin candidato") {
       errors.candidato = "Seleccione un candidato";
-    }
+    } */
 
     return errors;
   };
@@ -127,24 +155,25 @@ export const ModalVotante = ({
     <Box sx={modalResponsive}>
       <Formik
         initialValues={{
-          nombre: coalicion ? coalicion.nombre : "",
-          emblema: coalicion ? coalicion.emblema : "",
-          logo: coalicion ? coalicion.logo : "",
-          candidato: "",
+          curp: "",
+          nombreVotante: "",
+          apellidomvotante: "",
+          apellidopvotante: "",
+          correoVotante: "",
+          entidad: "",
+          fechaNacimiento: "",
+          genero: "",
+          telefonoVotante: "",
         }}
         validate={validando}
         validationSchema={schema}
         onSubmit={(valores) => {
           const data = {
-            coalicionModel: {
-              nombre: valores.nombre,
-              emblema: valores.emblema,
-              logo: logo.name,
-            },
-            partidos: candidato.partidos,
+            votante: {},
+            direccion: {},
           };
 
-          if (coalicion) {
+          if (votante) {
             actualizar(data, cerrarM);
           } else {
             agregar(data, cerrarM);
@@ -154,151 +183,291 @@ export const ModalVotante = ({
       >
         {({ touched, errors, handleBlur, handleChange, values }) => (
           <Form className={styles.fomi}>
-            <Box sx={{ width: "100%" }}>
-              <div aling="left">
-                <Typography
-                  textAlign="center"
-                  sx={{ fontWeight: "bold", mb: 3 }}
-                >
-                  DATOS DEL VOTANTE
-                </Typography>
-              </div>
-              <Typography>NOMBRE DEL VOTANTE</Typography>
-              <TextField
-                required
-                label=""
-                variant="filled"
-                name="nombre"
-                id="nombre"
-                className={styles.textField}
-                value={values.nombre}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              ></TextField>
-              <br />
-
-              <ErrorMessage
-                name="nombre"
-                component={() => <ErrorField>{errors.nombre}</ErrorField>}
-              />
-              <br />
-              <Typography>APELLIDO PATERNO</Typography>
-              <TextField
-                required
-                label=""
-                variant="filled"
-                name="emblema"
-                id="emblema"
-                className={styles.textField}
-                value={values.emblema}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              ></TextField>
-              <br />
-
-              <ErrorMessage
-                name="nombre"
-                component={() => <ErrorField>{errors.emblema}</ErrorField>}
-              />
-              <br />
-              <Typography>APELLIDO MATERNO</Typography>
-              <TextField
-                required
-                label=""
-                variant="filled"
-                name="emblema"
-                id="emblema"
-                className={styles.textField}
-                value={values.emblema}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              ></TextField>
-              <br />
-
-              <ErrorMessage
-                name="nombre"
-                component={() => <ErrorField>{errors.emblema}</ErrorField>}
-              />
-              <br />
-              <Typography>CURP</Typography>
-              <TextField
-                required
-                label=""
-                variant="filled"
-                name="emblema"
-                id="emblema"
-                className={styles.textField}
-                value={values.emblema}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              ></TextField>
-              <br />
-
-              <ErrorMessage
-                name="nombre"
-                component={() => <ErrorField>{errors.emblema}</ErrorField>}
-              />
-              <br />
-              <Typography>FECHA NACIMIENTO</Typography>
-              <TextField
-                required
-                label=""
-                variant="filled"
-                name="emblema"
-                id="emblema"
-                className={styles.textField}
-                value={values.emblema}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              ></TextField>
-              <br />
-
-              <ErrorMessage
-                name="nombre"
-                component={() => <ErrorField>{errors.emblema}</ErrorField>}
-              />
-              <br />
-              <Typography>INSERTAR LOGO DE LA COALICIÓN</Typography>
-              <Box
-                display="flex"
-                alignItems="center"
-                sx={{ width: "100%" }}
-                flexDirection="row"
-              >
+            <Stepper nonLinear activeStep={activeStep}>
+              {steps.map((label, index) => (
+                <Step key={label} completed={completed[index]}>
+                  <StepButton color="inherit" onClick={handleStep(index)}>
+                    {label}
+                  </StepButton>
+                </Step>
+              ))}
+            </Stepper>
+            {activeStep === 0 && (
+              <Box sx={{ width: "100%" }}>
+                <br />
+                <div aling="left">
+                  <Typography
+                    textAlign="center"
+                    sx={{ fontWeight: "bold", mb: 3 }}
+                  >
+                    INFORMACIÓN DEL VOTANTE
+                  </Typography>
+                </div>
+                <Typography>CURP</Typography>
                 <TextField
+                  required
                   label=""
-                  disabled
-                  variant="outlined"
-                  size="small"
-                  value={logo.name}
+                  variant="filled"
+                  name="curp"
+                  id="curp"
                   className={styles.textField}
+                  value={values.curp}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                 ></TextField>
-                <IconButton
-                  color="primary"
-                  aria-label="upload picture"
-                  component="label"
-                  size="large"
-                >
-                  <input
-                    hidden
-                    onChange={(e) => setLogo(e.target.files[0])}
-                    onBlur={handleBlur}
-                    accept="image/x-png,image/jpeg"
-                    type="file"
-                    name="logo"
-                    id="logo"
-                  />
-                  <PhotoCamera fontSize="" />
-                </IconButton>
+                <br />
+                <Typography>NOMBRE DEL VOTANTE</Typography>
+                <TextField
+                  required
+                  label=""
+                  variant="filled"
+                  name="nombreVotante"
+                  id="nombre"
+                  className={styles.textField}
+                  value={values.nombreVotante}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                ></TextField>
+                <br />
+                <Typography>PRIMER APELLIDO</Typography>
+                <TextField
+                  required
+                  label=""
+                  variant="filled"
+                  name="nombreVotante"
+                  id="nombre"
+                  className={styles.textField}
+                  value={values.nombreVotante}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                ></TextField>
+                <br />
+                <Typography>SEGUNDO APELLIDO</Typography>
+                <TextField
+                  required
+                  label=""
+                  variant="filled"
+                  name="nombreVotante"
+                  id="nombre"
+                  className={styles.textField}
+                  value={values.nombreVotante}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                ></TextField>
+                <br />
+
+                <Typography>FECHA NACIMIENTO</Typography>
+                <TextField
+                  required
+                  label=""
+                  variant="filled"
+                  name="nombreVotante"
+                  id="nombre"
+                  className={styles.textField}
+                  value={values.nombreVotante}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                ></TextField>
+                <br />
+                <Typography>GENERO</Typography>
+                <TextField
+                  required
+                  label=""
+                  variant="filled"
+                  name="nombreVotante"
+                  id="nombre"
+                  className={styles.textField}
+                  value={values.nombreVotante}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                ></TextField>
+                <br />
+
+                <ErrorMessage
+                  name="nombre"
+                  component={() => <ErrorField>{errors.nombre}</ErrorField>}
+                />
+                <br />
               </Box>
-              {touched.logo && logo.name === "Sin Archivo seleccionado" && (
-                <ErrorField>{errors.logo}</ErrorField>
-              )}
+            )}
 
-              <br />
-            </Box>
+            {activeStep === 1 && (
+              <Box sx={{ width: "100%" }}>
+                <br />
+                <div aling="left">
+                  <Typography
+                    textAlign="center"
+                    sx={{ fontWeight: "bold", mb: 3 }}
+                  >
+                    DIRECCIÓN DEL VOTANTE
+                  </Typography>
+                </div>
+                <Typography>ENTIDAD</Typography>
+                <TextField
+                  required
+                  label=""
+                  variant="filled"
+                  name="nombreVotante"
+                  id="nombre"
+                  className={styles.textField}
+                  value={values.nombreVotante}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                ></TextField>
+                <br />
+                <Typography>CALLE</Typography>
+                <TextField
+                  required
+                  label=""
+                  variant="filled"
+                  name="emblema"
+                  id="emblema"
+                  className={styles.textField}
+                  value={values.emblema}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                ></TextField>
+                <br />
 
-            <Box
+                <ErrorMessage
+                  name="nombre"
+                  component={() => <ErrorField>{errors.emblema}</ErrorField>}
+                />
+                <br />
+                <Typography>COLONIA</Typography>
+                <TextField
+                  required
+                  label=""
+                  variant="filled"
+                  name="emblema"
+                  id="emblema"
+                  className={styles.textField}
+                  value={values.emblema}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                ></TextField>
+                <br />
+
+                <ErrorMessage
+                  name="nombre"
+                  component={() => <ErrorField>{errors.emblema}</ErrorField>}
+                />
+                <br />
+                <Typography>CP</Typography>
+                <TextField
+                  required
+                  label=""
+                  variant="filled"
+                  name="emblema"
+                  id="emblema"
+                  className={styles.textField}
+                  value={values.emblema}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                ></TextField>
+                <br />
+
+                {/* <ErrorMessage
+                name="nombre"
+                component={() => <ErrorField>{errors.nombreVotante}</ErrorField>}
+              /> */}
+                <br />
+                <Typography>MUNICIPIO</Typography>
+                <TextField
+                  required
+                  label=""
+                  variant="filled"
+                  name="emblema"
+                  id="emblema"
+                  className={styles.textField}
+                  value={values.emblema}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                ></TextField>
+                <br />
+              </Box>
+            )}
+
+            {activeStep === 2 && (
+              <Box sx={{ width: "100%" }}>
+                <div aling="left">
+                  <Typography
+                    textAlign="center"
+                    sx={{ fontWeight: "bold", mb: 3 }}
+                  >
+                    CONTACTO DEL VOTANTE
+                  </Typography>
+                </div>
+
+                <Typography>NUMERO TELEFONICO</Typography>
+                <TextField
+                  required
+                  label=""
+                  variant="filled"
+                  name="nombreVotante"
+                  id="nombre"
+                  className={styles.textField}
+                  value={values.nombreVotante}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                ></TextField>
+                <br />
+                <br />
+                <Typography>CORREO ELECTRONICO</Typography>
+                <TextField
+                  required
+                  label=""
+                  variant="filled"
+                  name="nombreVotante"
+                  id="nombre"
+                  className={styles.textField}
+                  value={values.nombreVotante}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                ></TextField>
+                <br />
+              </Box>
+            )}
+            {
+              <>
+                <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                  <Button
+                    color="inherit"
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    sx={{ mr: 1 }}
+                    variant="outlined"
+                  >
+                    Back
+                  </Button>
+                  <Box sx={{ flex: "1 1 auto" }} />
+                  {/* <Button
+                    variant="outlined"
+                    onClick={handleNext}
+                    sx={{ mr: 1 }}
+                  >
+                    Next
+                  </Button> */}
+                  {activeStep !== steps.length &&
+                    (completed[activeStep] ? (
+                      <Button
+                        variant="outlined"
+                        onClick={handleNext}
+                        sx={{ mr: 1 }}
+                      >
+                        Next
+                      </Button>
+                    ) : (
+                      <Button variant="outlined" onClick={handleComplete}>
+                        {completedSteps() === totalSteps() - 1
+                          ? "Finalizar proceso"
+                          : "Completar paso"}
+                      </Button>
+                    ))}
+                </Box>
+              </>
+            }
+            {/* <Box
               display="flex"
               sx={{ mt: 1, p: 2, width: "100%" }}
               justifyContent="end"
@@ -325,7 +494,8 @@ export const ModalVotante = ({
               >
                 Cancelar
               </Button>
-            </Box>
+            </Box> */}
+            <br />
           </Form>
         )}
       </Formik>
