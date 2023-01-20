@@ -273,7 +273,7 @@ export const ModalAsociacion = ({
                 }}
               >
                 <Typography sx={{ fontWeight: "bold" }}>
-                  SELECCIONE LOS CANDIDATO CORRESPONDIENTES A ESTA ASOCIACION
+                  SELECCIONE LOS CANDIDATOS CORRESPONDIENTES A ESTA ASOCIACIÓN
                 </Typography>
 
                 <Box

@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const noFormalesSlice = createSlice({
-    name: 'noFormalesSlice',
+export const empFormalesSlice = createSlice({
+    name: 'empFormales',
     initialState: {
-        jornadasNoFormales: [],
+        jornadasFormales: [],
         votantes: [],
-        isLoadingJornadasNoFormales: false,
+        votanteSelected: {},
+        isLoadingFormales: false,
         isLoadingVotantes: false,
         status: "off",
         errorMessage: "",
@@ -13,12 +14,12 @@ export const noFormalesSlice = createSlice({
     },
 
     reducers: {
-        startLoadingJornadasNoFormales: (state, /* action */) => {
-            state.isLoadingJornadasNoFormales = true;
+        startLoadingFormales: (state, /* action */) => {
+            state.isLoadingFormales = true;
         },
-        setJornadasNoFormales: (state, action) => {
-            state.isLoadingJornadasNoFormales = false;
-            state.jornadasNoFormales = action.payload.jornadasFormales;
+        setJornadasFormales: (state, action) => {
+            state.isLoadingFormales = false;
+            state.jornadasFormales = action.payload.jornadasFormales;
         },
 
         startLoadingVotantes: (state, /* action */) => {
@@ -28,6 +29,11 @@ export const noFormalesSlice = createSlice({
         setVotantes: (state, action) => {
             state.isLoadingVotantes = false;
             state.votantes = action.payload.votantes;
+        },
+
+        setVotanteSelected: (state, action) => {
+            // state.isLoadingVotantes = false;
+            state.votanteSelected = action.payload.votanteSelected;
         },
         //Transacciones 
         onCheckingOperation: (state) => {
@@ -49,4 +55,4 @@ export const noFormalesSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { startLoadingJornadasNoFormales, setJornadasNoFormales, startLoadingVotantes, setVotantes, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation } = noFormalesSlice.actions;
+export const { setVotanteSelected, startLoadingFormales, setJornadasFormales, startLoadingVotantes, setVotantes, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation } = empFormalesSlice.actions;

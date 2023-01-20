@@ -3,10 +3,12 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import {
   Button,
   Checkbox,
+  CircularProgress,
   FormControl,
   IconButton,
   Modal,
   RadioGroup,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -16,6 +18,7 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, ErrorMessage } from "formik";
 
 import { useDispatch, useSelector } from "react-redux";
+import { uploadCSV } from "../../store/module-empadronamiento/formales/thunksFormales";
 
 const useStyles = makeStyles({
   textField: {
@@ -63,14 +66,23 @@ export const ModalAGranel = ({
 }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
-
+  const { status } = useSelector((state) => state.empFormales);
   const [archivo, setArchivo] = useState({ name: "Sin Archivo seleccionado" });
 
   const cerrarM = () => {
     abrirCerrarModal();
   };
 
-  useEffect(() => {}, [isOpen]);
+  const uploadFile = () => {
+    console.log("dando click");
+    const f = new FormData();
+    f.append("file", archivo);
+    dispatch(uploadCSV(f, cerrarM));
+  };
+
+  useEffect(() => {
+    setArchivo({ name: "Sin Archivo seleccionado" });
+  }, [isOpen]);
 
   const body = (
     <Box sx={modalResponsive}>
@@ -107,6 +119,7 @@ export const ModalAGranel = ({
             className={styles.textField}
           ></TextField>
           <IconButton
+            disabled={status == "checking"}
             color="primary"
             aria-label="upload picture"
             component="label"
@@ -127,7 +140,12 @@ export const ModalAGranel = ({
 
         <br />
         <Button
+          disabled={
+            (status == "checking") |
+            (archivo.name === "Sin Archivo seleccionado")
+          }
           type="submit"
+          onClick={uploadFile}
           variant="contained"
           color="success"
           sx={{
@@ -140,24 +158,16 @@ export const ModalAGranel = ({
         </Button>
       </Box>
 
-      <Box
-        display="flex"
-        sx={{ mt: 1, p: 2, width: "100%" }}
-        justifyContent="end"
-      >
-        {/* <Button
-          variant="contained"
-          onClick={cerrarM}
-          sx={{
-            width: { sm: `150px`, xs: "150px" },
-            backgroundColor: "error.main",
-            borderRadius: "15px",
-            ml: 1,
-          }}
+      {status === "checking" && (
+        <Stack
+          justifyContent="center"
+          sx={{ color: "grey.500" }}
+          spacing={2}
+          direction="row"
         >
-          Cancelar
-        </Button> */}
-      </Box>
+          <CircularProgress color="primary" />
+        </Stack>
+      )}
     </Box>
   );
 

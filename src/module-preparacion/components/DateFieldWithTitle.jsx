@@ -6,71 +6,81 @@ import React from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 export const DateFieldWithTitle = React.memo(
-	({ label, name, value, handleChange, touched, error, setFieldValue, minDate, isDisabled }) => {
-		// console.log("MIN DATE: ", minDate);
+  ({
+    label,
+    name,
+    value,
+    handleChange,
+    touched,
+    error,
+    setFieldValue,
+    minDate,
+    isDisabled,
+  }) => {
+    // console.log("MIN DATE: ", minDate);
 
-		if (minDate === undefined) {
-			return (
-				<Box
-					sx={{
-						"& .MuiFormControl-root": {
-							minWidth: "100%",
-						},
-					}}
-				>
-					<LocalizationProvider dateAdapter={AdapterDayjs}>
-						<DateTimePicker
-							disabled={isDisabled}
-							value={value}
-							onChange={(valueNew) => setFieldValue(name, valueNew, true)}
-							label={label}
-							renderInput={(params) => (
-								<TextField
-									{...params}
-									name={name}
-									helperText={touched && error}
-									error={Boolean(touched && error)}
-									variant="standard"
-									fullWidth
-								/>
-							)}
+    if (minDate === undefined) {
+      return (
+        <Box
+          sx={{
+            "& .MuiFormControl-root": {
+              minWidth: "100%",
+            },
+          }}
+        >
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateTimePicker
+              disabled={isDisabled}
+              value={value}
+              onChange={(valueNew) => setFieldValue(name, valueNew, true)}
+              label={label}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  name={name}
+                  helperText={touched && error}
+                  error={Boolean(touched && error)}
+                  variant="standard"
+                  fullWidth
+                />
+              )}
 
-							// value={values}
-						/>
-					</LocalizationProvider>
-				</Box>
-			);
-		} else
-			return (
-				<Box
-					sx={{
-						"& .MuiFormControl-root": {
-							minWidth: "100%",
-						},
-					}}
-				>
-					<LocalizationProvider dateAdapter={AdapterDayjs}>
-						<DateTimePicker
-							disabled={isDisabled}
-							value={value}
-							onChange={(valueNew) => setFieldValue(name, valueNew, true)}
-							label={label}
-							minDateTime={minDate}
-							renderInput={(params) => (
-								<TextField
-									{...params}
-									name={name}
-									helperText={touched && error}
-									error={Boolean(touched && error)}
-									variant="standard"
-									fullWidth
-								/>
-							)}
+              // value={values}
+            />
+          </LocalizationProvider>
+        </Box>
+      );
+    } else
+      return (
+        <Box
+          sx={{
+            "& .MuiFormControl-root": {
+              minWidth: "100%",
+            },
+          }}
+        >
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateTimePicker
+              disabled={isDisabled}
+              value={value}
+              onChange={(valueNew) => setFieldValue(name, valueNew, true)}
+              label={label}
+              minDateTime={minDate}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  name={name}
+                  helperText={touched && error}
+                  error={Boolean(touched && error)}
+                  variant="standard"
+                  fullWidth
+                />
+              )}
 
-							// value={values}
-						/>
-					</LocalizationProvider>
-				</Box>
-			);
-	}
+              // value={values}
+            />
+          </LocalizationProvider>
+        </Box>
+      );
+  }
 );

@@ -1,5 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authSlice } from "./auth/authSlice";
+import { empFormalesSlice } from "./module-empadronamiento/formales/EmpFormalesSlice";
+import { noFormalesSlice } from "./module-empadronamiento/no-formales/noFormalesSlice";
 import { comiteSlice } from "./module-preparacion/comite/comiteSlice";
 import { configBoletaSlice } from "./module-preparacion/configuracion-boleta/configBoletaSlice";
 import { configJornadaSlice } from "./module-preparacion/configuracion-jornada/configJornadaSlice";
@@ -14,7 +16,9 @@ export const store = configureStore({
 		configBoleta: configBoletaSlice.reducer,
 		jornada: SliceJornada.reducer,
 		configJornada: configJornadaSlice.reducer,
+		empFormales: empFormalesSlice.reducer,
 		ui: uiSlice.reducer,
 		auth: authSlice.reducer,
+		noFormalesSlice: noFormalesSlice.reducer
 	},
 });

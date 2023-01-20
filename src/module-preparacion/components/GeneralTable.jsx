@@ -5,33 +5,39 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import React from "react";
 import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
 
-export const GeneralTable = ({ data = [], columns, idName }) => {
-	return (
-		<div style={{ height: "100%", width: "100%" }}>
-			<DataGrid
-				getRowId={(row) => row[idName]}
-				disableSelectionOnClick
-				rows={data}
-				columns={columns}
-				pageSize={5}
-				rowsPerPageOptions={[5]}
-				sx={{
-					border: "0px",
-					"& .MuiDataGrid-columnHeaderTitleContainer": {
-						justifyContent: "center",
-					},
-					"& .MuiDataGrid-cell--textLeft": {
-						justifyContent: "center",
-						align: "center",
-					},
-					"& .MuiDataGrid-cell": {
-						outline: "none !important",
-					},
-					"& .MuiDataGrid-columnHeader": {
-						outline: "none !important",
-					},
-				}}
-			/>
-		</div>
-	);
+export const GeneralTable = ({
+  data = [],
+  columns,
+  idName,
+  loading = false,
+}) => {
+  return (
+    <div style={{ height: "100%", width: "100%" }}>
+      <DataGrid
+        loading={loading}
+        getRowId={(row) => row[idName]}
+        disableSelectionOnClick
+        rows={data}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
+        sx={{
+          border: "0px",
+          "& .MuiDataGrid-columnHeaderTitleContainer": {
+            justifyContent: "center",
+          },
+          "& .MuiDataGrid-cell--textLeft": {
+            justifyContent: "center",
+            align: "center",
+          },
+          "& .MuiDataGrid-cell": {
+            outline: "none !important",
+          },
+          "& .MuiDataGrid-columnHeader": {
+            outline: "none !important",
+          },
+        }}
+      />
+    </div>
+  );
 };

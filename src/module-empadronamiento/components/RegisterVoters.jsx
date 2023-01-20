@@ -25,51 +25,18 @@ import { GeneralTable } from "../../module-preparacion/components/GeneralTable";
 import { ModalVotante } from "./ModalVotante";
 import { ModalAGranel } from "./ModalAGranel";
 import { AddVotante } from "./AddVotante";
-const datos = [
-  {
-    id: "1",
-    curp: "SALL991216MOCNPR00",
-    informacion: "Laura Yessenia Sanchez Lopez",
-  },
-  {
-    id: "2",
-    curp: "SALL991216MOCNPR00",
-    informacion: "Jose Antonio Diego Revilla",
-  },
-  {
-    id: "3",
-    curp: "SALL991216MOCNPR00",
-    informacion: "Kevin Edilberto Chavez Sanchez",
-  },
-];
-const columns = [
-  { field: "id", headerName: "ID", flex: 1 },
-  { field: "curp", headerName: "CURP", flex: 3 },
-  {
-    field: "informacion",
-    headerName: "Información",
-    flex: 5,
-  },
-  {
-    field: "Acciones",
-    headerName: "Acciones",
-    flex: 3,
-    sortable: false,
-    disableColumnMenu: true,
-    renderCell: (params) => {
-      return (
-        <Stack spacing={2} direction="row">
-          <Button variant="outlined">ver</Button>
-          <Button variant="outlined">editar</Button>
-        </Stack>
-      );
-    },
-  },
-];
+import EditIcon from "@mui/icons-material/Edit";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import { ModalEditVotante } from "./ModalEditVotante";
+import { setVotanteSelected } from "../../store/module-empadronamiento/formales/EmpFormalesSlice";
+import { useDispatch } from "react-redux";
+import { ModalLink } from "./ModalLink";
+import { ModalLinkPersonal } from "./ModalLinkPersonal";
+
 const opciones = {
   display: "flex",
   flexDirection: { md: "row", xs: "column" },
-  width: { xl: "95%", md: "100%", xs: "100%" },
+  width: { xl: "85%", md: "95%", xs: "100%" },
   justifyContent: "space-between",
   alignContent: "center",
   alignItems: "center",
@@ -91,9 +58,13 @@ const registros = {
   height: "calc(100% - 110px)",
 };
 
-export const RegisterVoters = () => {
+export const RegisterVoters = ({ isLoading, datos }) => {
+  const dispatch = useDispatch();
   const [modalVotante, setModalVotante] = useState(false);
   const [modalGranel, setModalGranel] = useState(false);
+  const [modalEdit, setModalEdit] = useState(false);
+  const [modalEnlace, setModalEnlace] = useState(false);
+  const [modalEnlacePersonal, setModalEnlacePersonal] = useState(false);
   const [open, setOpen] = React.useState(false);
 
   const abrirCerrarModalAddVotante = () => {
@@ -101,6 +72,27 @@ export const RegisterVoters = () => {
   };
   const abrirCerrarModalGranel = () => {
     setModalGranel(!modalGranel);
+  };
+  const abrirCerrarModalEdit = () => {
+    setModalEdit(!modalEdit);
+  };
+
+  const abrirCerrarModalEnlace = () => {
+    setModalEnlace(!modalEnlace);
+  };
+
+  const abrirCerrarModalEnlacePersonal = () => {
+    setModalEnlacePersonal(!modalEnlacePersonal);
+  };
+
+  const selectedVoter = (votante = {}) => {
+    dispatch(setVotanteSelected({ votanteSelected: votante }));
+    abrirCerrarModalEdit();
+  };
+
+  const selectedVoterEnlace = (votante = {}) => {
+    dispatch(setVotanteSelected({ votanteSelected: votante }));
+    abrirCerrarModalEnlacePersonal();
   };
 
   const handleClick = () => {
@@ -116,6 +108,43 @@ export const RegisterVoters = () => {
     console.log("preisonando a individual");
     abrirCerrarModalAddVotante();
   };
+
+  const columns = [
+    { field: "curp", headerName: "CURP", flex: 3 },
+    {
+      field: "nombreVotante",
+      headerName: "Nombre",
+      flex: 4,
+    },
+    {
+      field: "Acciones",
+      headerName: "Acciones",
+      flex: 4,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => {
+        return (
+          <Stack spacing={2} direction="row">
+            <Button
+              variant="outlined"
+              onClick={() => selectedVoter(params.row)}
+              endIcon={<EditIcon />}
+            >
+              Editar
+            </Button>
+            <Button
+              variant="outlined"
+              color="inherit"
+              onClick={() => selectedVoterEnlace(params.row)}
+              endIcon={<AttachEmailIcon />}
+            >
+              Enlace
+            </Button>
+          </Stack>
+        );
+      },
+    },
+  ];
 
   return (
     <>
@@ -137,7 +166,7 @@ export const RegisterVoters = () => {
             sx={{
               display: "flex",
               justifyContent: "center",
-              width: { xl: "20%", md: "30%", xs: "100%" },
+              width: { xl: "30%", md: "30%", xs: "100%" },
             }}
           >
             <List
@@ -205,13 +234,14 @@ export const RegisterVoters = () => {
             }}
           >
             <Button
-              sx={{ color: "#fff" }}
               variant="contained"
+              color="info"
+              onClick={abrirCerrarModalEnlace}
               endIcon={<AttachEmailIcon />}
             >
-              ENVIAR
+              ENVIAR ENLACES
             </Button>
-            <Badge color="warning" badgeContent={99}>
+            {/* <Badge color="warning" badgeContent={99}>
               <Button
                 color="error"
                 variant="contained"
@@ -219,7 +249,7 @@ export const RegisterVoters = () => {
               >
                 NO ENVIADO
               </Button>
-            </Badge>
+            </Badge> */}
           </Box>
         </Box>
 
@@ -227,17 +257,34 @@ export const RegisterVoters = () => {
           <Typography sx={{ fontWeight: "bold", mt: 1, mb: { xl: 5, md: 2 } }}>
             VOTANTES REGISTRADOS
           </Typography>
-          <GeneralTable data={datos} columns={columns} idName={"id"} />
+          <GeneralTable
+            loading={isLoading}
+            data={datos}
+            columns={columns}
+            idName={"curp"}
+          />
         </Box>
       </Box>
       <AddVotante
         isOpen={modalVotante}
         abrirCerrarModal={abrirCerrarModalAddVotante}
       ></AddVotante>
+      <ModalEditVotante
+        isOpen={modalEdit}
+        abrirCerrarModal={abrirCerrarModalEdit}
+      ></ModalEditVotante>
       <ModalAGranel
         isOpen={modalGranel}
         abrirCerrarModal={abrirCerrarModalGranel}
       ></ModalAGranel>
+      <ModalLink
+        isOpen={modalEnlace}
+        abrirCerrarModal={abrirCerrarModalEnlace}
+      />
+      <ModalLinkPersonal
+        isOpen={modalEnlacePersonal}
+        abrirCerrarModal={abrirCerrarModalEnlacePersonal}
+      />
     </>
   );
 };

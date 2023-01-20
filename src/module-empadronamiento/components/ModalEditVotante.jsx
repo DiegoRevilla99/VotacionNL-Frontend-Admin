@@ -27,7 +27,9 @@ import { FormContacto } from "./FormContacto";
 import {
   getVotantesbyJornada,
   postVotante,
+  putVotante,
 } from "../../store/module-empadronamiento/formales/thunksFormales";
+import { transformDate } from "../helpers/transformDate";
 
 const useStyles = makeStyles({
   textField: {
@@ -68,19 +70,23 @@ const modalResponsive = {
 
 const steps = ["INFORMACIÓN", "DIRECCIÓN", "CONTACTO"];
 
-export const ModalVotante = ({
+export const ModalEditVotante = ({
   isOpen = false,
   abrirCerrarModal = () => {},
+  agregar = () => {
+    alert("Presionaste agregar votante");
+  },
   actualizar = () => {
     alert("Presionaste actualizar votante");
   },
-  votante = null,
 }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
   const [data, setData] = useState({});
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
+
+  const { votanteSelected, status } = useSelector((state) => state.empFormales);
 
   const isStepOptional = (step) => {
     return step === 5;
@@ -106,15 +112,15 @@ export const ModalVotante = ({
   };
 
   const finalizar = (valores) => {
-    console.log("Finalizando");
-    console.log(valores);
+    console.log("Ediatndo Votante");
+
     const contac = valores.contacto;
-    setData({ ...data, votanteModel: { ...data.votanteModel, ...contac } });
-    const datos = {
-      ...data,
-      votanteModel: { ...data.votanteModel, ...contac },
-    };
-    dispatch(postVotante(datos, AddVotanteNext));
+    let newData = { ...votanteSelected };
+    newData.correoVotante = contac.correoVotante;
+    newData.telefonoVotante = contac.telefonoVotante;
+    console.log(newData);
+
+    dispatch(putVotante(newData.curp, newData, AddVotanteNext));
   };
 
   const handleNext = () => {
@@ -159,7 +165,7 @@ export const ModalVotante = ({
   const AddVotanteNext = () => {
     dispatch(getVotantesbyJornada());
     abrirCerrarModal();
-    setActiveStep(0);
+
     setData({});
   };
 
@@ -170,117 +176,59 @@ export const ModalVotante = ({
   const body = (
     <Box sx={modalResponsive}>
       <Box className={styles.fomi}>
-        <Stepper
+        <Typography textAlign="center" sx={{ fontWeight: "bold", mb: 3 }}>
+          INFORMACIÓN DEL VOTANTE
+        </Typography>
+        <Box
           sx={{
             width: "100%",
+            p: 4,
+            border: "1px solid rgba(0,0,0,0.4)",
+            borderRadius: "15px",
             display: "flex",
-            flexDirection: { sm: "row", xs: "column" },
-            alignItems: { sm: "center", xs: "start" },
-            justifyContent: "center",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
           }}
-          activeStep={activeStep}
         >
-          {steps.map((label, index) => {
-            const stepProps = {};
-            const labelProps = {};
-            if (isStepOptional(index)) {
-              labelProps.optional = (
-                <Typography variant="caption">Optional</Typography>
-              );
-            }
-            if (isStepSkipped(index)) {
-              stepProps.completed = false;
-            }
-            return (
-              <Step key={label} {...stepProps}>
-                <StepLabel {...labelProps}>{label}</StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
+          <Box display="flex" flexDirection="row">
+            <Typography sx={{ fontWeight: "bold", mr: 1 }}>CURP:</Typography>
+            <Typography>{votanteSelected.curp}</Typography>
+          </Box>
+          <Box display="flex" flexDirection="row">
+            <Typography sx={{ fontWeight: "bold", mr: 1 }}>Nombre: </Typography>
+            <Typography>
+              {votanteSelected.nombreVotante +
+                " " +
+                votanteSelected.apellidoPVotante +
+                " " +
+                votanteSelected.apellidoMVotante}
+            </Typography>
+          </Box>
+          <Box display="flex" flexDirection="row">
+            <Typography sx={{ fontWeight: "bold", mr: 1 }}>
+              Fecha nacimiento:
+            </Typography>
+            <Typography>
+              {transformDate(votanteSelected.fechaNacimiento)}
+            </Typography>
+          </Box>
+          <Box display="flex" flexDirection="row">
+            <Typography sx={{ fontWeight: "bold", mr: 1 }}>Genero:</Typography>
+            <Typography>{votanteSelected.genero}</Typography>
+          </Box>
+        </Box>
       </Box>
 
-      <Box
-        width="100%"
-        height="100%"
-        sx={{ display: activeStep == 0 ? "flex" : "none" }}
-      >
-        <FormInfo data={data} onNext={completarPaso}></FormInfo>
-      </Box>
-
-      <Box width="100%" sx={{ display: activeStep == 1 ? "flex" : "none" }}>
-        <FormDireccion
-          data={data}
-          onBack={handleBack}
-          onNext={completarPaso}
-        ></FormDireccion>
-      </Box>
-
-      <Box width="100%" sx={{ display: activeStep == 2 ? "flex" : "none" }}>
+      <Box width="100%">
         <FormContacto
-          data={data}
+          backbtn={false}
+          data={{ votanteModel: votanteSelected }}
           onBack={handleBack}
           onNext={finalizar}
         ></FormContacto>
       </Box>
 
-      {/* {activeStep === 3 && <Box>se finalizo el proceso</Box>} */}
-      {activeStep === steps.length ? (
-        <React.Fragment>
-          <Typography sx={{ mt: 5, mb: 1 }}>Se finalizó el proceso</Typography>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleReset}>Cerrar</Button>
-          </Box>
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            {/* <Button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
-              Back
-            </Button> */}
-            <Box sx={{ flex: "1 1 auto" }} />
-
-            {/* <Button onClick={handleNext}>
-              {activeStep === steps.length - 1 ? "Finish" : "Next"}
-            </Button> */}
-          </Box>
-        </React.Fragment>
-      )}
-
-      {/* <Box
-              display="flex"
-              sx={{ mt: 1, p: 2, width: "100%" }}
-              justifyContent="end"
-            >
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{
-                  width: { sm: `150px`, xs: "150px" },
-                  borderRadius: "15px",
-                }}
-              >
-                CREAR
-              </Button>
-              <Button
-                variant="contained"
-                onClick={cerrarM}
-                sx={{
-                  width: { sm: `150px`, xs: "150px" },
-                  backgroundColor: "error.main",
-                  borderRadius: "15px",
-                  ml: 1,
-                }}
-              >
-                Cancelar
-              </Button>
-            </Box> */}
       <br />
     </Box>
   );

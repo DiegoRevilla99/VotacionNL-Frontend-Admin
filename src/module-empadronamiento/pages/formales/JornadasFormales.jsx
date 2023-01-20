@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Stack } from "@mui/system";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { GeneralTable } from "../../../module-preparacion/components/GeneralTable";
 import BallotIcon from "@mui/icons-material/Ballot";
@@ -16,6 +16,8 @@ import { BreadCrumbsCustom } from "../../components/BreadCrumbsCustom";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
+import { useDispatch, useSelector } from "react-redux";
+import { getJornadasFormales } from "../../../store/module-empadronamiento/formales/thunksFormales";
 
 const datos = [
   {
@@ -42,8 +44,16 @@ const datos = [
 ];
 export const JornadasFormales = () => {
   let location = useLocation();
-  console.log(location.pathname);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { jornadasFormales, isLoadingFormales } = useSelector(
+    (state) => state.empFormales
+  );
+
+  useEffect(() => {
+    dispatch(getJornadasFormales());
+  }, []);
+
   const columns = [
     // { field: "id", headerName: "ID", flex: 2, sortable: true },
     {
@@ -112,7 +122,6 @@ export const JornadasFormales = () => {
       sortable: false,
       disableColumnMenu: true,
       renderCell: ({ row }) => {
-        console.log(row);
         return (
           <Stack spacing={2} direction="row">
             <Button

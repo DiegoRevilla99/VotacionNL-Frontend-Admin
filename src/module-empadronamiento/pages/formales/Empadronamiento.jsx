@@ -1,12 +1,28 @@
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useParams } from "react-router-dom";
+import { getVotantesbyJornada } from "../../../store/module-empadronamiento/formales/thunksFormales";
 import { BreadCrumbsCustom } from "../../components/BreadCrumbsCustom";
 import { RegisterVoters } from "../../components/RegisterVoters";
 
 export const Empadronamiento = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const { votantes, isLoadingVotantes } = useSelector(
+    (state) => state.empFormales
+  );
+
+  useEffect(() => {
+    dispatch(getVotantesbyJornada(id));
+  }, []);
+
+  useEffect(() => {
+    console.log("Votantes ha camiado");
+    console.log(votantes);
+  }, [votantes]);
+
   return (
     <>
       <Box
@@ -43,7 +59,10 @@ export const Empadronamiento = () => {
             height: "100%",
           }}
         >
-          <RegisterVoters></RegisterVoters>
+          <RegisterVoters
+            isLoading={isLoadingVotantes}
+            datos={votantes}
+          ></RegisterVoters>
         </Box>
       </Box>
     </>

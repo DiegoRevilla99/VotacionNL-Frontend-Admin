@@ -63,9 +63,9 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
   const styles = useStyles();
   const { id } = useParams();
 
-  const { coaliciones, isLoadingCoaliciones } = useCoaliciones(id);
+  //const { coaliciones, isLoadingCoaliciones } = useCoaliciones(id);
 
-  const [modalCoalicion, setModalCoalicion] = useState(false);
+  //const [modalCoalicion, setModalCoalicion] = useState(false);
   const [cnr, setCnr] = useState(false);
   const [vn, setVn] = useState(false);
 
@@ -76,9 +76,9 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
       setVn(boletaInfo.mostrarVotoNulo);
   }, [boletaInfo]);
 
-  const abrirCerrarModalCoalicion = () => {
-    setModalCoalicion(!modalCoalicion);
-  };
+  // const abrirCerrarModalCoalicion = () => {
+  //   setModalCoalicion(!modalCoalicion);
+  // };
 
   const handleChangeCand = (event) => {
     changeCandNoReg(event.target.checked);
@@ -128,7 +128,7 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
           </FormGroup>
         </Box>
 
-        <Box
+        {/* <Box
           sx={{
             display: "flex",
             width: "100%",
@@ -163,7 +163,7 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
           </Stack>
         ) : (
           <Agrupa info={{ coaliciones: coaliciones }} tipo={1}></Agrupa>
-        )}
+        )} */}
 
         <Box sx={botones}>
           <Box
@@ -191,11 +191,11 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
         </Box>
       </Stack>
 
-      <AddCoalicion
+      {/* <AddCoalicion
         isOpen={modalCoalicion}
         abrirCerrarModal={abrirCerrarModalCoalicion}
         idBoleta={id}
-      ></AddCoalicion>
+      ></AddCoalicion> */}
     </>
   );
 };
