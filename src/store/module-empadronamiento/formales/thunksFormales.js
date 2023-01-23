@@ -176,8 +176,8 @@ export const getJornadasFormales = () => {
 }
 
 //Cambiar provider
+//Get Eleccion con su config
 export const getEleccionFormal = () => {
-
     return async (dispatch, getState) => {
         dispatch(startLoadingEleccion());
         const { ok, data, errorMessage } = await getEleccionAPI();

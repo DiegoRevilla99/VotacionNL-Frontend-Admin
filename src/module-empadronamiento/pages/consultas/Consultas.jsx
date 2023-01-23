@@ -17,7 +17,8 @@ import { useDispatch, useSelector } from "react-redux";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import { getJornadasFormales } from "../../../store/module-empadronamiento/formales/thunksFormales";
 import { getConsultasConfig } from "../../../store/module-empadronamiento/consultas/thunksConsultas";
-
+import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 const datos = [
   {
     id: "CONSULTA-OAX-2025",

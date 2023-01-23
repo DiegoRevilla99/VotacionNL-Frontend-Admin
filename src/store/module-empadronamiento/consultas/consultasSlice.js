@@ -4,6 +4,7 @@ export const consultasSlice = createSlice({
     name: 'consultasSlice',
     initialState: {
         consultas: [],
+        eleccion: {},
         isLoadingConsultas: false,
         status: "off",
         errorMessage: "",
@@ -16,6 +17,13 @@ export const consultasSlice = createSlice({
         setConsultas: (state, action) => {
             state.isLoadingConsultas = false;
             state.consultas = action.payload.consultas;
+        },
+        startLoadingEleccion: (state, /* action */) => {
+            state.isLoadingEleccion = true;
+        },
+        setEleccion: (state, action) => {
+            state.isLoadingEleccion = false;
+            state.eleccion = action.payload.eleccion;
         },
 
 
@@ -39,4 +47,4 @@ export const consultasSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { startLoadingConsultas, setConsultas, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation } = consultasSlice.actions;
+export const { setEleccion, startLoadingEleccion, startLoadingConsultas, setConsultas, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation } = consultasSlice.actions;

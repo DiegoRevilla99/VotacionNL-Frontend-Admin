@@ -1,7 +1,8 @@
+import { getConsultaAPI } from "../../../module-empadronamiento/helpers/FakeAPI";
 import { getStatusEmp } from "../../../module-empadronamiento/helpers/getStatusEmp";
 import { transformDate } from "../../../module-empadronamiento/helpers/transformDate";
 import { getConsultasCiudadanasConfig } from "../../../providers/Micro-Consultas/provider";
-import { setConsultas, startLoadingConsultas } from "./consultasSlice";
+import { setConsultas, setEleccion, startLoadingConsultas, startLoadingEleccion } from "./consultasSlice";
 
 export const getConsultasConfig = () => {
 
@@ -22,6 +23,28 @@ export const getConsultasConfig = () => {
                 return ne;
             })
             dispatch(setConsultas({ consultas: newData }));
+        }
+    }
+}
+
+//Cambiar provider
+//Get Eleccion con su config
+export const getEleccionFormal = () => {
+    return async (dispatch, getState) => {
+        dispatch(startLoadingEleccion());
+        const { ok, data, errorMessage } = await getConsultaAPI();
+
+        let newData = {
+            ...data.eleccionModel
+            , ...data.configuracionModel,
+        }
+        newData.status = getStatusEmp(newData.inicioEmpadronamiento, newData.finEmpadronamiento)
+        newData.inicioEmpadronamiento = transformDate(newData.inicioEmpadronamiento)
+        newData.finEmpadronamiento = transformDate(newData.finEmpadronamiento)
+
+
+        if (ok) {
+            dispatch(setEleccion({ eleccion: newData }));
         }
     }
 }

@@ -4,6 +4,7 @@ export const noFormalesSlice = createSlice({
     name: 'noFormalesSlice',
     initialState: {
         jornadasNoFormales: [],
+        eleccion: {},
         votantes: [],
         isLoadingJornadasNoFormales: false,
         isLoadingVotantes: false,
@@ -19,6 +20,14 @@ export const noFormalesSlice = createSlice({
         setJornadasNoFormales: (state, action) => {
             state.isLoadingJornadasNoFormales = false;
             state.jornadasNoFormales = action.payload.jornadasNoFormales;
+        },
+
+        startLoadingEleccion: (state, /* action */) => {
+            state.isLoadingEleccion = true;
+        },
+        setEleccion: (state, action) => {
+            state.isLoadingEleccion = false;
+            state.eleccion = action.payload.eleccion;
         },
 
         startLoadingVotantes: (state, /* action */) => {
@@ -49,4 +58,4 @@ export const noFormalesSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { startLoadingJornadasNoFormales, setJornadasNoFormales, startLoadingVotantes, setVotantes, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation } = noFormalesSlice.actions;
+export const { setEleccion, startLoadingEleccion, startLoadingJornadasNoFormales, setJornadasNoFormales, startLoadingVotantes, setVotantes, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation } = noFormalesSlice.actions;

@@ -1,8 +1,12 @@
+import { CircularProgress, Stack } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getVotantesbyJornada } from "../../../store/module-empadronamiento/no-formales/thunksNoFormales";
+import {
+  getEleccionFormal,
+  getVotantesbyJornada,
+} from "../../../store/module-empadronamiento/no-formales/thunksNoFormales";
 
 import { BreadCrumbsCustom } from "../../components/BreadCrumbsCustom";
 import { RegisterVoters } from "../../components/RegisterVoters";
@@ -10,11 +14,11 @@ import { RegisterVoters } from "../../components/RegisterVoters";
 export const EmpadronamientoNF = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { votantes, isLoadingVotantes } = useSelector(
-    (state) => state.noFormalesSlice
-  );
+  const { votantes, isLoadingVotantes, eleccion, isLoadingEleccion } =
+    useSelector((state) => state.noFormalesSlice);
 
   useEffect(() => {
+    dispatch(getEleccionFormal(id));
     dispatch(getVotantesbyJornada(id));
   }, []);
 
@@ -44,12 +48,25 @@ export const EmpadronamientoNF = () => {
           ]}
           currentRoute={"JORNADA ELECTORAL GOBERNADOR ORDINARIA 2022"}
         ></BreadCrumbsCustom>
-        <Box sx={{ mt: 0, width: "100%", height: "100%" }}>
-          <RegisterVoters
-            isLoading={isLoadingVotantes}
-            datos={votantes}
-          ></RegisterVoters>
-        </Box>
+
+        {isLoadingEleccion ? (
+          <Stack
+            justifyContent="center"
+            sx={{ color: "grey.500" }}
+            spacing={2}
+            direction="row"
+          >
+            <CircularProgress color="primary" />
+          </Stack>
+        ) : (
+          <Box sx={{ pl: 2, pr: 2, mt: 0, width: "100%", height: "100%" }}>
+            <RegisterVoters
+              status={eleccion.status}
+              isLoading={isLoadingVotantes}
+              datos={votantes}
+            ></RegisterVoters>
+          </Box>
+        )}
       </Box>
     </>
   );

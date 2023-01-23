@@ -1,9 +1,10 @@
+import { getEleccionAPI } from "../../../module-empadronamiento/helpers/FakeAPI";
 import { getStatusEmp } from "../../../module-empadronamiento/helpers/getStatusEmp";
 import { transformDate } from "../../../module-empadronamiento/helpers/transformDate";
 import { getJornadasNoFormalesProvider } from "../../../providers/Micro-NoFormales/providerNoFormales";
 import { getVotantesPorJornadaProvider } from "../../../providers/Micro-Votante/providerVotante";
 import { onToastCheckingOperation, onToastErrorOperation, onToastSuccessOperation } from "../../ui/uiSlice";
-import { setJornadasNoFormales, setVotantes, startLoadingJornadasNoFormales, startLoadingVotantes } from "./noFormalesSlice";
+import { setEleccion, setJornadasNoFormales, setVotantes, startLoadingEleccion, startLoadingJornadasNoFormales, startLoadingVotantes } from "./noFormalesSlice";
 
 export const getJornadasNoFormales = () => {
 
@@ -35,6 +36,28 @@ export const getVotantesbyJornada = (idJornada = "") => {
         const { ok, data, errorMessage } = await getVotantesPorJornadaProvider(idJornada);
         if (ok) {
             dispatch(setVotantes({ votantes: data }));
+        }
+    }
+}
+
+//Cambiar provider
+//Get Eleccion con su config
+export const getEleccionFormal = () => {
+    return async (dispatch, getState) => {
+        dispatch(startLoadingEleccion());
+        const { ok, data, errorMessage } = await getEleccionAPI();
+
+        let newData = {
+            ...data.eleccionModel
+            , ...data.configuracionModel,
+        }
+        newData.status = getStatusEmp(newData.inicioEmpadronamiento, newData.finEmpadronamiento)
+        newData.inicioEmpadronamiento = transformDate(newData.inicioEmpadronamiento)
+        newData.finEmpadronamiento = transformDate(newData.finEmpadronamiento)
+
+
+        if (ok) {
+            dispatch(setEleccion({ eleccion: newData }));
         }
     }
 }
