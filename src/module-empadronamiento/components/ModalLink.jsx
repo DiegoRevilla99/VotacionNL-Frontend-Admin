@@ -67,7 +67,7 @@ const modalResponsive = {
   pl: "3rem",
   pr: "3rem",
   pt: "3rem",
-  height: { xl: "50%", lg: "50%", sm: "97%", xs: "99%" },
+  height: { lg: "300px", xs: "350px" },
   overflowY: "scroll",
   alignItems: "center",
 };
@@ -154,11 +154,11 @@ export const ModalLink = ({
           disabled={status === "checking"}
           variant="contained"
           onClick={finalizar}
-          color="success"
         >
           Aceptar
         </Button>
       </Box>
+      <br />
     </Box>
   );
 

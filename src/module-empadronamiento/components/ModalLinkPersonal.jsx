@@ -3,10 +3,12 @@ import * as yup from "yup";
 import {
   Button,
   Checkbox,
+  CircularProgress,
   FormControl,
   IconButton,
   Modal,
   RadioGroup,
+  Stack,
   Step,
   StepButton,
   Stepper,
@@ -65,7 +67,7 @@ const modalResponsive = {
   pl: "3rem",
   pr: "3rem",
   pt: "3rem",
-  height: { xl: "50%", lg: "50%", sm: "97%", xs: "99%" },
+  height: { lg: "300px", xs: "350px" },
   overflowY: "scroll",
   alignItems: "center",
 };
@@ -120,11 +122,22 @@ export const ModalLinkPersonal = ({
           {votanteSelected.correoVotante} {" ' "}el token para que inicie
           sesión.
         </Typography>
+
         <Typography textAlign="center" sx={{ fontWeight: "bold", mt: 2 }}>
           ¿Esta seguro de esta acción?
         </Typography>
       </Box>
       <br />
+      {status === "checking" && (
+        <Stack
+          justifyContent="center"
+          sx={{ color: "grey.500" }}
+          spacing={2}
+          direction="row"
+        >
+          <CircularProgress color="primary" />
+        </Stack>
+      )}
       <Box
         sx={{ mt: 3 }}
         width={"90%"}
@@ -143,7 +156,6 @@ export const ModalLinkPersonal = ({
           disabled={status === "checking"}
           onClick={finalizar}
           variant="contained"
-          color="success"
         >
           Aceptar
         </Button>

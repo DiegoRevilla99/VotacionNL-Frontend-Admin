@@ -2,7 +2,7 @@ import { Button, Stack } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import BallotIcon from "@mui/icons-material/Ballot";
 import SettingsIcon from "@mui/icons-material/Settings";
-import React from "react";
+import React, { useEffect } from "react";
 import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
 
 export const GeneralTable = ({

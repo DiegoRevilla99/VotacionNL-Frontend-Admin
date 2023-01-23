@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authSlice } from "./auth/authSlice";
+import { consultasSlice } from "./module-empadronamiento/consultas/consultasSlice";
 import { empFormalesSlice } from "./module-empadronamiento/formales/EmpFormalesSlice";
 import { noFormalesSlice } from "./module-empadronamiento/no-formales/noFormalesSlice";
 import { comiteSlice } from "./module-preparacion/comite/comiteSlice";
@@ -19,6 +20,7 @@ export const store = configureStore({
 		empFormales: empFormalesSlice.reducer,
 		ui: uiSlice.reducer,
 		auth: authSlice.reducer,
-		noFormalesSlice: noFormalesSlice.reducer
+		noFormalesSlice: noFormalesSlice.reducer,
+		consultasSlice: consultasSlice.reducer
 	},
 });

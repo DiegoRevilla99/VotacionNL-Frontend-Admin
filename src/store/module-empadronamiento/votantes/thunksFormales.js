@@ -1,10 +1,10 @@
-import { envioLinkAPI, getEleccionAPI } from "../../../module-empadronamiento/helpers/FakeAPI";
+import { envioLinkAPI } from "../../../module-empadronamiento/helpers/FakeAPI";
 import { getStatusEmp } from "../../../module-empadronamiento/helpers/getStatusEmp";
 import { transformDate } from "../../../module-empadronamiento/helpers/transformDate";
 import { getJornadasNoFormalesProvider } from "../../../providers/Micro-NoFormales/providerNoFormales";
 import { getVotantesPorJornadaProvider, postCSVProvider, postVotanteProvider, putVotanteProvider } from "../../../providers/Micro-Votante/providerVotante";
 import { onToastCheckingOperation, onToastErrorOperation, onToastSuccessOperation } from "../../ui/uiSlice";
-import { onCheckingOperation, onErrorOperation, onSuccessOperation, setEleccion, setJornadasFormales, setVotantes, startLoadingEleccion, startLoadingFormales, startLoadingVotantes } from "./EmpFormalesSlice";
+import { onCheckingOperation, onErrorOperation, onSuccessOperation, setJornadasFormales, setVotantes, startLoadingFormales, startLoadingVotantes } from "./EmpFormalesSlice";
 
 export const uploadCSV = (file, funcion = () => { }) => {
 
@@ -179,20 +179,21 @@ export const getJornadasFormales = () => {
 export const getEleccionFormal = () => {
 
     return async (dispatch, getState) => {
-        dispatch(startLoadingEleccion());
-        const { ok, data, errorMessage } = await getEleccionAPI();
-
-        let newData = {
-            ...data.eleccionModel
-            , ...data.configuracionModel,
-        }
-        newData.status = getStatusEmp(newData.inicioEmpadronamiento, newData.finEmpadronamiento)
-        newData.inicioEmpadronamiento = transformDate(newData.inicioEmpadronamiento)
-        newData.finEmpadronamiento = transformDate(newData.finEmpadronamiento)
-
+        dispatch(startLoadingFormales());
+        const { ok, data, errorMessage } = await getJornadasNoFormalesProvider();
+        let newData = data.map((eleccion) => {
+            let ne = {
+                ...eleccion.eleccionModel
+                , ...eleccion.configuracionModel,
+            }
+            ne.status = getStatusEmp(ne.inicioEmpadronamiento, ne.finEmpadronamiento)
+            ne.inicioEmpadronamiento = transformDate(ne.inicioEmpadronamiento)
+            ne.finEmpadronamiento = transformDate(ne.finEmpadronamiento)
+            return ne;
+        })
 
         if (ok) {
-            dispatch(setEleccion({ eleccion: newData }));
+            dispatch(setJornadasFormales({ jornadasFormales: newData }));
         }
     }
 }

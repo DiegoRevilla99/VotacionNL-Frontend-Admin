@@ -53,7 +53,7 @@ const modalResponsive = {
   left: "50%",
   transform: "translate(-47%,-50%)",
   padding: "2rem",
-  height: { xl: "40%", lg: "50%", sm: "60%", xs: "70%" },
+  height: { lg: "300px", xs: "350px" },
   overflowY: "scroll",
 };
 

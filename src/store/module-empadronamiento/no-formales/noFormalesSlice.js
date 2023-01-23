@@ -18,7 +18,7 @@ export const noFormalesSlice = createSlice({
         },
         setJornadasNoFormales: (state, action) => {
             state.isLoadingJornadasNoFormales = false;
-            state.jornadasNoFormales = action.payload.jornadasFormales;
+            state.jornadasNoFormales = action.payload.jornadasNoFormales;
         },
 
         startLoadingVotantes: (state, /* action */) => {

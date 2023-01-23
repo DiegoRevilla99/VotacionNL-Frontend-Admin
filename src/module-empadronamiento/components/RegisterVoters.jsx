@@ -27,6 +27,7 @@ import { ModalAGranel } from "./ModalAGranel";
 import { AddVotante } from "./AddVotante";
 import EditIcon from "@mui/icons-material/Edit";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import BadgeIcon from "@mui/icons-material/Badge";
 import { ModalEditVotante } from "./ModalEditVotante";
 import { setVotanteSelected } from "../../store/module-empadronamiento/formales/EmpFormalesSlice";
 import { useDispatch } from "react-redux";
@@ -58,7 +59,7 @@ const registros = {
   height: "calc(100% - 110px)",
 };
 
-export const RegisterVoters = ({ isLoading, datos }) => {
+export const RegisterVoters = ({ status = "", isLoading, datos }) => {
   const dispatch = useDispatch();
   const [modalVotante, setModalVotante] = useState(false);
   const [modalGranel, setModalGranel] = useState(false);
@@ -125,21 +126,35 @@ export const RegisterVoters = ({ isLoading, datos }) => {
       renderCell: (params) => {
         return (
           <Stack spacing={2} direction="row">
-            <Button
-              variant="outlined"
-              onClick={() => selectedVoter(params.row)}
-              endIcon={<EditIcon />}
-            >
-              Editar
-            </Button>
-            <Button
-              variant="outlined"
-              color="inherit"
-              onClick={() => selectedVoterEnlace(params.row)}
-              endIcon={<AttachEmailIcon />}
-            >
-              Enlace
-            </Button>
+            {status !== "terminado" ? (
+              <>
+                <Button
+                  variant="outlined"
+                  onClick={() => selectedVoter(params.row)}
+                  endIcon={<EditIcon />}
+                >
+                  Editar
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  onClick={() => selectedVoterEnlace(params.row)}
+                  endIcon={<AttachEmailIcon />}
+                >
+                  Enlace
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="outlined"
+                  onClick={() => selectedVoter(params.row)}
+                  endIcon={<BadgeIcon />}
+                >
+                  Ver
+                </Button>
+              </>
+            )}
           </Stack>
         );
       },
@@ -159,12 +174,9 @@ export const RegisterVoters = ({ isLoading, datos }) => {
         }}
       >
         <Box sx={opciones}>
-          {/* <Button variant="contained" endIcon={<DeleteIcon />}>
-            REGISTRAR VOTANTES
-          </Button> */}
           <Box
             sx={{
-              display: "flex",
+              display: status == "terminado" ? "none" : "flex",
               justifyContent: "center",
               width: { xl: "30%", md: "30%", xs: "100%" },
             }}
@@ -224,9 +236,10 @@ export const RegisterVoters = ({ isLoading, datos }) => {
               </Collapse>
             </List>
           </Box>
+
           <Box
             sx={{
-              display: "flex",
+              display: status == "terminado" ? "none" : "flex",
               justifyContent: "space-around",
               alignContent: "center",
               width: { xl: "30%", md: "35%", xs: "100%" },

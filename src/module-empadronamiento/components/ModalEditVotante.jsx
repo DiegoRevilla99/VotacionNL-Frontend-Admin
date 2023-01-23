@@ -63,7 +63,7 @@ const modalResponsive = {
   pl: "3rem",
   pr: "3rem",
   pt: "3rem",
-  height: { xl: "95%", lg: "90%", sm: "97%", xs: "99%" },
+  height: { xl: "70%", lg: "90%", sm: "97%", xs: "99%" },
   overflowY: "scroll",
   alignItems: "start",
 };

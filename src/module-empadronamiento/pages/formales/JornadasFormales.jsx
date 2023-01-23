@@ -19,29 +19,30 @@ import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import { useDispatch, useSelector } from "react-redux";
 import { getJornadasFormales } from "../../../store/module-empadronamiento/formales/thunksFormales";
 
-const datos = [
+/* const datos = [
   {
     id: "JO-EL-GO-OR-20-OAX-2023",
     status: "terminado",
-    inicio: "01/01/2023",
-    fin: "06/01/2023",
-    nombreJornada: "JORNADA ELECTORAL GOBERNADOR ORDINARIA 2023",
+    inicioEmpadronamiento: "01/01/2023",
+    finEmpadronamiento: "06/01/2023",
+    nombreEleccion: "JORNADA ELECTORAL GOBERNADOR ORDINARIA 2023",
   },
   {
     id: "GO-OR-20-OAX-2023",
     status: "activo",
-    inicio: "09/01/2023",
-    fin: "20/01/2023",
-    nombreJornada: "JORNADA ELECTORAL GOBERNADOR ORDINARIA 2023",
+    inicioEmpadronamiento: "09/01/2023",
+    finEmpadronamiento: "20/01/2023",
+    nombreEleccion: "JORNADA ELECTORAL GOBERNADOR ORDINARIA 2023",
   },
   {
     id: "G-OR-20-OAX-2023",
     status: "noiniciada",
-    inicio: "01/02/2023",
-    fin: "10/02/2023",
-    nombreJornada: "JORNADA ELECTORAL GOBERNADOR ORDINARIA 2023",
+    inicioEmpadronamiento: "01/02/2023",
+    finEmpadronamiento: "10/02/2023",
+    nombreEleccion: "JORNADA ELECTORAL GOBERNADOR ORDINARIA 2023",
   },
-];
+]; */
+
 export const JornadasFormales = () => {
   let location = useLocation();
   const navigate = useNavigate();
@@ -55,15 +56,14 @@ export const JornadasFormales = () => {
   }, []);
 
   const columns = [
-    // { field: "id", headerName: "ID", flex: 2, sortable: true },
     {
-      field: "nombreJornada",
-      headerName: "Jornada",
+      field: "nombreEleccion",
+      headerName: "Elección",
       flex: 4,
       sortable: true,
     },
-    { field: "inicio", headerName: "Inicio", flex: 2 },
-    { field: "fin", headerName: "Fin", flex: 2 },
+    { field: "inicioEmpadronamiento", headerName: "Inicio", flex: 2 },
+    { field: "finEmpadronamiento", headerName: "Fin", flex: 2 },
     {
       field: "status",
       headerName: "Estado",
@@ -127,21 +127,23 @@ export const JornadasFormales = () => {
             <Button
               disabled={row.status === "noiniciada"}
               variant="outlined"
-              onClick={goTo}
+              onClick={(e) => goTo(row.idEleccion)}
               startIcon={<BallotIcon />}
             >
               {(row.status === "activo") | (row.status === "noiniciada")
                 ? "REALIZAR"
-                : row.status === "terminado" && "VISUALIZAR "}
+                : row.status === "terminado" && "VISUALIZAR"}
             </Button>
           </Stack>
         );
       },
     },
   ];
-  const goTo = () => {
-    navigate("JO-EL-GO-OR-20-OAX-2022");
+
+  const goTo = (id) => {
+    navigate(id);
   };
+
   return (
     <>
       <Box
@@ -181,7 +183,12 @@ export const JornadasFormales = () => {
             height: "calc(100% - 100px)",
           }}
         >
-          <GeneralTable data={datos} columns={columns} idName={"id"} />
+          <GeneralTable
+            loading={isLoadingFormales}
+            data={jornadasFormales}
+            columns={columns}
+            idName={"idEleccion"}
+          />
         </Box>
       </Box>
     </>

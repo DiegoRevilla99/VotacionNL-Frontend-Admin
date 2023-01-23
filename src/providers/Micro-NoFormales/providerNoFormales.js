@@ -2,7 +2,7 @@ import { JornadaNoFormalApi } from "../../module-jornada/api/JornadaNoFormalApi"
 
 
 export const getJornadasNoFormalesProvider = async () => {
-    return JornadaNoFormalApi.get(`elecciones`).then((response) => {
+    return JornadaNoFormalApi.get(`informacion`).then((response) => {
         console.log(response)
         return { ok: true, data: response.data, errorMessage: "" };
     }).catch((error) => {

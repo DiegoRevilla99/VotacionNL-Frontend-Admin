@@ -4,11 +4,9 @@ export const empFormalesSlice = createSlice({
     name: 'empFormales',
     initialState: {
         jornadasFormales: [],
-        eleccion: {},
         votantes: [],
         votanteSelected: {},
         isLoadingFormales: false,
-        isLoadingEleccion: false,
         isLoadingVotantes: false,
         status: "off",
         errorMessage: "",
@@ -22,13 +20,6 @@ export const empFormalesSlice = createSlice({
         setJornadasFormales: (state, action) => {
             state.isLoadingFormales = false;
             state.jornadasFormales = action.payload.jornadasFormales;
-        },
-        startLoadingEleccion: (state, /* action */) => {
-            state.isLoadingEleccion = true;
-        },
-        setEleccion: (state, action) => {
-            state.isLoadingEleccion = false;
-            state.eleccion = action.payload.eleccion;
         },
 
         startLoadingVotantes: (state, /* action */) => {
@@ -64,4 +55,4 @@ export const empFormalesSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { setEleccion, startLoadingEleccion, setVotanteSelected, startLoadingFormales, setJornadasFormales, startLoadingVotantes, setVotantes, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation } = empFormalesSlice.actions;
+export const { setVotanteSelected, startLoadingFormales, setJornadasFormales, startLoadingVotantes, setVotantes, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation } = empFormalesSlice.actions;
