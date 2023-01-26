@@ -1,12 +1,9 @@
-
 export const getStatusEmp = (inicio, fin) => {
+	const newInicio = new Date(inicio);
+	const newFin = new Date(fin);
+	const now = new Date();
 
-    const newInicio = new Date(inicio);
-    const newFin = new Date(fin);
-    const now = new Date();
-
-
-    /*  if (now >= newInicio && now < newFin) {
+	/*  if (now >= newInicio && now < newFin) {
          return "activo"
      }
  
@@ -18,7 +15,5 @@ export const getStatusEmp = (inicio, fin) => {
          return "terminado"
      } */
 
-
-    return "activo";
-
-}
+	return "activo";
+};

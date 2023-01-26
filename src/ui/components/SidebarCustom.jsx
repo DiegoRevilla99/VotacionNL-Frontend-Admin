@@ -120,6 +120,7 @@ export const SidebarCustom = ({ selected, setSelected }) => {
 								icon={<BarChartOutlinedIcon />}
 								selected={selected}
 								setSelected={setSelected}
+								to={"jornada/inicio"}
 							></Item>
 							<DividerItem isCollapsed={isCollapsed} title={"Otros"}></DividerItem>
 							<Item
