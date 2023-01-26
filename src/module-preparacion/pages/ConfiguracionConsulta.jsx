@@ -227,7 +227,7 @@ export const ConfiguracionConsulta = () => {
 									<Grid item xs={12} md={6} mt="0.5rem">
 										<DateFieldWithTitle
 											label={
-												"FECHA Y HORA DE FINZALIZACIÓN DE RECEPCIÓN DE EMPADRONAMIENTO"
+												"FECHA Y HORA DE FINALIZACIÓN DE RECEPCIÓN DE EMPADRONAMIENTO"
 											}
 											name={"finEmpadronamiento"}
 											value={values.finEmpadronamiento}
@@ -256,7 +256,7 @@ export const ConfiguracionConsulta = () => {
 									<Grid item xs={12} md={6} mt="0.5rem">
 										<DateFieldWithTitle
 											label={
-												"FECHA Y HORA DE FINZALIZACIÓN DE RECEPCIÓN DE VOTACIÓN"
+												"FECHA Y HORA DE FINALIZACIÓN DE RECEPCIÓN DE VOTACIÓN"
 											}
 											name={"finRecepcionVotos"}
 											value={values.finRecepcionVotos}
@@ -285,7 +285,7 @@ export const ConfiguracionConsulta = () => {
 									<Grid item xs={12} md={6} mt="0.5rem">
 										<DateFieldWithTitle
 											label={
-												"FECHA Y HORA DE FINZALIZACIÓN DE ASIGNACIÓN DE CONTRASEÑAS"
+												"FECHA Y HORA DE FINALIZACIÓN DE ASIGNACIÓN DE CONTRASEÑAS"
 											}
 											name={"finAsignacionContrasenia"}
 											value={values.finAsignacionContrasenia}

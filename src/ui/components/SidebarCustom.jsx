@@ -12,9 +12,8 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { Item } from "./Item";
 import { DividerItem } from "./DividerItem";
 
-export const SidebarCustom = () => {
+export const SidebarCustom = ({ selected, setSelected }) => {
 	const [isCollapsed, setisCollapsed] = useState(false);
-	const [selected, setSelected] = useState("Inicio");
 	console.log(selected);
 
 	const getSize = () => {

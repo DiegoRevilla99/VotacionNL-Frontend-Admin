@@ -19,17 +19,17 @@ export const HomePreparacion = () => {
 	};
 	return (
 		<>
-			<div>
+			{/* <div>
 				<Box ml={3}>
 					<h3>PREPARACIÓN</h3>
 				</Box>
 				<hr />
-			</div>
+			</div> */}
 
 			<div align="center">
 				<Box mt={7}>
 					<Box
-						p={6}
+						p={5}
 						sx={{
 							backgroundColor: "#FFFFFF",
 							borderRadius: 10,

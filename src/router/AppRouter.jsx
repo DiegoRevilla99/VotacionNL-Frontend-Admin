@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthRoutes } from "../module-auth/routes/AuthRoutes";
+// import { VisualizadorDePDF } from "../module-jornada/pages/VisualizadorDePDF";
 
 import { AdminRoutes } from "../routes/AdminRoutes";
 
@@ -24,6 +25,8 @@ export const AppRouter = () => {
 					</PrivateRoute>
 				}
 			></Route>
+
+			{/* <Route path={"/verPDF/reporteInicial/*"} element={<VisualizadorDePDF />} /> */}
 		</Routes>
 	);
 };

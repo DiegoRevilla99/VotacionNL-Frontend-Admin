@@ -21,7 +21,7 @@ export const GeneralTable = ({ data = [], columns, idName }) => {
 						justifyContent: "center",
 					},
 					"& .MuiDataGrid-cell--textLeft": {
-						justifyContent: "center",
+						justifyContent: "left",
 						align: "center",
 					},
 					"& .MuiDataGrid-cell": {
