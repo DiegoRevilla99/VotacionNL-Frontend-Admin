@@ -13,6 +13,7 @@ import {
 export const VerJornadasFormales = () => {
 	const navigate = useNavigate();
 	const { jornadasData, status } = useJornadaStore();
+	console.log(jornadasData);
 	const dispatch = useDispatch();
 	const columns = [
 		{ field: "nombreJornada", headerName: "Título de la jornada formal", flex: 10 },

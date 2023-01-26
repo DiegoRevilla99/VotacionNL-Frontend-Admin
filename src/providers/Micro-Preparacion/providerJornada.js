@@ -15,7 +15,8 @@ export const getJornadas = async () => {
 export const getJornadasFormales = async () => {
 	try {
 		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/formales
-		const { data } = await jornadasAPI.get("jornada/electoral/formales");
+		const { data } = await jornadasAPI.get("jornada/electoral/");
+		console.log("JORNADA", data);
 		return { ok: true, data: data.data, errorMessage: "" };
 	} catch (error) {
 		return { ok: false, errorMessage: error.message };
