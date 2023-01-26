@@ -179,54 +179,62 @@ export const ModalEditVotante = ({
         <Typography textAlign="center" sx={{ fontWeight: "bold", mb: 3 }}>
           INFORMACIÓN DEL VOTANTE
         </Typography>
-        <Box
-          sx={{
-            width: "100%",
-            p: 4,
-            border: "1px solid rgba(0,0,0,0.4)",
-            borderRadius: "15px",
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "wrap",
-            justifyContent: "space-between",
-          }}
-        >
-          <Box display="flex" flexDirection="row">
-            <Typography sx={{ fontWeight: "bold", mr: 1 }}>CURP:</Typography>
-            <Typography>{votanteSelected.curp}</Typography>
+        {votanteSelected && (
+          <Box
+            sx={{
+              width: "100%",
+              p: 4,
+              border: "1px solid rgba(0,0,0,0.4)",
+              borderRadius: "15px",
+              display: "flex",
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box display="flex" flexDirection="row">
+              <Typography sx={{ fontWeight: "bold", mr: 1 }}>CURP:</Typography>
+              <Typography>{votanteSelected.curp}</Typography>
+            </Box>
+            <Box display="flex" flexDirection="row">
+              <Typography sx={{ fontWeight: "bold", mr: 1 }}>
+                Nombre:{" "}
+              </Typography>
+              <Typography>
+                {votanteSelected.nombreVotante +
+                  " " +
+                  votanteSelected.apellidoPVotante +
+                  " " +
+                  votanteSelected.apellidoMVotante}
+              </Typography>
+            </Box>
+            <Box display="flex" flexDirection="row">
+              <Typography sx={{ fontWeight: "bold", mr: 1 }}>
+                Fecha nacimiento:
+              </Typography>
+              <Typography>
+                {transformDate(votanteSelected.fechaNacimiento)}
+              </Typography>
+            </Box>
+            <Box display="flex" flexDirection="row">
+              <Typography sx={{ fontWeight: "bold", mr: 1 }}>
+                Genero:
+              </Typography>
+              <Typography>{votanteSelected.genero}</Typography>
+            </Box>
           </Box>
-          <Box display="flex" flexDirection="row">
-            <Typography sx={{ fontWeight: "bold", mr: 1 }}>Nombre: </Typography>
-            <Typography>
-              {votanteSelected.nombreVotante +
-                " " +
-                votanteSelected.apellidoPVotante +
-                " " +
-                votanteSelected.apellidoMVotante}
-            </Typography>
-          </Box>
-          <Box display="flex" flexDirection="row">
-            <Typography sx={{ fontWeight: "bold", mr: 1 }}>
-              Fecha nacimiento:
-            </Typography>
-            <Typography>
-              {transformDate(votanteSelected.fechaNacimiento)}
-            </Typography>
-          </Box>
-          <Box display="flex" flexDirection="row">
-            <Typography sx={{ fontWeight: "bold", mr: 1 }}>Genero:</Typography>
-            <Typography>{votanteSelected.genero}</Typography>
-          </Box>
-        </Box>
+        )}
       </Box>
 
       <Box width="100%">
-        <FormContacto
-          backbtn={false}
-          data={{ votanteModel: votanteSelected }}
-          onBack={handleBack}
-          onNext={finalizar}
-        ></FormContacto>
+        {votanteSelected && (
+          <FormContacto
+            backbtn={false}
+            data={{ votanteModel: votanteSelected }}
+            onBack={handleBack}
+            onNext={finalizar}
+          ></FormContacto>
+        )}
       </Box>
 
       <br />

@@ -1,10 +1,11 @@
 import { envioLinkAPI, getEleccionAPI } from "../../../module-empadronamiento/helpers/FakeAPI";
 import { getStatusEmp } from "../../../module-empadronamiento/helpers/getStatusEmp";
 import { transformDate } from "../../../module-empadronamiento/helpers/transformDate";
+import { getJornadasFormalesProvider } from "../../../providers/Micro-JornadasElectorales/providerFormales";
 import { getJornadasNoFormalesProvider } from "../../../providers/Micro-NoFormales/providerNoFormales";
-import { getVotantesPorJornadaProvider, postCSVProvider, postVotanteProvider, putVotanteProvider } from "../../../providers/Micro-Votante/providerVotante";
+import { getVotanteDireccionProvider, getVotantesPorJornadaProvider, postCSVProvider, postVotanteProvider, putVotanteProvider } from "../../../providers/Micro-Votante/providerVotante";
 import { onToastCheckingOperation, onToastErrorOperation, onToastSuccessOperation } from "../../ui/uiSlice";
-import { onCheckingOperation, onErrorOperation, onSuccessOperation, setEleccion, setJornadasFormales, setVotantes, startLoadingEleccion, startLoadingFormales, startLoadingVotantes } from "./EmpFormalesSlice";
+import { onCheckingOperation, onErrorOperation, onSuccessOperation, setEleccion, setJornadasFormales, setVotantes, setVotanteSelected, startLoadingEleccion, startLoadingFormales, startLoadingVotantes } from "./EmpFormalesSlice";
 
 export const uploadCSV = (file, funcion = () => { }) => {
 
@@ -89,12 +90,16 @@ export const putVotante = (curp, info, funcion = () => { }) => {
 
 
 export const getVotantesbyJornada = (idJornada = "") => {
-    // console.log("get votante");
+    console.log("get votante");
     return async (dispatch, getState) => {
+        dispatch(setVotantes({ votantes: null }));
         dispatch(startLoadingVotantes());
         const { ok, data, errorMessage } = await getVotantesPorJornadaProvider(idJornada);
+        console.log(data)
         if (ok) {
             dispatch(setVotantes({ votantes: data }));
+        } else {
+            dispatch(setVotantes({ votantes: null }));
         }
     }
 }
@@ -157,7 +162,7 @@ export const getJornadasFormales = () => {
 
     return async (dispatch, getState) => {
         dispatch(startLoadingFormales());
-        const { ok, data, errorMessage } = await getJornadasNoFormalesProvider();
+        const { ok, data, errorMessage } = await getJornadasFormalesProvider();
         let newData = data.map((eleccion) => {
             let ne = {
                 ...eleccion.eleccionModel
@@ -193,6 +198,20 @@ export const getEleccionFormal = () => {
 
         if (ok) {
             dispatch(setEleccion({ eleccion: newData }));
+        }
+    }
+}
+
+
+export const getVotanteDireccion = (idVotante) => {
+    return async (dispatch, getState) => {
+        dispatch(setVotanteSelected({ votanteSelected: null }));
+        const { ok, data, errorMessage } = await getVotanteDireccionProvider(idVotante);
+        let newData = { ...data.votanteModel, ...data.direccionModel }
+        if (ok) {
+            dispatch(setVotanteSelected({ votanteSelected: newData }));
+        } else {
+            dispatch(setVotanteSelected({ votanteSelected: null }));
         }
     }
 }

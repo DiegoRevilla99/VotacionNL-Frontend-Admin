@@ -17,8 +17,12 @@ export const BreadCrumbsCustom = ({ routes = [], currentRoute = "" }) => {
   const breadcrumbs = routes.map((route) => (
     <Link key={route.name} underline="hover" to={route.url}>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
-        {route.name === "INICIO" && <HomeIcon sx={{ mr: 0.5 }} />}
-        {route.name}
+        {route.name === "INICIO" && (
+          <HomeIcon fontSize="small" sx={{ mr: 0.5 }} />
+        )}
+        <Typography sx={{ fontSize: { md: "15px", xs: "10px" } }}>
+          {route.name}
+        </Typography>
       </Box>
     </Link>
   ));
@@ -28,6 +32,8 @@ export const BreadCrumbsCustom = ({ routes = [], currentRoute = "" }) => {
       sx={{
         display: "flex",
         alignItems: "center",
+        justifyContent: "center",
+        pl: 1,
         width: "100%",
         mb: 2,
         mt: { xl: 2, md: 0, xs: 0 },
@@ -39,7 +45,7 @@ export const BreadCrumbsCustom = ({ routes = [], currentRoute = "" }) => {
           sx={{
             fontWeight: "",
             color: "#511079",
-            fontSize: { md: "20px", xs: "12px" },
+            fontSize: { md: "16px", xs: "12px" },
             fontFamily: "'Kanit', sans-serif",
           }}
           key="3"

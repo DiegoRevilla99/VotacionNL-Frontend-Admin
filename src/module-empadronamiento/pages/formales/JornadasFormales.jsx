@@ -57,8 +57,8 @@ export const JornadasFormales = () => {
 
   const columns = [
     {
-      field: "nombreEleccion",
-      headerName: "Elección",
+      field: "nombreJornada",
+      headerName: "Jornada",
       flex: 4,
       sortable: true,
     },
@@ -127,7 +127,7 @@ export const JornadasFormales = () => {
             <Button
               disabled={row.status === "noiniciada"}
               variant="outlined"
-              onClick={(e) => goTo(row.idEleccion)}
+              onClick={(e) => goTo(row.idJornada)}
               startIcon={<BallotIcon />}
             >
               {(row.status === "activo") | (row.status === "noiniciada")
@@ -187,7 +187,7 @@ export const JornadasFormales = () => {
             loading={isLoadingFormales}
             data={jornadasFormales}
             columns={columns}
-            idName={"idEleccion"}
+            idName={"idJornada"}
           />
         </Box>
       </Box>

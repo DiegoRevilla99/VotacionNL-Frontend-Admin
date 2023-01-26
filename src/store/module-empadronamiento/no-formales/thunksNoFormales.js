@@ -1,7 +1,7 @@
 import { getEleccionAPI } from "../../../module-empadronamiento/helpers/FakeAPI";
 import { getStatusEmp } from "../../../module-empadronamiento/helpers/getStatusEmp";
 import { transformDate } from "../../../module-empadronamiento/helpers/transformDate";
-import { getJornadasNoFormalesProvider } from "../../../providers/Micro-NoFormales/providerNoFormales";
+import { getEleccionConfigByIdProvider, getJornadasNoFormalesProvider } from "../../../providers/Micro-NoFormales/providerNoFormales";
 import { getVotantesPorJornadaProvider } from "../../../providers/Micro-Votante/providerVotante";
 import { onToastCheckingOperation, onToastErrorOperation, onToastSuccessOperation } from "../../ui/uiSlice";
 import { setEleccion, setJornadasNoFormales, setVotantes, startLoadingEleccion, startLoadingJornadasNoFormales, startLoadingVotantes } from "./noFormalesSlice";
@@ -32,20 +32,24 @@ export const getJornadasNoFormales = () => {
 export const getVotantesbyJornada = (idJornada = "") => {
     console.log("get votante en no formales");
     return async (dispatch, getState) => {
+        dispatch(setVotantes({ votantes: null }));
         dispatch(startLoadingVotantes());
         const { ok, data, errorMessage } = await getVotantesPorJornadaProvider(idJornada);
         if (ok) {
             dispatch(setVotantes({ votantes: data }));
+        } else {
+            dispatch(setVotantes({ votantes: null }));
         }
     }
 }
 
 //Cambiar provider
 //Get Eleccion con su config
-export const getEleccionFormal = () => {
+export const getEleccionFormal = (idEleccion) => {
+
     return async (dispatch, getState) => {
         dispatch(startLoadingEleccion());
-        const { ok, data, errorMessage } = await getEleccionAPI();
+        const { ok, data, errorMessage } = await getEleccionConfigByIdProvider(idEleccion);
 
         let newData = {
             ...data.eleccionModel

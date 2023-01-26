@@ -119,7 +119,7 @@ export const ModalLinkPersonal = ({
       <Box width="100%">
         <Typography textAlign="center" sx={{}}>
           Al "Aceptar" se estará enviando al correo electronico {"' "}
-          {votanteSelected.correoVotante} {" ' "}el token para que inicie
+          {votanteSelected?.correoVotante} {" ' "}el token para que inicie
           sesión.
         </Typography>
 

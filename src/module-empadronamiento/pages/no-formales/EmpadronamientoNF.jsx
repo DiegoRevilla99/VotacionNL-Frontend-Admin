@@ -1,4 +1,4 @@
-import { CircularProgress, Stack } from "@mui/material";
+import { CircularProgress, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -46,7 +46,7 @@ export const EmpadronamientoNF = () => {
               url: "/empadronamiento/noformal",
             },
           ]}
-          currentRoute={"JORNADA ELECTORAL GOBERNADOR ORDINARIA 2022"}
+          currentRoute={!isLoadingEleccion ? eleccion.nombreEleccion : "..."}
         ></BreadCrumbsCustom>
 
         {isLoadingEleccion ? (
@@ -60,11 +60,15 @@ export const EmpadronamientoNF = () => {
           </Stack>
         ) : (
           <Box sx={{ pl: 2, pr: 2, mt: 0, width: "100%", height: "100%" }}>
-            <RegisterVoters
-              status={eleccion.status}
-              isLoading={isLoadingVotantes}
-              datos={votantes}
-            ></RegisterVoters>
+            {votantes ? (
+              <RegisterVoters
+                status={eleccion.status}
+                isLoading={isLoadingVotantes}
+                datos={votantes}
+              ></RegisterVoters>
+            ) : (
+              <Typography></Typography>
+            )}
           </Box>
         )}
       </Box>

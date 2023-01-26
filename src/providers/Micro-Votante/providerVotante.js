@@ -41,11 +41,23 @@ export const putVotanteProvider = async (curp, data) => {
 */
 export const getVotantesPorJornadaProvider = async (idJornada) => {
     return VotanteApi.get(``).then((response) => {
+        console.log("Response desde provider")
         console.log(response)
         return { ok: true, data: response.data.data, errorMessage: "" };
     }).catch((error) => {
         console.log(error);
         return { ok: false, data: "", errorMessage: error.message };
     })
-
 }
+
+export const getVotanteDireccionProvider = async (idVotante) => {
+    return VotanteApi.get(`votante/${idVotante}`).then((response) => {
+        console.log("Votante con direccion")
+        console.log(response)
+        return { ok: true, data: response.data.data, errorMessage: "" };
+    }).catch((error) => {
+        console.log(error);
+        return { ok: false, data: "", errorMessage: error.message };
+    })
+}
+

@@ -5,7 +5,7 @@ export const empFormalesSlice = createSlice({
     initialState: {
         jornadasFormales: [],
         eleccion: {},
-        votantes: [],
+        votantes: null,
         votanteSelected: {},
         isLoadingFormales: false,
         isLoadingEleccion: false,

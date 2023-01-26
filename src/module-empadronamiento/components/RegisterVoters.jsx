@@ -3,12 +3,15 @@ import {
   Box,
   Button,
   IconButton,
+  InputAdornment,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Stack,
+  TextField,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 
 import React, { useState } from "react";
@@ -33,6 +36,10 @@ import { setVotanteSelected } from "../../store/module-empadronamiento/formales/
 import { useDispatch } from "react-redux";
 import { ModalLink } from "./ModalLink";
 import { ModalLinkPersonal } from "./ModalLinkPersonal";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
+import { useTheme } from "@mui/material/styles";
+import { ModalInfo } from "./ModalInfo";
+import { getVotanteDireccion } from "../../store/module-empadronamiento/formales/thunksFormales";
 
 const opciones = {
   display: "flex",
@@ -51,22 +58,28 @@ const registros = {
   justifyContent: "center",
   alignItems: "center",
   background: "#fff",
-  boxShadow: 1,
+  boxShadow: 2,
   borderRadius: "20px",
   mt: 0,
   width: "100%",
-  p: 2,
+  pl: 1,
+  pr: 1,
   height: "calc(100% - 110px)",
 };
 
 export const RegisterVoters = ({ status = "", isLoading, datos }) => {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.only("xs"));
   const dispatch = useDispatch();
   const [modalVotante, setModalVotante] = useState(false);
   const [modalGranel, setModalGranel] = useState(false);
   const [modalEdit, setModalEdit] = useState(false);
   const [modalEnlace, setModalEnlace] = useState(false);
   const [modalEnlacePersonal, setModalEnlacePersonal] = useState(false);
+  const [modalInfoV, setModalInfoV] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [buscador, setBuscador] = useState("");
+  const [dataSearch, setDataSearch] = useState(datos);
 
   const abrirCerrarModalAddVotante = () => {
     setModalVotante(!modalVotante);
@@ -85,10 +98,18 @@ export const RegisterVoters = ({ status = "", isLoading, datos }) => {
   const abrirCerrarModalEnlacePersonal = () => {
     setModalEnlacePersonal(!modalEnlacePersonal);
   };
+  const abrirCerrarModalInfoV = () => {
+    setModalInfoV(!modalInfoV);
+  };
 
   const selectedVoter = (votante = {}) => {
     dispatch(setVotanteSelected({ votanteSelected: votante }));
     abrirCerrarModalEdit();
+  };
+
+  const selectedVoterInfo = (votante = {}) => {
+    dispatch(getVotanteDireccion(votante.curp));
+    abrirCerrarModalInfoV();
   };
 
   const selectedVoterEnlace = (votante = {}) => {
@@ -110,17 +131,71 @@ export const RegisterVoters = ({ status = "", isLoading, datos }) => {
     abrirCerrarModalAddVotante();
   };
 
+  const handleSearch = (event) => {
+    setBuscador(event.target.value);
+    searching(datos, event.target.value);
+  };
+
+  const searching = (data, buscador) => {
+    const newData = data.filter((votante) => {
+      if (votante.curp.toUpperCase().includes(buscador.toUpperCase()))
+        return votante;
+      if (votante.nombreVotante.toUpperCase().includes(buscador.toUpperCase()))
+        return votante;
+      if (
+        votante.apellidoMVotante?.toUpperCase().includes(buscador.toUpperCase())
+      )
+        return votante;
+      if (
+        votante.apellidoPVotante?.toUpperCase().includes(buscador.toUpperCase())
+      )
+        return votante;
+    });
+    setDataSearch(newData);
+  };
+
   const columns = [
-    { field: "curp", headerName: "CURP", flex: 3 },
+    { field: "curp", headerName: "CURP", flex: 4 },
+    { field: "nombreVotante", headerName: "NOMBRE", flex: 3 },
+    { field: "apellidoPVotante", headerName: "PRIMER AP.", flex: 3 },
+    { field: "apellidoMVotante", headerName: "SEGUNDO AP.", flex: 3 },
+    // {
+    //   field: "nombreCompleto",
+    //   headerName: "Nombre completo",
+    //   flex: 4,
+    //   sortable: false,
+    //   disableColumnMenu: true,
+    //   renderCell: (params) => {
+    //     // return <Typography>Sin enviar</Typography>;
+    //     // return <Typography>Envio exitoso</Typography>;
+    //     return (
+    //       <Typography sx={{ fontSize: { xl: "15px", xs: "12px" } }}>
+    //         {params.row.nombreVotante +
+    //           " " +
+    //           params.row.apellidoPVotante +
+    //           " " +
+    //           params.row.apellidoMVotante}
+    //       </Typography>
+    //     );
+    //   },
+    // },
+
     {
-      field: "nombreVotante",
-      headerName: "Nombre",
-      flex: 4,
+      field: "status",
+      headerName: "ESTADO CORREO",
+      flex: 3,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => {
+        // return <Typography>Sin enviar</Typography>;
+        // return <Typography>Envio exitoso</Typography>;
+        return <Typography>Envio fallido</Typography>;
+      },
     },
     {
       field: "Acciones",
-      headerName: "Acciones",
-      flex: 4,
+      headerName: "ACCIONES",
+      flex: 5,
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) => {
@@ -141,14 +216,14 @@ export const RegisterVoters = ({ status = "", isLoading, datos }) => {
                   onClick={() => selectedVoterEnlace(params.row)}
                   endIcon={<AttachEmailIcon />}
                 >
-                  Enlace
+                  Enviar
                 </Button>
               </>
             ) : (
               <>
                 <Button
                   variant="outlined"
-                  onClick={() => selectedVoter(params.row)}
+                  onClick={() => selectedVoterInfo(params.row)}
                   endIcon={<BadgeIcon />}
                 >
                   Ver
@@ -247,6 +322,7 @@ export const RegisterVoters = ({ status = "", isLoading, datos }) => {
             }}
           >
             <Button
+              disabled={datos?.length === 0}
               variant="contained"
               color="info"
               onClick={abrirCerrarModalEnlace}
@@ -267,12 +343,59 @@ export const RegisterVoters = ({ status = "", isLoading, datos }) => {
         </Box>
 
         <Box sx={registros}>
-          <Typography sx={{ fontWeight: "bold", mt: 1, mb: { xl: 5, md: 2 } }}>
-            VOTANTES REGISTRADOS
-          </Typography>
+          <Box
+            sx={{
+              width: "90%",
+              mt: 2,
+              mb: 3,
+              height: "70px",
+              display: "flex",
+              flexDirection: { md: "row", xs: "column" },
+              alignItems: "center",
+              alignContent: "center",
+              justifyItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography
+              color="primary"
+              sx={{
+                display: "flex",
+
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: "bold",
+                width: "calc(100% - 250px)",
+                height: "100%",
+                fontSize: { lg: "22px", sm: "15px" },
+              }}
+            >
+              VOTANTES REGISTRADOS
+            </Typography>
+            <TextField
+              size="small"
+              value={buscador}
+              onChange={handleSearch}
+              sx={{
+                width: "250px",
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="end">
+                    <PersonSearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+              label="Buscador"
+              variant="outlined"
+              name="nombreVotante"
+              id="nombreVotante"
+            ></TextField>
+          </Box>
+
           <GeneralTable
             loading={isLoading}
-            data={datos}
+            data={dataSearch}
             columns={columns}
             idName={"curp"}
           />
@@ -298,6 +421,8 @@ export const RegisterVoters = ({ status = "", isLoading, datos }) => {
         isOpen={modalEnlacePersonal}
         abrirCerrarModal={abrirCerrarModalEnlacePersonal}
       />
+
+      <ModalInfo isOpen={modalInfoV} abrirCerrarModal={abrirCerrarModalInfoV} />
     </>
   );
 };

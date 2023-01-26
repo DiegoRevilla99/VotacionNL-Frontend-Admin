@@ -119,7 +119,7 @@ export const ModalAGranel = ({
             className={styles.textField}
           ></TextField>
           <IconButton
-            disabled={status == "checking"}
+            disabled={status === "checking"}
             color="primary"
             aria-label="upload picture"
             component="label"
@@ -141,8 +141,7 @@ export const ModalAGranel = ({
         <br />
         <Button
           disabled={
-            (status == "checking") |
-            (archivo.name === "Sin Archivo seleccionado")
+            status === "checking" || archivo.name === "Sin Archivo seleccionado"
           }
           type="submit"
           onClick={uploadFile}

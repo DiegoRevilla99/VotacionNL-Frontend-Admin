@@ -25,6 +25,18 @@ export const getConsultasCiudadanasConfig = async () => {
 	}
 };
 
+export const getConsultaConfigbyID = async (idJornada) => {
+
+	try {
+		const { data } = await consultasAPI.get(`jornada/consulta/${idJornada}/informacion`);
+
+		return { ok: true, data: data, errorMessage: "" };
+	} catch (error) {
+		console.log(error);
+		return { ok: false, errorMessage: error.message };
+	}
+};
+
 export const createConsultaCiudadana = async (titulo, entidad) => {
 	// const id = "JEO-JUN23-GOB" + Math.floor(Math.random() * 10000);
 	try {
