@@ -2,13 +2,14 @@ import { Button, Stack } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import BallotIcon from "@mui/icons-material/Ballot";
 import SettingsIcon from "@mui/icons-material/Settings";
-import React from "react";
+import React, { useEffect } from "react";
 import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
 
-export const GeneralTable = ({ data = [], columns, idName }) => {
+export const GeneralTable = ({ data = [], columns, idName, loading = false }) => {
 	return (
 		<div style={{ height: "100%", width: "100%" }}>
 			<DataGrid
+				loading={loading}
 				getRowId={(row) => row[idName]}
 				disableSelectionOnClick
 				rows={data}
@@ -21,7 +22,7 @@ export const GeneralTable = ({ data = [], columns, idName }) => {
 						justifyContent: "center",
 					},
 					"& .MuiDataGrid-cell--textLeft": {
-						justifyContent: "left",
+						justifyContent: "center",
 						align: "center",
 					},
 					"& .MuiDataGrid-cell": {

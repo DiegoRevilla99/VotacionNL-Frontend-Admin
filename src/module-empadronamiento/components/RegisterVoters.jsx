@@ -3,12 +3,15 @@ import {
   Box,
   Button,
   IconButton,
+  InputAdornment,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Stack,
+  TextField,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 
 import React, { useState } from "react";
@@ -19,52 +22,29 @@ import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import ReportIcon from "@mui/icons-material/Report";
 import SendIcon from "@mui/icons-material/Send";
+import AttachEmailIcon from "@mui/icons-material/AttachEmail";
 import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
 import { GeneralTable } from "../../module-preparacion/components/GeneralTable";
 import { ModalVotante } from "./ModalVotante";
 import { ModalAGranel } from "./ModalAGranel";
 import { AddVotante } from "./AddVotante";
-const datos = [
-  {
-    id: "1",
-    informacion: "Laura Yessenia Sanchez Lopez",
-  },
-  {
-    id: "2",
-    informacion: "Jose Antonio Diego Revilla",
-  },
-  {
-    id: "3",
-    informacion: "Kevin Edilberto Chavez Sanchez",
-  },
-];
-const columns = [
-  { field: "id", headerName: "ID", flex: 2 },
-  {
-    field: "informacion",
-    headerName: "Información",
-    flex: 5,
-  },
-  {
-    field: "Acciones",
-    headerName: "Acciones",
-    flex: 5,
-    sortable: false,
-    disableColumnMenu: true,
-    renderCell: (params) => {
-      return (
-        <Stack spacing={2} direction="row">
-          <Button variant="outlined">ver</Button>
-          <Button variant="outlined">editar</Button>
-        </Stack>
-      );
-    },
-  },
-];
+import EditIcon from "@mui/icons-material/Edit";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import BadgeIcon from "@mui/icons-material/Badge";
+import { ModalEditVotante } from "./ModalEditVotante";
+import { setVotanteSelected } from "../../store/module-empadronamiento/formales/EmpFormalesSlice";
+import { useDispatch } from "react-redux";
+import { ModalLink } from "./ModalLink";
+import { ModalLinkPersonal } from "./ModalLinkPersonal";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
+import { useTheme } from "@mui/material/styles";
+import { ModalInfo } from "./ModalInfo";
+import { getVotanteDireccion } from "../../store/module-empadronamiento/formales/thunksFormales";
+
 const opciones = {
   display: "flex",
   flexDirection: { md: "row", xs: "column" },
-  width: { xl: "95%", md: "100%", xs: "100%" },
+  width: { xl: "85%", md: "95%", xs: "100%" },
   justifyContent: "space-between",
   alignContent: "center",
   alignItems: "center",
@@ -74,22 +54,67 @@ const opciones = {
 };
 const registros = {
   display: "flex",
-  width: "100%",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  background: "#fff",
+  boxShadow: 2,
+  borderRadius: "20px",
   mt: 0,
-  p: 2,
-  height: "100%",
+  width: "100%",
+  pl: 1,
+  pr: 1,
+  height: "calc(100% - 110px)",
 };
 
-export const RegisterVoters = () => {
+export const RegisterVoters = ({ status = "", isLoading, datos }) => {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.only("xs"));
+  const dispatch = useDispatch();
   const [modalVotante, setModalVotante] = useState(false);
   const [modalGranel, setModalGranel] = useState(false);
+  const [modalEdit, setModalEdit] = useState(false);
+  const [modalEnlace, setModalEnlace] = useState(false);
+  const [modalEnlacePersonal, setModalEnlacePersonal] = useState(false);
+  const [modalInfoV, setModalInfoV] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [buscador, setBuscador] = useState("");
+  const [dataSearch, setDataSearch] = useState(datos);
 
   const abrirCerrarModalAddVotante = () => {
     setModalVotante(!modalVotante);
   };
   const abrirCerrarModalGranel = () => {
     setModalGranel(!modalGranel);
+  };
+  const abrirCerrarModalEdit = () => {
+    setModalEdit(!modalEdit);
+  };
+
+  const abrirCerrarModalEnlace = () => {
+    setModalEnlace(!modalEnlace);
+  };
+
+  const abrirCerrarModalEnlacePersonal = () => {
+    setModalEnlacePersonal(!modalEnlacePersonal);
+  };
+  const abrirCerrarModalInfoV = () => {
+    setModalInfoV(!modalInfoV);
+  };
+
+  const selectedVoter = (votante = {}) => {
+    dispatch(setVotanteSelected({ votanteSelected: votante }));
+    abrirCerrarModalEdit();
+  };
+
+  const selectedVoterInfo = (votante = {}) => {
+    dispatch(getVotanteDireccion(votante.curp));
+    abrirCerrarModalInfoV();
+  };
+
+  const selectedVoterEnlace = (votante = {}) => {
+    dispatch(setVotanteSelected({ votanteSelected: votante }));
+    abrirCerrarModalEnlacePersonal();
   };
 
   const handleClick = () => {
@@ -106,28 +131,129 @@ export const RegisterVoters = () => {
     abrirCerrarModalAddVotante();
   };
 
+  const handleSearch = (event) => {
+    setBuscador(event.target.value);
+    searching(datos, event.target.value);
+  };
+
+  const searching = (data, buscador) => {
+    const newData = data.filter((votante) => {
+      if (votante.curp.toUpperCase().includes(buscador.toUpperCase()))
+        return votante;
+      if (votante.nombreVotante.toUpperCase().includes(buscador.toUpperCase()))
+        return votante;
+      if (
+        votante.apellidoMVotante?.toUpperCase().includes(buscador.toUpperCase())
+      )
+        return votante;
+      if (
+        votante.apellidoPVotante?.toUpperCase().includes(buscador.toUpperCase())
+      )
+        return votante;
+    });
+    setDataSearch(newData);
+  };
+
+  const columns = [
+    { field: "curp", headerName: "CURP", flex: 4 },
+    { field: "nombreVotante", headerName: "NOMBRE", flex: 3 },
+    { field: "apellidoPVotante", headerName: "PRIMER AP.", flex: 3 },
+    { field: "apellidoMVotante", headerName: "SEGUNDO AP.", flex: 3 },
+    // {
+    //   field: "nombreCompleto",
+    //   headerName: "Nombre completo",
+    //   flex: 4,
+    //   sortable: false,
+    //   disableColumnMenu: true,
+    //   renderCell: (params) => {
+    //     // return <Typography>Sin enviar</Typography>;
+    //     // return <Typography>Envio exitoso</Typography>;
+    //     return (
+    //       <Typography sx={{ fontSize: { xl: "15px", xs: "12px" } }}>
+    //         {params.row.nombreVotante +
+    //           " " +
+    //           params.row.apellidoPVotante +
+    //           " " +
+    //           params.row.apellidoMVotante}
+    //       </Typography>
+    //     );
+    //   },
+    // },
+
+    {
+      field: "status",
+      headerName: "ESTADO CORREO",
+      flex: 3,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => {
+        // return <Typography>Sin enviar</Typography>;
+        // return <Typography>Envio exitoso</Typography>;
+        return <Typography>Envio fallido</Typography>;
+      },
+    },
+    {
+      field: "Acciones",
+      headerName: "ACCIONES",
+      flex: 5,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => {
+        return (
+          <Stack spacing={2} direction="row">
+            {status !== "terminado" ? (
+              <>
+                <Button
+                  variant="outlined"
+                  onClick={() => selectedVoter(params.row)}
+                  endIcon={<EditIcon />}
+                >
+                  Editar
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  onClick={() => selectedVoterEnlace(params.row)}
+                  endIcon={<AttachEmailIcon />}
+                >
+                  Enviar
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="outlined"
+                  onClick={() => selectedVoterInfo(params.row)}
+                  endIcon={<BadgeIcon />}
+                >
+                  Ver
+                </Button>
+              </>
+            )}
+          </Stack>
+        );
+      },
+    },
+  ];
+
   return (
     <>
       <Box
         sx={{
-          mt: 2,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "start",
           width: "100%",
           height: "100%",
         }}
       >
         <Box sx={opciones}>
-          {/* <Button variant="contained" endIcon={<DeleteIcon />}>
-            REGISTRAR VOTANTES
-          </Button> */}
           <Box
             sx={{
-              display: "flex",
+              display: status == "terminado" ? "none" : "flex",
               justifyContent: "center",
-              width: { xl: "20%", md: "30%", xs: "100%" },
+              width: { xl: "30%", md: "30%", xs: "100%" },
             }}
           >
             <List
@@ -140,7 +266,7 @@ export const RegisterVoters = () => {
             >
               <ListItemButton
                 sx={{
-                  boxShadow: 1,
+                  boxShadow: 0,
                   background: "#F7F6F6",
                   borderRadius: "1px",
                 }}
@@ -185,9 +311,10 @@ export const RegisterVoters = () => {
               </Collapse>
             </List>
           </Box>
+
           <Box
             sx={{
-              display: "flex",
+              display: status == "terminado" ? "none" : "flex",
               justifyContent: "space-around",
               alignContent: "center",
               width: { xl: "30%", md: "35%", xs: "100%" },
@@ -195,13 +322,15 @@ export const RegisterVoters = () => {
             }}
           >
             <Button
-              sx={{ color: "#fff" }}
+              disabled={datos?.length === 0}
               variant="contained"
-              endIcon={<SendIcon />}
+              color="info"
+              onClick={abrirCerrarModalEnlace}
+              endIcon={<AttachEmailIcon />}
             >
-              ENVIAR ENLACE
+              ENVIAR ENLACES
             </Button>
-            <Badge color="warning" badgeContent={99}>
+            {/* <Badge color="warning" badgeContent={99}>
               <Button
                 color="error"
                 variant="contained"
@@ -209,24 +338,91 @@ export const RegisterVoters = () => {
               >
                 NO ENVIADO
               </Button>
-            </Badge>
+            </Badge> */}
           </Box>
         </Box>
-        <Typography sx={{ fontWeight: "bold", mt: { xl: 5, md: 2 } }}>
-          VOTANTES REGISTRADOS
-        </Typography>
+
         <Box sx={registros}>
-          <GeneralTable data={datos} columns={columns} idName={"id"} />
+          <Box
+            sx={{
+              width: "90%",
+              mt: 2,
+              mb: 3,
+              height: "70px",
+              display: "flex",
+              flexDirection: { md: "row", xs: "column" },
+              alignItems: "center",
+              alignContent: "center",
+              justifyItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography
+              color="primary"
+              sx={{
+                display: "flex",
+
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: "bold",
+                width: "calc(100% - 250px)",
+                height: "100%",
+                fontSize: { lg: "22px", sm: "15px" },
+              }}
+            >
+              VOTANTES REGISTRADOS
+            </Typography>
+            <TextField
+              size="small"
+              value={buscador}
+              onChange={handleSearch}
+              sx={{
+                width: "250px",
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="end">
+                    <PersonSearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+              label="Buscador"
+              variant="outlined"
+              name="nombreVotante"
+              id="nombreVotante"
+            ></TextField>
+          </Box>
+
+          <GeneralTable
+            loading={isLoading}
+            data={dataSearch}
+            columns={columns}
+            idName={"curp"}
+          />
         </Box>
       </Box>
       <AddVotante
         isOpen={modalVotante}
         abrirCerrarModal={abrirCerrarModalAddVotante}
       ></AddVotante>
+      <ModalEditVotante
+        isOpen={modalEdit}
+        abrirCerrarModal={abrirCerrarModalEdit}
+      ></ModalEditVotante>
       <ModalAGranel
         isOpen={modalGranel}
         abrirCerrarModal={abrirCerrarModalGranel}
       ></ModalAGranel>
+      <ModalLink
+        isOpen={modalEnlace}
+        abrirCerrarModal={abrirCerrarModalEnlace}
+      />
+      <ModalLinkPersonal
+        isOpen={modalEnlacePersonal}
+        abrirCerrarModal={abrirCerrarModalEnlacePersonal}
+      />
+
+      <ModalInfo isOpen={modalInfoV} abrirCerrarModal={abrirCerrarModalInfoV} />
     </>
   );
 };

@@ -60,7 +60,7 @@ export const CrudJornadaGenerica = () => {
               startIcon={<SettingsIcon />}
               onClick={() => handleConfig(params.id)}
             >
-              Configuraciónnnn
+              Configuración
             </Button>
             <IconButton
               sx={{ color: "#511079" }}

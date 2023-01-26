@@ -307,22 +307,32 @@ export const ModalCoalicion = memo(
                   >
                     {candidatos.map(({ candidatoModel, partidoModels }) => (
                       <PartidoSelect
-                        key={candidatoModel.claveElectoral}
-                        claveElectoral={candidatoModel.claveElectoral}
-                        candidato={candidatoModel.nombreCandidato}
+                        key={candidatoModel?.claveElectoral}
+                        claveElectoral={candidatoModel?.claveElectoral}
+                        candidato={candidatoModel?.nombreCandidato}
                         partidos={partidoModels}
                         onSelect={onSelectPartido}
-                        valueRadio={candidato.claveElectoral}
+                        valueRadio={
+                          candidato.claveElectoral
+                            ? candidato.claveElectoral
+                            : ""
+                        }
                       ></PartidoSelect>
                     ))}
                     {coalicion && (
                       <PartidoSelect
-                        key={coalicion.candidatoModel.claveElectoral}
-                        claveElectoral={coalicion.candidatoModel.claveElectoral}
-                        candidato={coalicion.candidatoModel.nombreCandidato}
+                        key={coalicion.candidatoModel?.claveElectoral}
+                        claveElectoral={
+                          coalicion.candidatoModel?.claveElectoral
+                        }
+                        candidato={coalicion.candidatoModel?.nombreCandidato}
                         partidos={coalicion.partidoModels}
                         onSelect={onSelectPartido}
-                        valueRadio={candidato.claveElectoral}
+                        valueRadio={
+                          candidato.claveElectoral
+                            ? candidato.claveElectoral
+                            : ""
+                        }
                       ></PartidoSelect>
                     )}
                   </Box>

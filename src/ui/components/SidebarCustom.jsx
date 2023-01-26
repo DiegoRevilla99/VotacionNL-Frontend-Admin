@@ -113,14 +113,13 @@ export const SidebarCustom = ({ selected, setSelected }) => {
 								icon={<PersonAddAltOutlinedIcon />}
 								selected={selected}
 								setSelected={setSelected}
-								to={"empadronamiento/inicio/formal"}
+								to={"empadronamiento/"}
 							></Item>
 							<Item
 								title="Jornada"
 								icon={<BarChartOutlinedIcon />}
 								selected={selected}
 								setSelected={setSelected}
-								to={"jornada/inicio"}
 							></Item>
 							<DividerItem isCollapsed={isCollapsed} title={"Otros"}></DividerItem>
 							<Item
