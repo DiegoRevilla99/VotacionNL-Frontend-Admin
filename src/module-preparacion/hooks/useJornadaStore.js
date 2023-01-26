@@ -50,13 +50,9 @@ export const useJornadaStore = () => {
 		candidatoandSuplentes,
 		candidatoandSuplenteSelected,
 		jornadasData,
-<<<<<<< HEAD
-		jornadaSelected,
 		jornadaVotosData,
-=======
-        jornadasNoFormalesData,
-        jornadaSelected,
->>>>>>> origin/jornadaedit
+		jornadasNoFormalesData,
+		jornadaSelected,
 	} = useSelector((state) => state.jornada);
 
 	const checkingOperation = () => {
@@ -339,25 +335,14 @@ export const useJornadaStore = () => {
 		dispatch(onFillJornadasData());
 	};
 
-<<<<<<< HEAD
 	const addJornada = (jornadaData) => {
 		dispatch(onAddJornadas(jornadaData));
 	};
-=======
-    const setBoletasSelectedNull = () => {
-        // dispatch(onSetCandidatoSelectedNull());
-        // dispatch(onSetSuplenteSelectedNull());
-        dispatch(onSetPartidoSelectedNull());
-        dispatch(onSetCandidatoAndSuplenteSelectedNull()); 
-    };
->>>>>>> origin/jornadaedit
-
 	const setBoletasSelectedNull = () => {
 		// dispatch(onSetCandidatoSelectedNull());
 		// dispatch(onSetSuplenteSelectedNull());
 		dispatch(onSetPartidoSelectedNull());
 		dispatch(onSetCandidatoAndSuplenteSelectedNull());
-		NEW;
 	};
 
 	return {
@@ -373,13 +358,8 @@ export const useJornadaStore = () => {
 		candidatoandSuplentes,
 		candidatoandSuplenteSelected,
 		jornadasData,
-<<<<<<< HEAD
+		jornadasNoFormalesData,
 		jornadaSelected,
-=======
-        jornadasNoFormalesData,
-        jornadaSelected,
->>>>>>> origin/jornadaedit
-
 		checkingOperation,
 		succesOperation,
 		errorOperation,
