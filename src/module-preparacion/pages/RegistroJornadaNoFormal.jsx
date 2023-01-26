@@ -2,19 +2,19 @@ import { Box, Button, Divider, Grid, IconButton, LinearProgress, Typography } fr
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { GeneralTable } from "../components/GeneralTable";
-import { useJornadaStore } from "../hooks/useJornadaStore";
+import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 import { Stack } from "@mui/system";
 import BallotIcon from "@mui/icons-material/Ballot";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useDispatch } from "react-redux";
 import {
 	onDeleteJornada,
-	onGetjornadas,
-} from "../../store/module-preparacion/jornada/ThunksJornada";
+	onGetJornadasNoFormales,
+} from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
-	onSetJornadaSelected,
-} from "../../store/module-preparacion/jornada/SliceJornada";
+	onSetjornadaNoFormalSelected,
+} from "../../store/module-preparacion/jornada/SliceJornadaNoFormal";
 import { ModalRegistroJornadaNoFormal } from "../components/ModalRegistroJornadaNoFormal";
 
 export const RegistroJornadaNoFormal = () => {
@@ -22,7 +22,8 @@ export const RegistroJornadaNoFormal = () => {
 	const [modalStatus, setModalStatus] = useState(false);
 
 	// TODO:AQUI OBTENGAN LAS VARIABLES STATUS Y DATA DE SUS ESTADOS GLOBALES
-	const { jornadasData, status } = useJornadaStore();
+	// const { jornadasData, status } = useJornadaStore();
+	const {jornadasNoFormalesData, status } = useJornadaNoFormalStore();
 
 	const dispatch = useDispatch();
 	const columns = [
@@ -64,7 +65,7 @@ export const RegistroJornadaNoFormal = () => {
 
 	// USEEFFECT QUE PUEDES USAR PARA HACER UN GET DE LAS JORNADAS AL RENDERIZAR LA PAGINA
 	useEffect(() => {
-		if (jornadasData.length === 0) dispatch(onGetjornadas());
+		if (jornadasNoFormalesData.length === 0) dispatch(onGetJornadasNoFormales());
 	}, []);
 
 	// METODO PARA BORRAR UN REGISTRO
@@ -74,7 +75,7 @@ export const RegistroJornadaNoFormal = () => {
 
 	// MÉTODO PARA EDITAR UN REGISTRO
 	const handleEdit = (id, title) => {
-		dispatch(onSetJornadaSelected({ id, title, boletas: [] }));
+		dispatch(onSetjornadaNoFormalSelected({ id, title, boletas: [] }));
 		navigate("/preparacion/jornada/noFormal/" + id);
 	};
 
@@ -173,7 +174,7 @@ export const RegistroJornadaNoFormal = () => {
                                 CADA REGISTRO SE DEBE LLAMAR "idJornada" o si el id de cada registro 
                                 tiene otro nombre, cambien el atributo idName al nombre que quieran */}
 								<GeneralTable
-									data={jornadasData}
+									data={jornadasNoFormalesData}
 									columns={columns}
 									idName={"idJornada"}
 								/>

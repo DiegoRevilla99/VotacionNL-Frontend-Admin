@@ -1,5 +1,6 @@
 import { id } from "date-fns/locale";
 import {
+<<<<<<< HEAD
 	getJornadas,
 	createJornada,
 	deleteJornada,
@@ -10,6 +11,19 @@ import {
 	deleteBoleta,
 	getJornadaVotos,
 } from "../../../providers/Micro-Preparacion/providerJornada";
+=======
+    getJornadas,
+    getJornadasFormales,
+    getJornadasNoFormales,
+    createJornada,
+    deleteJornada,
+    getBoletasJornada,
+    getBoletaData,
+    createBoleta,
+    updateBoletaData,
+    deleteBoleta,
+} from "../../../providers/Micro-Preparacion/providerJornada"
+>>>>>>> origin/jornadaedit
 import {
 	onToastCheckingOperation,
 	onToastErrorOperation,
@@ -54,22 +68,36 @@ import {
 	onSetJornadasVotosData,
 } from "./SliceJornada";
 
+export const onGetAlljornadas = () => {
+    return async (dispatch) => {
+        dispatch(onCheckingOperation());
+        const {ok, data, errorMessage } = await getJornadas(); // PROVIDER
+        if (ok) {
+            dispatch(onSuccessOperation());
+            dispatch(onFillJornadasData(data));// SLICE
+        } else {
+            dispatch(onErrorOperation());
+            dispatch(onToastErrorOperation({ 
+                errorMessage: errorMessage || "No se pudo obtener las jornadas" }));
+        }
+    }
+};
+
+// Jornadas Formales
+
 export const onGetjornadas = () => {
-	return async (dispatch) => {
-		dispatch(onCheckingOperation());
-		const { ok, data, errorMessage } = await getJornadas(); // PROVIDER
-		if (ok) {
-			dispatch(onSuccessOperation());
-			dispatch(onFillJornadasData(data)); // SLICE
-		} else {
-			dispatch(onErrorOperation());
-			dispatch(
-				onToastErrorOperation({
-					errorMessage: errorMessage || "No se pudo obtener las jornadas",
-				})
-			);
-		}
-	};
+    return async (dispatch) => {
+        dispatch(onCheckingOperation());
+        const {ok, data, errorMessage } = await getJornadasFormales(); // PROVIDER
+        if (ok) {
+            dispatch(onSuccessOperation());
+            dispatch(onFillJornadasData(data));// SLICE
+        } else {
+            dispatch(onErrorOperation());
+            dispatch(onToastErrorOperation({ 
+                errorMessage: errorMessage || "No se pudo obtener las jornadas" }));
+        }
+    }
 };
 
 export const onCreateJornada = (title, entidad, navigate = (id) => {}) => {

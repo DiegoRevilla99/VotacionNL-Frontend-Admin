@@ -16,10 +16,7 @@ import { ErrorField } from "../components/ErrorField";
 import { object, string, date } from "yup";
 import BookOnlineRoundedIcon from '@mui/icons-material/BookOnlineRounded';
 import { useDispatch } from "react-redux";
-import { saveCandidatoandSuplente } from "../../store/module-preparacion/jornada/jornadaThunks";
-import { useAddBoletasJornada } from "../hooks/useAddBoletasJornada";
 import CircularProgress from "@mui/material/CircularProgress";
-import { editBoleta, saveBoleta } from "../../store/module-preparacion/jornada/jornadaThunks";
 import { DatePickerMod } from "./DatePickerMod";
 import { RadioButtMod } from "./RadioButtMod";
 import { DatePickerModSuplente } from "./DatePickerModSuplente";
@@ -46,6 +43,41 @@ const style = {
 };
 
 const validationSchema = object({
+		// // Datos del candidato
+	// apellidoPCandidato: string("").required(
+	// 	"Por favor, ingresa el apellido paterno del candidato/a"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// 	apellidoMCandidato: string("").required(
+	// 	"Por favor, ingresa el apellido materno del candidato/a"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// 	nombreCandidato: string("").required(
+	// 	"Por favor, ingresa el nombre completo del candidato/a"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// seudonimoCandidato: string(
+	// 	"Por favor, ingresa el seudónimo del candidato/a"
+	// 	).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
+	// 	fechaNacimientoCandidato: date().required(
+	// 	"Por favor, ingresa la fecha de nacimiento del candidato/a"
+	// 	).max(new Date(), "No puedes ingresar una fecha futura"),
+	// 	generoCandidato: string("").required("Por favor, selecciona el género"),
+	// // Datos del suplente
+
+	// apellidoPSuplente: string("").required(
+	// 	"Por favor, ingresa el apellido paterno del Suplente"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// 	apellidoMSuplente: string("").required(
+	// 	"Por favor, ingresa el apellido materno del Suplente"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// 	nombreSuplente: string("").required(
+	// 	"Por favor, ingresa el nombre completo del Suplente"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// seudonimoSuplente: string(
+	// 	"Por favor, ingresa el seudónimo del Suplente"
+	// 	).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
+	// 	fechaNacimientoSuplente: date().required(
+	// 	"Por favor, ingresa la fecha de nacimiento del Suplente"
+	// 	).max(new Date(), "No puedes ingresar una fecha futura"),
+	// 	generoSuplente: string("").required("Por favor, selecciona el género"),
 });
 export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 	const dispatch = useDispatch();
@@ -272,7 +304,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 											<Box sx={{ mt: 4, mb: 1, ml: 2, mr: 2}}>
 											
 											<Typography variant="h7" mt={"2rem"}>
-												APELLIDO PATERNO <span style={{ color: "red" }}>*</span>
+												PRIMER APELLIDO <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<TextField
 														fullWidth
@@ -288,7 +320,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														onBlur={handleBlur}
 													/>
 											<Typography variant="h7" mt={"2rem"}>
-												APELLIDO MATERNO <span style={{ color: "red" }}>*</span>
+												SEGUNDO APELLIDO <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<TextField
 														fullWidth
@@ -304,7 +336,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														onBlur={handleBlur}
 													/>
 												<Typography variant="h7" mt={"2rem"}>
-												NOMBRE COMPLETO <span style={{ color: "red" }}>*</span>
+												NOMBRES <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<TextField
 														fullWidth
@@ -422,7 +454,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 											<>
 											<Box sx={{ mt: 4, mb: 1, ml: 2, mr: 2}}>
 											<Typography variant="h7" mt={"2rem"}>
-												APELLIDO PATERNO <span style={{ color: "red" }}>*</span>
+												PRIMER APELLIDO <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<TextField
 														fullWidth
@@ -438,7 +470,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														onBlur={handleBlur}
 													/>
 											<Typography variant="h7" mt={"2rem"}>
-												APELLIDO MATERNO <span style={{ color: "red" }}>*</span>
+												SEGUNDO APELLIDO <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<TextField
 														fullWidth
@@ -454,7 +486,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														onBlur={handleBlur}
 													/>
 												<Typography variant="h7" mt={"2rem"}>
-												NOMBRE COMPLETO <span style={{ color: "red" }}>*</span>
+												NOMBRES <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<TextField
 														fullWidth

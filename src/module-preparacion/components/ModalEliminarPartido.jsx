@@ -7,10 +7,7 @@ import {
 } from "@mui/material";
 
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
-// import { useDispatch } from "react-redux";
-// import { useUiStore } from "../../hooks/useUiStore";
-
-// import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
+import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
 
 const style = {
 	position: "absolute",
@@ -26,15 +23,11 @@ const style = {
 	p: 4,
 };
 
-export const ModalEliminarPC = ({ statusDeleteModal, handleToggleModal }) => {
-	// const { addQuestion } = useConsultaCiudadanaStore();
-
-	// const { toastSuccesOperation } = useUiStore();
-
+export const ModalEliminarPartido = ({ statusDeletePartidoModal, handleToggleModal, id }) => {
+	const { deletePartido } = useJornadaStore();
 	const onSave = () => {
-		// addQuestion("¿Pregunta 1?", ["Respuesta 1", "Respuesta 2"]);
-		// toastSuccesOperation("Pregunta registrada con éxito");
 		handleToggleModal();
+		deletePartido(id);
 	};
 
 	const onCancel = () => {
@@ -43,7 +36,7 @@ export const ModalEliminarPC = ({ statusDeleteModal, handleToggleModal }) => {
 
 	return (
 		<Modal
-			open={statusDeleteModal}
+			open={statusDeletePartidoModal}
 			onClose={handleToggleModal}
 			aria-labelledby="modal-modal-title"
 			aria-describedby="modal-modal-description"
@@ -61,7 +54,7 @@ export const ModalEliminarPC = ({ statusDeleteModal, handleToggleModal }) => {
 				
 				/>
 				<Typography id="modal-modal-title" variant= "h4"  color="initial" align="center" mr={5} ml={5} mb={2}>
-                    Si eliminas el partido/candidato desaparecerá para siempre. ¿Está seguro que deseas continuar?
+                    Si eliminas el Partido desaparecerá para siempre. ¿Está seguro que deseas continuar?
 				</Typography>
 				<Box ml={"2rem"} mr={"2rem"}
 				
@@ -96,7 +89,7 @@ export const ModalEliminarPC = ({ statusDeleteModal, handleToggleModal }) => {
 									},
 								}}
 							>
-								Continuar
+								Confirmar
 							</Button>
 						</Grid>
 						<Grid item xs={12} md={6} lg={3}>

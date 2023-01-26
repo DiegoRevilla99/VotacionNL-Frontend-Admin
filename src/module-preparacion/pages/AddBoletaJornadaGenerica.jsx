@@ -3,21 +3,18 @@ import { Stack } from "@mui/system";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useUiStore } from "../../hooks/useUiStore";
-// import { saveCandidatoandSuplente } from "../../store/module-preparacion/jornada/jornadaThunks";
-import { editBoleta, saveBoleta } from "../../store/module-preparacion/jornada/jornadaThunks";
-import { useAddBoletasJornada } from "../hooks/useAddBoletasJornada";
 import { getBoletaByIdApi } from "../helpers/ApiJornada";
 import { FielTextCustom } from "../components/FielTextCustom";
 import { DataGridTable } from "../../ui/components/DataGridTable";
 import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
 
-import { ModalEliminarPC } from "../components/ModalEliminarPC";
+// import { ModalEliminarPC } from "../components/ModalEliminarPC";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Formik } from 'formik';
 import { object, string, number } from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import { ModalAsociacionCP } from "../components/ModalAsociacionCP";
-
+import { useJornadaStore } from "../hooks/useJornadaStore";
 import { ModalRegisterCS } from "../components/ModalRegisterCS";
 import { DataGridTableJornada } from "../../ui/components/DataGridTableJornada";
 import { DataGridTablePartido } from "../../ui/components/DataGridTablePartido";
@@ -64,7 +61,19 @@ export const AddBoletaJornadaGenerica = () => {
 
 	const { nombreCandidatura } = useParams();
 	const navigate = useNavigate();
-	const { status } = useAddBoletasJornada();
+	const { 
+		status,
+		candidatos,
+        candidatosSelected,
+        suplentes,
+        suplentesSelected,
+        partidos,
+        partidoSelected,
+        candidatoAndSuplente,
+        candidatoandSuplenteSelected,
+		
+		jornadaSelected,
+	} = useJornadaStore();
 
 
 	const dispatch = useDispatch();
@@ -86,7 +95,7 @@ export const AddBoletaJornadaGenerica = () => {
 
 	const [statusMatchModal, setStatusMatchModal] = useState(false);
 
-	const [statusDeleteModal, setStatusDeleteModal] = useState(false);
+	// const [statusDeleteModal, setStatusDeleteModal] = useState(false);
 	const [statusRegisterModal, setStatusRegisterModal] = useState(false);
 	const [statusAsociacionModal, setStatusAsociacionModal] = useState(false);
 
@@ -94,7 +103,7 @@ export const AddBoletaJornadaGenerica = () => {
 
 	const handleCloseMatchModal = () => setStatusMatchModal(false);
 
-	const handleCloseDeleteModal = () => setStatusDeleteModal(false);
+	// const handleCloseDeleteModal = () => setStatusDeleteModal(false);
 	const handleCloseRegisterModal = () => setStatusRegisterModal(false);
 	const handleCloseAsociacionModal = () => setStatusAsociacionModal(false);
 
@@ -109,10 +118,10 @@ export const AddBoletaJornadaGenerica = () => {
 	 	setStatusMatchModal(true);
 	 };
 
-	const handleOpenDeleteModal = () => {
-        // toastOffOperation();
-        setStatusDeleteModal(true);
-    };
+	// const handleOpenDeleteModal = () => {
+    //     // toastOffOperation();
+    //     setStatusDeleteModal(true);
+    // };
 
 	const handleOpenAsociacionModal = () => {
 		// toastOffOperation();
@@ -163,11 +172,7 @@ export const AddBoletaJornadaGenerica = () => {
 		initialValues={datos}
 		validationSchema={validationSchema}
 		onSubmit={(valores) => {
-			if (nombreCandidatura != undefined) {
-			  dispatch(editBoleta(valores, guardar));
-			} else {
-			  dispatch(saveBoleta(valores, guardar));
-			}
+			console.log("valores", valores);
 		  }}
 	>
 		{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (
@@ -182,7 +187,7 @@ export const AddBoletaJornadaGenerica = () => {
 				
 				<Box sx={{ m: "0.5rem", ml: "2rem" }}>
 					<Typography variant="h6" align="left" color="initial">
-						REGISTRO DE BOLETA
+						REGISTRO DE BOLETA NO FORMAL
 					</Typography>
 				</Box>
 				<Divider />
@@ -437,7 +442,8 @@ export const AddBoletaJornadaGenerica = () => {
 						</Grid>
 						<Grid item xs={4} md={2} lg={2}>
 							<Button
-							onClick={handleOpenDeleteModal}
+							// onClick={handleOpenDeleteModal}
+							
 								variant="contained"
 								size="small"
 								disabled={status === "checking"}
@@ -468,8 +474,6 @@ export const AddBoletaJornadaGenerica = () => {
 									pb: "1rem",
 								}}
 							>
-
-
 								{/* <DataGridTableJornada /> */}
 								<DataGridTable />
 
@@ -545,7 +549,7 @@ export const AddBoletaJornadaGenerica = () => {
 			{/* ELIMINAR EL SIGUIENTE MODAL */}
             {/* <ModalBoletaCandidato statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} /> */}
 			{/* MODAL PARA CONFIRMAR LA ELIMINACIÓN */}
-			<ModalEliminarPC statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} />
+			{/* <ModalEliminarPC statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} /> */}
 			{/* MODAL PARA REGISTRAR A LOS CANDIDATOS Y SUPLENTES */}
 			<ModalRegisterCS statusRegisterModal={statusRegisterModal} handleToggleModal={handleCloseRegisterModal} />
 			{/* MODAL PARA REGISTRAR ASOCIAR CANDIDATOS Y PARTIDOS */}

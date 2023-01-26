@@ -14,10 +14,7 @@ import { ErrorField } from "../components/ErrorField";
 import { object, string } from "yup";
 
 import { useDispatch } from "react-redux";
-import { savePartido } from "../../store/module-preparacion/jornada/jornadaThunks";
-import { useAddBoletasJornada } from "../hooks/useAddBoletasJornada";
 import CircularProgress from "@mui/material/CircularProgress";
-import { editBoleta, saveBoleta } from "../../store/module-preparacion/jornada/jornadaThunks";
 import { useJornadaStore } from "../hooks/useJornadaStore";
 import { onCreateBoleta } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { useNavigate, useParams } from "react-router-dom";
