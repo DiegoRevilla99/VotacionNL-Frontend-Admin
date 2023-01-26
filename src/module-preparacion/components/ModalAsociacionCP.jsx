@@ -18,7 +18,8 @@ import { object, string } from "yup";
 import BookOnlineRoundedIcon from '@mui/icons-material/BookOnlineRounded';
 import { useDispatch } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
+import { TextFieldSelectMod } from "./TextFieldSelectMod";
 
 const style = {
 	position: "absolute",
@@ -31,23 +32,26 @@ const style = {
 	borderRadius: "2rem",
 	boxShadow: 3,
 	p: 4,
-	height: "55%",
+	height: "60%",
 };
 const validationSchema = object({
-	candidato: string("").required(
-		"Por favor, selecciona un candidato"
-		),
-	partido: string("").required(
-		"Por favor, selecciona un partido"
-		),
+	// candidato: string("").required(
+	// 	"Por favor, selecciona un candidato"
+	// 	),
+	// partido: string("").required(
+	// 	"Por favor, selecciona un partido"
+	// 	),
 });
 export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) => {
 
-	const [candidato, setCandidato] = React.useState("");
+	const { status, candidatoandSuplentes, partidos} = useJornadaStore();
+
+	const [candidatoandSuplente, setCandidato] = React.useState("");
 	const [partido, setPartido] = React.useState("");
 
-	const onSave = (values) => {
-		handleToggleModal();
+	const onSubmit = (values) => {
+		console.log("Aqui est[an los valores", values);
+		// handleToggleModal();
 	};
 
 	const onCancel = () => {
@@ -71,25 +75,24 @@ export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) 
 			<Box sx={style}>
 				<Box sx={{ overflowY: "auto", height: "100%" }}>
 					<Typography id="modal-modal-title" variant="h5" color="initial" align="center">
-						ASOCIACIÓN DE PARTICIPANTES A PARTIDOS
+						AFILIAR PARTICIPANTES A PARTIDOS
 					</Typography>
 					<Box m={"2rem"}>
-
 						<Formik
 							initialValues={
-                                        {
-											// candidato: "",
-											// partido: "",
-									  }
+								{
+									candidatoandSuplente: "",
+									partido: "",
+								}
 							}
 							validationSchema={validationSchema}
-							onSubmit={(values) => {
-								onSave(values);
+							onSubmit={(values, {resetForm}) => {
+								onSubmit(values);
+								resetForm();
 							}}
 						>
 							{({values, errors, touched, handleSubmit, handleChange, handleBlur}) => (
 								<Form  onSubmit={handleSubmit} >
-
 							<Box
 							 sx={{
 								width: "100%",
@@ -101,25 +104,57 @@ export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) 
 								<TextField
 									select
 									size="small"
-									// value={values.candidato}
-									value={candidato}
+									value={candidatoandSuplente}
 									onChange={handleChangeCandidato}
 									fullWidth
-									// variant="filled"
 								>
-									<MenuItem 
-									// onClick={}
-									value = "candidado I">
-										Candidado I
-									</MenuItem>
-									<MenuItem 
-									// onClick={}
-									value = "candidado II">
-										Candidado II
-									</MenuItem>
+									{candidatoandSuplentes.map((candidatoandSuplente) => (
+										<MenuItem 
+											key={candidatoandSuplente.id}
+											value = {candidatoandSuplente.id}>
+												{candidatoandSuplente.nombreCandidato}
+										</MenuItem>
+									))}
+
 								</TextField>
 							</Box>
-							<Box mb={2}
+
+							<Box
+							 sx={{
+								width: "100%",
+							 }}
+							>
+								<Typography variant= {{ xl: "2rem", lg: "1.5rem", sm: "1rem", xs: "0.8rem" }}>
+									Selecciona un partido ejemplo<span style={{ color: "red" }}>*</span>
+								</Typography>
+								<TextField
+									id="outlined-select-currency"
+									select
+									fullWidth
+									size="small"
+									value={partido}
+									onChange={handleChangePartido}
+									>
+									{partidos.map((partido) => (
+										<MenuItem key={partido.id} value={partido.id}>
+										{partido.nombrePartido}
+										</MenuItem>
+									))}
+									</TextField>
+							</Box>
+
+
+
+
+
+
+
+
+
+
+
+
+							{/* <Box mb={2}
 							 sx={{
 								width: "100%",
 							 }}
@@ -130,47 +165,41 @@ export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) 
 									<TextField
 									select
 									size="small"
-									// value={values.partido}
 									value={partido}
 									onChange={handleChangePartido}
 									fullWidth
-									// variant="filled"
 								>
-									<MenuItem 
-									// onClick={}
-									value = "partido I">
-										Partido I
-									</MenuItem>
-									<MenuItem 
-									// onClick={}
-									value = "partido II">
-										Partido II
-									</MenuItem>
+									{partidos.map((partido) => (
+										<MenuItem 
+											key={partido.id}
+											value = {partido.id}>
+												{partido.nombrePartido}
+										</MenuItem>
+									))}
 								</TextField>
-							</Box>
+							</Box> */}
 
-									
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+								{/* <TextFieldSelectMod
+									valuesTipo={values.partido}
+									handleChange={handleChangePartido}
+									// errorsTipo=
+									titulo="Selecciona un partido"
+									partidos={partidos}
+									>
+									</TextFieldSelectMod> */}
                                     
+
+
+
+
+
+
+
+
+
+
+
+
 									<Grid
 										container
 										direction="row"
@@ -182,6 +211,7 @@ export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) 
 											<Button
 												type="sumbit"
 												variant="contained"
+												disabled={status === "checking"}
 												size="large"
 												sx={{
 													boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
@@ -203,6 +233,7 @@ export const ModalAsociacionCP = ({ statusAsociacionModal, handleToggleModal }) 
 											<Button
 												onClick={onCancel}
 												variant="contained"
+												disabled={status === "checking"}
 												size="large"
 												sx={{
 													boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",

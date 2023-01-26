@@ -72,7 +72,7 @@ export const SliceJornadaNoFormal = createSlice({
                 fotografiaPartido: payload?.fotografiaPartido,
             });
 
-            console.log("state.partidos en SLICE", state.partidos[0]);
+            // console.log("state.partidos en SLICE", state.partidos[0]);
         },
 
         onAddCandidatoAndSuplente: (state, { payload }) => {
