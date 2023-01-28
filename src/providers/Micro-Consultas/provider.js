@@ -17,7 +17,7 @@ export const getConsultasCiudadanasConfig = async () => {
 
 	try {
 		const { data } = await consultasAPI.get("jornada/consulta/informacion");
-		console.log(data)
+
 		return { ok: true, data: data, errorMessage: "" };
 	} catch (error) {
 		console.log(error);

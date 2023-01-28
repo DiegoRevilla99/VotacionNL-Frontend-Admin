@@ -124,12 +124,10 @@ export const RegisterVoters = ({ status = "", isLoading, datos }) => {
   };
 
   const openGranelbtn = () => {
-    console.log("preisonando a granel");
     abrirCerrarModalGranel();
   };
 
   const openindividualbtn = () => {
-    console.log("preisonando a individual");
     abrirCerrarModalAddVotante();
   };
 

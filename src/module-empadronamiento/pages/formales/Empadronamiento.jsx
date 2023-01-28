@@ -45,7 +45,7 @@ export const Empadronamiento = () => {
               url: "/empadronamiento/",
             },
             {
-              name: "JORANDAS FORMALES",
+              name: "JORNADAS FORMALES",
               url: "/empadronamiento/formal",
             },
           ]}

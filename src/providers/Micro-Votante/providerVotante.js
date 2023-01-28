@@ -2,10 +2,10 @@ import { VotanteApi } from "../../module-jornada/api/VotanteApi";
 
 export const postCSVProvider = async (archivo) => {
 
-    console.log(archivo)
+
 
     return VotanteApi.post(`upload`, archivo).then((response) => {
-        console.log(response)
+
         return { ok: true, data: response.data.data, errorMessage: "" };
     }).catch((error) => {
         console.log(error);
@@ -17,7 +17,7 @@ export const postCSVProvider = async (archivo) => {
 
 export const postVotanteProvider = async (data) => {
     return VotanteApi.post(`/registrard`, data).then((response) => {
-        console.log(response)
+
         return { ok: true, data: response.data.data, errorMessage: "" };
     }).catch((error) => {
         console.log(error);
@@ -27,7 +27,7 @@ export const postVotanteProvider = async (data) => {
 
 export const putVotanteProvider = async (curp, data) => {
     return VotanteApi.put(`votante/${curp}`, data).then((response) => {
-        console.log(response)
+
         return { ok: true, data: response.data.data, errorMessage: "" };
     }).catch((error) => {
         console.log(error);
@@ -41,8 +41,6 @@ export const putVotanteProvider = async (curp, data) => {
 */
 export const getVotantesPorJornadaProvider = async (idJornada) => {
     return VotanteApi.get(``).then((response) => {
-        console.log("Response desde provider")
-        console.log(response)
         return { ok: true, data: response.data.data, errorMessage: "" };
     }).catch((error) => {
         console.log(error);
@@ -52,8 +50,7 @@ export const getVotantesPorJornadaProvider = async (idJornada) => {
 
 export const getVotanteDireccionProvider = async (idVotante) => {
     return VotanteApi.get(`votante/${idVotante}`).then((response) => {
-        console.log("Votante con direccion")
-        console.log(response)
+
         return { ok: true, data: response.data.data, errorMessage: "" };
     }).catch((error) => {
         console.log(error);

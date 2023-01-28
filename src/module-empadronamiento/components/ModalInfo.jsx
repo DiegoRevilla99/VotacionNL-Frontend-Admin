@@ -213,7 +213,7 @@ export const ModalInfo = ({ isOpen = false, abrirCerrarModal = () => {} }) => {
             </Box>
             <Box display="flex" flexDirection="row">
               <Typography sx={{ fontWeight: "bold", mr: 1 }}>
-                Telefono:
+                Teléfono:
               </Typography>
               <Typography>{votanteSelected.telefonoVotante}</Typography>
             </Box>

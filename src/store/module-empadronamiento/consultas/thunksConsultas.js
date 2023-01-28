@@ -41,7 +41,7 @@ export const getEleccionFormal = (id) => {
         newData.status = getStatusEmp(newData.inicioEmpadronamiento, newData.finEmpadronamiento)
         newData.inicioEmpadronamiento = transformDate(newData.inicioEmpadronamiento)
         newData.finEmpadronamiento = transformDate(newData.finEmpadronamiento)
-        console.log(newData)
+
 
         if (ok) {
             dispatch(setEleccion({ eleccion: newData }));

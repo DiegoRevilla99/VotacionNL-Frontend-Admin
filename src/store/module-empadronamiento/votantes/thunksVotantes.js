@@ -5,7 +5,7 @@ import { getJornadasNoFormalesProvider } from "../../../providers/Micro-NoFormal
 import { sendEmailProvider } from "../../../providers/Micro-TokeEmail/provider";
 import { getVotanteDireccionProvider, getVotantesPorJornadaProvider, postCSVProvider, postVotanteProvider, putVotanteProvider } from "../../../providers/Micro-Votante/providerVotante";
 import { onToastCheckingOperation, onToastErrorOperation, onToastSuccessOperation } from "../../ui/uiSlice";
-import { onCheckingOperation, onErrorOperation, onSuccessOperation, setJornadasFormales, setVotantes, setVotanteSelected, startLoadingFormales, startLoadingVotantes } from "./empVotantesSlice";
+import { onCheckingOperation, onErrorOperation, onSuccessOperation, setVotantes, setVotanteSelected, startLoadingVotantes } from "./empVotantesSlice";
 
 export const uploadCSV = (file, funcion = () => { }) => {
 
@@ -44,7 +44,7 @@ export const postVotante = (info, funcion = () => { }) => {
         if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onToastSuccessOperation({ successMessage: "El votante se han subido con éxito" }));
-            console.log("Actualizando votante");
+
             getVotantesbyJornada();
             setTimeout(() => {
                 funcion();
@@ -61,8 +61,7 @@ export const postVotante = (info, funcion = () => { }) => {
 
 
 export const putVotante = (curp, info, funcion = () => { }) => {
-    console.log(curp)
-    console.log(info)
+
     return async (dispatch, getState) => {
 
         dispatch(onToastCheckingOperation("Editando votante..."));
@@ -93,7 +92,7 @@ export const putVotante = (curp, info, funcion = () => { }) => {
 export const getVotantesbyJornada = (idJornada = "") => {
 
     return async (dispatch, getState) => {
-        console.log("obteniendo los votantes votante");
+
         dispatch(startLoadingVotantes());
         const { ok, data, errorMessage } = await getVotantesPorJornadaProvider(idJornada);
         if (ok) {
