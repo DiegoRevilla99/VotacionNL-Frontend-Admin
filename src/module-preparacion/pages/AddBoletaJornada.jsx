@@ -1,29 +1,24 @@
-import { Box, Divider, Grid, Typography, TextField, Paper, Button } from "@mui/material";
-import { Stack } from "@mui/system";
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useUiStore } from "../../hooks/useUiStore";
-import { getBoletaByIdApi } from "../helpers/ApiJornada";
-import { FielTextCustom } from "../components/FielTextCustom";
-import { DataGridTable } from "../../ui/components/DataGridTable";
-import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
+import { Box, Button, Divider, Grid, Typography } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Stack } from "@mui/system";
 import { Formik } from 'formik';
-import { object, string, number } from "yup";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { ModalAsociacionCP } from "../components/ModalAsociacionCP";
-import { ModalRegisterCS } from "../components/ModalRegisterCS";
-import { DataGridTableJornada } from "../../ui/components/DataGridTableJornada";
-import { DataGridTablePartido } from "../../ui/components/DataGridTablePartido";
+import { number, object, string } from "yup";
+import { useUiStore } from "../../hooks/useUiStore";
 import { AddPartidosMod } from "../components/AddPartidosMod";
+import { FielTextCustom } from "../components/FielTextCustom";
+import { ModalAsociacionCP } from "../components/ModalAsociacionCP";
+import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
+import { ModalRegisterCS } from "../components/ModalRegisterCS";
 
-import { useJornadaStore } from "../hooks/useJornadaStore";
-import { onCreateBoleta, onUpdateBoletaData } from "../../store/module-preparacion/jornada/ThunksJornada";
-import { onUpdateBoleta } from "../../store/module-preparacion/jornada/SliceJornada";
-import { AddCandidatoMod } from "../components/AddCandidatoMod";
-import { ModalEliminarPartido } from "../components/ModalEliminarPartido";
-import { ModalEliminarCandidato } from "../components/ModalEliminarCandidato";
+import { onCreateBoleta } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { DataGridRowGrouping } from "../../ui/components/DataGridRowGrouping";
+import { AddCandidatoMod } from "../components/AddCandidatoMod";
+import { ModalEliminarCandidato } from "../components/ModalEliminarCandidato";
+import { ModalEliminarPartido } from "../components/ModalEliminarPartido";
+import { useJornadaStore } from "../hooks/useJornadaStore";
 
 
 const validationSchema = object({
@@ -164,10 +159,10 @@ export const AddBoletaJornada = () => {
 
 	const onSubmit = (values) => {
 		// dispatch(
-		// 	onCreateBoleta(values, params.id, candidatoAndSuplente, partidos));
+			onCreateBoleta(values, params.id, candidatoAndSuplente, partidos);
 		// console.log("PARTIDOOOOOS: ", partidos);
 		// console.log("CANDIDATOS: ", candidatoAndSuplente);
-		console.log("VALORRRRRRRRRRRRRRRRR: ", values);
+		// console.log("VALORRRRRRRRRRRRRRRRR: ", values);
 	};
 
 

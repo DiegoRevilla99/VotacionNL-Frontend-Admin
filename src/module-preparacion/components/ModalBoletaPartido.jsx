@@ -1,24 +1,20 @@
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import {
 	Box,
 	Button,
 	Grid,
 	Modal,
 	TextField,
-	Typography,
+	Typography
 } from "@mui/material";
-import { useState } from "react";
 import IconButton from '@mui/material/IconButton';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { Formik, Form } from 'formik';
-import { ErrorField } from "../components/ErrorField";
+import { Formik } from 'formik';
+import { useState } from "react";
 import { object, string } from "yup";
 
 import { useDispatch } from "react-redux";
-import CircularProgress from "@mui/material/CircularProgress";
+import { useParams } from "react-router-dom";
 import { useJornadaStore } from "../hooks/useJornadaStore";
-import { onCreateBoleta } from "../../store/module-preparacion/jornada/ThunksJornada";
-import { useNavigate, useParams } from "react-router-dom";
-import { useUiStore } from "../../hooks/useUiStore";
 
 const style = {
 	position: "absolute",
@@ -167,7 +163,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						onBlur={handleBlur}
 					/>
 					<Typography variant="h7" mt={"1rem"}>
-					INSERTAR emblemaPartido DEL PARTIDO <span style={{ color: "red" }}>*</span>
+					INSERTAR EMBLEMA DEL PARTIDO <span style={{ color: "red" }}>*</span>
 					</Typography>
 						<Box
 							display="flex"

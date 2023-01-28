@@ -1,58 +1,14 @@
-import { id } from "date-fns/locale";
 import {
-	getJornadas,
-	getJornadasFormales,
-	getJornadasNoFormales,
-	createJornada,
-	deleteJornada,
-	getBoletasJornada,
-	getBoletaData,
-	createBoleta,
-	updateBoletaData,
-	deleteBoleta,
+	createBoleta, createJornada, deleteBoleta, deleteJornada, getBoletaData, getBoletasJornada, getJornadas,
+	getJornadasFormales, updateBoletaData
 } from "../../../providers/Micro-Preparacion/providerJornada";
 import {
 	onToastCheckingOperation,
-	onToastErrorOperation,
-	onToastOffOperation,
-	onToastSuccessOperation,
+	onToastErrorOperation, onToastSuccessOperation
 } from "../../ui/uiSlice";
 
 import {
-	onFillCandidatosData,
-	onFillSuplentesData,
-	onFillPartidosData,
-	onFillCandidatoAndSuplenteData,
-	onAddBoleta,
-	onAddCandidato,
-	onAddSuplente,
-	onAddPartido,
-	onAddCandidatoAndSuplente,
-	onSetCandidatoSelected,
-	onSetSuplenteSelected,
-	onSetPartidoSelected,
-	onSetCandidatoAndSuplenteSelected,
-	onSetCandidatoSelectedNull,
-	onSetSuplenteSelectedNull,
-	onSetPartidoSelectedNull,
-	onSetCandidatoAndSuplenteSelectedNull,
-	onSetCandidatoNull,
-	onSetSuplenteNull,
-	onSetPartidoNull,
-	onSetCandidatoAndSuplenteNull,
-	onFillJornadasData,
-	onAddJornadas,
-	onDeleteJornadaData,
-	onDeleteBoletaData,
-	onSetJornadaSelected,
-	onFillBoletas,
-	onEditBoleta,
-	onUpdateBoleta,
-	onSetBoletasSelectedNull,
-	onCheckingOperation,
-	onSuccessOperation,
-	onErrorOperation,
-	onSetJornadasVotosData,
+	onAddBoleta, onAddJornadas, onAddPartido, onCheckingOperation, onDeleteBoletaData, onDeleteJornadaData, onEditBoleta, onErrorOperation, onFillBoletas, onFillJornadasData, onSetBoletasSelectedNull, onSetJornadaSelected, onSetJornadasVotosData, onSuccessOperation
 } from "./SliceJornada";
 
 export const onGetAlljornadas = () => {
@@ -79,8 +35,10 @@ export const onGetjornadas = () => {
 	return async (dispatch) => {
 		dispatch(onCheckingOperation());
 		const { ok, data, errorMessage } = await getJornadasFormales(); // PROVIDER
+		console.log("data2", data);
 		if (ok) {
 			dispatch(onSuccessOperation());
+			console.log("data3", data);
 			dispatch(onFillJornadasData(data)); // SLICE
 		} else {
 			dispatch(onErrorOperation());

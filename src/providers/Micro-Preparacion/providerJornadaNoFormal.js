@@ -1,13 +1,14 @@
-import { jornadasAPI } from "./configJornada";
+import { jornadasNoFormalesAPI } from "./configNoFormales";
 
 let idJornadas = 0;
 let idBoleta = 0;
 
 export const getJornadasNoFormales = async () => {
 	try {
-		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/no_formales
-		const { data } = await jornadasAPI.get("jornada/electoral/no_formales");
-		return { ok: true, data: data.data, errorMessage: "" };
+		// https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/elecciones
+		const { data } = await jornadasNoFormalesAPI.get("jornada/no_formal/elecciones");
+		console.log("NO FORMAAAAAAAAAAAAAAAAAAL", data);
+		return { ok: true, data: data, errorMessage: "" };
 	} catch (error) {
 		return { ok: false, errorMessage: error.message };
 	}
@@ -16,7 +17,7 @@ export const getJornadasNoFormales = async () => {
 export const createJornada = async (title, entidad) => {
 	// const id = "JEO-JUN23-GOB" + Math.floor(Math.random() * 10000);
 	try {
-		const { data } = await jornadasAPI.post("jornada/electoral/", {
+		const { data } = await jornadasNoFormalesAPI.post("jornada/electoral/", {
 			// idJornada: id,
 			nombreJornada: title,
 			dateTimeCreation: "2019-07-04T20:38:38.604+00:00",
@@ -34,7 +35,7 @@ export const createJornada = async (title, entidad) => {
 export const deleteJornada = async (id) => {
 	try {
 		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/JO-EL-GO-OR-20-OAX-2022
-		const resp = await jornadasAPI.delete("jornada/electoral/" + id);
+		const resp = await jornadasNoFormalesAPI.delete("jornada/electoral/" + id);
 		return { ok: true };
 	} catch (error) {
 		return { ok: false, errorMessage: error.message };
@@ -45,7 +46,7 @@ export const deleteJornada = async (id) => {
 export const getBoletasJornada = async (idJornadaElectoral) => {
 	try {
 		// **FETCH
-		const { data } = await jornadasAPI.get(
+		const { data } = await jornadasNoFormalesAPI.get(
             "jornada/electoral/jornada/" + idJornadaElectoral + "/estructurasboletas"
 		);
 		return { ok: true, data: data.data };
@@ -58,21 +59,21 @@ export const getBoletasJornada = async (idJornadaElectoral) => {
 export const getBoletaData = async (idTicket) => {
 	try {
 		// **FETCH
-		const { data } = await jornadasAPI.get(
+		const { data } = await jornadasNoFormalesAPI.get(
             "jornada/electoral/estructuraboleta/"+ idTicket);
 				// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/2
 		// **Fetch de candidatos
-		const { data: data1 } = await jornadasAPI.get(
+		const { data: data1 } = await jornadasNoFormalesAPI.get(
 			"jornada/electoral/candidato/" + idTicket 
 			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/candidato/PEHEFE020722
 		);
 		// **Fetch de suplentes
-		const { data: data2 } = await jornadasAPI.get(
+		const { data: data2 } = await jornadasNoFormalesAPI.get(
 			"jornada/electoral/suplente/" + idTicket
 			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/suplente/DIRUAL120721
 		);
 		// **Fetch de partidos
-		const { data: data3 } = await jornadasAPI.get(
+		const { data: data3 } = await jornadasNoFormalesAPI.get(
 			"jornada/electoral/partido/" + idTicket
 			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/partido/0
 		);
@@ -139,11 +140,11 @@ export const getBoletaData = async (idTicket) => {
 export const getBoletaData2 = async (idTicket) => {
 	try {
 		// **FETCH
-		const { data } = await jornadasAPI.get(
+		const { data } = await jornadasNoFormalesAPI.get(
             "jornada/electoral/estructuraboleta/"+ idTicket);
 				// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/2
 		// **Fetch de candidatos + suplentes + partidos
-		const { data: data1 } = await jornadasAPI.get(
+		const { data: data1 } = await jornadasNoFormalesAPI.get(
 			"jornada/electoral/estructuraboleta/" + idTicket + "/datos_asociados"
 			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/4/datos_asociados
 		);
@@ -214,7 +215,7 @@ export const getBoletaData2 = async (idTicket) => {
 export const createBoleta = async (data, idJornadaElectoral, candidatoAndSuplente, partidos) => {
 	try {
 		// Boletas
-		const { data: data1 } = await jornadasAPI.post("jornada/electoral/estructuraboleta", {
+		const { data: data1 } = await jornadasNoFormalesAPI.post("jornada/electoral/estructuraboleta", {
 			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta
             encabezadoBoleta: data.encabezado,
             nombreCandidatura: data.nombreCandidatura,
@@ -236,7 +237,7 @@ export const createBoleta = async (data, idJornadaElectoral, candidatoAndSuplent
 			}
 		});
 		// Candidato
-		// const { data: candidateRespData } = await jornadasAPI.post(
+		// const { data: candidateRespData } = await jornadasNoFormalesAPI.post(
 		// 	// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/candidato
 		// 	"jornada/electoral/candidato",
 		// 	{
@@ -251,7 +252,7 @@ export const createBoleta = async (data, idJornadaElectoral, candidatoAndSuplent
 		// 	}
 		// );
 
-		const { data: candidatoSuplenteRespData } = await jornadasAPI.post(
+		const { data: candidatoSuplenteRespData } = await jornadasNoFormalesAPI.post(
 			"jornada/electoral/candidato",
 			{
 				candidatoModel: {
@@ -281,7 +282,7 @@ export const createBoleta = async (data, idJornadaElectoral, candidatoAndSuplent
 		);
 		console.log("Data de respuesta candidato con suplente", candidatoSuplenteRespData);
 		// // Suplente
-		// const { data: suplenteRespData } = await jornadasAPI.post(
+		// const { data: suplenteRespData } = await jornadasNoFormalesAPI.post(
 		// 	// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/suplente/987984
 		// 	"jornada/electoral/suplente/" + data1.data.idBoleta,
 		// 	{
@@ -299,7 +300,7 @@ export const createBoleta = async (data, idJornadaElectoral, candidatoAndSuplent
 
 		
 		// Partido
-		const { data: partidoRespData } = await jornadasAPI.post(
+		const { data: partidoRespData } = await jornadasNoFormalesAPI.post(
 			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/partido/candidato/DIRUAL01
 			"jornada/electoral/partido/candidato/" + data1.data.idBoleta,
 			{
@@ -322,7 +323,7 @@ export const createBoleta = async (data, idJornadaElectoral, candidatoAndSuplent
 
 export const updateBoletaData = async (data, idJornadaElectoral, idBoleta, candidatos, suplentes, partidos) => {
 	try {
-		const { data: data1 } = await jornadasAPI.put(
+		const { data: data1 } = await jornadasNoFormalesAPI.put(
 			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/10
 			"jornada/electoral/estructuraboleta/" + idBoleta,
 			{
@@ -344,7 +345,7 @@ export const updateBoletaData = async (data, idJornadaElectoral, idBoleta, candi
 			}
 		);
 			// Candidato
-		const { data: candidateRespData } = await jornadasAPI.put(
+		const { data: candidateRespData } = await jornadasNoFormalesAPI.put(
 			// ESTA ONDA NO TIENE PUT :C
 			"jornada/electoral/candidato/" + candidatos[0].id,
 			{
@@ -363,7 +364,7 @@ export const updateBoletaData = async (data, idJornadaElectoral, idBoleta, candi
 		console.log("Data de respuesta", candidateRespData);
 
 		// Suplente
-		const { data: suplenteRespData } = await jornadasAPI.put(
+		const { data: suplenteRespData } = await jornadasNoFormalesAPI.put(
 			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/suplente/DIRUAL120721
 			"jornada/electoral/suplente/" + suplentes[0].id,
 			{
@@ -383,7 +384,7 @@ export const updateBoletaData = async (data, idJornadaElectoral, idBoleta, candi
 
 
 		// Partido
-		const { data: partidoRespData } = await jornadasAPI.put(
+		const { data: partidoRespData } = await jornadasNoFormalesAPI.put(
 			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/partido/416841
 			"jornada/electoral/partido/" + partidos[0].id,
 			{
@@ -407,7 +408,7 @@ export const updateBoletaData = async (data, idJornadaElectoral, idBoleta, candi
 export const deleteBoleta = async (id) => {
 	try {
 		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/9
-		const resp = await jornadasAPI.delete("jornada/electoral/estructuraboleta/" + id);
+		const resp = await jornadasNoFormalesAPI.delete("jornada/electoral/estructuraboleta/" + id);
 		return { ok: true };
 	} catch (error) {
 		return { ok: false, errorMessage: error.message };

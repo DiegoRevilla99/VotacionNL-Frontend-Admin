@@ -1,21 +1,21 @@
-import { Box, Button, Divider, Grid, IconButton, LinearProgress, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { GeneralTable } from "../components/GeneralTable";
-import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
-import { Stack } from "@mui/system";
 import BallotIcon from "@mui/icons-material/Ballot";
+import DeleteIcon from "@mui/icons-material/Delete";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { Box, Button, Divider, Grid, IconButton, LinearProgress, Typography } from "@mui/material";
+import { Stack } from "@mui/system";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+	onSetjornadaNoFormalSelected
+} from "../../store/module-preparacion/jornada/SliceJornadaNoFormal";
 import {
 	onDeleteJornada,
-	onGetJornadasNoFormales,
+	onGetJornadasNoFormales
 } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
-import DeleteIcon from "@mui/icons-material/Delete";
-import {
-	onSetjornadaNoFormalSelected,
-} from "../../store/module-preparacion/jornada/SliceJornadaNoFormal";
+import { GeneralTable } from "../components/GeneralTable";
 import { ModalRegistroJornadaNoFormal } from "../components/ModalRegistroJornadaNoFormal";
+import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 
 export const RegistroJornadaNoFormal = () => {
 	const navigate = useNavigate();
@@ -27,7 +27,7 @@ export const RegistroJornadaNoFormal = () => {
 
 	const dispatch = useDispatch();
 	const columns = [
-		{ field: "nombreJornada", headerName: "Título de la jornada no formal", flex: 10 },
+		{ field: "nombreEleccion", headerName: "Título de la elección", flex: 10 },
 		{
 			field: "configuracion",
 			headerName: "Configuración",
@@ -40,7 +40,7 @@ export const RegistroJornadaNoFormal = () => {
 						<Button
 							variant="outlined"
 							startIcon={<BallotIcon />}
-							onClick={() => handleEdit(params.id)}
+							onClick={() => handleEdit(params.id, params.row.nombreEleccion)}
 						>
 							Ver
 						</Button>
@@ -65,6 +65,7 @@ export const RegistroJornadaNoFormal = () => {
 
 	// USEEFFECT QUE PUEDES USAR PARA HACER UN GET DE LAS JORNADAS AL RENDERIZAR LA PAGINA
 	useEffect(() => {
+		//     if (jornadasData.length === 0) dispatch(onGetjornadas());
 		if (jornadasNoFormalesData.length === 0) dispatch(onGetJornadasNoFormales());
 	}, []);
 
@@ -176,7 +177,7 @@ export const RegistroJornadaNoFormal = () => {
 								<GeneralTable
 									data={jornadasNoFormalesData}
 									columns={columns}
-									idName={"idJornada"}
+									idName={"idEleccion"}
 								/>
 							</Box>
 						</Box>

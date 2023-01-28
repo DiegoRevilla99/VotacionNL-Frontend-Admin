@@ -1,42 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-    onCheckingOperation,
-    onSuccessOperation,
-    onErrorOperation,
-    onOffOperation,
-    onAddCandidato,
-    onAddSuplente,
-    onAddPartido,
-    onAddCandidatoAndSuplente,
-    onDeleteCandidato,
-    onDeleteSuplente,
-    onDeletePartido,
-    onDeleteCandidatoAndSuplente,
-    onEditCandidato,
-    onEditSuplente,
-    onEditPartido,
-    onEditCandidatoAndSuplente,
-    onUpdateCandidato,
-    onUpdateSuplente,
-    onUpdatePartido,
-    onUpdateCandidatoAndSuplente,
-    onSetCandidatoSelectedNull,
-    onSetSuplenteSelectedNull,
-    onSetPartidoSelectedNull,
-    onSetCandidatoAndSuplenteSelectedNull,
-    onSetCandidatoNull,
-    onSetSuplenteNull,
-    onSetPartidoNull,
-    onSetCandidatoAndSuplenteNull,
-    onFillJornadasNoFormalesData,
-    onAddJornadasNoFormales,
-    onDeleteJornadaData,
-    onDeleteBoletaData,
-    onSetjornadaNoFormalSelected,
-    onAddBoleta,
-    onFillBoletas,
-    onEditBoleta,
-    onSetBoletasSelectedNull,
+    onAddCandidato, onAddCandidatoAndSuplente, onAddJornadasNoFormales, onAddPartido, onAddSuplente, onCheckingOperation, onDeleteCandidato, onDeleteCandidatoAndSuplente, onDeletePartido, onDeleteSuplente, onEditBoleta, onEditCandidato, onEditCandidatoAndSuplente, onEditPartido, onEditSuplente, onErrorOperation, onFillJornadasNoFormalesData, onOffOperation, onSetCandidatoAndSuplenteNull, onSetCandidatoAndSuplenteSelectedNull,
+    onSetCandidatoNull, onSetCandidatoSelectedNull, onSetPartidoNull, onSetPartidoSelectedNull, onSetSuplenteNull, onSetSuplenteSelectedNull, onSuccessOperation, onUpdateCandidato, onUpdateCandidatoAndSuplente, onUpdatePartido, onUpdateSuplente
 } from "../../store/module-preparacion/jornada/SliceJornadaNoFormal";
 
 export const useJornadaNoFormalStore = () => {
@@ -56,7 +21,7 @@ export const useJornadaNoFormalStore = () => {
         candidatoandSuplenteSelected,
         jornadasNoFormalesData,
         jornadaNoFormalSelected,
-	} = useSelector((state) => state.jornada);
+	} = useSelector((state) => state.jornadaNoFormal);
 
 	const checkingOperation = () => {
 		dispatch(onCheckingOperation());

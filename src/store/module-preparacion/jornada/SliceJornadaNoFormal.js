@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export const SliceJornadaNoFormal = createSlice({
-    name: 'jornada',
+    name: 'jornadaNoFormal',
     initialState: {
         status: "off",
         errorMessage: "",
@@ -242,7 +242,7 @@ export const SliceJornadaNoFormal = createSlice({
             console.log(payload);
             state.jornadaNoFormalSelected.id = payload.idJornada;
             state.jornadaNoFormalSelected.title = payload.title;
-            state.jornadaNoFormalSelected.boletasNoFormales = payload.boletasNoFormales;
+            state.jornadaNoFormalSelected.boletasNoFormales = payload.boletasNoFormales || [];
         },
         onAddBoleta: (state, { payload }) => {
             state.jornadaNoFormalSelected.boletasNoFormales.push(payload);
@@ -250,6 +250,14 @@ export const SliceJornadaNoFormal = createSlice({
         },
         onFillBoletas: (state, { payload }) => {
             state.jornadaNoFormalSelected.boletasNoFormales = payload;
+            console.log("fill boletas", payload);
+			// state.jornadaSelected.boletas = payload;
+			state.jornadaNoFormalSelected.boletas = [];
+
+			state.jornadaNoFormalSelected.boletas.push({
+				idEstructuraBoleta: 23,
+				nombreEleccion: "Boleta para planilla",
+			});
         },
         onEditBoleta: (state, { payload }) => {
             state.jornadaNoFormalSelected.boletaNoFormalSelected = payload;

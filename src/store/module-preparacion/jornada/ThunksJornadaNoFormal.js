@@ -1,60 +1,13 @@
-import { id } from "date-fns/locale";
 import {
-    getJornadasNoFormales,
-    createJornada,
-    deleteJornada,
-    getBoletasJornada,
-    getBoletaData,
-    createBoleta,
-    updateBoletaData,
-    deleteBoleta,
-} from "../../../providers/Micro-Preparacion/providerJornadaNoFormal"
+    createBoleta, createJornada, deleteBoleta, deleteJornada, getBoletaData, getBoletasJornada, getJornadasNoFormales, updateBoletaData
+} from "../../../providers/Micro-Preparacion/providerJornadaNoFormal";
 import {
-	onToastCheckingOperation,
-	onToastErrorOperation,
-	onToastOffOperation,
-	onToastSuccessOperation,
+    onToastCheckingOperation,
+    onToastErrorOperation, onToastSuccessOperation
 } from "../../ui/uiSlice";
 
 import {
-    onCheckingOperation,
-    onSuccessOperation,
-    onErrorOperation,
-    onOffOperation,
-    onAddCandidato,
-    onAddSuplente,
-    onAddPartido,
-    onAddCandidatoAndSuplente,
-    onDeleteCandidato,
-    onDeleteSuplente,
-    onDeletePartido,
-    onDeleteCandidatoAndSuplente,
-    onEditCandidato,
-    onEditSuplente,
-    onEditPartido,
-    onEditCandidatoAndSuplente,
-    onUpdateCandidato,
-    onUpdateSuplente,
-    onUpdatePartido,
-    onUpdateCandidatoAndSuplente,
-    onSetCandidatoSelectedNull,
-    onSetSuplenteSelectedNull,
-    onSetPartidoSelectedNull,
-    onSetCandidatoAndSuplenteSelectedNull,
-    onSetCandidatoNull,
-    onSetSuplenteNull,
-    onSetPartidoNull,
-    onSetCandidatoAndSuplenteNull,
-    onFillJornadasNoFormalesData,
-    onAddJornadasNoFormales,
-    onDeleteJornadaData,
-    onDeleteBoletaData,
-    onSetjornadaNoFormalSelected,
-    onAddBoleta,
-    onFillBoletas,
-    onEditBoleta,
-    onUpdateBoleta,
-    onSetBoletasSelectedNull,
+    onAddBoleta, onAddPartido, onCheckingOperation, onDeleteBoletaData, onDeleteJornadaData, onEditBoleta, onErrorOperation, onFillBoletas, onFillJornadasNoFormalesData, onSetBoletasSelectedNull, onSuccessOperation
 } from "./SliceJornadaNoFormal";
 
 // Jornadas No Formales
