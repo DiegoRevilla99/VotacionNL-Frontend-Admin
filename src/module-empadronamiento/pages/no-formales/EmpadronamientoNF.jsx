@@ -3,10 +3,8 @@ import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import {
-  getEleccionFormal,
-  getVotantesbyJornada,
-} from "../../../store/module-empadronamiento/no-formales/thunksNoFormales";
+import { getEleccionFormal } from "../../../store/module-empadronamiento/no-formales/thunksNoFormales";
+import { getVotantesbyJornada } from "../../../store/module-empadronamiento/votantes/thunksVotantes";
 
 import { BreadCrumbsCustom } from "../../components/BreadCrumbsCustom";
 import { RegisterVoters } from "../../components/RegisterVoters";
@@ -14,8 +12,13 @@ import { RegisterVoters } from "../../components/RegisterVoters";
 export const EmpadronamientoNF = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { votantes, isLoadingVotantes, eleccion, isLoadingEleccion } =
-    useSelector((state) => state.noFormalesSlice);
+  const { eleccion, isLoadingEleccion } = useSelector(
+    (state) => state.noFormalesSlice
+  );
+
+  const { votantes, isLoadingVotantes } = useSelector(
+    (state) => state.empVotantesSlice
+  );
 
   useEffect(() => {
     dispatch(getEleccionFormal(id));

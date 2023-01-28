@@ -18,7 +18,7 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, ErrorMessage } from "formik";
 
 import { useDispatch, useSelector } from "react-redux";
-import { uploadCSV } from "../../store/module-empadronamiento/formales/thunksFormales";
+import { uploadCSV } from "../../store/module-empadronamiento/votantes/thunksVotantes";
 
 const useStyles = makeStyles({
   textField: {

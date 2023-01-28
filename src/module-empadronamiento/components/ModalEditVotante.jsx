@@ -24,12 +24,12 @@ import { ErrorField } from "../../module-preparacion/components/ErrorField";
 import { FormInfo } from "./FormInfo";
 import { FormDireccion } from "./FormDireccion";
 import { FormContacto } from "./FormContacto";
+
+import { transformDate } from "../helpers/transformDate";
 import {
   getVotantesbyJornada,
-  postVotante,
   putVotante,
-} from "../../store/module-empadronamiento/formales/thunksFormales";
-import { transformDate } from "../helpers/transformDate";
+} from "../../store/module-empadronamiento/votantes/thunksVotantes";
 
 const useStyles = makeStyles({
   textField: {
@@ -86,7 +86,9 @@ export const ModalEditVotante = ({
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
 
-  const { votanteSelected, status } = useSelector((state) => state.empFormales);
+  const { votanteSelected, status } = useSelector(
+    (state) => state.empVotantesSlice
+  );
 
   const isStepOptional = (step) => {
     return step === 5;
@@ -163,6 +165,7 @@ export const ModalEditVotante = ({
   };
 
   const AddVotanteNext = () => {
+    console.log("actualizando info");
     dispatch(getVotantesbyJornada());
     abrirCerrarModal();
 

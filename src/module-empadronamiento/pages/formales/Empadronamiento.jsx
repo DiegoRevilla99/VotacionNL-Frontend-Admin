@@ -4,18 +4,21 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useParams } from "react-router-dom";
-import {
-  getEleccionFormal,
-  getVotantesbyJornada,
-} from "../../../store/module-empadronamiento/formales/thunksFormales";
+import { getEleccionFormal } from "../../../store/module-empadronamiento/formales/thunksFormales";
+import { getVotantesbyJornada } from "../../../store/module-empadronamiento/votantes/thunksVotantes";
 import { BreadCrumbsCustom } from "../../components/BreadCrumbsCustom";
 import { RegisterVoters } from "../../components/RegisterVoters";
 
 export const Empadronamiento = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { votantes, isLoadingVotantes, eleccion, isLoadingEleccion } =
-    useSelector((state) => state.empFormales);
+  const { eleccion, isLoadingEleccion } = useSelector(
+    (state) => state.empFormales
+  );
+
+  const { votantes, isLoadingVotantes } = useSelector(
+    (state) => state.empVotantesSlice
+  );
 
   useEffect(() => {
     dispatch(getEleccionFormal(id));
@@ -46,7 +49,7 @@ export const Empadronamiento = () => {
               url: "/empadronamiento/formal",
             },
           ]}
-          currentRoute={!isLoadingEleccion ? eleccion.nombreEleccion : "..."}
+          currentRoute={!isLoadingEleccion ? eleccion.nombreJornada : "..."}
         ></BreadCrumbsCustom>
         {isLoadingEleccion ? (
           <Stack

@@ -71,7 +71,9 @@ export const ModalInfo = ({ isOpen = false, abrirCerrarModal = () => {} }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
-  const { votanteSelected, status } = useSelector((state) => state.empFormales);
+  const { votanteSelected, status } = useSelector(
+    (state) => state.empVotantesSlice
+  );
 
   const cerrarM = () => {
     abrirCerrarModal();

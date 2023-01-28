@@ -6,19 +6,19 @@ export const getStatusEmp = (inicio, fin) => {
     const now = new Date();
 
 
-    /*  if (now >= newInicio && now < newFin) {
-         return "activo"
-     }
- 
-     if (now < newInicio) {
-         return "noiniciada"
-     }
- 
-     if (now > newFin) {
-         return "terminado"
-     } */
+    if (now >= newInicio && now < newFin) {
+        return "activo"
+    }
+
+    if (now < newInicio) {
+        return "noiniciada"
+    }
+
+    if (now >= newFin) {
+        return "terminado"
+    }
 
 
-    return "activo";
+    return "";
 
 }

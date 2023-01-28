@@ -3,6 +3,7 @@ import { authSlice } from "./auth/authSlice";
 import { consultasSlice } from "./module-empadronamiento/consultas/consultasSlice";
 import { empFormalesSlice } from "./module-empadronamiento/formales/EmpFormalesSlice";
 import { noFormalesSlice } from "./module-empadronamiento/no-formales/noFormalesSlice";
+import { empVotantesSlice } from "./module-empadronamiento/votantes/empVotantesSlice";
 import { comiteSlice } from "./module-preparacion/comite/comiteSlice";
 import { configBoletaSlice } from "./module-preparacion/configuracion-boleta/configBoletaSlice";
 import { configJornadaSlice } from "./module-preparacion/configuracion-jornada/configJornadaSlice";
@@ -23,6 +24,7 @@ export const store = configureStore({
 		ui: uiSlice.reducer,
 		auth: authSlice.reducer,
 		noFormalesSlice: noFormalesSlice.reducer,
-		consultasSlice: consultasSlice.reducer
+		consultasSlice: consultasSlice.reducer,
+		empVotantesSlice: empVotantesSlice.reducer
 	},
 });
