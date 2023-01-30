@@ -10,6 +10,7 @@ import {
 	createBoleta,
 	updateBoletaData,
 	deleteBoleta,
+	getJornadaVotos,
 } from "../../../providers/Micro-Preparacion/providerJornada";
 import {
 	onToastCheckingOperation,

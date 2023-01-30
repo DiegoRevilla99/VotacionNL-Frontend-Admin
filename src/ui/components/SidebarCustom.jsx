@@ -63,7 +63,6 @@ export const SidebarCustom = ({ selected, setSelected }) => {
 			<ProSidebar collapsed={isCollapsed} breakPoint="md">
 				<Box mt="0px" pt="0px">
 					<Menu iconShape="square">
-						{/* USUARIO */}
 						<Box
 							mb="25px"
 							display="flex"
@@ -78,7 +77,8 @@ export const SidebarCustom = ({ selected, setSelected }) => {
 							<Box>
 								<img
 									alt="logo"
-									src="../../CEE600x321.png"
+									src="/../../CEE600x321.png"
+									crossOrigin="anonymous"
 									style={{
 										transition: "width 0.5s, height 0.5s",
 										width: isCollapsed ? "75px" : "139px",
@@ -88,7 +88,6 @@ export const SidebarCustom = ({ selected, setSelected }) => {
 							</Box>
 						</Box>
 
-						{/* MENU ITEMS */}
 						<Box paddingLeft={isCollapsed ? undefined : "5%"} marginTop="1rem">
 							<DividerItem
 								isCollapsed={isCollapsed}

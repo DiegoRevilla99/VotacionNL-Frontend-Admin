@@ -7,8 +7,10 @@ import { Box, Button, Divider, Grid, Typography } from "@mui/material";
 // import { ReporteInicialPDF } from "../components/ReporteInicialPDF";
 // import jsPDF from "jspdf";
 import { jsPDF } from "jspdf";
-import { ReporteInicialPDF } from "../components/ReporteInicialPDF";
+// import { ReporteInicialPDF } from "../components/ReporteInicialPDF";
 import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
+import { captureCanvas, captureScreen, ReporteInicialPDF } from "../components/ReporteInicialPDF";
+import { ReporteInicialHTML } from "../components/ReporteInicialHTML";
 // import ReactPDF from "@react-pdf/renderer";
 // import {
 // 	Chart as ChartJS,
@@ -48,19 +50,20 @@ export const JornadaFormalChart = ({ chartData }) => {
 				],
 				image: [
 					"https://www.chartjs.org/img/chartjs-logo.svg",
-					"https://www.chartjs.org/img/chartjs-logo.svg",
-					"https://www.chartjs.org/img/chartjs-logo.svg",
-					"https://www.chartjs.org/img/chartjs-logo.svg",
-					"https://www.chartjs.org/img/chartjs-logo.svg",
-					"https://www.chartjs.org/img/chartjs-logo.svg",
-					"https://www.chartjs.org/img/chartjs-logo.svg",
-					"https://www.chartjs.org/img/chartjs-logo.svg",
-					"https://www.chartjs.org/img/chartjs-logo.svg",
-					"https://www.chartjs.org/img/chartjs-logo.svg",
-					"https://www.chartjs.org/img/chartjs-logo.svg",
-					"https://www.chartjs.org/img/chartjs-logo.svg",
-					"https://www.chartjs.org/img/chartjs-logo.svg",
+					"https://upload.wikimedia.org/wikipedia/commons/5/5c/PAN_logo_%28Mexico%29.svg",
+					"https://upload.wikimedia.org/wikipedia/commons/b/b5/PRI_logo_%28Mexico%29.svg",
+					"https://upload.wikimedia.org/wikipedia/commons/8/8f/PRD_logo_%28Mexico%29.svg",
+					"https://upload.wikimedia.org/wikipedia/commons/e/e7/Worker%27s_Party_logo_%28Mexico%29.svg",
+					"https://upload.wikimedia.org/wikipedia/commons/a/ae/Logo-partido-verde-2020.png",
+					"https://upload.wikimedia.org/wikipedia/commons/3/34/Logo_Partido_Movimiento_Ciudadano_%28M%C3%A9xico%29.svg",
+					"https://upload.wikimedia.org/wikipedia/commons/e/ea/Morena_logo_%28Mexico%29.svg",
+					"https://upload.wikimedia.org/wikipedia/commons/7/7f/Logo_Encuentro_Solidario.svg",
+					"https://upload.wikimedia.org/wikipedia/commons/d/d8/Partido_Nueva_Alianza_%28M%C3%A9xico%29.svg",
+					"https://upload.wikimedia.org/wikipedia/commons/f/fb/PRS_logo_%28Mexico%29.svg",
+					"https://upload.wikimedia.org/wikipedia/commons/e/e8/RSP_logo_%28Mexico%29.svg",
+					"https://upload.wikimedia.org/wikipedia/commons/5/52/Partido_Socialdem%C3%B3crata_%28Mexico%29_Logo.png",
 				],
+				labels: chartData.map((data) => data.nombre),
 			},
 			{
 				label: "Votos",
@@ -92,28 +95,88 @@ export const JornadaFormalChart = ({ chartData }) => {
 					logo,
 					x.getPixelForValue(index) - 40 / 2,
 					y.getPixelForValue(0) + 5,
-					40,
-					40
+					30,
+					30
 				);
 			});
 		},
 	};
 
-	const handlePDF = () => {
-		const boleta = jornadaSelected.boletas.find(
-			(boleta) => boleta.idEstructuraBoleta === parseInt(params.idBoleta, 10)
-		);
+	const tooltipLabels = {
+		id: "tooltipLabels",
+		beforeEvent(chart, args, pluginOptions) {
+			const {
+				ctx,
+				options,
+				data,
+				scales: { x, y },
+			} = chart;
 
-		console.log("bolll", boleta);
-		ReporteInicialPDF({
-			nombreJornada: jornadaSelected.title,
-			nombreBoleta: boleta.nombreEleccion,
-		});
+			// console.log("ESCALAS DEL 1", x.getPixelForValue(0) - 40 / 2, y.getPixelForValue(0) + 5);
+
+			const event = args.event;
+
+			if (event.type === "mousemove") {
+				// if (
+				// 	event.x >= x.getPixelForValue(0) - 20 &&
+				// 	event.x <= x.getPixelForValue(0) + 20 &&
+				// 	event.y >= y.getPixelForValue(0) &&
+				// 	event.y <= y.getPixelForValue(0) + 40
+				// ) {
+				const tooltip = chart.tooltip;
+
+				// console.log("ENTRA AL EVENTO");
+				const chartArea = chart.chartArea;
+				// console.log("area", chartArea);
+				tooltip.setActiveElements(
+					[
+						{
+							datasetIndex: 0,
+							index: 0,
+						},
+						{
+							datasetIndex: 1,
+							index: 0,
+						},
+					],
+					{
+						x: (chartArea.left + chartArea.right) / 2,
+						y: (chartArea.top + chartArea.bottom) / 2,
+					}
+				);
+				chart.update();
+				// }
+				// }
+			}
+		},
+	};
+
+	const handlePDF = () => {
+		// const boleta = jornadaSelected.boletas.find(
+		// 	(boleta) => boleta.idEstructuraBoleta === parseInt(params.idBoleta, 10)
+		// );
+		// console.log("bolll", boleta);
+		// ReporteInicialPDF();
+		// captureScreen();
+		captureCanvas();
+		// let doc = new jsPDF("p", "pt", "letter");
+		// let margin = 10;
+		// let scale = (doc.internal.pageSize.width - margin * 2) / document.body.scrollWidth;
+		// doc.html(document.body, {
+		// 	x: margin,
+		// 	y: margin,
+		// 	html2canvas: {
+		// 		scale: scale,
+		// 	},
+		// 	callback: function (doc) {
+		// 		doc.output("dataurlnewwindow", { filename: "fichero.pdf" });
+		// 	},
+		// });
 	};
 
 	return (
 		<>
-			<Grid container spacing={2}>
+			<Grid container spacing={2} id="ejemplo23">
 				<Grid item xs={3}></Grid>
 				<Grid item container xs={6}>
 					<Grid
@@ -457,6 +520,11 @@ export const JornadaFormalChart = ({ chartData }) => {
 							bottom: 30,
 						},
 					},
+
+					interaction: {
+						intersect: false,
+						mode: "index",
+					},
 					indexAxis: "x",
 					responsive: true,
 					plugins: {
@@ -470,7 +538,23 @@ export const JornadaFormalChart = ({ chartData }) => {
 						},
 						tooltip: {
 							filter: function (tooltipItem) {
+								// console.log("TOOLTIPITEM", tooltipItem);
 								return tooltipItem.datasetIndex === 0;
+							},
+							usePointStyle: true,
+							callbacks: {
+								labelPointStyle: (context) => {
+									console.log(context);
+									console.log("Imagen", context.dataset.image[context.dataIndex]);
+									const image = new Image(15, 15);
+									image.src = context.dataset.image[context.dataIndex];
+									return {
+										pointStyle: image,
+									};
+								},
+								beforeTitle: (context) => {
+									return context[0].dataset.labels[context[0].dataIndex];
+								},
 							},
 						},
 						legend: {
@@ -480,8 +564,8 @@ export const JornadaFormalChart = ({ chartData }) => {
 							display: function (data) {
 								return data.datasetIndex === 0;
 							},
-							// color: "#000000",
 							labels: {
+								// events: ["mousemove"],
 								title: {
 									display: function (data) {
 										return data.datasetIndex === 0;
@@ -535,6 +619,7 @@ export const JornadaFormalChart = ({ chartData }) => {
 					variant="contained"
 					size="large"
 					onClick={handlePDF}
+					id="nodoespecifico"
 					sx={{
 						boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
 						transition: "all 0.5s ease",
@@ -551,6 +636,7 @@ export const JornadaFormalChart = ({ chartData }) => {
 					DESCARGAR REPORTE
 				</Button>
 			</Box>
+			{/* <ReporteInicialHTML /> */}
 		</>
 	);
 };

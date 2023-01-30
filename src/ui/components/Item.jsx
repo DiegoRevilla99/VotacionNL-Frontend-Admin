@@ -14,7 +14,7 @@ const animacion = keyframes`
 }
 `;
 
-export const Item = ({ title, to, icon, selected, setSelected }) => {
+export const Item = ({ title, to = "/home", icon, selected, setSelected }) => {
 	return (
 		<Box
 			sx={{
@@ -41,7 +41,7 @@ export const Item = ({ title, to, icon, selected, setSelected }) => {
 				icon={icon}
 			>
 				<Typography variant="button">{title}</Typography>
-				<Link to={to} />
+				<Link to={to}> </Link>
 			</MenuItem>
 		</Box>
 	);
