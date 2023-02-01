@@ -1,12 +1,12 @@
 import { Box, Modal, TextField, Typography } from "@mui/material";
 import { Formik } from "formik";
-import { object, string } from "yup";
 import React from "react";
-import { ButtonsContainer } from "./ButtonsContainer";
-import { onCreateJornada } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useJornadaStore } from "../hooks/useJornadaStore";
+import { object, string } from "yup";
+import { onCreateJornadaNoFormal } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
+import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
+import { ButtonsContainer } from "./ButtonsContainer";
 
 const style = {
 	position: "absolute",
@@ -23,7 +23,7 @@ const style = {
 
 const validationSchema = object({
 	title: string("Ingresa un título").required("Este campo es requerido"),
-	entidad: string("Ingresa la entidad donde se llevará a cabo la jornada").required(
+	tipoEleccion: string("Ingresa la tipoEleccion donde se llevará a cabo la jornada").required(
 		"Este campo es requerido"
 	),
 });
@@ -33,12 +33,12 @@ export const ModalRegistroJornadaNoFormal = ({ modalStatus, closeModal, openModa
 	const navigate = useNavigate();
 	// !!TU ESTADO GLOBAL
 	// const { status } = useConsultaCiudadanaStore();
-	const { status } = useJornadaStore();
+	const { status } = useJornadaNoFormalStore();
 
 	const onSubmit = (values) => {
 		// !!AQUI PON LA RUTA Y EL GUARDADO DE TU JORNADA ELECTORAL
 		dispatch(
-			onCreateJornada(values.title, values.entidad, (id) => {
+			onCreateJornadaNoFormal(values.title, values.tipoEleccion, (id) => {
 				navigate("/preparacion/jornada/noFormal/" + id);//EDITAR LA RUTA
 			})
 		);
@@ -60,7 +60,7 @@ export const ModalRegistroJornadaNoFormal = ({ modalStatus, closeModal, openModa
 						<Formik
 							initialValues={{
 								title: "",
-								entidad: "",
+								tipoEleccion: "",
 							}}
 							validationSchema={validationSchema}
 							onSubmit={(values) => {
@@ -87,20 +87,20 @@ export const ModalRegistroJornadaNoFormal = ({ modalStatus, closeModal, openModa
 									/>
 
 									<Typography variant="h6" mb="0.5rem">
-										ENTIDAD DONDE SE LLEVARÁ A CABO LA JORNADA NO FORMAL
+										TIPO DE ELECCIÓN QUE SE LLEVARÁ A CABO
 									</Typography>
 
 									<TextField
-										name="entidad"
+										name="tipoEleccion"
 										fullWidth
 										size="small"
-										id="entidad"
-										label="Entidad donde se llevará a la jornada"
+										id="tipoEleccion"
+										label="Tipo de elección que se llevará a cabo"
 										variant="filled"
 										onChange={handleChange}
-										value={values.entidad}
-										error={touched.entidad && Boolean(errors.entidad)}
-										helperText={touched.entidad && errors.entidad}
+										value={values.tipoEleccion}
+										error={touched.tipoEleccion && Boolean(errors.tipoEleccion)}
+										helperText={touched.tipoEleccion && errors.tipoEleccion}
 									/>
 
 									<ButtonsContainer onCancel={closeModal} status={status} />

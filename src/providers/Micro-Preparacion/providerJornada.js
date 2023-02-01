@@ -54,8 +54,10 @@ export const deleteJornada = async (id) => {
 export const getBoletasJornada = async (idJornadaElectoral) => {
 	try {
 		// **FETCH
+		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/43
 		const { data } = await jornadasAPI.get(
-			"jornada/electoral/jornada/" + idJornadaElectoral + "/estructurasboletas"
+
+			"jornada/electoral/estructuraboleta/" + idJornadaElectoral
 		);
 		console.log("DATA BOLETASSSS", data);
 		return { ok: true, data: data.data };

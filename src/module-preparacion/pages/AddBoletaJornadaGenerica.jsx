@@ -1,111 +1,89 @@
-import { Box, Divider, Grid, Typography, TextField, Paper, Button } from "@mui/material";
+import { Box, Button, Divider, Grid, MenuItem, TextField, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useUiStore } from "../../hooks/useUiStore";
-import { getBoletaByIdApi } from "../helpers/ApiJornada";
 import { FielTextCustom } from "../components/FielTextCustom";
-import { DataGridTable } from "../../ui/components/DataGridTable";
-import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
 
 // import { ModalEliminarPC } from "../components/ModalEliminarPC";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Formik } from 'formik';
-import { object, string, number } from "yup";
 import { useNavigate, useParams } from "react-router-dom";
-import { ModalAsociacionCP } from "../components/ModalAsociacionCP";
-import { useJornadaStore } from "../hooks/useJornadaStore";
-import { ModalRegisterCS } from "../components/ModalRegisterCS";
-import { DataGridTableJornada } from "../../ui/components/DataGridTableJornada";
-import { DataGridTablePartido } from "../../ui/components/DataGridTablePartido";
+import { object } from "yup";
+import { onCreateBoleta } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
+import { AddCandidatoGenericoMod } from "../components/AddCandidatoGenericoMod";
+import { ModalBoletaCandidatoGenerico } from "../components/ModalBoletaCandidatoGenerico";
+import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 
 
+const modalidadNoFormal = [ {
+    value: 'REPRESENTANTE',
+    label: 'REPRESENTANTE',
+  },
+  {
+    value: 'COMITÉ',
+    label: 'COMITÉ',
+  },
+  {
+    value: 'PLANILLA',
+    label: 'PLANILLA',
+  },
+];
 const validationSchema = object({
-	encabezado: string("").required(
-		"Por favor, ingresa un encabezado"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	nombreCandidatura: string("").required(
-		"Por favor, ingresa un nombre de Candidatura"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// modalidadVotacion: string(""),
-	entidadFederativa: string("").required(
-		"Por favor, ingresa una entidad Federativa"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	municipio: string("").required(
-		"Por favor, ingresa un municipio"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	distritoElectoralLocal: number("").required(
-		"Por favor, ingresa un distrito Electoral Local"
-		).max("26").positive("Solo números positivos, por favor.").integer(""),
-	distritoElectoral: number("").required(
-		"Por favor, ingresa un distrito Electoral"
-		).max("3000").positive("Solo números positivos, por favor.").integer(""),
-	tipoCasilla: string("").required(
-		"Por favor, ingresa un tipo de Casilla"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	primerFirmante: string("").required(
-		"Por favor, ingresa el nombre del Primer Firmante"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	cargoPrimerFirmante: string("").required(
-		"Por favor, ingresa un segundo Firmante"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	segundoFirmante: string("").required(
-		"Por favor, ingresa el nombre de Segundo Firmante"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	cargoSegundoFirmante: string("").required(
-		"Por favor, ingresa el cargo de Segundo Firmante"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// encabezado: string("").required(
+	// 	"Por favor, ingresa un encabezado"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// modalidadVotacion: string("").required(
+	// 	"Por favor, elige una modalidad de votación"),
+	// entidadFederativa: string("").required(
+	// 	"Por favor, ingresa un municipio"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// municipio: string("").required(
+	// 	"Por favor, ingresa un municipio"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// primerFirmante: string("").required(
+	// 	"Por favor, ingresa el nombre del Primer Firmante"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// cargoPrimerFirmante: string("").required(
+	// 	"Por favor, ingresa un segundo Firmante"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// segundoFirmante: string("").required(
+	// 	"Por favor, ingresa el nombre de Segundo Firmante"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// cargoSegundoFirmante: string("").required(
+	// 	"Por favor, ingresa el cargo de Segundo Firmante"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
 });
 
 export const AddBoletaJornadaGenerica = () => {
 
-	const { nombreCandidatura } = useParams();
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const params = useParams();
+	console.log('onCancel',params.id);
 	const { 
 		status,
 		candidatos,
         candidatosSelected,
-        suplentes,
-        suplentesSelected,
-        partidos,
-        partidoSelected,
-        candidatoAndSuplente,
-        candidatoandSuplenteSelected,
-		
-		jornadaSelected,
-	} = useJornadaStore();
+		jornadaNoFormalSelected,
+	} = useJornadaNoFormalStore();
 
-
-	const dispatch = useDispatch();
 	const [datos, setDatos] = useState({
 		encabezado: "",	//Text
-		nombreCandidatura: "",//Text
-		modalidadVotacion: "1",//Text
+		modalidadVotacion: "",//Text
 		entidadFederativa: "",//Text
 		municipio: "",//Text
-		distritoElectoralLocal: "",//Number
-		distritoElectoral: "",//Number
-		tipoCasilla: "",//text
 		primerFirmante: "",//Text
 		cargoPrimerFirmante: "",//Text
 		segundoFirmante: "",//Text
 		cargoSegundoFirmante: "",//Text
 	});
 	const [, forceUpdate] = React.useState();
-
-	const [statusMatchModal, setStatusMatchModal] = useState(false);
-
+	const [statusDeleteCandidatoModal, setStatusDeleteCandidatoModal] = useState(false);
+	const handleCloseDeleteCandidatoModal = () => setStatusDeleteCandidatoModal(false);
 	// const [statusDeleteModal, setStatusDeleteModal] = useState(false);
 	const [statusRegisterModal, setStatusRegisterModal] = useState(false);
-	const [statusAsociacionModal, setStatusAsociacionModal] = useState(false);
-
 	const [isLoading, setIsLoading] = useState(false);
-
-	const handleCloseMatchModal = () => setStatusMatchModal(false);
-
-	// const handleCloseDeleteModal = () => setStatusDeleteModal(false);
 	const handleCloseRegisterModal = () => setStatusRegisterModal(false);
-	const handleCloseAsociacionModal = () => setStatusAsociacionModal(false);
 
 
 	const handleOpenRegisterModal = () => {
@@ -113,46 +91,23 @@ export const AddBoletaJornadaGenerica = () => {
 		setStatusRegisterModal(true);
 	};
 
-	 const handleOpenMatchModal = () => {
-	 	// toastOffOperation();
-	 	setStatusMatchModal(true);
-	 };
-
-	// const handleOpenDeleteModal = () => {
-    //     // toastOffOperation();
-    //     setStatusDeleteModal(true);
-    // };
-
-	const handleOpenAsociacionModal = () => {
+	const handleOpenDeleteCandidatoModal = () => {
 		// toastOffOperation();
-		setStatusAsociacionModal(true);
+		setStatusDeleteCandidatoModal(true);
 	};
 
 	const onCancel = () => {
-		navigate("/preparacion/jornada");
+		console.log('onCancel',params.id);
+		navigate("/preparacion/jornada/noFormal/"+params.id);
 	};
 
-	const setInfo = async () => {
-		console.log(nombreCandidatura);
-		if (nombreCandidatura != undefined) {
-		  setIsLoading(true);
-		  const info = await getBoletaByIdApi(nombreCandidatura);
-		  setIsLoading(false);
-		  console.log("datps desde set info");
-		  setDatos(info);
-		}
-	  };
-	  useEffect(() => {
-		setInfo();
-	  }, []);
-	
-	  useEffect(() => {
-		console.log("se actualizo datos");
-		forceUpdate();
-	  }, [datos]);
-
-	  const guardar = () => {
-		navigate("/preparacion/jornada");
+	  const onSubmit = (values) => {
+		// navigate("/preparacion/jornada");
+		dispatch(
+			onCreateBoleta( values, params.id, candidatos, ()=>{
+				navigate("/preparacion/jornada/noFormal/"+params.id);
+			})
+		)
 	  };
 	// INICIO DEL RETURN
 
@@ -171,11 +126,11 @@ export const AddBoletaJornadaGenerica = () => {
             <Formik
 		initialValues={datos}
 		validationSchema={validationSchema}
-		onSubmit={(valores) => {
-			console.log("valores", valores);
+		onSubmit={(values) => {
+			onSubmit(values);
 		  }}
 	>
-		{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (
+		{( {values, errors, touched, handleSubmit, handleChange, handleBlur, setValues} ) => (
 			<Box 
 			sx={{
 				height: "100%",
@@ -217,6 +172,7 @@ export const AddBoletaJornadaGenerica = () => {
 						</Grid>
 						<Grid item xs={12}>
 						<FielTextCustom
+						
 							disabled={status === "checking"}
 							name="encabezado"
 							label="ENCABEZADO DE LA BOLETA"
@@ -227,29 +183,42 @@ export const AddBoletaJornadaGenerica = () => {
 						/>
 							{/* {touched.encabezado && errors.encabezado && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.encabezado}</Typography>} */}
 						</Grid>
+
 						<Grid item xs={12}>
-							<FielTextCustom
-							disabled={status === "checking"}
-								label="NOMBRE DE LA CANDIDATURA"
-								name="nombreCandidatura"
-								value={values.nombreCandidatura}
-								handleChange={handleChange}
-								error={errors.nombreCandidatura}
-								touched={touched.nombreCandidatura}
-							/>
-							{/* {touched.nombreCandidatura && errors.nombreCandidatura && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombreCandidatura}</Typography>} */}
-						</Grid>
-						{/* <Grid item xs={12}>
-							<FielTextCustom
+							<TextField
+								id="filled-select-currency"
+								name="modalidadVotacion"
+								select
 								disabled={status === "checking"}
 								label="MODALIDAD DE VOTACIÓN"
-								name="modalidadVotacion"
-								value={values.modalidadVotacion}
-								handleChange={handleChange}
-								error={errors.modalidadVotacion}
+								defaultValue="REPRESENTANTE"
+								variant="filled"
 								touched={touched.modalidadVotacion}
-							/>
-						</Grid> */}
+								error={touched && touched.modalidadVotacion && Boolean(errors.modalidadVotacion)}
+								helperText={touched && touched.modalidadVotacion && errors.modalidadVotacion}
+								sx={{ width: {
+									xs: "100%",
+									sm: "100%",
+									md: "50%",
+									lg: "50%",
+									xl: "50%",
+								} }}
+								value={values.modalidadVotacion}
+								onChange={(event) => {
+									setValues({
+									...values,
+									modalidadVotacion: event.target.value
+									});
+								}}
+								>
+								{modalidadNoFormal.map((option) => (
+								<MenuItem key={option.value} value={option.value}>
+									{option.label}
+								</MenuItem>
+								))}
+							</TextField>
+
+						</Grid>
 						<Grid item xs={12}>
 							<Typography variant="h6" color="initial">
 								DATOS GEOELECTORALES
@@ -279,42 +248,7 @@ export const AddBoletaJornadaGenerica = () => {
 							/>
 							{/* {touched.municipio && errors.municipio && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.municipio}</Typography>} */}
 						</Grid>
-						<Grid item xs={12} md={12} lg={5}>
-							<FielTextCustom
-							disabled={status === "checking"}
-								label="DISTRITO ELECTORAL LOCAL"
-								name="distritoElectoralLocal"
-								value={values.distritoElectoralLocal}
-								handleChange={handleChange}
-								error={errors.distritoElectoralLocal}
-								touched={touched.distritoElectoralLocal}
-							/>
-							{/* {touched.distritoElectoralLocal && errors.distritoElectoralLocal && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.distritoElectoralLocal}</Typography>} */}
-						</Grid>
-						<Grid item xs={12} md={12} lg={3}>
-							<FielTextCustom
-							disabled={status === "checking"}
-								label="DISTRITO ELECTORAL"
-								name="distritoElectoral"
-								value={values.distritoElectoral}
-								handleChange={handleChange}
-								error={errors.distritoElectoral}
-								touched={touched.distritoElectoral}
-							/>
-							{/* {touched.distritoElectoral && errors.distritoElectoral && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.distritoElectoral}</Typography>} */}
-						</Grid>
-						<Grid item xs={12} md={12} lg={4}>
-							<FielTextCustom
-							disabled={status === "checking"}
-								label="TIPO DE CASILLA"
-								name="tipoCasilla"
-								value={values.tipoCasilla}
-								handleChange={handleChange}
-								error={errors.tipoCasilla}
-								touched={touched.tipoCasilla}
-							/>
-							{/* {touched.tipoCasilla && errors.tipoCasilla && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.tipoCasilla}</Typography>} */}
-						</Grid>
+
 						<Grid item xs={12}>
 							<Typography variant="h6" color="initial">
 								FIRMANTES
@@ -368,132 +302,11 @@ export const AddBoletaJornadaGenerica = () => {
 							/>
 							{/* {touched.cargoSegundoFirmante && errors.cargoSegundoFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.cargoSegundoFirmante}</Typography>} */}
 						</Grid>
-						<Grid item xs={12} md={6} lg={4}>
-							<Button
-								
-								onClick={handleOpenRegisterModal}
-								variant="contained"
-								size="large"
-								disabled={status === "checking"}
-								sx={{
-									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
-									transition: "all 0.5s ease",
-									backgroundColor: "#511079",
-									width: "100%",
-									borderRadius: "25px 25px 25px 25px",
-									"&:hover": {
-										backgroundColor: "#7E328B !important",
-										transform: "translate(-5px, -5px)",
-										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
-									},
-								}}
-							>
-								Registrar candidato y suplente
-							</Button>
-						</Grid>
-						<Grid item xs={12} md={6} lg={4}>
-							<Button
-								onClick={handleOpenMatchModal}
-								variant="contained"
-								size="large"
-								
-								disabled={status === "checking"}
-								sx={{
-									width: "100%",
-									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
-									transition: "all 0.5s ease",
-									backgroundColor: "#511079",
-									fontSize: { xl: "15px", lg: "15px", sm: "15px", xs: "15px" },
-									borderRadius: "25px 25px 25px 25px",
-									"&:hover": {
-										backgroundColor: "#7E328B !important",
-										transform: "translate(-5px, -5px)",
-										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
-									},
-								}}
-							>
-								Agregar partido
-							</Button>
-						</Grid>
-						<Grid item xs={12} md={6} lg={4}>
-							<Button
-								onClick={handleOpenAsociacionModal}
-								variant="contained"
-								size="large"
-								
-								disabled={status === "checking"}
-								sx={{
-									width: "100%",
-									height: "100%",
-									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
-									transition: "all 0.5s ease",
-									backgroundColor: "#511079",
-									fontSize: { xl: "14px", lg: "14px", sm: "15px", xs: "15px" },
-									borderRadius: "25px 25px 25px 25px",
-									"&:hover": {
-										backgroundColor: "#7E328B !important",
-										transform: "translate(-5px, -5px)",
-										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
-									},
-								}}
-							>
-								Asociaciar participantes a partido
-							</Button>
-						</Grid>
-						<Grid item xs={4} md={2} lg={2}>
-							<Button
-							// onClick={handleOpenDeleteModal}
-							
-								variant="contained"
-								size="small"
-								disabled={status === "checking"}
-								sx={{
-									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
-									transition: "all 0.5s ease",
-									backgroundColor: "#791010",
-									width: "100%",
-									borderRadius: "25px 25px 25px 25px",
-									"&:hover": {
-										backgroundColor: "#8B3232 !important",
-										transform: "translate(-5px, -5px)",
-										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
-									},
-								}}
-							>
-								eliminar
-							</Button>
-						</Grid>
-						<Grid item xs={12}>
-							<Box
-								sx={{
-									height: "25rem",
-									backgroundColor: "#f0f0f0",
-									borderRadius: "2rem",
-									p: "2rem",
-									pt: "1rem",
-									pb: "1rem",
-								}}
-							>
-								{/* <DataGridTableJornada /> */}
-								<DataGridTable />
-
-							</Box>
-						</Grid>
-						<Grid item xs={12}>
-							<Box
-								sx={{
-									height: "25rem",
-									backgroundColor: "#f0f0f0",
-									borderRadius: "2rem",
-									p: "2rem",
-									pt: "1rem",
-									pb: "1rem",
-								}}
-							>
-								{/* <DataGridTablePartido /> */}
-								
-							</Box>
-						</Grid>
+							<AddCandidatoGenericoMod
+								handleOpenModal={handleOpenRegisterModal}
+								handleOpenDeleteCandidatoModal={handleOpenDeleteCandidatoModal}
+								status={status}
+							/> 
 					</Grid>
 					<Grid mt={"1rem"} container direction="row" justifyContent="flex-end" spacing={2}>
 						<Grid item xs={12} md={6} lg={3}>
@@ -517,8 +330,8 @@ export const AddBoletaJornadaGenerica = () => {
 							>
 								Guardar
 							</Button>
-
 						</Grid>
+						
 						<Grid item xs={12} md={6} lg={3}>
 							<Button
 								onClick={onCancel}
@@ -544,18 +357,11 @@ export const AddBoletaJornadaGenerica = () => {
 						
 					</Grid>
 				</Box>
-			{/* MODAL PARA REGISTRAR LOS PARTIDOS */}
-			<ModalBoletaPartido statusMatchModal={statusMatchModal} handleToggleModal={handleCloseMatchModal} />
-			{/* ELIMINAR EL SIGUIENTE MODAL */}
-            {/* <ModalBoletaCandidato statusCandidateModal={statusCandidateModal} handleToggleModal={handleCloseCandidateModal} /> */}
+
+			{/* MODAL PARA REGISTRAR A LOS CANDIDATOS */}
+			<ModalBoletaCandidatoGenerico statusRegisterModal={statusRegisterModal} handleCloseRegisterModal={handleCloseRegisterModal} />
 			{/* MODAL PARA CONFIRMAR LA ELIMINACIÓN */}
-			{/* <ModalEliminarPC statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} /> */}
-			{/* MODAL PARA REGISTRAR A LOS CANDIDATOS Y SUPLENTES */}
-			<ModalRegisterCS statusRegisterModal={statusRegisterModal} handleToggleModal={handleCloseRegisterModal} />
-			{/* MODAL PARA REGISTRAR ASOCIAR CANDIDATOS Y PARTIDOS */}
-			<ModalAsociacionCP statusAsociacionModal={statusAsociacionModal} handleToggleModal={handleCloseAsociacionModal} />
-			{/* ELIMINAR EL SIGUIENTE MODAL */}
-			{/* <ModalSustitutoBoleta statusSubstituteModal={statusSubstituteModal} handleToggleModal={handleCloseSubstituteModal} /> */}
+			{/* <ModalEliminarCandidato statusDeleteCandidatoModal={statusDeleteCandidatoModal} handleToggleModal={handleCloseDeleteCandidatoModal} /> */}
 		</form>
 		</Box>
 		)}

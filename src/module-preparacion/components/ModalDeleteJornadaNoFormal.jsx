@@ -21,12 +21,12 @@ const style = {
 	p: 4,
 };
 
-export const ModalEliminarBoleta = ({ modalDeleteStatus, closeModalDelete, openModalDelete, idBoleta, encabezadoBoleta }) => {
+export const ModalDeleteJornadaNoFormal = ({ modalDeleteStatus, closeModalDelete, openModalDelete, id, nombreEleccion }) => {
 	const dispatch = useDispatch();
     const { status } = useJornadaNoFormalStore();
 	const onSave = () => {
 		// handleToggleModal();
-        dispatch(onDeleteJornada(idBoleta));
+        dispatch(onDeleteJornada(id));
         closeModalDelete();
 	};
     const onCancel = () => {
@@ -53,7 +53,7 @@ export const ModalEliminarBoleta = ({ modalDeleteStatus, closeModalDelete, openM
 				
 				/>
 				<Typography id="modal-modal-title" variant= "h4"  color="initial" align="center" mr={5} ml={5} mb={2}>
-                    Si eliminas la boleta con el nombre "{encabezadoBoleta}" desaparecerá para siempre. ¿Está seguro que deseas continuar?
+                    Si eliminas la jornada "{nombreEleccion}" desaparecerá para siempre. ¿Está seguro que deseas continuar?
 				</Typography>
                 <Box ml={"2rem"} mr={"2rem"}
 				mb={"2rem"}

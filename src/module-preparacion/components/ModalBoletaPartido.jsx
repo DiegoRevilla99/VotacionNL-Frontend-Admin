@@ -310,7 +310,8 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 	
 	
 	)}
-	</Formik></Modal>
-</>
+	</Formik>
+	</Modal>
+	</>
 	);
 };

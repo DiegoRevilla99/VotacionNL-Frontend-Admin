@@ -1,3 +1,6 @@
+import BallotIcon from "@mui/icons-material/Ballot";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SettingsIcon from "@mui/icons-material/Settings";
 import {
   Box,
   Button,
@@ -5,24 +8,20 @@ import {
   Grid,
   IconButton,
   LinearProgress,
-  Typography,
+  Typography
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { GeneralTable } from "../components/GeneralTable";
-import { useJornadaStore } from "../hooks/useJornadaStore";
 import { Stack } from "@mui/system";
-import BallotIcon from "@mui/icons-material/Ballot";
-import SettingsIcon from "@mui/icons-material/Settings";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { onSetJornadaSelected } from "../../store/module-preparacion/jornada/SliceJornada";
 import {
   onDeleteJornada,
-  onGetjornadas,
-  // onGetJornadasFormales,
+  onGetjornadas
 } from "../../store/module-preparacion/jornada/ThunksJornada";
-import { onSetJornadaSelected } from "../../store/module-preparacion/jornada/SliceJornada";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { GeneralTable } from "../components/GeneralTable";
 import { ModalRegistroJornadaFormal } from "../components/ModalRegistroJornadaFormal";
+import { useJornadaStore } from "../hooks/useJornadaStore";
 
 export const RegistroJornadaFormal = () => {
   const navigate = useNavigate();
@@ -175,7 +174,7 @@ export const RegistroJornadaFormal = () => {
               }}
             >
               <Typography variant="h5" color="initial" mb="0.5rem">
-                Jornadas Formales
+                Jornadas formales
               </Typography>
               <Divider />
               <Box
