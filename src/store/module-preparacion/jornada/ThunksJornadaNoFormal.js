@@ -1,60 +1,13 @@
-import { id } from "date-fns/locale";
 import {
-    getJornadasNoFormales,
-    createJornada,
-    deleteJornada,
-    getBoletasJornada,
-    getBoletaData,
-    createBoleta,
-    updateBoletaData,
-    deleteBoleta,
-} from "../../../providers/Micro-Preparacion/providerJornadaNoFormal"
+    createBoleta, createJornada, deleteBoleta, deleteJornada, getBoletaData, getBoletasJornadaNoFormal, getCandidatoBoletaNoFormal, getJornadasNoFormales, updateBoletaData
+} from "../../../providers/Micro-Preparacion/providerJornadaNoFormal";
 import {
-	onToastCheckingOperation,
-	onToastErrorOperation,
-	onToastOffOperation,
-	onToastSuccessOperation,
+    onToastCheckingOperation,
+    onToastErrorOperation, onToastSuccessOperation
 } from "../../ui/uiSlice";
 
 import {
-    onCheckingOperation,
-    onSuccessOperation,
-    onErrorOperation,
-    onOffOperation,
-    onAddCandidato,
-    onAddSuplente,
-    onAddPartido,
-    onAddCandidatoAndSuplente,
-    onDeleteCandidato,
-    onDeleteSuplente,
-    onDeletePartido,
-    onDeleteCandidatoAndSuplente,
-    onEditCandidato,
-    onEditSuplente,
-    onEditPartido,
-    onEditCandidatoAndSuplente,
-    onUpdateCandidato,
-    onUpdateSuplente,
-    onUpdatePartido,
-    onUpdateCandidatoAndSuplente,
-    onSetCandidatoSelectedNull,
-    onSetSuplenteSelectedNull,
-    onSetPartidoSelectedNull,
-    onSetCandidatoAndSuplenteSelectedNull,
-    onSetCandidatoNull,
-    onSetSuplenteNull,
-    onSetPartidoNull,
-    onSetCandidatoAndSuplenteNull,
-    onFillJornadasNoFormalesData,
-    onAddJornadasNoFormales,
-    onDeleteJornadaData,
-    onDeleteBoletaData,
-    onSetjornadaNoFormalSelected,
-    onAddBoleta,
-    onFillBoletas,
-    onEditBoleta,
-    onUpdateBoleta,
-    onSetBoletasSelectedNull,
+    onAddBoleta, onAddCandidato, onAddJornadasNoFormales, onCheckingOperation, onDeleteBoletaData, onDeleteJornadaData, onEditBoleta, onErrorOperation, onFillBoletas, onFillCandidatosNoFormalesData, onFillJornadasNoFormalesData, onSetBoletasSelectedNull, onSetCandidatoSelectedNull, onSetjornadaNoFormalSelected, onSuccessOperation
 } from "./SliceJornadaNoFormal";
 
 // Jornadas No Formales
@@ -74,16 +27,16 @@ export const onGetJornadasNoFormales = () => {
     }
 };
 
-export const onCreateJornada = (title, entidad, navigate = (id) => {}) => {
+export const onCreateJornadaNoFormal = (title, tipoEleccion, navigate = (id) => {}) => {
     return async (dispatch) => {
         dispatch(onCheckingOperation());
         dispatch(onToastCheckingOperation("Guardando consulta..."));
-        const {ok, id } = await createJornada(title, entidad);// PROVIDER
+        const {ok, id } = await createJornada(title, tipoEleccion);// PROVIDER
         if (ok) {
             dispatch(onSuccessOperation());
-            dispatch(onAddJornadas({idJornada: id, nombreJornada: title}));// SLICE
+            dispatch(onAddJornadasNoFormales({idJornada: id, nombreJornada: title}));// SLICE
             dispatch(onToastSuccessOperation({ successMessage: "Jornada creada con éxito" }));
-            dispatch(onSetJornadaSelected({id, title, boletas: []}));
+            dispatch(onSetjornadaNoFormalSelected({id, title, boletas: []}));
             navigate(id);
         } else {
             dispatch(onErrorOperation());
@@ -109,17 +62,14 @@ export const onDeleteJornada = (id) => {
 };
 
 
-export const onGetBoletas = (idJornada, navigate = () => {} ) => {
+export const onGetBoletasNoFormales = (idJornada, navigate = () => {} ) => {
     return async (dispatch) => {
         dispatch(onCheckingOperation());
-        const {ok, data } = await getBoletasJornada(idJornada);// PROVIDER
+        const {ok, data } = await getBoletasJornadaNoFormal(idJornada);// PROVIDER
         if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onSetBoletasSelectedNull());
-            // dispatch(onSetCandidatoSelectedNull());
-            // dispatch(onSetSuplenteSelectedNull());
-            // dispatch(onSetPartidoSelectedNull());
-            // dispatch(onSetCandidatoAndSuplenteSelectedNull());//New
+            dispatch(onSetCandidatoSelectedNull());
             dispatch(onFillBoletas(data));// SLICE
         } else {
             dispatch(onErrorOperation());
@@ -128,16 +78,33 @@ export const onGetBoletas = (idJornada, navigate = () => {} ) => {
     }
 };
 
-export const onCreateBoleta = (data, idJornada, candidatoandSuplentes, partidos, navigate = () => {}) => {
+export const onGetCandidatosNoFormales = (idBoleta, navigate = () => {} ) => {
     return async (dispatch) => {
         dispatch(onCheckingOperation());
-        dispatch(onToastCheckingOperation("Guardando boleta..."));
+        const {ok, data } = await getCandidatoBoletaNoFormal(idBoleta);// PROVIDER
+        if (ok) {
+            dispatch(onSuccessOperation());
+            dispatch(onFillCandidatosNoFormalesData(data));// SLICE
+            navigate();
+        } else {
+            dispatch(onErrorOperation());
+            dispatch(onToastErrorOperation({ errorMessage: "No se pudo obtener los candidatos" }));
+        }
+    }
+};
 
-        const {ok, idBoleta } = await createBoleta(data, idJornada, candidatoandSuplentes, partidos);// PROVIDER
+export const onCreateBoleta = (data, idJornada, candidatos, navigate = () => {}) => {
+    return async (dispatch) => {
+        console.log("datos THUNKS",data);
+		console.log("id THUNKS",idJornada);
+		console.log("candidato THUNKS",candidatos);
+        dispatch(onCheckingOperation());
+        dispatch(onToastCheckingOperation("Guardando boleta..."));
+        const {ok, idBoleta } = await createBoleta(data, idJornada, candidatos);// PROVIDER
         if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onToastSuccessOperation({ successMessage: "Boleta creada con éxito" }));
-            dispatch(onAddBoleta({idBoleta, encabezado: data.encabezadoJornada}));// SLICE
+            dispatch(onAddBoleta({idBoleta, encabezado: data.encabezadoBoleta}));// SLICE
             navigate();
         } else {
             dispatch(onErrorOperation());
@@ -146,34 +113,14 @@ export const onCreateBoleta = (data, idJornada, candidatoandSuplentes, partidos,
     }
 };
 
-// export const onCreateBoleta = (data, idJornada, candidatos, suplentes, partidos, navigate = () => {}) => {
-//     return async (dispatch) => {
-//         dispatch(onCheckingOperation());
-//         dispatch(onToastCheckingOperation("Guardando boleta..."));
-
-//         const {ok, idBoleta } = await createBoleta(data, idJornada, candidatos, suplentes, partidos);// PROVIDER
-//         if (ok) {
-//             dispatch(onSuccessOperation());
-//             dispatch(onToastSuccessOperation({ successMessage: "Boleta creada con éxito" }));
-//             dispatch(onAddBoleta({idBoleta, encabezado: data.encabezadoJornada}));// SLICE
-//             navigate();
-//         } else {
-//             dispatch(onErrorOperation());
-//             dispatch(onToastErrorOperation({ errorMessage: "No se pudo crear la boleta" }));
-//         }
-//     }
-// };
-
 export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
     return async (dispatch) => {
         dispatch(onCheckingOperation());
-        const {ok, data, dataPartido, dataCandidato, dataSuplente } = await getBoletaData(idBoleta);// PROVIDER
+        const {ok, data, dataCandidato } = await getBoletaData(idBoleta);// PROVIDER
         if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onEditBoleta({idBoleta, ...data}));// SLICE
-            dispatch(onAddPartido(dataPartido));// SLICE
-            // dispatch(onAddCandidato(dataCandidato));// SLICE
-            // dispatch(onAddSuplente(dataSuplente));// SLICE
+            dispatch(onAddCandidato(dataCandidato));// SLICE
             navigate();
         } else {
             dispatch(onErrorOperation());

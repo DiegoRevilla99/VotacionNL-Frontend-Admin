@@ -1,37 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-	onAddCandidato,
-	onAddSuplente,
-	onAddPartido,
-	onAddCandidatoAndSuplente,
-	onSetCandidatoSelectedNull,
-	onSetSuplenteSelectedNull,
-	onSetPartidoSelectedNull,
-	onSetCandidatoAndSuplenteSelectedNull,
-	onSetCandidatoNull,
-	onSetSuplenteNull,
-	onSetPartidoNull,
-	onSetCandidatoAndSuplenteNull,
-	onFillJornadasData,
-	onAddJornadas,
-	onEditBoleta,
-	onUpdateBoleta,
-	onUpdateCandidatoAndSuplente,
+	onAddCandidato, onAddCandidatoAndSuplente, onAddJornadas, onAddPartido, onAddSuplente, onCheckingOperation, onDeleteCandidato, onDeleteCandidatoAndSuplente, onDeletePartido, onDeleteSuplente, onEditBoleta, onEditCandidato, onEditCandidatoAndSuplente, onEditPartido, onEditSuplente, onErrorOperation, onFillJornadasData, onOffOperation, onSetCandidatoAndSuplenteNull, onSetCandidatoAndSuplenteSelectedNull,
+	onSetCandidatoNull, onSetCandidatoSelectedNull, onSetPartidoNull, onSetPartidoSelectedNull, onSetSuplenteNull, onSetSuplenteSelectedNull, onSuccessOperation, onUpdateBoleta, onUpdateCandidato, onUpdateCandidatoAndSuplente,
 	onUpdatePartido,
-	onUpdateSuplente,
-	onUpdateCandidato,
-	onCheckingOperation,
-	onSuccessOperation,
-	onErrorOperation,
-	onOffOperation,
-	onDeleteCandidato,
-	onDeleteSuplente,
-	onDeletePartido,
-	onDeleteCandidatoAndSuplente,
-	onEditCandidato,
-	onEditSuplente,
-	onEditPartido,
-	onEditCandidatoAndSuplente,
+	onUpdateSuplente
 } from "../../store/module-preparacion/jornada/SliceJornada";
 
 export const useJornadaStore = () => {
@@ -51,7 +23,6 @@ export const useJornadaStore = () => {
 		candidatoandSuplenteSelected,
 		jornadasData,
 		jornadaVotosData,
-		jornadasNoFormalesData,
 		jornadaSelected,
 	} = useSelector((state) => state.jornada);
 
@@ -358,7 +329,6 @@ export const useJornadaStore = () => {
 		candidatoandSuplentes,
 		candidatoandSuplenteSelected,
 		jornadasData,
-		jornadasNoFormalesData,
 		jornadaSelected,
 		checkingOperation,
 		succesOperation,

@@ -23,16 +23,6 @@ export const getJornadasFormales = async () => {
 	}
 };
 
-export const getJornadasNoFormales = async () => {
-	try {
-		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/no_formales
-		const { data } = await jornadasAPI.get("jornada/electoral/no_formales");
-		return { ok: true, data: data.data, errorMessage: "" };
-	} catch (error) {
-		return { ok: false, errorMessage: error.message };
-	}
-};
-
 export const createJornada = async (title, entidad) => {
 	// const id = "JEO-JUN23-GOB" + Math.floor(Math.random() * 10000);
 	try {
@@ -64,8 +54,10 @@ export const deleteJornada = async (id) => {
 export const getBoletasJornada = async (idJornadaElectoral) => {
 	try {
 		// **FETCH
+		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/43
 		const { data } = await jornadasAPI.get(
-			"jornada/electoral/jornada/" + idJornadaElectoral + "/estructurasboletas"
+
+			"jornada/electoral/estructuraboleta/" + idJornadaElectoral
 		);
 		console.log("DATA BOLETASSSS", data);
 		return { ok: true, data: data.data };

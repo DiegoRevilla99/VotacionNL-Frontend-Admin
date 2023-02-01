@@ -1,42 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-    onCheckingOperation,
-    onSuccessOperation,
-    onErrorOperation,
-    onOffOperation,
-    onAddCandidato,
-    onAddSuplente,
-    onAddPartido,
-    onAddCandidatoAndSuplente,
-    onDeleteCandidato,
-    onDeleteSuplente,
-    onDeletePartido,
-    onDeleteCandidatoAndSuplente,
-    onEditCandidato,
-    onEditSuplente,
-    onEditPartido,
-    onEditCandidatoAndSuplente,
-    onUpdateCandidato,
-    onUpdateSuplente,
-    onUpdatePartido,
-    onUpdateCandidatoAndSuplente,
-    onSetCandidatoSelectedNull,
-    onSetSuplenteSelectedNull,
-    onSetPartidoSelectedNull,
-    onSetCandidatoAndSuplenteSelectedNull,
-    onSetCandidatoNull,
-    onSetSuplenteNull,
-    onSetPartidoNull,
-    onSetCandidatoAndSuplenteNull,
-    onFillJornadasNoFormalesData,
-    onAddJornadasNoFormales,
-    onDeleteJornadaData,
-    onDeleteBoletaData,
-    onSetjornadaNoFormalSelected,
-    onAddBoleta,
-    onFillBoletas,
-    onEditBoleta,
-    onSetBoletasSelectedNull,
+    onAddCandidato, onAddJornadasNoFormales, onCheckingOperation, onDeleteCandidato, onEditBoleta, onEditCandidato, onErrorOperation, onFillJornadasNoFormalesData, onOffOperation,
+    onSetCandidatoNull, onSetCandidatoSelectedNull, onSetPartidoSelectedNull, onSuccessOperation, onUpdateCandidato
 } from "../../store/module-preparacion/jornada/SliceJornadaNoFormal";
 
 export const useJornadaNoFormalStore = () => {
@@ -48,15 +13,10 @@ export const useJornadaNoFormalStore = () => {
 		successMesage,
 		candidatos,
         candidatosSelected,
-        suplentes,
-        suplentesSelected,
-        partidos,
-        partidoSelected,
-        candidatoandSuplentes,
-        candidatoandSuplenteSelected,
+
         jornadasNoFormalesData,
         jornadaNoFormalSelected,
-	} = useSelector((state) => state.jornada);
+	} = useSelector((state) => state.jornadaNoFormal);
 
 	const checkingOperation = () => {
 		dispatch(onCheckingOperation());
@@ -77,15 +37,8 @@ export const useJornadaNoFormalStore = () => {
     const deleteCandidato = (id) => {
         dispatch(onDeleteCandidato(id));
     };
-    const deleteSuplente = (id) => {
-        dispatch(onDeleteSuplente(id));
-    };
-    const deletePartido = (id) => {
-        dispatch(onDeletePartido(id));
-    };
-    const deleteCandidatoAndSuplente = (id) => {
-        dispatch(onDeleteCandidatoAndSuplente(id));
-    };
+
+
     // EDIT
     const editBoleta = (id) => {
         dispatch(onEditBoleta(id));
@@ -93,42 +46,18 @@ export const useJornadaNoFormalStore = () => {
     const editCandidato = (id) => {
         dispatch(onEditCandidato(id));
     };
-    const editSuplente = (id) => {
-        dispatch(onEditSuplente(id));
-    };
-    const editPartido = (id) => {
-        console.log("EL ID DEL PARTIDO", id);
-        dispatch(onEditPartido(id));
-    };
-    const editCandidatoAndSuplente = (id) => {
-        dispatch(onEditCandidatoAndSuplente(id));
-    };
+
     // Selected Null
     const setCandidatosSelectedNull = () => {
         dispatch(onSetCandidatoSelectedNull());
     };
-    const setSuplentesSelectedNull = () => {
-        dispatch(onSetSuplenteSelectedNull());
-    };
-    const setPartidoSelectedNull = () => {
-        dispatch(onSetPartidoSelectedNull());
-    };
-    const setCandidatoAndSuplenteSelectedNull = () => {
-        dispatch(onSetCandidatoAndSuplenteSelectedNull());
-    };
+
+
     // Null
     const setCandidatoNull = () => {
         dispatch(onSetCandidatoNull());
     };
-    const setSuplenteNull = () => {
-        dispatch(onSetSuplenteNull());
-    };
-    const setPartidoNull = () => {
-        dispatch(onSetPartidoNull());
-    };
-    const setCandidatoAndSuplenteNull = () => {
-        dispatch(onSetCandidatoAndSuplenteNull());
-    };
+
 
     // Add
     const addCandidato = (
@@ -155,83 +84,8 @@ export const useJornadaNoFormalStore = () => {
         );
     };
 
-    const addSuplente = (
-        id,
-        apellidoPSuplente,
-        apellidoMSuplente,
-        nombreSuplente,
-        fotografiaSuplente,
-        seudonimoSuplente,
-        fechaNacimientoSuplente,
-        generoSuplente,
-    ) => {
-        dispatch(onAddSuplente({
-                id,
-                apellidoPSuplente,
-                apellidoMSuplente,
-                nombreSuplente,
-                fotografiaSuplente,
-                seudonimoSuplente,
-                fechaNacimientoSuplente,
-                generoSuplente,
-            })
-        );
-    };
-
-    const addPartido = (
-        id,
-        nombrePartido,
-        siglasPartido,
-        emblemaPartido,
-        fotografiaPartido,
-    ) => {
-        dispatch(onAddPartido({
-                id,
-                nombrePartido,
-                siglasPartido,
-                emblemaPartido,
-                fotografiaPartido,
-            })
-        );
-    };
-
-    const addCandidatoAndSuplente = (
-        id,
-        apellidoPCandidato,
-        apellidoMCandidato,
-        nombreCandidato,
-        fotografiaCandidato,
-        seudonimoCandidato,
-        fechaNacimientoCandidato,
-        generoCandidato,
-        apellidoPSuplente,
-        apellidoMSuplente,
-        nombreSuplente,
-        fotografiaSuplente,
-        seudonimoSuplente,
-        fechaNacimientoSuplente,
-        generoSuplente,
-    ) => {
-        console.log("EL ID DEL CANDIDATO", id);
-        dispatch(onAddCandidatoAndSuplente({
-            id,
-            apellidoPCandidato,
-            apellidoMCandidato,
-            nombreCandidato,
-            fotografiaCandidato,
-            seudonimoCandidato,
-            fechaNacimientoCandidato,
-            generoCandidato,
-            apellidoPSuplente,
-            apellidoMSuplente,
-            nombreSuplente,
-            fotografiaSuplente,
-            seudonimoSuplente,
-            fechaNacimientoSuplente,
-            generoSuplente,
-        }));
-    };
-
+    
+    
     const updateCandidato = (
         id,
         apellidoPCandidate,
@@ -254,81 +108,7 @@ export const useJornadaNoFormalStore = () => {
         }));
     };
 
-    const updateSuplente = (
-        id,
-        apellidoPSubstitute,
-        apellidoMSubstitute,
-        nameSubstitute,
-        fotografiaSubstitute,
-        seudonimoSubstitute,
-        fechaNacimientoSubstitute,
-        generoSubstitute,
-    ) => {
-        dispatch(onUpdateSuplente({
-            id,
-            apellidoPSubstitute,
-            apellidoMSubstitute,
-            nameSubstitute,
-            fotografiaSubstitute,
-            seudonimoSubstitute,
-            fechaNacimientoSubstitute,
-            generoSubstitute,
-        }));
-    };
-
-    const updatePartido = (
-        id,
-        nameParty,
-        siglasParty,
-        emblemParty,
-        fotografiaParty,
-    ) => {
-        dispatch(onUpdatePartido({
-            id,
-            nameParty,
-            siglasParty,
-            emblemParty,
-            fotografiaParty,
-        }));
-    };
-
-    const updateCandidatoAndSuplente = (
-        idCandidate,
-        apellidoPCandidate,
-        apellidoMCandidate,
-        nameCandidate,
-        fotografiaCandidate,
-        seudonimoCandidate,
-        fechaNacimientoCandidate,
-        generoCandidate,
-        idSubstitute,
-        apellidoPSubstitute,
-        apellidoMSubstitute,
-        nameSubstitute,
-        fotografiaSubstitute,
-        seudonimoSubstitute,
-        fechaNacimientoSubstitute,
-        generoSubstitute,
-    ) => {
-        dispatch(onUpdateCandidatoAndSuplente({
-            idCandidate,
-            apellidoPCandidate,
-            apellidoMCandidate,
-            nameCandidate,
-            fotografiaCandidate,
-            seudonimoCandidate,
-            fechaNacimientoCandidate,
-            generoCandidate,
-            idSubstitute,
-            apellidoPSubstitute,
-            apellidoMSubstitute,
-            nameSubstitute,
-            fotografiaSubstitute,
-            seudonimoSubstitute,
-            fechaNacimientoSubstitute,
-            generoSubstitute,
-        }));
-    };
+   
     // JORNADAS NO FORMALES
 
     const fillJornadasNoFormalesData = () => {
@@ -340,10 +120,8 @@ export const useJornadaNoFormalStore = () => {
     };
 
     const setBoletasSelectedNull = () => {
-        // dispatch(onSetCandidatoSelectedNull());
-        // dispatch(onSetSuplenteSelectedNull());
+        dispatch(onSetCandidatoSelectedNull());
         dispatch(onSetPartidoSelectedNull());
-        dispatch(onSetCandidatoAndSuplenteSelectedNull()); 
     };
 
 
@@ -353,12 +131,8 @@ export const useJornadaNoFormalStore = () => {
 		successMesage,
 		candidatos,
         candidatosSelected,
-        suplentes,
-        suplentesSelected,
-        partidos,
-        partidoSelected,
-        candidatoandSuplentes,
-        candidatoandSuplenteSelected,
+
+
 		jornadasNoFormalesData,
         jornadaNoFormalSelected,
 
@@ -367,24 +141,11 @@ export const useJornadaNoFormalStore = () => {
         errorOperation,
         offOperation,
         addCandidato,
-        addSuplente,
-        addPartido,
-        addCandidatoAndSuplente,
         updateCandidato,
-        updateSuplente,
-        updatePartido,
-        updateCandidatoAndSuplente,
         editCandidato,
-        editSuplente,
-        editPartido,
-        editCandidatoAndSuplente,
-        deletePartido,
         deleteCandidato,
-        deleteSuplente,
-        deleteCandidatoAndSuplente,
         fillJornadasNoFormalesData,
         setBoletasSelectedNull,
-        setPartidoSelectedNull,
-        setCandidatoAndSuplenteSelectedNull,
+        setCandidatosSelectedNull,
 	};
 };

@@ -1,33 +1,35 @@
-import { Box, Button, Divider, Grid, IconButton, LinearProgress, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { GeneralTable } from "../components/GeneralTable";
-import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
-import { Stack } from "@mui/system";
 import BallotIcon from "@mui/icons-material/Ballot";
-import SettingsIcon from "@mui/icons-material/Settings";
-import { useDispatch } from "react-redux";
-import {
-	onDeleteJornada,
-	onGetJornadasNoFormales,
-} from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
 import DeleteIcon from "@mui/icons-material/Delete";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { Box, Button, Divider, Grid, IconButton, LinearProgress, Typography } from "@mui/material";
+import { Stack } from "@mui/system";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
-	onSetjornadaNoFormalSelected,
+	onSetjornadaNoFormalSelected
 } from "../../store/module-preparacion/jornada/SliceJornadaNoFormal";
+import {
+	onGetJornadasNoFormales
+} from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
+import { GeneralTable } from "../components/GeneralTable";
+import { ModalDeleteJornadaNoFormal } from '../components/ModalDeleteJornadaNoFormal';
 import { ModalRegistroJornadaNoFormal } from "../components/ModalRegistroJornadaNoFormal";
+import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 
 export const RegistroJornadaNoFormal = () => {
 	const navigate = useNavigate();
 	const [modalStatus, setModalStatus] = useState(false);
-
+	const [modalDeleteStatus, setModalDeleteStatus] = useState(false);
+	const [id, setId] = useState(null);
+	const [nombreEleccion, setNombreEleccion] = useState(null);
 	// TODO:AQUI OBTENGAN LAS VARIABLES STATUS Y DATA DE SUS ESTADOS GLOBALES
 	// const { jornadasData, status } = useJornadaStore();
 	const {jornadasNoFormalesData, status } = useJornadaNoFormalStore();
 
 	const dispatch = useDispatch();
 	const columns = [
-		{ field: "nombreJornada", headerName: "Título de la jornada no formal", flex: 10 },
+		{ field: "nombreEleccion", headerName: "Título de la elección", flex: 10 },
 		{
 			field: "configuracion",
 			headerName: "Configuración",
@@ -40,7 +42,7 @@ export const RegistroJornadaNoFormal = () => {
 						<Button
 							variant="outlined"
 							startIcon={<BallotIcon />}
-							onClick={() => handleEdit(params.id)}
+							onClick={() => handleEdit(params.id, params.row.nombreEleccion)}
 						>
 							Ver
 						</Button>
@@ -53,7 +55,7 @@ export const RegistroJornadaNoFormal = () => {
 						</Button>
 						<IconButton
 							sx={{ color: "#511079" }}
-							onClick={() => handleDelete(params.id)}
+							onClick={() => handleDelete(params.id, params.row.nombreEleccion)}
 						>
 							<DeleteIcon />
 						</IconButton>
@@ -65,12 +67,15 @@ export const RegistroJornadaNoFormal = () => {
 
 	// USEEFFECT QUE PUEDES USAR PARA HACER UN GET DE LAS JORNADAS AL RENDERIZAR LA PAGINA
 	useEffect(() => {
+		//     if (jornadasData.length === 0) dispatch(onGetjornadas());
 		if (jornadasNoFormalesData.length === 0) dispatch(onGetJornadasNoFormales());
 	}, []);
 
 	// METODO PARA BORRAR UN REGISTRO
-	const handleDelete = (id) => {
-		dispatch(onDeleteJornada(id));
+	const handleDelete = (id, title) => {
+		setId(id);
+		setNombreEleccion(title);
+		openModalDelete();
 	};
 
 	// MÉTODO PARA EDITAR UN REGISTRO
@@ -92,7 +97,13 @@ export const RegistroJornadaNoFormal = () => {
 	const openModal = () => {
 		setModalStatus(true);
 	};
+	const closeModalDelete = () => {
+		setModalDeleteStatus(false);
+	};
 
+	const openModalDelete = () => {
+		setModalDeleteStatus(true);
+	};
 	if (status === "checking")
 		return (
 			<Box sx={{ width: "100%" }}>
@@ -163,7 +174,7 @@ export const RegistroJornadaNoFormal = () => {
 							}}
 						>
 							<Typography variant="h5" color="initial" mb="0.5rem">
-								Jornadas No Formales
+								Jornadas no formales
 							</Typography>
 							<Divider />
 							<Box
@@ -176,7 +187,7 @@ export const RegistroJornadaNoFormal = () => {
 								<GeneralTable
 									data={jornadasNoFormalesData}
 									columns={columns}
-									idName={"idJornada"}
+									idName={"idEleccion"}
 								/>
 							</Box>
 						</Box>
@@ -189,6 +200,12 @@ export const RegistroJornadaNoFormal = () => {
 					closeModal={closeModal}
 					openModal={openModal}
 				/>
+				<ModalDeleteJornadaNoFormal 
+					modalDeleteStatus={modalDeleteStatus} 
+					closeModalDelete={closeModalDelete} 
+					id={id}
+					nombreEleccion={nombreEleccion}
+				/>			
 			</Grid>
 		);
 };

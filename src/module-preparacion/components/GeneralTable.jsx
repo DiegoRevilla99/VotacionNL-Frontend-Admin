@@ -1,9 +1,5 @@
-import { Button, Stack } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import BallotIcon from "@mui/icons-material/Ballot";
-import SettingsIcon from "@mui/icons-material/Settings";
-import React, { useEffect } from "react";
-import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
+import React from "react";
 
 export const GeneralTable = ({ data = [], columns, idName, loading = false }) => {
 	return (
@@ -19,11 +15,11 @@ export const GeneralTable = ({ data = [], columns, idName, loading = false }) =>
 				sx={{
 					border: "0px",
 					"& .MuiDataGrid-columnHeaderTitleContainer": {
-						justifyContent: "center",
+						justifyContent: "left",
 					},
 					"& .MuiDataGrid-cell--textLeft": {
-						justifyContent: "center",
-						align: "center",
+						justifyContent: "left",
+						align: "left",
 					},
 					"& .MuiDataGrid-cell": {
 						outline: "none !important",

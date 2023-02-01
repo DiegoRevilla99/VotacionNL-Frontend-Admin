@@ -1,22 +1,18 @@
-import { Box, Divider, Grid, LinearProgress, Typography } from "@mui/material";
+import { Box, Divider, Grid, Typography } from "@mui/material";
 import { Formik } from "formik";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { object, string } from "yup";
 import { useUiStore } from "../../hooks/useUiStore";
 import {
-	onCreatePapeleta,
-	onGetBallotData,
-	onUpdateBallotData,
-	saveConsultaPrueba,
+	onCreatePapeleta, onUpdateBallotData
 } from "../../store/module-preparacion/consulta-ciudadana/thunks";
-import { ModalPapeleta } from "../components/ModalPapeleta";
-import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
-import { object, string } from "yup";
-import { FielTextCustom } from "../components/FielTextCustom";
 import { AddPapeletasTable } from "../components/AddPapeletasTable";
 import { ButtonsContainer } from "../components/ButtonsContainer";
-import { useNavigate, useParams } from "react-router-dom";
-import { getBallotData } from "../../providers/Micro-Consultas/provider";
+import { FielTextCustom } from "../components/FielTextCustom";
+import { ModalPapeleta } from "../components/ModalPapeleta";
+import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
 
 // CONECTAR EL MODAL DE ELIMINAR BOLETA
 // import { Button } from "@mui/material";
@@ -52,7 +48,7 @@ export const AddPapeleta = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const params = useParams();
-
+	console.log("id de la papeleta", params.id);
 	const values =
 		Object.values(consultaSelected.ballotSelected).length === 0
 			? {
