@@ -62,6 +62,7 @@ export const useJornadaNoFormalStore = () => {
     // Add
     const addCandidato = (
         id,
+        curp,
         apellidoPCandidato,
         apellidoMCandidato,
         nombreCandidato,
@@ -73,6 +74,7 @@ export const useJornadaNoFormalStore = () => {
         dispatch(
             onAddCandidato({
                 id,
+                curp,
                 apellidoPCandidato,
                 apellidoMCandidato,
                 nombreCandidato,

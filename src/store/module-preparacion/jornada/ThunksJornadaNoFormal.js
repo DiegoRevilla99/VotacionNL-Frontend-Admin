@@ -95,9 +95,6 @@ export const onGetCandidatosNoFormales = (idBoleta, navigate = () => {} ) => {
 
 export const onCreateBoleta = (data, idJornada, candidatos, navigate = () => {}) => {
     return async (dispatch) => {
-        console.log("datos THUNKS",data);
-		console.log("id THUNKS",idJornada);
-		console.log("candidato THUNKS",candidatos);
         dispatch(onCheckingOperation());
         dispatch(onToastCheckingOperation("Guardando boleta..."));
         const {ok, idBoleta } = await createBoleta(data, idJornada, candidatos);// PROVIDER
