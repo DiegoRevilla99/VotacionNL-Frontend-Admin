@@ -308,7 +308,7 @@ export const ReporteInicialHTML = () => {
 												key={index2}
 												item
 												xs={cifrasVotos / cifrasVotos}
-												border="2px solid"
+												border="1px solid #f0f0f0"
 											>
 												<Box
 													display="flex"
