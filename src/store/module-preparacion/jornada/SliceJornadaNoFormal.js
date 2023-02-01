@@ -42,6 +42,7 @@ export const SliceJornadaNoFormal = createSlice({
                 if (!Array.isArray(payload)) {
                     state.candidatos.push({
                         id: payload?.id,
+                        curp: payload?.curp,
                         apellidoPCandidato: payload?.apellidoPCandidato,
                         apellidoMCandidato: payload?.apellidoMCandidato,
                         nombreCandidato: payload?.nombreCandidato,
@@ -55,6 +56,7 @@ export const SliceJornadaNoFormal = createSlice({
                 payload.forEach((candidato) => {
                     state.candidatos.push({
                         id: candidato?.id,
+                        curp: payload?.curp,
                         apellidoPCandidato: candidato?.apellidoPCandidato,
                         apellidoMCandidato: candidato?.apellidoMCandidato,
                         nombreCandidato: candidato?.nombreCandidato,
@@ -94,6 +96,7 @@ export const SliceJornadaNoFormal = createSlice({
                 (candidato) => candidato.id === state.candidatoSelected.id
             );
             candidato.id = payload?.id;
+            candidato.curp = payload?.curp;
             candidato.apellidoPCandidato = payload?.apellidoPCandidate;
             candidato.apellidoMCandidato = payload?.apellidoMCandidate;
             candidato.nombreCandidato = payload?.nameCandidate;
@@ -142,8 +145,12 @@ export const SliceJornadaNoFormal = createSlice({
             state.jornadaNoFormalSelected.boletasNoFormales = payload.boletasNoFormales || [];
         },
         onAddBoleta: (state, { payload }) => {
+            // console.log("AYUDA 1",state.jornadaNoFormalSelected.boletasNoFormales);
+            if (!Array.isArray(state.jornadaNoFormalSelected.boletasNoFormales)) {
+                state.jornadaNoFormalSelected.boletasNoFormales = [];
+            }
             state.jornadaNoFormalSelected.boletasNoFormales.push(payload);
-            console.log("AYUDA",state.jornadaNoFormalSelected.boletasNoFormales);
+            // console.log("AYUDA 2",state.jornadaNoFormalSelected.boletasNoFormales);
         },
         onSetBoletaNoFormal( state, { payload } ) {
             state.jornadaNoFormalSelected.boletaNoFormalSelected = payload;

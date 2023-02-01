@@ -159,25 +159,28 @@ export const createBoleta = async (data, idJornadaElectoral, candidatos) => {
 				idEleccion: idJornadaElectoral,
 			},
 		});
-		console.log("DATA IDBOLETA PROVIDER",data1.data.idBoleta);
-		const { data: candidatoData } = await jornadasNoFormalesAPI.post(
-			"jornada/no_formal/" + data1.data.idBoleta + "/registrar_candidato",
+		console.log("DATA IDBOLETA PROVIDER",data1.idEstructuraBoleta);
+
+		const variable = {
+			claveCandidato: candidatos[0].curp,
+			apellidoPCandidato: candidatos[0].apellidoPCandidato,
+			apellidoMCandidato: candidatos[0].apellidoMCandidato,
+			nombreCandidato: candidatos[0].nombreCandidato,
+			fotoCandidato: candidatos[0].fotografiaCandidato,
+			seudonimoCandidato: candidatos[0].seudonimoCandidato,
+			// fechaNacimiento: candidatos[0].fechaNacimientoCandidato,
+			fechaNacimiento: "2019-07-04T20:38:38.604+00:00",
+			genero: candidatos[0].generoCandidato,
+		}
+		console.log("variable",variable);
+		const candidatoData = await jornadasNoFormalesAPI.post(
+			"jornada/no_formal/"+data1.idEstructuraBoleta+"/registrar_candidato",
 			//https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/11/registrar_candidato
-			{
-                apellidoPCandidato: candidatos[0].apellidoPCandidato,
-                apellidoMCandidato: candidatos[0].apellidoMCandidato,
-                nombreCandidato: candidatos[0].nombreCandidato,
-                fotoCandidato: candidatos[0].fotografiaCandidato,
-                seudonimoCandidato: candidatos[0].seudonimoCandidato,
-                fechaNacimiento: candidatos[0].fechaNacimientoCandidato,
-                genero: candidatos[0].generoCandidato,
-				// estrutucturaBoletaModel: {
-				// 	idBoleta: idBoleta,
-				// },
-			}
+			variable
 		);
 
-		return { ok: true, idBoleta: data1.data.idBoleta };
+
+		return { ok: true, idEstructuraBoleta: data1.idEstructuraBoleta };
 	} catch (error) {
 		console.log("ERROR", error);
 		return { ok: false, errorMessage: error.message };

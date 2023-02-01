@@ -49,9 +49,10 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 	const { status, candidatos, addCandidato, setCandidatosSelectedNull } = useJornadaNoFormalStore();
 	const onSubmit = (values) => {
 		setFotografia({ name: "Sin Archivo seleccionado" });
-
+		console.log(values);
 		addCandidato(
 			candidatos.length,
+			values.curp,
 			values.apellidoPCandidato,
 			values.apellidoMCandidato,
 			values.nombreCandidato,
@@ -95,6 +96,7 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 					<Box m={"2rem"}>
 						<Formik
 							initialValues={{
+								curp: "",//Text
 								apellidoPCandidato: "",
 								apellidoMCandidato: "",
 								nombreCandidato: "",
@@ -112,6 +114,22 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 						>
 							{({ values, handleSubmit, handleChange, errors, touched, handleBlur, setFieldValue }) => (
 								<Form onSubmit={handleSubmit}>
+									<Typography variant="h7">
+										CURP <span style={{ color: "red" }}>*</span>
+									</Typography>
+									<TextField
+										name="curp"
+										fullWidth
+										size="small"
+										// id="titulo"
+										label=""
+										variant="outlined"
+										onChange={handleChange}
+										value={values.curp}
+										error={touched.curp && Boolean(errors.curp)}
+										helperText={touched.curp && errors.curp}
+										onBlur={handleBlur}
+									/>
 									<Typography variant="h7">
 										PRIMER APELLIDO <span style={{ color: "red" }}>*</span>
 									</Typography>
