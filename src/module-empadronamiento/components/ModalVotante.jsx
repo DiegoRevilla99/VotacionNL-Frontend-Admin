@@ -27,7 +27,7 @@ import { FormContacto } from "./FormContacto";
 import {
   getVotantesbyJornada,
   postVotante,
-} from "../../store/module-empadronamiento/formales/thunksFormales";
+} from "../../store/module-empadronamiento/votantes/thunksVotantes";
 
 const useStyles = makeStyles({
   textField: {

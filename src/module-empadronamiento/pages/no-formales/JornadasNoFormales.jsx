@@ -18,31 +18,44 @@ import { getJornadasNoFormales } from "../../../store/module-empadronamiento/no-
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
-/* const datos = [
-  {
-    id: "GO-OR-20-OAX-2025",
-    nombreJornada: "JORNADA PARA 2025",
-  },
-  {
-    id: "GO-OR-20-OAX-2027",
-    nombreJornada: "JORNADA PARA 2027",
-  },
-]; */
+import { Searcher } from "../../components/Searcher";
+
 
 export const JornadasNoFormales = () => {
   let location = useLocation();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [buscador, setBuscador] = useState("");
+  const [dataSearch, setDataSearch] = useState([]);
   const { jornadasNoFormales, isLoadingJornadasNoFormales } = useSelector(
     (state) => state.noFormalesSlice
   );
 
+  const handleSearch = (event) => {
+    setBuscador(event.target.value);
+    searching(jornadasNoFormales, event.target.value);
+  };
+
   useEffect(() => {
-    //Cambiara no formales
+    
     dispatch(getJornadasNoFormales());
+    setDataSearch(jornadasNoFormales);
   }, []);
 
+  useEffect(() => {
+    setDataSearch(jornadasNoFormales);
+  }, [jornadasNoFormales]);
+
+
+  const searching = (data, buscador) => {
+    const newData = data.filter((jornada) => {
+      if (jornada.nombreEleccion.toUpperCase().includes(buscador.toUpperCase()))
+        return jornada;
+    });
+
+    setDataSearch(newData);
+  };
   const columns = [
     {
       field: "nombreEleccion",
@@ -170,9 +183,17 @@ export const JornadasNoFormales = () => {
             height: "calc(100% - 80px)",
           }}
         >
+
+<Searcher
+            name="JORNADAS REGISTRADAS"
+            buscador={buscador}
+            handleSearch={handleSearch}
+          />
+
+
           <GeneralTable
             loading={isLoadingJornadasNoFormales}
-            data={jornadasNoFormales}
+            data={dataSearch}
             columns={columns}
             idName={"idEleccion"}
           />

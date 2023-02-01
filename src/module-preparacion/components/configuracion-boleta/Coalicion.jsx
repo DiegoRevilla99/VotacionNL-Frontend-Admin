@@ -18,13 +18,19 @@ export const Coalicion = memo(
     const { id } = useParams();
     const dispatch = useDispatch();
 
-    const { coalicionModel, partidoModels, candidatoModel } = info;
+    const { coalicionModel, partidos, candidatoModel } = info;
     const [coalicionI, setCoalicionI] = useState(info);
     const [modalCoalicion, setModalCoalicion] = useState(false);
     const [confirmation, setConfirmation] = useState(false);
     const editar = () => {
       abrirCerrarModalCoalicion();
     };
+
+    useEffect(() => {
+      console.log("info:")
+      console.log(info)
+    }, [])
+    
 
     const eliminarbtn = () => {
       abrirCerrarConfirmation();
@@ -83,9 +89,9 @@ export const Coalicion = memo(
               </IconButton>
             </legend>
             <Typography sx={{ fontWeight: "bold" }}>
-              {coalicionModel?.nombre}
+              {coalicionModel.nombre}
             </Typography>
-            <Typography sx={{}}>{candidatoModel?.nombreCandidato}</Typography>
+            <Typography sx={{}}>{candidatoModel.nombreCandidato}</Typography>
             <Box
               sx={{
                 display: "flex",
@@ -94,8 +100,8 @@ export const Coalicion = memo(
                 flexWrap: "wrap",
               }}
             >
-              {partidoModels?.length > 0 &&
-                partidoModels.map(({ clavePartido, nombre }) => (
+              {partidos?.length > 0 &&
+                partidos.map(({ clavePartido, nombre }) => (
                   <BoxPartido key={clavePartido} partido={nombre}></BoxPartido>
                 ))}
             </Box>

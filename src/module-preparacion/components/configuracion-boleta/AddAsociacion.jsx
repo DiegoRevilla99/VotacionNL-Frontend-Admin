@@ -1,10 +1,10 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { postAsociacion } from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
+import { postAsociacion } from "../../../store/module-preparacion/configuracion-boletaNF/thunksConfigBoletaNF";
+
 
 import { ModalAsociacion } from "./ModalAsociación";
-import { ModalCoalicion } from "./ModalCoalicion";
 
 export const AddAsociacion = ({
   isOpen = false,

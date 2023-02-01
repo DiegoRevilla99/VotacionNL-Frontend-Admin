@@ -22,7 +22,8 @@ import { Agrupa } from "../Agrupa";
 import { AddAsociacion } from "../AddAsociacion";
 import { SeleccionesForm } from "../SeleccionesForm";
 import { useAsociaciones } from "../../../hooks/config-boleta/useAsociaciones";
-import { putPlanilla } from "../../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
+import { putPlanilla } from "../../../../store/module-preparacion/configuracion-boletaNF/thunksConfigBoletaNF";
+
 
 const useStyles = makeStyles({
   hr: {

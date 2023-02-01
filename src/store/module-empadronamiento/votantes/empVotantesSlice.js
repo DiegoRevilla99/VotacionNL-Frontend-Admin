@@ -1,12 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const empFormalesSlice = createSlice({
-    name: 'empFormales',
+export const empVotantesSlice = createSlice({
+    name: 'empVotantesSlice',
     initialState: {
-        jornadasFormales: [],
         votantes: [],
         votanteSelected: {},
-        isLoadingFormales: false,
         isLoadingVotantes: false,
         status: "off",
         errorMessage: "",
@@ -14,13 +12,6 @@ export const empFormalesSlice = createSlice({
     },
 
     reducers: {
-        startLoadingFormales: (state, /* action */) => {
-            state.isLoadingFormales = true;
-        },
-        setJornadasFormales: (state, action) => {
-            state.isLoadingFormales = false;
-            state.jornadasFormales = action.payload.jornadasFormales;
-        },
 
         startLoadingVotantes: (state, /* action */) => {
             state.isLoadingVotantes = true;
@@ -55,4 +46,4 @@ export const empFormalesSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { setVotanteSelected, startLoadingFormales, setJornadasFormales, startLoadingVotantes, setVotantes, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation } = empFormalesSlice.actions;
+export const { setVotanteSelected, startLoadingFormales, setJornadasFormales, startLoadingVotantes, setVotantes, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation } = empVotantesSlice.actions;

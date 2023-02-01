@@ -18,7 +18,11 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, ErrorMessage } from "formik";
 
 import { useDispatch, useSelector } from "react-redux";
-import { uploadCSV } from "../../store/module-empadronamiento/formales/thunksFormales";
+import {
+  getVotantesbyJornada,
+  uploadCSV,
+} from "../../store/module-empadronamiento/votantes/thunksVotantes";
+import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles({
   textField: {
@@ -65,11 +69,20 @@ export const ModalAGranel = ({
   },
 }) => {
   const styles = useStyles();
+  const { id } = useParams();
   const dispatch = useDispatch();
   const { status } = useSelector((state) => state.empFormales);
   const [archivo, setArchivo] = useState({ name: "Sin Archivo seleccionado" });
+  const { votantes, isLoadingVotantes } = useSelector(
+    (state) => state.empVotantesSlice
+  );
 
   const cerrarM = () => {
+    abrirCerrarModal();
+  };
+
+  const cerrarCargar = () => {
+    dispatch(getVotantesbyJornada(id));
     abrirCerrarModal();
   };
 
@@ -77,7 +90,7 @@ export const ModalAGranel = ({
     console.log("dando click");
     const f = new FormData();
     f.append("file", archivo);
-    dispatch(uploadCSV(f, cerrarM));
+    dispatch(uploadCSV(f, cerrarCargar));
   };
 
   useEffect(() => {

@@ -3,8 +3,10 @@ import { authSlice } from "./auth/authSlice";
 import { consultasSlice } from "./module-empadronamiento/consultas/consultasSlice";
 import { empFormalesSlice } from "./module-empadronamiento/formales/EmpFormalesSlice";
 import { noFormalesSlice } from "./module-empadronamiento/no-formales/noFormalesSlice";
+import { empVotantesSlice } from "./module-empadronamiento/votantes/empVotantesSlice";
 import { comiteSlice } from "./module-preparacion/comite/comiteSlice";
 import { configBoletaSlice } from "./module-preparacion/configuracion-boleta/configBoletaSlice";
+import { configBoletaNFSlice } from "./module-preparacion/configuracion-boletaNF/configBoletaNFSlice";
 import { configJornadaSlice } from "./module-preparacion/configuracion-jornada/configJornadaSlice";
 import { consultaCiudadanaSlice } from "./module-preparacion/consulta-ciudadana/consultaCiudadanaSlice";
 import { SliceJornada } from "./module-preparacion/jornada/SliceJornada";
@@ -16,6 +18,7 @@ export const store = configureStore({
 		consultaCiudadana: consultaCiudadanaSlice.reducer,
 		comite: comiteSlice.reducer,
 		configBoleta: configBoletaSlice.reducer,
+		configBoletaNFSlice:configBoletaNFSlice.reducer,
 		jornada: SliceJornada.reducer, // Eliminar despu[es]
 		jornadaNoFormal: SliceJornadaNoFormal.reducer,
 		configJornada: configJornadaSlice.reducer,
@@ -23,6 +26,7 @@ export const store = configureStore({
 		ui: uiSlice.reducer,
 		auth: authSlice.reducer,
 		noFormalesSlice: noFormalesSlice.reducer,
-		consultasSlice: consultasSlice.reducer
+		consultasSlice: consultasSlice.reducer,
+		empVotantesSlice: empVotantesSlice.reducer
 	},
 });

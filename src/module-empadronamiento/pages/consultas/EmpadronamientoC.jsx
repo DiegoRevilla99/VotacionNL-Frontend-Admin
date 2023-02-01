@@ -4,7 +4,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getEleccionFormal } from "../../../store/module-empadronamiento/consultas/thunksConsultas";
-import { getVotantesbyJornada } from "../../../store/module-empadronamiento/formales/thunksFormales";
+import { getVotantesbyJornada } from "../../../store/module-empadronamiento/votantes/thunksVotantes";
+
 import { BreadCrumbsCustom } from "../../components/BreadCrumbsCustom";
 import { RegisterVoters } from "../../components/RegisterVoters";
 
@@ -12,8 +13,9 @@ export const EmpadronamientoC = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { votantes, isLoadingVotantes } = useSelector(
-    (state) => state.empFormales
+    (state) => state.empVotantesSlice
   );
+
   const { eleccion, isLoadingEleccion } = useSelector(
     (state) => state.consultasSlice
   );
