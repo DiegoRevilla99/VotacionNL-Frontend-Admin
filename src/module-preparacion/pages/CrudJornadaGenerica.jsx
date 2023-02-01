@@ -108,7 +108,6 @@ export const CrudJornadaGenerica = () => {
 
   const handleAdd = () => {
     // navigate("/preparacion/jornada/boleta/");
-    console.log("id de la boleta", params.id );
     navigate(
       "/preparacion/jornada/noFormal/" +
         params.id +

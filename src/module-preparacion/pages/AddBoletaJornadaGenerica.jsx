@@ -59,7 +59,7 @@ export const AddBoletaJornadaGenerica = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const params = useParams();
-	console.log('onCancel',params.id);
+
 	const { 
 		status,
 		candidatos,

@@ -34,7 +34,7 @@ export const PreparacionRoutes = () => {
 				{/* No formales */}
 				<Route path="registroJornadaNoFormal" element={<RegistroJornadaNoFormal />} />
 				<Route path="jornada/noFormal/:id" element={<CrudJornadaGenerica/>} />
-				<Route path="jornada/noFormal/:id/boletanf/:id" element={<AddBoletaJornadaGenerica/>} />
+				<Route path="jornada/noFormal/:id/boletanf/:idBoleta" element={<AddBoletaJornadaGenerica/>} />
 				{/*  */}
 				<Route path="comite" element={<CrudComite />} />
 				<Route path="comite/boleta" element={<AddBoletaComite></AddBoletaComite>} />
