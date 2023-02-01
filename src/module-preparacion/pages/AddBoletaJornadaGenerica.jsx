@@ -97,7 +97,6 @@ export const AddBoletaJornadaGenerica = () => {
 	};
 
 	const onCancel = () => {
-		console.log('onCancel',params.id);
 		navigate("/preparacion/jornada/noFormal/"+params.id);
 	};
 
