@@ -119,12 +119,6 @@ const asociaciones = [
 
 const candidatos = [
     {
-        // claveElectoral: "DIRUAL05",
-        // apellidoPCandidato: "DIAZ",
-        // apellidoMCandidato: "RUIZ",
-        // nombreCandidato: "JOSE ANTONIO DIEGO REVILLA",
-        // fotoCandidato: "TOÑO,jpg",
-        // seudonimoCandidato: "TOÑO",
         claveElectoral: "DIRUAL09999",
         apellidoPCandidato: "DIEGO",
         apellidoMCandidato: "JOSE",
@@ -132,20 +126,20 @@ const candidatos = [
         fotoCandidato: "TOÑO.jgp",
         seudonimoCandidato: "TOÑO",
         partidos: [
-            // {
-            //     clavePartido: "PRI-01",
-            //     nombre: "PARTIDO REVOLUCIONARIO INSTITUCIONAL",
-            //     siglas: "PRI",
-            //     emblema: "POR MEXICO",
-            //     logo: "PRI.PNG",
-            // },
-            // {
-            //     clavePartido: "PAN-01",
-            //     nombre: "PARTIDO ACCION NACIONAL",
-            //     siglas: "PAN",
-            //     emblema: "POR MEXICO",
-            //     logo: "PAN.PNG",
-            // }
+            {
+               clavePartido: "PRI-01",
+               nombre: "PARTIDO REVOLUCIONARIO INSTITUCIONAL",
+                siglas: "PRI",
+                emblema: "POR MEXICO",
+                logo: "PRI.PNG",
+            },
+             {
+                clavePartido: "PAN-01",
+                nombre: "PARTIDO ACCION NACIONAL",
+                siglas: "PAN",
+                 emblema: "POR MEXICO",
+                 logo: "PAN.PNG",
+            }
         ]
     },
     {
@@ -322,15 +316,12 @@ const boleta = {
 
 
 export const getCoalicionesAPI = () => {
-
     return new Promise((resolve, reject) => {
-
         setTimeout(() => {
             resolve(coaliciones);
         }, 700);
 
     });
-
 }
 
 export const getAsociacionesAPI = () => {
@@ -381,6 +372,18 @@ export const postAsociacionAPI = (data) => {
 
 }
 
+export const postCoalicionAPI = (data) => {
+
+    return new Promise((resolve, reject) => {
+
+        setTimeout(() => {
+            resolve("Exito");
+        }, 700);
+
+    });
+
+}
+
 
 export const getCandidatosAPI = () => {
 
@@ -396,6 +399,19 @@ export const getCandidatosAPI = () => {
 
 
 export const putComiteAPI = () => {
+
+    return new Promise((resolve, reject) => {
+
+        setTimeout(() => {
+            resolve("Actualizacion realizada");
+        }, 900);
+
+    });
+
+}
+
+
+export const putCoalicionAPI = () => {
 
     return new Promise((resolve, reject) => {
 

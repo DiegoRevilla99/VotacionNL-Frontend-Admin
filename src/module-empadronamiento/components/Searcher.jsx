@@ -1,8 +1,9 @@
 import { Box, InputAdornment, TextField, Typography } from "@mui/material";
 import React from "react";
-import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 
-export const SearcherJornadas = ({
+import ScreenSearchDesktopIcon from '@mui/icons-material/ScreenSearchDesktop';
+
+export const Searcher = ({
   name = "",
   buscador = "",
   handleSearch = () => {},
@@ -45,9 +46,9 @@ export const SearcherJornadas = ({
           width: "250px",
         }}
         InputProps={{
-          startAdornment: (
+          endAdornment: (
             <InputAdornment position="end">
-              <PersonSearchIcon />
+              <ScreenSearchDesktopIcon />
             </InputAdornment>
           ),
         }}

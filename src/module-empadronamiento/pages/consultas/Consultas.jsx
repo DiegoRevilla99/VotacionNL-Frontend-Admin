@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { GeneralTable } from "../../../module-preparacion/components/GeneralTable";
 import BallotIcon from "@mui/icons-material/Ballot";
@@ -19,19 +19,14 @@ import { getJornadasFormales } from "../../../store/module-empadronamiento/forma
 import { getConsultasConfig } from "../../../store/module-empadronamiento/consultas/thunksConsultas";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
-const datos = [
-  {
-    id: "CONSULTA-OAX-2025",
-    nombreConsulta: "CONSULTA PARA 2025",
-  },
-  {
-    id: "CONSULTA-OAX-2027",
-    nombreConsulta: "CONSULTA PARA 2027",
-  },
-];
+import { Searcher } from "../../components/Searcher";
+
+
 export const Consultas = () => {
   let location = useLocation();
   const dispatch = useDispatch();
+  const [buscador, setBuscador] = useState("");
+  const [dataSearch, setDataSearch] = useState([]);
   const { consultas, isLoadingConsultas } = useSelector(
     (state) => state.consultasSlice
   );
@@ -40,7 +35,26 @@ export const Consultas = () => {
 
   useEffect(() => {
     dispatch(getConsultasConfig());
+    setDataSearch(consultas);
   }, []);
+
+  const handleSearch = (event) => {
+    setBuscador(event.target.value);
+    searching(consultas, event.target.value);
+  };
+
+  const searching = (data, buscador) => {
+    const newData = data.filter((jornada) => {
+      if (jornada.nombreJornada.toUpperCase().includes(buscador.toUpperCase()))
+        return jornada;
+    });
+
+    setDataSearch(newData);
+  };
+
+  useEffect(() => {
+    setDataSearch(consultas);
+  }, [consultas]);
 
   const columns = [
     {
@@ -170,9 +184,15 @@ export const Consultas = () => {
             height: "calc(100% - 80px)",
           }}
         >
+          <Searcher
+            name="CONSULTAS REGISTRADAS"
+            buscador={buscador}
+            handleSearch={handleSearch}
+          />
+
           <GeneralTable
             loading={isLoadingConsultas}
-            data={consultas}
+            data={dataSearch}
             columns={columns}
             idName={"idJornada"}
           />

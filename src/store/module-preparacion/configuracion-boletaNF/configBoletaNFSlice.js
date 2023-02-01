@@ -1,18 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const configBoletaSlice = createSlice({
-    name: 'configBoleta',
+export const configBoletaNFSlice = createSlice({
+    name: 'configBoletaNFSlice',
     initialState: {
         boleta: null,
         errorBoleta: null,
-        coaliciones: [],
-        coalicionSelected: null,
         asociaciones: [],
         candidatos: [],
         partidos: [],
         isLoadingBoleta: false,
-        isLoadingCoaliciones: false,
-        isLoadingPartidos: false,
         isLoadingCandidatos: false,
         isLoadingAsociaciones: false,
         status: "off",
@@ -21,22 +17,19 @@ export const configBoletaSlice = createSlice({
     },
 
     reducers: {
-        //COALICIONES
-        startLoadingCoaliciones: (state, /* action */) => {
-            state.isLoadingCoaliciones = true;
+        
+        //ASOCIONES
+        startLoadingAsociaciones: (state, /* action */) => {
+            state.isLoadingAsociaciones = true;
         },
-        setCoaliciones: (state, action) => {
-            state.isLoadingCoaliciones = false;
-            state.coaliciones = action.payload.coaliciones;
+        setAsociaciones: (state, action) => {
+            state.isLoadingAsociaciones = false;
+            state.asociaciones = action.payload.asociaciones;
         },
-        setCoalicionSelected: (state, action) => {
-            state.coalicionSelected = action.payload.coalicionSelected;
-        },
-        endLoadingCoaliciones: (state, /* action */) => {
-            state.isLoadingCoaliciones = false;
+        endLoadingAsociaciones: (state, /* action */) => {
+            state.isLoadingAsociaciones = false;
         },
 
-        
 
 
         //BOLETA SELECCIONADA
@@ -70,6 +63,9 @@ export const configBoletaSlice = createSlice({
 
 
 
+        
+
+
         //Transacciones 
         onCheckingOperation: (state) => {
             state.status = "checking";
@@ -90,4 +86,4 @@ export const configBoletaSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { endLoadingCoaliciones,   setCoalicionSelected, setErrorBoleta, endLoadingBoleta, setBoleta, startLoadingBoleta, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation, startLoadingCoaliciones, startLoadingCandidatos, setCandidatos, setCoaliciones } = configBoletaSlice.actions;
+export const { startLoadingAsociaciones, setAsociaciones, setErrorBoleta, endLoadingBoleta, setBoleta, startLoadingBoleta, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation,  startLoadingCandidatos, setCandidatos } = configBoletaNFSlice.actions;

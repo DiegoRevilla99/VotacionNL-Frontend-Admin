@@ -24,7 +24,8 @@ import { AddCoalicion } from "../AddCoalicion";
 import { useCoaliciones } from "../../../hooks/config-boleta/useCoaliciones";
 import { useBoleta } from "../../../hooks/config-boleta/useBoleta";
 import { SeleccionesForm } from "../SeleccionesForm";
-import { putComite } from "../../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
+import { putComite } from "../../../../store/module-preparacion/configuracion-boletaNF/thunksConfigBoletaNF";
+
 
 const useStyles = makeStyles({
   hr: {

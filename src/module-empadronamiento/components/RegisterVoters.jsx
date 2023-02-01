@@ -384,7 +384,7 @@ export const RegisterVoters = ({ status = "", isLoading, datos }) => {
                 width: "250px",
               }}
               InputProps={{
-                startAdornment: (
+                endAdornment: (
                   <InputAdornment position="end">
                     <PersonSearchIcon />
                   </InputAdornment>

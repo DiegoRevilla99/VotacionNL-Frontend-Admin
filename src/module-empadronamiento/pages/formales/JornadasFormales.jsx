@@ -18,7 +18,7 @@ import EventBusyIcon from "@mui/icons-material/EventBusy";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import { useDispatch, useSelector } from "react-redux";
 import { getJornadasFormales } from "../../../store/module-empadronamiento/formales/thunksFormales";
-import { SearcherJornadas } from "../../components/SearcherJornadas";
+import { Searcher } from "../../components/Searcher";
 
 export const JornadasFormales = () => {
   let location = useLocation();
@@ -181,7 +181,7 @@ export const JornadasFormales = () => {
             height: "calc(100% - 100px)",
           }}
         >
-          <SearcherJornadas
+          <Searcher
             name="JORNADAS REGISTRADAS"
             buscador={buscador}
             handleSearch={handleSearch}
