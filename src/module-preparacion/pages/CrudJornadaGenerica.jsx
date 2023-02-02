@@ -1,3 +1,4 @@
+import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from '@mui/icons-material/Edit';
 import SettingsIcon from "@mui/icons-material/Settings";
 import {
@@ -12,16 +13,13 @@ import {
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   onGetBoletaData, onGetBoletasNoFormales
 } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
 import { GeneralTable } from "../components/GeneralTable";
-import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
-
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useParams } from "react-router-dom";
 import { ModalEliminarBoleta } from "../components/ModalEliminarBoleta";
+import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 
 export const CrudJornadaGenerica = () => {
   const navigate = useNavigate();
@@ -75,20 +73,12 @@ export const CrudJornadaGenerica = () => {
       },
     },
   ];
-
-  // USEEFFECT QUE PUEDES USAR PARA HACER UN GET DE LAS JORNADAS AL RENDERIZAR LA PAGINA
-  useEffect(() => {
-    // dispatch(onGetBoletas(params.id));
-    if (jornadaNoFormalSelected.boletasNoFormales.length === 0) dispatch(onGetBoletasNoFormales(params.id));
-  }, []);
-
   // METODO PARA BORRAR UN REGISTRO
   const handleDelete = (id, title) => {
-		setIdBoleta(id);
+    setIdBoleta(id);
 		setNombreBoleta(title);
 		openModalDelete();
   };
-
   // MÉTODO PARA EDITAR UN REGISTRO
   const handleEdit = (id) => {
     dispatch(
@@ -99,7 +89,20 @@ export const CrudJornadaGenerica = () => {
       })
     );
   };
-
+  // USEEFFECT QUE PUEDES USAR PARA HACER UN GET DE LAS JORNADAS AL RENDERIZAR LA PAGINA
+  useEffect(() => {
+    // if (jornadaNoFormalSelected.boletasNoFormales.listBoletas.length === 0) dispatch(onGetBoletasNoFormales(params.id));
+      // if (jornadaNoFormalSelected || jornadaNoFormalSelected.boletasNoFormales || jornadaNoFormalSelected.boletasNoFormales.listBoletas || jornadaNoFormalSelected.boletasNoFormales.listBoletas.length === 0) {
+      //     dispatch(onGetBoletasNoFormales(params.id));
+      // }
+      // if (jornadaNoFormalSelected || jornadaNoFormalSelected.boletasNoFormales || jornadaNoFormalSelected.boletasNoFormales.listBoletas || jornadaNoFormalSelected.boletasNoFormales.listBoletas.length === 0) {
+      //     dispatch(onFillBoletas(params.id));
+      // }
+      dispatch(onGetBoletasNoFormales(params.id));
+      // console.log("jornadaNoFormalSelected",  jornadaNoFormalSelected);
+      // console.log("listboletas",  jornadaNoFormalSelected.boletasNoFormales.listBoletas);
+      // console.log("longitud",  jornadaNoFormalSelected.boletasNoFormales.listBoletas.length);
+  }, []);
   // MÉTODO PARA IR A LA PAGINA DE CONFIGURACIÓN DEL REGISTRO
   const handleConfig = (id) => {
     navigate("/preparacion/jornadaNoFormal/configboleta/" + id);
@@ -123,6 +126,8 @@ export const CrudJornadaGenerica = () => {
 	const openModalDelete = () => {
 		setModalDeleteStatus(true);
 	};
+  
+
   if (status === "checking")
     return (
       <Box sx={{ width: "100%" }}>
@@ -211,8 +216,10 @@ export const CrudJornadaGenerica = () => {
                 <GeneralTable
                   data={jornadaNoFormalSelected.boletasNoFormales.listBoletas} // DATA DE LOS REGISTROS
                   columns={columns}
-                  idName={"idEstructuraBoleta"} // NOMBRE DEL ID DE CADA REGISTRO
+                  idName={"idEstructuraBoleta"}// NOMBRE DEL ID DE CADA REGISTRO
+                  getRowId={(row) => row.idEstructuraBoleta}
                 />
+                
               </Box>
             </Box>
           </Box>

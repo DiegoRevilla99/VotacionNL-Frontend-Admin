@@ -7,7 +7,7 @@ import {
 } from "../../ui/uiSlice";
 
 import {
-    onAddBoleta, onAddCandidato, onAddJornadasNoFormales, onCheckingOperation, onDeleteBoletaData, onDeleteJornadaData, onEditBoleta, onErrorOperation, onFillBoletas, onFillCandidatosNoFormalesData, onFillJornadasNoFormalesData, onSetBoletasSelectedNull, onSetCandidatoSelectedNull, onSetjornadaNoFormalSelected, onSuccessOperation
+    onAddBoleta, onAddCandidato, onAddJornadasNoFormales, onCheckingOperation, onDeleteBoletaData, onDeleteJornadaData, onEditBoleta, onErrorOperation, onFillBoletas, onFillCandidatosNoFormalesData, onFillJornadasNoFormalesData, onSetAsociacionSelectedNull, onSetBoletasSelectedNull, onSetCandidatoSelectedNull, onSetjornadaNoFormalSelected, onSuccessOperation
 } from "./SliceJornadaNoFormal";
 
 // Jornadas No Formales
@@ -65,15 +65,17 @@ export const onDeleteJornada = (id) => {
 export const onGetBoletasNoFormales = (idJornada, navigate = () => {} ) => {
     return async (dispatch) => {
         dispatch(onCheckingOperation());
-        const {ok, data } = await getBoletasJornadaNoFormal(idJornada);// PROVIDER
+        const {ok, data, errorMessage } = await getBoletasJornadaNoFormal(idJornada);// PROVIDER
         if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onSetBoletasSelectedNull());
             dispatch(onSetCandidatoSelectedNull());
+            dispatch(onSetAsociacionSelectedNull());
             dispatch(onFillBoletas(data));// SLICE
         } else {
             dispatch(onErrorOperation());
-            dispatch(onToastErrorOperation({ errorMessage: "No se pudo obtener las boletas" }));
+            dispatch(onToastErrorOperation({ 
+                errorMessage: errorMessage || "No se pudo obtener las boletas" }));
         }
     }
 };
@@ -152,11 +154,11 @@ export const onUpdateBoletaData = (
 export const onDeleteBoleta = (idBoleta) => {
     return async (dispatch) => {
         console.log("onDeleteBoleta", idBoleta);
-        // dispatch(onCheckingOperation());
+        dispatch(onCheckingOperation());
         dispatch(onToastCheckingOperation("Eliminando boleta..."));
         const {ok} = await deleteBoleta(idBoleta);// PROVIDER
         if (ok) {
-            // dispatch(onSuccessOperation());
+            dispatch(onSuccessOperation());
             dispatch(onDeleteBoletaData(idBoleta));// SLICE
             dispatch(onToastSuccessOperation({ successMessage: "Boleta eliminada con éxito" }));
         } else {

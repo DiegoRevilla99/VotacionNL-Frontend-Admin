@@ -3,6 +3,7 @@ import {
 	Box, Button, Grid, Modal, Typography
 } from "@mui/material";
 import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import {
 	onDeleteBoleta
 } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
@@ -22,10 +23,13 @@ const style = {
 
 export const ModalEliminarBoleta = ({ modalDeleteStatus, closeModalDelete, openModalDelete, idBoleta, encabezadoBoleta }) => {
 	const dispatch = useDispatch();
-    const { status } = useJornadaNoFormalStore();
+	const params = useParams();
+	const { jornadaNoFormalSelected , status } = useJornadaNoFormalStore();
 	const onSave = () => {
         dispatch(onDeleteBoleta(idBoleta));
         closeModalDelete();
+		// dispatch(onGetBoletasNoFormales(params.id));
+		console.log("BOLETAS after modal", jornadaNoFormalSelected.boletasNoFormales.listBoletas);
 	};
     const onCancel = () => {
 		closeModalDelete();

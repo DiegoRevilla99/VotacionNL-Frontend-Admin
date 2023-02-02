@@ -146,7 +146,7 @@ export const SliceJornadaNoFormal = createSlice({
             state.asociaciones = [];
         },
         onFillAsociacionesData: (state, { payload }) => {
-            state.asociacionesData = payload;
+            state.asociaciones = payload;
         },
 
 
@@ -177,7 +177,9 @@ export const SliceJornadaNoFormal = createSlice({
             }
             const id = state.jornadaNoFormalSelected.boletasNoFormales.findIndex(
                 (consulta) => consulta.idBoleta === payload);
-            state.jornadaNoFormalSelected.boletasNoFormales.splice(id, 1);
+            if (id !== -1) {
+                state.jornadaNoFormalSelected.boletasNoFormales.splice(id, 1);
+                }
         },
         onAddBoleta: (state, { payload }) => {
             // console.log("AYUDA 1",state.jornadaNoFormalSelected.boletasNoFormales);
