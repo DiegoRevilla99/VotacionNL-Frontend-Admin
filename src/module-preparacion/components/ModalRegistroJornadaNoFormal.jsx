@@ -1,4 +1,4 @@
-import { Box, Modal, TextField, Typography } from "@mui/material";
+import { Box, MenuItem, Modal, TextField, Typography } from "@mui/material";
 import { Formik } from "formik";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -23,11 +23,19 @@ const style = {
 
 const validationSchema = object({
 	title: string("Ingresa un título").required("Este campo es requerido"),
-	tipoEleccion: string("Ingresa la tipoEleccion donde se llevará a cabo la jornada").required(
+	tipoEleccion: string("Elija la opción del tipo de elección que se llevará a cabo").required(
 		"Este campo es requerido"
 	),
 });
-
+const eleccionType = [ {
+    value: 'ORDINARIA',
+    label: 'ORDINARIA',
+  },
+  {
+    value: 'EXTRAORDINARIA',
+    label: 'EXTRAORDINARIA',
+  },
+];
 export const ModalRegistroJornadaNoFormal = ({ modalStatus, closeModal, openModal }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -67,7 +75,7 @@ export const ModalRegistroJornadaNoFormal = ({ modalStatus, closeModal, openModa
 								onSubmit(values);
 							}}
 						>
-							{({ values, handleSubmit, handleChange, errors, touched }) => (
+							{({ values, handleSubmit, handleChange, errors, touched, setValues }) => (
 								<form onSubmit={handleSubmit}>
 									<Typography variant="h6" mb="0.5rem">
 										TÍTULO DE LA JORNADA NO FORMAL
@@ -89,19 +97,38 @@ export const ModalRegistroJornadaNoFormal = ({ modalStatus, closeModal, openModa
 									<Typography variant="h6" mb="0.5rem">
 										TIPO DE ELECCIÓN QUE SE LLEVARÁ A CABO
 									</Typography>
-
 									<TextField
+										id="filled-select-currency"
 										name="tipoEleccion"
-										fullWidth
-										size="small"
-										id="tipoEleccion"
-										label="Tipo de elección que se llevará a cabo"
+										select
+										disabled={status === "checking"}
+										label="Tipo de elección"
+										defaultValue="REPRESENTANTE"
 										variant="filled"
-										onChange={handleChange}
+										error={touched && touched.tipoEleccion && Boolean(errors.tipoEleccion)}
+										helperText={touched && touched.tipoEleccion && errors.tipoEleccion}
+										sx={{ width: {
+											xs: "100%",
+											sm: "100%",
+											md: "50%",
+											lg: "50%",
+											xl: "50%",
+										} }}
 										value={values.tipoEleccion}
-										error={touched.tipoEleccion && Boolean(errors.tipoEleccion)}
-										helperText={touched.tipoEleccion && errors.tipoEleccion}
-									/>
+										onChange={(event) => {
+											setValues({
+											...values,
+											tipoEleccion: event.target.value
+											});
+										}}
+										>
+										{eleccionType.map((option) => (
+										<MenuItem key={option.value} value={option.value}>
+											{option.label}
+										</MenuItem>
+										))}
+									</TextField>
+
 
 									<ButtonsContainer onCancel={closeModal} status={status} />
 								</form>

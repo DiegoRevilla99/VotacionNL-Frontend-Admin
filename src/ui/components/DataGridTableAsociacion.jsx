@@ -5,28 +5,22 @@ import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useJornadaNoFormalStore } from "../../module-preparacion/hooks/useJornadaNoFormalStore";
-export const DataGridTableJornadaNoFormal = ({ handleOpenModal, handleOpenDeleteCandidatoModal}) => {
-	const { candidatos, deleteCandidato, editCandidato} = useJornadaNoFormalStore();
-	
+export const DataGridTableAsociacion = ({ handleOpenModal, handleOpenDeleteAsociacionModal}) => {
+	const { asociaciones, deleteAsociacion, editAsociacion } = useJornadaNoFormalStore();
 	const dispatch = useDispatch();
     const handleDelete = (id) => {
-		dispatch(deleteCandidato(id));
+		dispatch(deleteAsociacion(id));
 		console.log("Estas por el iliminar el ID", id);
 	};
 	const handleEdit = (id) => {
 		handleOpenModal();
-		editCandidato(id);
+		editAsociacion(id);
 	};
 
 	const columns = [
-		{ field: "id", headerName: "clave Electoral", width: 65 },
-		{ field: "nombreCandidato", headerName: "Nombres Candidato", width: 210 },
-		{ field: "apellidoPCandidato", headerName: "Primer Apellido", width: 180 },
-		{ field: "apellidoMCandidato", headerName: "Segundo Apellido", width: 180 },
-        // { field: "seudonimoCandidato", headerName: "Seudonimo", width: 100 },
-		// { field: "fechaNacimientoCandidato", headerName: "Fecha de Nacimiento", width: 100 },
-		// { field: "generoCandidato", headerName: "Género", width: 100 },
-
+		{ field: "id", headerName: "id", width: 65 },
+		{ field: "nombreAsociacion", headerName: "Nombre de la asociacion", width: 230 },
+		{ field: "emblema", headerName: "Emblema", width: 300 },
 		{
 			field: "actions",
 			headerName: "Acciones",
@@ -46,7 +40,7 @@ export const DataGridTableJornadaNoFormal = ({ handleOpenModal, handleOpenDelete
 						<Tooltip title="Eliminar">
 							<IconButton
 								sx={{ color: "#791010" }}
-								onClick={() => handleDelete(params.id, params.row.nombreCandidato)}
+								onClick={() => handleDelete(params.id, params.row.nombreAsociacion)}
 							>
 								<DeleteIcon />
 							</IconButton>
@@ -60,7 +54,7 @@ export const DataGridTableJornadaNoFormal = ({ handleOpenModal, handleOpenDelete
 	return (
 		<div style={{ height: "100%", width: "100%" }}>
 			<DataGrid
-                rows={candidatos}
+                rows={asociaciones}
 				columns={columns}
 				pageSize={5}
 				rowsPerPageOptions={[5]}

@@ -4,10 +4,9 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import {
-	onDeleteJornada
+	onDeleteBoleta
 } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
 import { useJornadaNoFormalStore } from '../hooks/useJornadaNoFormalStore';
-
 const style = {
 	position: "absolute",
 	top: "50%",
@@ -25,8 +24,7 @@ export const ModalEliminarBoleta = ({ modalDeleteStatus, closeModalDelete, openM
 	const dispatch = useDispatch();
     const { status } = useJornadaNoFormalStore();
 	const onSave = () => {
-		// handleToggleModal();
-        dispatch(onDeleteJornada(idBoleta));
+        dispatch(onDeleteBoleta(idBoleta));
         closeModalDelete();
 	};
     const onCancel = () => {

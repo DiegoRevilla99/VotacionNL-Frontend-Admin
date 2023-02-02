@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-    onAddCandidato, onAddJornadasNoFormales, onCheckingOperation, onDeleteCandidato, onEditBoleta, onEditCandidato, onErrorOperation, onFillJornadasNoFormalesData, onOffOperation,
+    onAddAsociacion,
+    onAddCandidato, onAddJornadasNoFormales, onCheckingOperation, onDeleteAsociacion, onDeleteCandidato, onEditAsociacion, onEditBoleta, onEditCandidato, onErrorOperation, onFillJornadasNoFormalesData, onOffOperation,
+    onSetAsociacionSelectedNull,
     onSetCandidatoNull, onSetCandidatoSelectedNull, onSetPartidoSelectedNull, onSuccessOperation, onUpdateCandidato
 } from "../../store/module-preparacion/jornada/SliceJornadaNoFormal";
 
@@ -13,7 +15,8 @@ export const useJornadaNoFormalStore = () => {
 		successMesage,
 		candidatos,
         candidatosSelected,
-
+        asociaciones,
+        asociacionesSelected,
         jornadasNoFormalesData,
         jornadaNoFormalSelected,
 	} = useSelector((state) => state.jornadaNoFormal);
@@ -37,7 +40,9 @@ export const useJornadaNoFormalStore = () => {
     const deleteCandidato = (id) => {
         dispatch(onDeleteCandidato(id));
     };
-
+    const deleteAsociacion = (id) => {
+        dispatch(onDeleteAsociacion(id));
+    };
 
     // EDIT
     const editBoleta = (id) => {
@@ -46,12 +51,17 @@ export const useJornadaNoFormalStore = () => {
     const editCandidato = (id) => {
         dispatch(onEditCandidato(id));
     };
+    const editAsociacion = (id) => {
+        dispatch(onEditAsociacion(id));
+    };
 
     // Selected Null
     const setCandidatosSelectedNull = () => {
         dispatch(onSetCandidatoSelectedNull());
     };
-
+    const setAsociacionesSelectedNull = () => {
+        dispatch(onSetAsociacionSelectedNull());
+    };
 
     // Null
     const setCandidatoNull = () => {
@@ -86,7 +96,22 @@ export const useJornadaNoFormalStore = () => {
         );
     };
 
-    
+    const addAsociacion = (
+        id,
+        nombreAsociacion,
+        emblema,
+        logo,
+    ) => {
+        dispatch(
+            onAddAsociacion({
+                id,
+                nombreAsociacion,
+                emblema,
+                logo,
+            })
+        );
+    };
+    // Update
     
     const updateCandidato = (
         id,
@@ -133,8 +158,8 @@ export const useJornadaNoFormalStore = () => {
 		successMesage,
 		candidatos,
         candidatosSelected,
-
-
+        asociaciones,
+        asociacionesSelected,
 		jornadasNoFormalesData,
         jornadaNoFormalSelected,
 
@@ -146,8 +171,13 @@ export const useJornadaNoFormalStore = () => {
         updateCandidato,
         editCandidato,
         deleteCandidato,
+        editAsociacion,
+        deleteAsociacion,
         fillJornadasNoFormalesData,
         setBoletasSelectedNull,
         setCandidatosSelectedNull,
+
+        setAsociacionesSelectedNull,
+        addAsociacion,
 	};
 };

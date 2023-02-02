@@ -6,12 +6,10 @@ export const SliceJornadaNoFormal = createSlice({
         status: "off",
         errorMessage: "",
         successMessage: "",
-        partidos: [],
-        partidoSelected: {},
         candidatos:[],
         candidatoSelected: {},
-        suplentes: [],
-        suplenteSelected: {},
+        asociaciones: [],
+        asociacionesSelected: {},
         jornadasNoFormalesData: [],
         jornadaNoFormalSelected: {
             id: "",
@@ -36,38 +34,37 @@ export const SliceJornadaNoFormal = createSlice({
         onOffOperation: (state) => {
             state.status = "off";
         },
+
+        // Candidato
         onAddCandidato: (state, { payload }) => {
             console.log("candidatos en mi payload", payload);
-
-                if (!Array.isArray(payload)) {
-                    state.candidatos.push({
-                        id: payload?.id,
-                        curp: payload?.curp,
-                        apellidoPCandidato: payload?.apellidoPCandidato,
-                        apellidoMCandidato: payload?.apellidoMCandidato,
-                        nombreCandidato: payload?.nombreCandidato,
-                        fotografiaCandidato: payload?.fotografiaCandidato,
-                        seudonimoCandidato: payload?.seudonimoCandidato,
-                        fechaNacimientoCandidato: payload?.fechaNacimientoCandidato,
-                        generoCandidato: payload?.generoCandidato,
-                    });
-                    return;
-                }
-                payload.forEach((candidato) => {
-                    state.candidatos.push({
-                        id: candidato?.id,
-                        curp: payload?.curp,
-                        apellidoPCandidato: candidato?.apellidoPCandidato,
-                        apellidoMCandidato: candidato?.apellidoMCandidato,
-                        nombreCandidato: candidato?.nombreCandidato,
-                        fotografiaCandidato: candidato?.fotografiaCandidato,
-                        seudonimoCandidato: candidato?.seudonimoCandidato,
-                        fechaNacimientoCandidato: candidato?.fechaNacimientoCandidato,
-                        generoCandidato: candidato?.generoCandidato,
-                    });
+            if (!Array.isArray(payload)) {
+                state.candidatos.push({
+                    id: payload?.id,
+                    curp: payload?.curp,
+                    apellidoPCandidato: payload?.apellidoPCandidato,
+                    apellidoMCandidato: payload?.apellidoMCandidato,
+                    nombreCandidato: payload?.nombreCandidato,
+                    fotografiaCandidato: payload?.fotografiaCandidato,
+                    seudonimoCandidato: payload?.seudonimoCandidato,
+                    fechaNacimientoCandidato: payload?.fechaNacimientoCandidato,
+                    generoCandidato: payload?.generoCandidato,
                 });
-        
-            console.log("candidatos en el slice", state.candidatos);
+                return;
+            }
+            payload.forEach((candidato) => {
+                state.candidatos.push({
+                    id: candidato?.id,
+                    curp: payload?.curp,
+                    apellidoPCandidato: candidato?.apellidoPCandidato,
+                    apellidoMCandidato: candidato?.apellidoMCandidato,
+                    nombreCandidato: candidato?.nombreCandidato,
+                    fotografiaCandidato: candidato?.fotografiaCandidato,
+                    seudonimoCandidato: candidato?.seudonimoCandidato,
+                    fechaNacimientoCandidato: candidato?.fechaNacimientoCandidato,
+                    generoCandidato: candidato?.generoCandidato,
+                });
+            });
         },
 
         onDeleteCandidato: (state, { payload }) => {
@@ -77,18 +74,6 @@ export const SliceJornadaNoFormal = createSlice({
 
         onEditCandidato: (state, { payload }) => {
             state.candidatoSelected = state.candidatos[0];
-        },
-
-        onEditPartido: (state, { payload }) => {
-            state.partidoSelected = state.partidos[0];
-            // const index = state.partidos.findIndex(partido => partido.id === state.partidoSelected.id);
-            // state.partidos.splice(index, 1, {
-            //   id: payload.id,
-            //   nombrePartido: payload.nombrePartido,
-            //   siglasPartido: payload.siglasPartido,
-            //   emblemaPartido: payload.emblemaPartido,
-            //   fotografiaPartido: payload.fotografiaPartido
-            // });
         },
 
         onUpdateCandidato: (state, { payload }) => {
@@ -110,15 +95,62 @@ export const SliceJornadaNoFormal = createSlice({
             state.candidatoSelected = {};
         },
 
-
         onSetCandidatoNull: (state, { payload }) => {
             state.candidatos = [];
         },
 
-
         onFillCandidatosNoFormalesData: (state, { payload }) => {
             state.candidatosNoFormalesData = payload;
         },
+
+
+        // Asociaciones
+        onAddAsociacion: (state, { payload }) => {
+            if (!Array.isArray(payload)) {
+                state.asociaciones.push({
+                    id: payload?.id,
+                    nombreAsociacion: payload?.nombreAsociacion,
+                    emblema: payload?.emblema,
+                    logo: payload?.logo,
+                });
+                return;
+            }
+            payload.forEach((asociacion) => {
+                state.asociaciones.push({
+                    id: asociacion?.id,
+                    nombreAsociacion: asociacion?.nombreAsociacion,
+                    emblema: asociacion?.emblema,
+                    logo: asociacion?.logo,
+                });
+            });
+            
+        },
+        onDeleteAsociacion: (state, { payload }) => {
+            const asociacionFound = state.asociaciones.find((asociacion) => asociacion.id === payload?.id);
+            state.asociaciones.splice(state.asociaciones.indexOf(asociacionFound), 1);
+        },
+        onEditAsociacion: (state, { payload }) => {
+            state.asociacionesSelected = state.asociaciones[0];
+        },
+        onUpdateAsociacion : (state, { payload }) => {
+            const asociacionFound = state.asociaciones.find((asociacion) => asociacion.id === state.asociacionesSelected.id);
+            asociacion.id = payload?.id;
+            asociacion.nombreAsociacion = payload?.nombreAsociacion;
+            asociacion.emblema = payload?.emblema;
+            asociacion.logo = payload?.logo;
+        },
+        onSetAsociacionSelectedNull: (state, { payload }) => {
+            state.asociacionesSelected = {};
+        },
+        onSetAsociacionNull: (state, { payload }) => {
+            state.asociaciones = [];
+        },
+        onFillAsociacionesData: (state, { payload }) => {
+            state.asociacionesData = payload;
+        },
+
+
+        // Jornadas
         onFillJornadasNoFormalesData: (state, { payload }) => {
             state.jornadasNoFormalesData = payload;
         },
@@ -126,23 +158,26 @@ export const SliceJornadaNoFormal = createSlice({
             state.jornadasNoFormalesData.push(payload);
         },
         onDeleteJornadaData: (state, { payload }) => {
-            console.log("ELIMIANDO EN EL SLIDE",payload);
+            // console.log("ELIMIANDO EN EL SLIDE",payload);
             const id = state.jornadasNoFormalesData.findIndex((consulta) => consulta.idJornada === payload);
-            console.log(id);
+            // console.log(id);
             state.jornadasNoFormalesData.splice(id, 1);
-        },
-        onDeleteBoletaData: (state, { payload }) => {
-            console.log(payload);
-            const id = state.jornadaNoFormalSelected.boletasNoFormales.findIndex(
-                (consulta) => consulta.idBoleta === payload);
-            console.log(id);
-            state.jornadaNoFormalSelected.boletasNoFormales.splice(id, 1);
         },
         onSetjornadaNoFormalSelected: (state, { payload }) => {
             console.log(payload);
             state.jornadaNoFormalSelected.id = payload.idJornada;
             state.jornadaNoFormalSelected.title = payload.title;
             state.jornadaNoFormalSelected.boletasNoFormales = payload.boletasNoFormales || [];
+        },
+        // Boletas
+        onDeleteBoletaData: (state, { payload }) => {
+            console.log("ELIMIANDO EN EL SLIDE",payload);
+            if (!Array.isArray(state.jornadaNoFormalSelected.boletasNoFormales)) {
+                state.jornadaNoFormalSelected.boletasNoFormales = [];
+            }
+            const id = state.jornadaNoFormalSelected.boletasNoFormales.findIndex(
+                (consulta) => consulta.idBoleta === payload);
+            state.jornadaNoFormalSelected.boletasNoFormales.splice(id, 1);
         },
         onAddBoleta: (state, { payload }) => {
             // console.log("AYUDA 1",state.jornadaNoFormalSelected.boletasNoFormales);
@@ -222,4 +257,11 @@ export const {
     onEditBoleta,
     onUpdateBoleta,
     onSetBoletasSelectedNull,
+    onSetAsociacionSelectedNull,
+    onAddAsociacion,
+    onDeleteAsociacion,
+    onEditAsociacion,
+    onUpdateAsociacion,
+    onSetAsociacionNull,
+    onFillAsociacionesData,
 } = SliceJornadaNoFormal.actions;

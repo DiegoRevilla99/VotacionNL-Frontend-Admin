@@ -93,11 +93,11 @@ export const onGetCandidatosNoFormales = (idBoleta, navigate = () => {} ) => {
     }
 };
 
-export const onCreateBoleta = (data, idJornada, candidatos, navigate = () => {}) => {
+export const onCreateBoleta = (data, idJornada, candidatos, asociaciones, navigate = () => {}) => {
     return async (dispatch) => {
         dispatch(onCheckingOperation());
         dispatch(onToastCheckingOperation("Guardando boleta..."));
-        const {ok, idBoleta } = await createBoleta(data, idJornada, candidatos);// PROVIDER
+        const {ok, idBoleta } = await createBoleta(data, idJornada, candidatos, asociaciones);// PROVIDER
         if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onToastSuccessOperation({ successMessage: "Boleta creada con éxito" }));
@@ -151,6 +151,7 @@ export const onUpdateBoletaData = (
 
 export const onDeleteBoleta = (idBoleta) => {
     return async (dispatch) => {
+        console.log("onDeleteBoleta", idBoleta);
         // dispatch(onCheckingOperation());
         dispatch(onToastCheckingOperation("Eliminando boleta..."));
         const {ok} = await deleteBoleta(idBoleta);// PROVIDER

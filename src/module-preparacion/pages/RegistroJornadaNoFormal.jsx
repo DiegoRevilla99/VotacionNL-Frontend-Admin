@@ -76,6 +76,7 @@ export const RegistroJornadaNoFormal = () => {
 		setId(id);
 		setNombreEleccion(title);
 		openModalDelete();
+		
 	};
 
 	// MÉTODO PARA EDITAR UN REGISTRO
