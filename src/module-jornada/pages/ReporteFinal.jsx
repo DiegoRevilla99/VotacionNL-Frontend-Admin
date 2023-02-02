@@ -23,6 +23,7 @@ import {
 	onGetBoletas,
 	onGetJornadaVotos,
 } from "../../store/module-preparacion/jornada/ThunksJornada";
+import { ReporteInicialHTML } from "../components/ReporteInicialHTML";
 import { JornadaFormalChart } from "./JornadaFormalChart";
 
 export const ReporteFinal = () => {
@@ -96,68 +97,6 @@ export const ReporteFinal = () => {
 						</Select>
 					</FormControl>
 				</Grid>
-
-				{/* <Grid item xs={3}></Grid>
-				<Grid item container xs={6}>
-					<Grid
-						item
-						xs={4}
-						display="flex"
-						justifyContent="center"
-						alignContent="center"
-						alignItems="center"
-					>
-						<Typography
-							variant="h6"
-							color="initial"
-							align="center"
-							sx={{ wordBreak: "break-word" }}
-						>
-							Nuevo León
-						</Typography>
-					</Grid>
-					<Grid
-						item
-						xs={3}
-						display="flex"
-						flexDirection="column"
-						justifyContent="center"
-						alignContent="center"
-						alignItems="center"
-					>
-						<Box borderRight="1px solid" pr={4} display="flex" flexDirection="column">
-							<Typography
-								variant="body1"
-								color="initial"
-								align="center"
-								fontWeight="bold"
-							>
-								Presidente
-							</Typography>
-							<Typography variant="body2" color="initial" align="center">
-								Mayoría relativa
-							</Typography>
-						</Box>
-					</Grid>
-					<Grid
-						item
-						xs={5}
-						display="flex"
-						justifyContent="center"
-						alignContent="center"
-						alignItems="center"
-					>
-						<Typography
-							variant="body2"
-							color="initial"
-							// fontWeight="bold"
-							align="center"
-						>
-							Voto por partido político y Candidatura independiente
-						</Typography>
-					</Grid>
-				</Grid>
-				<Grid item xs={3}></Grid> */}
 			</Grid>
 
 			<Box display="flex" flexDirection="column" height="100%" mt={3}>

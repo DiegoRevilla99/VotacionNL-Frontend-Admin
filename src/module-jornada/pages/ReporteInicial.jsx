@@ -129,7 +129,7 @@ export const ReporteInicial = () => {
 					</Routes>
 				</PrivateRoute>
 			</Box>
-			<Box width="100%" hei></Box>
+			{/* <Box width="100%" hei></Box> */}
 		</Box>
 	);
 };

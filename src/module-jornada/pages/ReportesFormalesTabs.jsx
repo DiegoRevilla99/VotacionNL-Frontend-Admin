@@ -19,6 +19,7 @@ import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
 import { PrivateRoute } from "../../router/PrivateRoute";
 import { onGetBoletas } from "../../store/module-preparacion/jornada/ThunksJornada";
+import { ReporteInicialHTML } from "../components/ReporteInicialHTML";
 import { ReporteFinal } from "./ReporteFinal";
 import { ReporteInicial } from "./ReporteInicial";
 import { VerSesiones } from "./VerSesiones";
@@ -54,66 +55,71 @@ export const ReportesFormalesTabs = () => {
 	// 	);
 	// else
 	return (
-		<Box
-			sx={{
-				height: "100%",
-				display: "flex",
-				flexDirection: "column",
-				// mb: "2rem",
-				// ml: "2rem",
-				// mr: "2rem",
-				// height: "100%",
-				overflowY: "auto",
-			}}
-		>
-			<Tabs
-				sx={{ mt: 1 }}
-				value={value}
-				onChange={handleChange}
-				aria-label="nav tabs example"
-				textColor="primary"
-				indicatorColor="primary"
-				centered
-			>
-				<LinkTab
-					sx={{ fontSize: "16px" }}
-					label="Reporte inicial"
-					href={`/jornada/reportes/${params.idJornada}/reporteInicio/`}
-				/>
-				<LinkTab
-					sx={{ fontSize: "16px" }}
-					label="Reporte final"
-					href={`/jornada/reportes/${params.idJornada}/reporteFinal/`}
-				/>
-				<LinkTab
-					sx={{ fontSize: "16px" }}
-					label="Sesiones"
-					href={`/jornada/reportes/${params.idJornada}/sesiones`}
-				/>
-			</Tabs>
-
+		<Box sx={{ overflow: "hidden" }}>
 			<Box
-			// ml={"2rem"}
-			// mr={"2rem"}
-			// mb={"2rem"}
-			// sx={{
-			// 	boxShadow: 1,
-			// 	height: "auto",
-			// 	display: "flex",
-			// 	flexDirection: "column",
-			// 	backgroundColor: "white",
-			// 	borderRadius: "2rem",
-			// 	p: "2rem",
-			// }}
+				sx={{
+					height: "100%",
+					display: "flex",
+					flexDirection: "column",
+					// mb: "2rem",
+					// ml: "2rem",
+					// mr: "2rem",
+					// height: "100%",
+					overflowY: "auto",
+				}}
 			>
-				<PrivateRoute>
-					<Routes>
-						<Route path="reporteInicio/*" element={<ReporteInicial />} />
-						<Route path="reporteFinal/*" element={<ReporteFinal />} />
-						<Route path="sesiones/*" element={<VerSesiones />} />
-						{/* <Route path="sesiones" element={<JornadasNoFormales />} /> */}
-					</Routes>
-				</PrivateRoute>
+				<Tabs
+					sx={{ mt: 1 }}
+					value={value}
+					onChange={handleChange}
+					aria-label="nav tabs example"
+					textColor="primary"
+					indicatorColor="primary"
+					centered
+				>
+					<LinkTab
+						sx={{ fontSize: "16px" }}
+						label="Reporte inicial"
+						href={`/jornada/reportes/${params.idJornada}/reporteInicio/`}
+					/>
+					<LinkTab
+						sx={{ fontSize: "16px" }}
+						label="Reporte final"
+						href={`/jornada/reportes/${params.idJornada}/reporteFinal/`}
+					/>
+					<LinkTab
+						sx={{ fontSize: "16px" }}
+						label="Sesiones"
+						href={`/jornada/reportes/${params.idJornada}/sesiones`}
+					/>
+				</Tabs>
+
+				<Box
+				// ml={"2rem"}
+				// mr={"2rem"}
+				// mb={"2rem"}
+				// sx={{
+				// 	boxShadow: 1,
+				// 	height: "auto",
+				// 	display: "flex",
+				// 	flexDirection: "column",
+				// 	backgroundColor: "white",
+				// 	borderRadius: "2rem",
+				// 	p: "2rem",
+				// }}
+				>
+					<PrivateRoute>
+						<Routes>
+							<Route path="reporteInicio/*" element={<ReporteInicial />} />
+							<Route path="reporteFinal/*" element={<ReporteFinal />} />
+							<Route path="sesiones/*" element={<VerSesiones />} />
+							{/* <Route path="sesiones" element={<JornadasNoFormales />} /> */}
+						</Routes>
+					</PrivateRoute>
+				</Box>
+			</Box>
+			<Box sx={{ overflowY: "hidden" }}>
+				<ReporteInicialHTML />
 			</Box>
 		</Box>
 	);

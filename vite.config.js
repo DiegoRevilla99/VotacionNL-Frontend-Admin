@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
-//PLUGINS PARA VISUALIZAR EL PDF
+// PLUGINS PARA VISUALIZAR EL PDF
 // import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
 // import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfill";
 // // You don't need to add this to deps, it's included by @esbuild-plugins/node-modules-polyfill

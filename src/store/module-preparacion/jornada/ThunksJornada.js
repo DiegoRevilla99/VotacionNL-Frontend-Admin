@@ -1,14 +1,37 @@
 import {
-	createBoleta, createJornada, deleteBoleta, deleteJornada, getBoletaData, getBoletasJornada, getJornadas,
-	getJornadasFormales, updateBoletaData
+	getJornadas,
+	getJornadasFormales,
+	getJornadasNoFormales,
+	createJornada,
+	deleteJornada,
+	getBoletasJornada,
+	getBoletaData,
+	createBoleta,
+	updateBoletaData,
+	deleteBoleta,
+	getJornadaVotos,
 } from "../../../providers/Micro-Preparacion/providerJornada";
 import {
 	onToastCheckingOperation,
-	onToastErrorOperation, onToastSuccessOperation
+	onToastErrorOperation,
+	onToastSuccessOperation,
 } from "../../ui/uiSlice";
 
 import {
-	onAddBoleta, onAddJornadas, onAddPartido, onCheckingOperation, onDeleteBoletaData, onDeleteJornadaData, onEditBoleta, onErrorOperation, onFillBoletas, onFillJornadasData, onSetBoletasSelectedNull, onSetJornadaSelected, onSetJornadasVotosData, onSuccessOperation
+	onAddBoleta,
+	onAddJornadas,
+	onAddPartido,
+	onCheckingOperation,
+	onDeleteBoletaData,
+	onDeleteJornadaData,
+	onEditBoleta,
+	onErrorOperation,
+	onFillBoletas,
+	onFillJornadasData,
+	onSetBoletasSelectedNull,
+	onSetJornadaSelected,
+	onSetJornadasVotosData,
+	onSuccessOperation,
 } from "./SliceJornada";
 
 export const onGetAlljornadas = () => {

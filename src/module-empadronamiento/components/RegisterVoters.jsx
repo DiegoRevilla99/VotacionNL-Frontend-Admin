@@ -14,7 +14,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CancelScheduleSendIcon from "@mui/icons-material/CancelScheduleSend";
 import Collapse from "@mui/material/Collapse";
 import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
@@ -32,14 +32,16 @@ import EditIcon from "@mui/icons-material/Edit";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import BadgeIcon from "@mui/icons-material/Badge";
 import { ModalEditVotante } from "./ModalEditVotante";
-import { setVotanteSelected } from "../../store/module-empadronamiento/formales/EmpFormalesSlice";
+
 import { useDispatch } from "react-redux";
 import { ModalLink } from "./ModalLink";
 import { ModalLinkPersonal } from "./ModalLinkPersonal";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import { useTheme } from "@mui/material/styles";
 import { ModalInfo } from "./ModalInfo";
-import { getVotanteDireccion } from "../../store/module-empadronamiento/formales/thunksFormales";
+
+import { setVotanteSelected } from "../../store/module-empadronamiento/votantes/empVotantesSlice";
+import { getVotanteDireccion } from "../../store/module-empadronamiento/votantes/thunksVotantes";
 
 const opciones = {
   display: "flex",
@@ -122,12 +124,10 @@ export const RegisterVoters = ({ status = "", isLoading, datos }) => {
   };
 
   const openGranelbtn = () => {
-    console.log("preisonando a granel");
     abrirCerrarModalGranel();
   };
 
   const openindividualbtn = () => {
-    console.log("preisonando a individual");
     abrirCerrarModalAddVotante();
   };
 
@@ -235,6 +235,10 @@ export const RegisterVoters = ({ status = "", isLoading, datos }) => {
       },
     },
   ];
+
+  useEffect(() => {
+    setDataSearch(datos);
+  }, [datos]);
 
   return (
     <>
@@ -380,7 +384,7 @@ export const RegisterVoters = ({ status = "", isLoading, datos }) => {
                 width: "250px",
               }}
               InputProps={{
-                startAdornment: (
+                endAdornment: (
                   <InputAdornment position="end">
                     <PersonSearchIcon />
                   </InputAdornment>

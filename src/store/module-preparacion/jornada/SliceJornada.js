@@ -254,8 +254,8 @@ export const SliceJornada = createSlice({
 		},
 		onFillBoletas: (state, { payload }) => {
 			console.log("fill boletas", payload);
-			// state.jornadaSelected.boletas = payload;
-			state.jornadaSelected.boletas = [];
+			// state.jornadaSelected.boletas = payload; //!DEJA ESTE
+			state.jornadaSelected.boletas = []; //!BORRA ESTE
 
 			state.jornadaSelected.boletas.push({
 				idEstructuraBoleta: 23,

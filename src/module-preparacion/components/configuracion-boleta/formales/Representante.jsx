@@ -17,7 +17,6 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
-import { PlantillaHeader } from "../../../layout/PlantillaHeader";
 import { Agrupa } from "../Agrupa";
 import { AddCoalicion } from "../AddCoalicion";
 import { useCoaliciones } from "../../../hooks/config-boleta/useCoaliciones";
@@ -107,10 +106,10 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
         }}
       >
         <Typography sx={{ mb: 3, fontSize: "22px", fontWeight: "bold" }}>
-          OPCIONES DE {boletaInfo.modalidad}
+          OPCIONES DE {boletaInfo.encabezadoBoleta}
         </Typography>
 
-        <Box sx={boxOpciones}>
+        {/* <Box sx={boxOpciones}>
           <FormGroup
             sx={{
               display: "flex",
@@ -128,7 +127,7 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
               label="Mostrar voto nulo"
             />
           </FormGroup>
-        </Box>
+        </Box> */}
 
         <Box
           sx={{

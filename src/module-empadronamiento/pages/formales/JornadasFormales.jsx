@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { GeneralTable } from "../../../module-preparacion/components/GeneralTable";
 import BallotIcon from "@mui/icons-material/Ballot";
@@ -18,42 +18,40 @@ import EventBusyIcon from "@mui/icons-material/EventBusy";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import { useDispatch, useSelector } from "react-redux";
 import { getJornadasFormales } from "../../../store/module-empadronamiento/formales/thunksFormales";
-
-/* const datos = [
-  {
-    id: "JO-EL-GO-OR-20-OAX-2023",
-    status: "terminado",
-    inicioEmpadronamiento: "01/01/2023",
-    finEmpadronamiento: "06/01/2023",
-    nombreEleccion: "JORNADA ELECTORAL GOBERNADOR ORDINARIA 2023",
-  },
-  {
-    id: "GO-OR-20-OAX-2023",
-    status: "activo",
-    inicioEmpadronamiento: "09/01/2023",
-    finEmpadronamiento: "20/01/2023",
-    nombreEleccion: "JORNADA ELECTORAL GOBERNADOR ORDINARIA 2023",
-  },
-  {
-    id: "G-OR-20-OAX-2023",
-    status: "noiniciada",
-    inicioEmpadronamiento: "01/02/2023",
-    finEmpadronamiento: "10/02/2023",
-    nombreEleccion: "JORNADA ELECTORAL GOBERNADOR ORDINARIA 2023",
-  },
-]; */
+import { Searcher } from "../../components/Searcher";
 
 export const JornadasFormales = () => {
   let location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [buscador, setBuscador] = useState("");
+  const [dataSearch, setDataSearch] = useState([]);
   const { jornadasFormales, isLoadingFormales } = useSelector(
     (state) => state.empFormales
   );
 
+  const handleSearch = (event) => {
+    setBuscador(event.target.value);
+    searching(jornadasFormales, event.target.value);
+  };
+
   useEffect(() => {
     dispatch(getJornadasFormales());
+    setDataSearch(jornadasFormales);
   }, []);
+
+  useEffect(() => {
+    setDataSearch(jornadasFormales);
+  }, [jornadasFormales]);
+
+  const searching = (data, buscador) => {
+    const newData = data.filter((jornada) => {
+      if (jornada.nombreJornada.toUpperCase().includes(buscador.toUpperCase()))
+        return jornada;
+    });
+
+    setDataSearch(newData);
+  };
 
   const columns = [
     {
@@ -183,9 +181,14 @@ export const JornadasFormales = () => {
             height: "calc(100% - 100px)",
           }}
         >
+          <Searcher
+            name="JORNADAS REGISTRADAS"
+            buscador={buscador}
+            handleSearch={handleSearch}
+          />
           <GeneralTable
             loading={isLoadingFormales}
-            data={jornadasFormales}
+            data={dataSearch}
             columns={columns}
             idName={"idJornada"}
           />

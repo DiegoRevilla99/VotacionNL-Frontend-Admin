@@ -26,14 +26,10 @@ import { ErrorField } from "../../module-preparacion/components/ErrorField";
 import { FormInfo } from "./FormInfo";
 import { FormDireccion } from "./FormDireccion";
 import { FormContacto } from "./FormContacto";
-import {
-  envioLinkPersonal,
-  getVotantesbyJornada,
-  postVotante,
-  putVotante,
-} from "../../store/module-empadronamiento/formales/thunksFormales";
+
 import { transformDate } from "../helpers/transformDate";
 import { useParams } from "react-router-dom";
+import { envioLinkPersonal } from "../../store/module-empadronamiento/votantes/thunksVotantes";
 
 const useStyles = makeStyles({
   textField: {
@@ -87,10 +83,19 @@ export const ModalLinkPersonal = ({
   const { id } = useParams();
   const [data, setData] = useState({});
 
-  const { votanteSelected, status } = useSelector((state) => state.empFormales);
-
+  const { votanteSelected, status } = useSelector(
+    (state) => state.empVotantesSlice
+  );
   const finalizar = () => {
-    dispatch(envioLinkPersonal(votanteSelected.curp, id, AddVotanteNext));
+    const sendata = {
+      email: votanteSelected.correoVotante,
+      userName: votanteSelected.curp,
+      subject: "INICIO DE SESION - PROCESO ELECTORAL",
+      dateTimeCreation: new Date().toISOString(),
+      dateTimeExpiration: new Date().toISOString(),
+    };
+
+    dispatch(envioLinkPersonal(sendata, AddVotanteNext));
   };
 
   const cerrarM = () => {

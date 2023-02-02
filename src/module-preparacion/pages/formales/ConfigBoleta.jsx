@@ -57,15 +57,12 @@ export const ConfigBoleta = () => {
           >
             <Typography>No se encontro boleta</Typography>
           </Box>
-        ) : boletaInfo.modalidad === "REPRESENTANTE" &&
-          boletaInfo.formalidad === "FORMAL" ? (
+        ) :  (
           <Representante
             boletaInfo={boletaInfo}
             changeCandNoReg={changeCandNoReg}
           ></Representante>
-        ) : (
-          <Typography>No esta permitida ver esta boleta</Typography>
-        )}
+        ) }
       </PlantillaHeader>
     </>
   );

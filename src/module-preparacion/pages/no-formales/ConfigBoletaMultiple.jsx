@@ -20,19 +20,20 @@ import {
 } from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
 import { useDispatch, useSelector } from "react-redux";
 import { useCoaliciones } from "../../hooks/config-boleta/useCoaliciones";
-import { useBoleta } from "../../hooks/config-boleta/useBoleta";
+
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import { Agrupa } from "../../components/configuracion-boleta/Agrupa";
 import { AddCoalicion } from "../../components/configuracion-boleta/AddCoalicion";
 import { Representante } from "../../components/configuracion-boleta/no-formales/Representante";
 import { Comite } from "../../components/configuracion-boleta/no-formales/Comite";
 import { Planilla } from "../../components/configuracion-boleta/no-formales/Planilla";
+import { useBoletaNF } from "../../hooks/config-boleta/useBoletaNF";
 
 export const ConfigBoletaMultiple = () => {
   const { id } = useParams();
 
   const { boletaInfo, errorBoleta, isLoadingBoleta, changeCandNoReg } =
-    useBoleta(id);
+    useBoletaNF(id);
 
   const { modalidad } = boletaInfo;
 

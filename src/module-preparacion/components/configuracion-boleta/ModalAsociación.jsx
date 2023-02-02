@@ -20,9 +20,11 @@ import { ErrorField } from "../ErrorField";
 import { BoxPartido } from "./BoxPartido";
 
 import { PartidoSelect } from "./PartidoSelect";
-import { getCandidatos } from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
+
 import { CandidatoCheck } from "./CandidatoCheck";
 import { useParams } from "react-router-dom";
+import { getCandidatosProviderNF } from "../../../providers/Micro-NoFormales/providerCandidatos";
+import { getCandidatosNF } from "../../../store/module-preparacion/configuracion-boletaNF/thunksConfigBoletaNF";
 
 const useStyles = makeStyles({
   textField: {
@@ -93,7 +95,7 @@ export const ModalAsociacion = ({
     asociacion ? asociacion.candidatos : []
   );
   const { candidatos = [], isLoadingCandidatos } = useSelector(
-    (state) => state.configBoleta
+    (state) => state.configBoletaNFSlice
   );
 
   const onSelectCandidato = (candidato) => {
@@ -114,7 +116,7 @@ export const ModalAsociacion = ({
   };
   useEffect(() => {
     console.log("ME estoy renderizando en Modal Asociacion jornada");
-    dispatch(getCandidatos(id));
+    dispatch(getCandidatosNF(id));
   }, []);
 
   useEffect(() => {

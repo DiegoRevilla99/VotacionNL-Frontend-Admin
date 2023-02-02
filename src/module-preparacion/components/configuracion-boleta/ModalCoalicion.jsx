@@ -88,7 +88,7 @@ export const ModalCoalicion = memo(
     const [logo, setLogo] = useState(
       coalicion
         ? {
-            name: coalicion.coalicionModel
+            name: coalicion.coalicionModel.logo
               ? coalicion.coalicionModel.logo
               : "Sin Archivo seleccionado",
           }
@@ -118,13 +118,15 @@ export const ModalCoalicion = memo(
     };
     useEffect(() => {
       dispatch(getCandidatos(id));
+      
     }, []);
 
     useEffect(() => {
+      
       setLogo(
         coalicion
           ? {
-              name: coalicion.coalicionModel
+              name: coalicion.coalicionModel.logo
                 ? coalicion.coalicionModel.logo
                 : "Sin Archivo seleccionado",
             }
@@ -133,7 +135,7 @@ export const ModalCoalicion = memo(
       setCandidato(
         coalicion
           ? coalicion.candidatoModel
-            ? { ...coalicion.candidatoModel, partidos: coalicion.partidoModels }
+            ? { ...coalicion.candidatoModel, partidos: coalicion.partidos }
             : { candidato: "Sin candidato" }
           : { candidato: "Sin candidato" }
       );
@@ -233,7 +235,7 @@ export const ModalCoalicion = memo(
                 <br />
 
                 <ErrorMessage
-                  name="nombre"
+                  name="emblema"
                   component={() => <ErrorField>{errors.emblema}</ErrorField>}
                 />
                 <br />
@@ -305,12 +307,12 @@ export const ModalCoalicion = memo(
                       mb: 1,
                     }}
                   >
-                    {candidatos.map(({ candidatoModel, partidoModels }) => (
+                    {candidatos.map((candidat) => (
                       <PartidoSelect
-                        key={candidatoModel?.claveElectoral}
-                        claveElectoral={candidatoModel?.claveElectoral}
-                        candidato={candidatoModel?.nombreCandidato}
-                        partidos={partidoModels}
+                        key={candidat.candidatoModel.claveElectoral}
+                        claveElectoral={candidat.candidatoModel.claveElectoral}
+                        candidato={candidat.candidatoModel.nombreCandidato}
+                        partidos={candidat.partidos}
                         onSelect={onSelectPartido}
                         valueRadio={
                           candidato.claveElectoral
@@ -321,12 +323,12 @@ export const ModalCoalicion = memo(
                     ))}
                     {coalicion && (
                       <PartidoSelect
-                        key={coalicion.candidatoModel?.claveElectoral}
+                        key={coalicion.candidatoModel.claveElectoral}
                         claveElectoral={
-                          coalicion.candidatoModel?.claveElectoral
+                          coalicion.candidatoModel.claveElectoral
                         }
-                        candidato={coalicion.candidatoModel?.nombreCandidato}
-                        partidos={coalicion.partidoModels}
+                        candidato={coalicion.candidatoModel.nombreCandidato}
+                        partidos={coalicion.partidos}
                         onSelect={onSelectPartido}
                         valueRadio={
                           candidato.claveElectoral

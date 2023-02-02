@@ -26,14 +26,10 @@ import { ErrorField } from "../../module-preparacion/components/ErrorField";
 import { FormInfo } from "./FormInfo";
 import { FormDireccion } from "./FormDireccion";
 import { FormContacto } from "./FormContacto";
-import {
-  envioLink,
-  getVotantesbyJornada,
-  postVotante,
-  putVotante,
-} from "../../store/module-empadronamiento/formales/thunksFormales";
+
 import { transformDate } from "../helpers/transformDate";
 import { useParams } from "react-router-dom";
+import { envioLink } from "../../store/module-empadronamiento/votantes/thunksVotantes";
 
 const useStyles = makeStyles({
   textField: {
@@ -87,7 +83,7 @@ export const ModalLink = ({
   const dispatch = useDispatch();
   const [data, setData] = useState({});
 
-  const { status } = useSelector((state) => state.empFormales);
+  const { status } = useSelector((state) => state.empVotantesSlice);
 
   const finalizar = () => {
     dispatch(envioLink(id, AddVotanteNext));

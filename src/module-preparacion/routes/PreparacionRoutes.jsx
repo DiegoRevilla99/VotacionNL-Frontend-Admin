@@ -48,6 +48,8 @@ export const PreparacionRoutes = () => {
 				{/* <Route path="registroConsultaCiudadana" element={<RegistroConsultaCiudadana />} /> */}
 				<Route path="consulta/:id/papeleta/:idPapeleta" element={<AddPapeleta />} />
 
+
+
 				{/* CONFIGURACION NO FORMAL */}
 				<Route path="jornadaNoFormal/config/:id" element={<ConfiguracionJornada />} />
 				<Route path="jornadaNoFormal/configboleta/:id" element={<ConfigBoletaMultiple />} />
@@ -58,11 +60,16 @@ export const PreparacionRoutes = () => {
 
 				<Route path="jornada/configboleta" element={<ConfigBoletaMultiple />} />
 				<Route path="consulta/config/:idConsulta" element={<ConfiguracionConsulta />} />
+
+
+
 				{/* CONFIGURACION FORMAL */}
 				<Route path="jornada/config/:id" element={<ConfiguracionJornada />} />
 				<Route path="jornada/configboleta/:id" element={<ConfigBoleta />} />
 
-				{/* CONFIGURACION NO FORMAL */}
+
+
+				{/* CONFIGURACION  NO FORMAL */}
 				<Route path="jornadaNoFormal/config" element={<ConfiguracionJornada />} />
 				<Route path="jornadaNoFormal/configboleta/:id" element={<ConfigBoletaMultiple />} />
 
