@@ -28,8 +28,6 @@ export const ModalEliminarBoleta = ({ modalDeleteStatus, closeModalDelete, openM
 	const onSave = () => {
         dispatch(onDeleteBoleta(idBoleta));
         closeModalDelete();
-		// dispatch(onGetBoletasNoFormales(params.id));
-		console.log("BOLETAS after modal", jornadaNoFormalSelected.boletasNoFormales.listBoletas);
 	};
     const onCancel = () => {
 		closeModalDelete();

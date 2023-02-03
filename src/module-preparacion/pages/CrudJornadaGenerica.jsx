@@ -14,9 +14,7 @@ import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  onGetBoletaData, onGetBoletasNoFormales
-} from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
+import { onGetBoletaData, onGetBoletasNoFormales } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
 import { GeneralTable } from "../components/GeneralTable";
 import { ModalEliminarBoleta } from "../components/ModalEliminarBoleta";
 import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";

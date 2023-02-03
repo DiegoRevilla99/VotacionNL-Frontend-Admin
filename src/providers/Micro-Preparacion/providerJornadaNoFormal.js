@@ -272,7 +272,6 @@ export const updateBoletaData = async (data, idJornadaElectoral, idBoleta, candi
 
 export const deleteBoleta = async (id) => {
 	try {
-		console.log("ID de provider", id);
 		// https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/estructura_boleta/10
 		const resp = await jornadasNoFormalesAPI.delete("jornada/no_formal/estructura_boleta/" + id);
 		return { ok: true };

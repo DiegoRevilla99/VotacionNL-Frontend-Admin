@@ -158,10 +158,12 @@ export const SliceJornadaNoFormal = createSlice({
             state.jornadasNoFormalesData.push(payload);
         },
         onDeleteJornadaData: (state, { payload }) => {
+            console.log("ELIMIANDO EN EL SLIDE",state.jornadasNoFormalesData);
             // console.log("ELIMIANDO EN EL SLIDE",payload);
             const id = state.jornadasNoFormalesData.findIndex((consulta) => consulta.idJornada === payload);
             // console.log(id);
             state.jornadasNoFormalesData.splice(id, 1);
+        
         },
         onSetjornadaNoFormalSelected: (state, { payload }) => {
             console.log(payload);
@@ -172,14 +174,10 @@ export const SliceJornadaNoFormal = createSlice({
         // Boletas
         onDeleteBoletaData: (state, { payload }) => {
             console.log("ELIMIANDO EN EL SLIDE",payload);
-            if (!Array.isArray(state.jornadaNoFormalSelected.boletasNoFormales)) {
-                state.jornadaNoFormalSelected.boletasNoFormales = [];
-            }
-            const id = state.jornadaNoFormalSelected.boletasNoFormales.findIndex(
-                (consulta) => consulta.idBoleta === payload);
-            if (id !== -1) {
-                state.jornadaNoFormalSelected.boletasNoFormales.splice(id, 1);
-                }
+            const id = state.jornadaNoFormalSelected.boletasNoFormales.listBoletas.findIndex(consulta => consulta.idBoleta === payload);
+            state.jornadaNoFormalSelected.boletasNoFormales.listBoletas.splice(id, 1);
+
+              
         },
         onAddBoleta: (state, { payload }) => {
             // console.log("AYUDA 1",state.jornadaNoFormalSelected.boletasNoFormales);

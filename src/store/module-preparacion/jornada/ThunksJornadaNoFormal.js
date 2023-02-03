@@ -153,7 +153,6 @@ export const onUpdateBoletaData = (
 
 export const onDeleteBoleta = (idBoleta) => {
     return async (dispatch) => {
-        console.log("onDeleteBoleta", idBoleta);
         dispatch(onCheckingOperation());
         dispatch(onToastCheckingOperation("Eliminando boleta..."));
         const {ok} = await deleteBoleta(idBoleta);// PROVIDER
