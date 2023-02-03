@@ -4,7 +4,7 @@ import DeleteForeverSharpIcon from "@mui/icons-material/DeleteForeverSharp";
 import EditIcon from "@mui/icons-material/Edit";
 import HighlightOffSharpIcon from "@mui/icons-material/HighlightOffSharp";
 import ClearSharpIcon from "@mui/icons-material/ClearSharp";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { BoxPartido } from "./BoxPartido";
 
 import "../../../styles/generalContainer.css";
@@ -16,7 +16,7 @@ import { EditCoalicion } from "./EditCoalicion";
 import { EditAsociacion } from "./EditAsociacion";
 import { deleteCoalicion } from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
 
-export const Asociacion = ({
+export const Asociacion = memo(({
   color = "#511079",
   colorb = "#F8F8F8",
   info = {},
@@ -121,4 +121,4 @@ export const Asociacion = ({
       />
     </>
   );
-};
+});

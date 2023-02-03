@@ -26,12 +26,6 @@ export const Coalicion = memo(
       abrirCerrarModalCoalicion();
     };
 
-    useEffect(() => {
-      console.log("info:")
-      console.log(info)
-    }, [])
-    
-
     const eliminarbtn = () => {
       abrirCerrarConfirmation();
     };

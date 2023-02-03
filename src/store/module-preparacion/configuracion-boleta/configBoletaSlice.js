@@ -6,7 +6,7 @@ export const configBoletaSlice = createSlice({
         boleta: null,
         errorBoleta: null,
         coaliciones: [],
-        coalicionSelected: null,
+        coalicionSelected: {},
         asociaciones: [],
         candidatos: [],
         partidos: [],

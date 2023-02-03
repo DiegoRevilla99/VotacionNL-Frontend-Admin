@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import { Formik, Form, ErrorMessage } from "formik";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -25,6 +25,7 @@ import {
   getCoaliciones,
 } from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
 import { useParams } from "react-router-dom";
+import { useCandidatos } from "../../../module-empadronamiento/hooks/useCandidatos";
 
 const useStyles = makeStyles({
   textField: {
@@ -84,6 +85,9 @@ export const ModalCoalicion = memo(
     const styles = useStyles();
     const dispatch = useDispatch();
     const { id } = useParams();
+    const {
+      candidatos = [],
+    } = useSelector((state) => state.configBoleta);
 
     const [logo, setLogo] = useState(
       coalicion
@@ -101,25 +105,21 @@ export const ModalCoalicion = memo(
           : { candidato: "Sin candidato" }
         : { candidato: "Sin candidato" }
     );
-    const {
-      candidatos = [],
-      isLoadingCandidatos,
-      coalicionSelected,
-    } = useSelector((state) => state.configBoleta);
+    
 
     const onSelectPartido = (info) => {
       setCandidato(info);
     };
+
+   
 
     const cerrarM = () => {
       abrirCerrarModal();
       setCandidato({});
       setLogo({ name: "Sin Archivo seleccionado" });
     };
-    useEffect(() => {
-      dispatch(getCandidatos(id));
-      
-    }, []);
+
+    
 
     useEffect(() => {
       
@@ -188,7 +188,7 @@ export const ModalCoalicion = memo(
                 afterUpdate
               );
             } else {
-              agregar(data, cerrarM);
+              agregar(id,candidato.id,data, afterUpdate);
             }
             //enviar(data);
           }}
@@ -312,6 +312,7 @@ export const ModalCoalicion = memo(
                         key={candidat.candidatoModel.claveElectoral}
                         claveElectoral={candidat.candidatoModel.claveElectoral}
                         candidato={candidat.candidatoModel.nombreCandidato}
+                        candidatoid={candidat.candidatoModel.idCandidato}
                         partidos={candidat.partidos}
                         onSelect={onSelectPartido}
                         valueRadio={
@@ -328,6 +329,7 @@ export const ModalCoalicion = memo(
                           coalicion.candidatoModel.claveElectoral
                         }
                         candidato={coalicion.candidatoModel.nombreCandidato}
+                        candidatoid={coalicion.candidatoModel.idCandidato}
                         partidos={coalicion.partidos}
                         onSelect={onSelectPartido}
                         valueRadio={

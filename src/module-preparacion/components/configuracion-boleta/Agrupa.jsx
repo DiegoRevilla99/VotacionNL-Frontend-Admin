@@ -1,5 +1,5 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { PlantillaHeader } from "../../layout/PlantillaHeader";
 import { Coalicion } from "./Coalicion";
@@ -24,7 +24,8 @@ const styleButton = {
 
 // 2=ASOCIACION    1=COALICION
 
-export const Agrupa = ({ tipo = 1, info = {} }) => {
+export const Agrupa =
+  ({ tipo = 1, info = {} }) => {
   const { coaliciones = [], asociaciones = [] } = info;
   const tipoAgrupacion = tipo == 1 ? "COALICIÓN" : "ASOCIACIÓN";
 

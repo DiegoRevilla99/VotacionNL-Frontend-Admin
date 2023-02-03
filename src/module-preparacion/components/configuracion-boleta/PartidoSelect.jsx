@@ -11,6 +11,7 @@ import React, { memo, useEffect } from "react";
 export const PartidoSelect = memo(
   ({
     candidato = "Nombre candidato",
+    candidatoid = "",
     partidos = [],
     claveElectoral = "",
     img = "url",
@@ -18,7 +19,7 @@ export const PartidoSelect = memo(
     valueRadio = "",
   }) => {
     const handleChange = (event) => {
-      onSelect({ claveElectoral, partidos });
+      onSelect({ claveElectoral, partidos,id:candidatoid });
     };
 
     const value = valueRadio === claveElectoral;

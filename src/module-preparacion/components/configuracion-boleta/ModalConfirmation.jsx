@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 
 const useStyles = makeStyles({
   textField: {
@@ -51,7 +51,7 @@ const modalResponsive = {
   alignItems: "start",
 };
 
-export const ModalConfirmation = ({
+export const ModalConfirmation = memo(({
   isOpen = false,
   abrirCerrarModal = () => {},
   confirmar = () => {
@@ -115,4 +115,4 @@ export const ModalConfirmation = ({
       </div>
     </>
   );
-};
+});

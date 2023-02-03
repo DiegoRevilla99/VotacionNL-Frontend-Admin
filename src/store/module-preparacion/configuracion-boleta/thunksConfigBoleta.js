@@ -34,7 +34,10 @@ export const getCandidatos = (idBoleta) => {
                
         dispatch(startLoadingCandidatos());
         const { ok, data, errorMessage } = await getCandidatosProvider(idBoleta);
-        dispatch(setCandidatos({ candidatos: data }));
+        if(ok){
+            dispatch(setCandidatos({ candidatos: data }));
+        }
+        
         
     }
 }
@@ -51,15 +54,17 @@ export const getCoaliciones = (idBoleta) => {
 }
 
 
-export const postCoalición = (datainfo, funcion) => {
-    console.log("informacion post")
+export const postCoalición = (idboleta,idcandidato,datainfo, funcion) => {
+    console.log("id boleta: ",idboleta)
+    console.log("id candidato: ",idcandidato)
+    console.log("informacion post: ",datainfo)
     console.log(datainfo)
     return async (dispatch, getState) => {
 
         dispatch(onToastCheckingOperation("Guardando Coalicion..."));
         dispatch(onCheckingOperation());
 
-        const { ok, data, errorMessage } = await postCoalicionProvider(datainfo);
+        const { ok, data, errorMessage } = await postCoalicionProvider(idboleta,idcandidato,datainfo);
         if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onToastSuccessOperation({ successMessage: "Coalición guardada con éxito" }));
