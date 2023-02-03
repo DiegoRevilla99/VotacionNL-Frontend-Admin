@@ -1,7 +1,6 @@
 import {
 	getJornadas,
 	getJornadasFormales,
-	getJornadasNoFormales,
 	createJornada,
 	deleteJornada,
 	getBoletasJornada,
