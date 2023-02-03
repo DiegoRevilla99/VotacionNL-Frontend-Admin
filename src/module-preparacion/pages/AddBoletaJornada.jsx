@@ -82,27 +82,20 @@ export const AddBoletaJornada = () => {
 	const params = useParams();
 
 	const values = Object.values(jornadaSelected.boletaSelected).length === 0 ? {
-		encabezado: "",
+
 		nombreCandidatura: "",
-		modalidadVotacion: "1",
-		entidadFederativa: "",
 		municipio: "",
-		distritoElectoralLocal: "",
 		distritoElectoral: "",
-		tipoCasilla: "",
 		primerFirmante: "",
 		cargoPrimerFirmante: "",
 		segundoFirmante: "",
 		cargoSegundoFirmante: "",
 	} : {
-		encabezado: jornadaSelected.boletaSelected.encabezado,
+
 		nombreCandidatura: jornadaSelected.boletaSelected.nombreCandidatura,
 		modalidadVotacion: jornadaSelected.boletaSelected.modalidadVotacion,
-		entidadFederativa: jornadaSelected.boletaSelected.entidadFederativa,
 		municipio: jornadaSelected.boletaSelected.municipio,
-		distritoElectoralLocal: jornadaSelected.boletaSelected.distritoElectoralLocal,
 		distritoElectoral: jornadaSelected.boletaSelected.distritoElectoral,
-		tipoCasilla: jornadaSelected.boletaSelected.tipoCasilla,
 		primerFirmante: jornadaSelected.boletaSelected.primerFirmante,
 		cargoPrimerFirmante: jornadaSelected.boletaSelected.cargoPrimerFirmante,
 		segundoFirmante: jornadaSelected.boletaSelected.segundoFirmante,
@@ -227,18 +220,7 @@ export const AddBoletaJornada = () => {
 								DATOS GENERALES
 							</Typography>
 						</Grid>
-						<Grid item xs={12}>
-						<FielTextCustom
-							disabled={status === "checking"}
-							name="encabezado"
-							label="ENCABEZADO DE LA BOLETA"
-							value={values.encabezado}
-							handleChange={handleChange}
-							error={errors.encabezado}
-							touched={touched.encabezado}
-						/>
-							{/* {touched.encabezado && errors.encabezado && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.encabezado}</Typography>} */}
-						</Grid>
+
 						<Grid item xs={12}>
 							<FielTextCustom
 							disabled={status === "checking"}
@@ -251,35 +233,13 @@ export const AddBoletaJornada = () => {
 							/>
 							{/* {touched.nombreCandidatura && errors.nombreCandidatura && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.nombreCandidatura}</Typography>} */}
 						</Grid>
-						{/* <Grid item xs={12}>
-							<FielTextCustom
-								disabled={status === "checking"}
-								label="MODALIDAD DE VOTACIÓN"
-								name="modalidadVotacion"
-								value={values.modalidadVotacion}
-								handleChange={handleChange}
-								error={errors.modalidadVotacion}
-								touched={touched.modalidadVotacion}
-							/>
-						</Grid> */}
 						<Grid item xs={12}>
 							<Typography variant="h6" color="initial">
 								DATOS GEOELECTORALES
 							</Typography>
 						</Grid>
-						<Grid item xs={12}>
-							<FielTextCustom
-							disabled={status === "checking"}
-								label="ENTIDAD FEDERATIVA"
-								name="entidadFederativa"
-								value={values.entidadFederativa}
-								handleChange={handleChange}
-								error={errors.entidadFederativa}
-								touched={touched.entidadFederativa}
-							/>
-							{/* {touched.entidadFederativa && errors.entidadFederativa && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.entidadFederativa}</Typography>} */}
-						</Grid>
-						<Grid item xs={12}>
+
+						<Grid item xs={12} md={12} lg={8}>
 							<FielTextCustom
 							disabled={status === "checking"}
 								label="MUNICIPIO O DELEGACIÓN"
@@ -291,19 +251,8 @@ export const AddBoletaJornada = () => {
 							/>
 							{/* {touched.municipio && errors.municipio && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.municipio}</Typography>} */}
 						</Grid>
-						<Grid item xs={12} md={12} lg={5}>
-							<FielTextCustom
-							disabled={status === "checking"}
-								label="DISTRITO ELECTORAL LOCAL"
-								name="distritoElectoralLocal"
-								value={values.distritoElectoralLocal}
-								handleChange={handleChange}
-								error={errors.distritoElectoralLocal}
-								touched={touched.distritoElectoralLocal}
-							/>
-							{/* {touched.distritoElectoralLocal && errors.distritoElectoralLocal && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.distritoElectoralLocal}</Typography>} */}
-						</Grid>
-						<Grid item xs={12} md={12} lg={3}>
+
+						<Grid item xs={12} md={12} lg={4}>
 							<FielTextCustom
 							disabled={status === "checking"}
 								label="DISTRITO ELECTORAL"
@@ -312,20 +261,9 @@ export const AddBoletaJornada = () => {
 								handleChange={handleChange}
 								error={errors.distritoElectoral}
 								touched={touched.distritoElectoral}
+								type="number"
 							/>
 							{/* {touched.distritoElectoral && errors.distritoElectoral && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.distritoElectoral}</Typography>} */}
-						</Grid>
-						<Grid item xs={12} md={12} lg={4}>
-							<FielTextCustom
-							disabled={status === "checking"}
-								label="TIPO DE CASILLA"
-								name="tipoCasilla"
-								value={values.tipoCasilla}
-								handleChange={handleChange}
-								error={errors.tipoCasilla}
-								touched={touched.tipoCasilla}
-							/>
-							{/* {touched.tipoCasilla && errors.tipoCasilla && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.tipoCasilla}</Typography>} */}
 						</Grid>
 						<Grid item xs={12}>
 							<Typography variant="h6" color="initial">

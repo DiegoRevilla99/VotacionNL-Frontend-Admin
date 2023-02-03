@@ -10,21 +10,22 @@ import { Formik } from 'formik';
 import { useNavigate, useParams } from "react-router-dom";
 import { object } from "yup";
 import { onCreateBoleta } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
+import { AddAsociacionMod } from "../components/AddAsociacionMod";
 import { AddCandidatoGenericoMod } from "../components/AddCandidatoGenericoMod";
+import { ModalAsociacionGenerico } from "../components/ModalAsociacionGenerico";
 import { ModalBoletaCandidatoGenerico } from "../components/ModalBoletaCandidatoGenerico";
 import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 
-
 const modalidadNoFormal = [ {
-    value: 'REPRESENTANTE',
+    value: '1',
     label: 'REPRESENTANTE',
   },
   {
-    value: 'COMITÉ',
+    value: '2',
     label: 'COMITÉ',
   },
   {
-    value: 'PLANILLA',
+    value: '3',
     label: 'PLANILLA',
   },
 ];
@@ -63,6 +64,7 @@ export const AddBoletaJornadaGenerica = () => {
 	const { 
 		status,
 		candidatos,
+		asociaciones,
         candidatosSelected,
 		jornadaNoFormalSelected,
 	} = useJornadaNoFormalStore();
@@ -80,22 +82,31 @@ export const AddBoletaJornadaGenerica = () => {
 	const [, forceUpdate] = React.useState();
 	const [statusDeleteCandidatoModal, setStatusDeleteCandidatoModal] = useState(false);
 	const handleCloseDeleteCandidatoModal = () => setStatusDeleteCandidatoModal(false);
-	// const [statusDeleteModal, setStatusDeleteModal] = useState(false);
+	const [statusDeleteAsociacionModal, setStatusDeleteAsociacionModal] = useState(false);
+	const handleCloseDeleteAsociacionModal = () => setStatusDeleteAsociacionModal(false);
+
 	const [statusRegisterModal, setStatusRegisterModal] = useState(false);
+	const [statusRegisterAsociacionModal, setStatusRegisterAsociacionModal ] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const handleCloseRegisterModal = () => setStatusRegisterModal(false);
-
+	const handleCloseRegisterAsociacionModal = () => setStatusRegisterAsociacionModal(false);
 
 	const handleOpenRegisterModal = () => {
 	    // toastOffOperation();
 		setStatusRegisterModal(true);
 	};
-
+	const handleOpenRegisterAsociacionModal = () => {
+		// toastOffOperation();
+		setStatusRegisterAsociacionModal(true);
+	};
 	const handleOpenDeleteCandidatoModal = () => {
 		// toastOffOperation();
 		setStatusDeleteCandidatoModal(true);
 	};
-
+	const handleDeleteAsociacionModal = () => {
+		// toastOffOperation();
+		setStatusDeleteAsociacionModal(false);
+	};
 	const onCancel = () => {
 		navigate("/preparacion/jornada/noFormal/"+params.id);
 	};
@@ -103,7 +114,7 @@ export const AddBoletaJornadaGenerica = () => {
 	  const onSubmit = (values) => {
 		// navigate("/preparacion/jornada");
 		dispatch(
-			onCreateBoleta( values, params.id, candidatos, ()=>{
+			onCreateBoleta( values, params.id, candidatos, asociaciones, ()=>{
 				navigate("/preparacion/jornada/noFormal/"+params.id);
 			})
 		)
@@ -301,11 +312,18 @@ export const AddBoletaJornadaGenerica = () => {
 							/>
 							{/* {touched.cargoSegundoFirmante && errors.cargoSegundoFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.cargoSegundoFirmante}</Typography>} */}
 						</Grid>
-							<AddCandidatoGenericoMod
-								handleOpenModal={handleOpenRegisterModal}
-								handleOpenDeleteCandidatoModal={handleOpenDeleteCandidatoModal}
-								status={status}
-							/> 
+						<AddCandidatoGenericoMod
+							handleOpenModal={handleOpenRegisterModal}
+							handleOpenDeleteCandidatoModal={handleOpenDeleteCandidatoModal}
+							status={status}
+						/> 
+						{values.modalidadVotacion === '3' && 
+						<AddAsociacionMod
+							handleOpenModal={handleOpenRegisterAsociacionModal}
+							handleDeleteAsociacionModal={handleDeleteAsociacionModal}
+							status={status}
+						/> 
+							}
 					</Grid>
 					<Grid mt={"1rem"} container direction="row" justifyContent="flex-end" spacing={2}>
 						<Grid item xs={12} md={6} lg={3}>
@@ -359,8 +377,10 @@ export const AddBoletaJornadaGenerica = () => {
 
 			{/* MODAL PARA REGISTRAR A LOS CANDIDATOS */}
 			<ModalBoletaCandidatoGenerico statusRegisterModal={statusRegisterModal} handleCloseRegisterModal={handleCloseRegisterModal} />
+			<ModalAsociacionGenerico statusRegisterAsociacionModal={statusRegisterAsociacionModal} handleCloseRegisterAsociacionModal={handleCloseRegisterAsociacionModal} />
 			{/* MODAL PARA CONFIRMAR LA ELIMINACIÓN */}
 			{/* <ModalEliminarCandidato statusDeleteCandidatoModal={statusDeleteCandidatoModal} handleToggleModal={handleCloseDeleteCandidatoModal} /> */}
+			{/* <ModalEliminarCandidato statusDeleteAsociacionModal={statusDeleteAsociacionModal} handleToggleModal={handleCloseDeleteCandidatoModal} /> */}
 		</form>
 		</Box>
 		)}

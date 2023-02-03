@@ -22,9 +22,7 @@ export const createJornada = async (title, tipoEleccion) => {
 			nombreEleccion: title,
 			dateTimeCreation: "2019-07-04T20:38:38.604+00:00",
             userCreation: "DEFAULT",
-			// entidad: entidad,
             tipoEleccion: tipoEleccion,
-			// formalidad: "FORMAL",
 		});
 		return { ok: true, id: data.idEleccion };
 	} catch (error) {
@@ -34,9 +32,8 @@ export const createJornada = async (title, tipoEleccion) => {
 
 export const deleteJornada = async (id) => {
 	try {
-		// https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/estructura_boleta/10
-		// Ya funciona, Kevin del futuro elimina el comentario nada m[as]s
-		// const resp = await jornadasNoFormalesAPI.delete("jornada/no_formal/estructura_boleta/" + id);
+		// https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/EL-DE-CO-ES-PA-BO-ORD-2023
+		const resp = await jornadasNoFormalesAPI.delete("jornada/no_formal/" + id);
 		return { ok: true };
 	} catch (error) {
 		return { ok: false, errorMessage: error.message };
@@ -50,7 +47,7 @@ export const getBoletasJornadaNoFormal = async (idJornadaElectoral) => {
 		const  {data}  = await jornadasNoFormalesAPI.get(
 			`jornada/no_formal/${idJornadaElectoral}/boletas`
 		);
-		return { ok: true, data: data };
+		return { ok: true, data: data, errorMessage: "" };
 	} catch (error) {
 		console.log("Error al obtener las boletas: ", error);
 		return { ok: false };
@@ -86,6 +83,12 @@ export const getBoletaData = async (idJornadaElectoral) => {
 			//https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/estructura_boleta/11/candidatos
 		);
 		// console.log("Data candidato: ", data1);
+		// **Fetch de asociaciones
+		// const { data: data2 } = await jornadasNoFormalesAPI.get(
+		// 	`jornada/no_formal/estructura_boleta/${idJornadaElectoral}/candidatos`
+		// 	//https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/asociacion/14
+		// );
+		// console.log("Data candidato: ", data1);
 		const format = {
 			// MY FORMAT || API FORMAT
 			// id: data.data.idEstructuraBoleta,
@@ -98,19 +101,6 @@ export const getBoletaData = async (idJornadaElectoral) => {
 			segundoFirmante: data.segundoFirmanteNombre,
 			cargoSegundoFirmante:data.segundoFirmanteCargo,
 		}
-		// console.log("FormatAAAAAAAAAAAA: ", format);
-
-		// const formatCandidato = {
-		// 	// MY FORMAT || API FORMAT
-		// 	id: data1.candidatoModels.claveCandidato,
-		// 	apellidoPCandidato: data1.candidatoModels.apellidoPCandidato,
-        //     apellidoMCandidato: data1.candidatoModels.apellidoMCandidato,
-        //     nombreCandidato: data1.candidatoModels.nombreCandidato,
-        //     fotografiaCandidato: data1.candidatoModels.fotoCandidato,
-        //     seudonimoCandidato: data1.candidatoModels.seudonimoCandidato,
-        //     fechaNacimientoCandidato:data1.candidatoModels.fechaNacimiento,
-        //     generoCandidato: data1.candidatoModels.genero,
-		// };
 
 		const formatCandidato = data1.candidatoModels.map(candidato => {
 			return {
@@ -124,10 +114,7 @@ export const getBoletaData = async (idJornadaElectoral) => {
 			  generoCandidato: candidato.genero
 			};
 		  });
-		// console.log("format candidatoooooooooooo: ", formatCandidato);
-		// formatCandidato.forEach(candidato => {
-		// 	console.log("candidatoooooooooooo: ",candidato);
-		//   });
+
 		return { ok: true, data: format, dataCandidato: formatCandidato };
 	} catch (error) {
 		return { ok: false, errorMessage: error.message };
@@ -135,13 +122,9 @@ export const getBoletaData = async (idJornadaElectoral) => {
 	}
 };
 
-export const createBoleta = async (data, idJornadaElectoral, candidatos) => {
-	try {
-		console.log("datos PROVIDER",data);
-		console.log("id PROVIDER",idJornadaElectoral);
-		console.log("candidato PROVIDER",candidatos);
-		
-		// Boletas
+export const createBoleta = async (data, idJornadaElectoral, candidatos, asociaciones) => {
+	try {		
+		console.log("Data: ", asociaciones);
 		const { data: data1 } = await jornadasNoFormalesAPI.post("jornada/no_formal/estructuraboleta", {
 			// https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/estructuraboleta
             encabezadoBoleta: data.encabezado,
@@ -153,32 +136,47 @@ export const createBoleta = async (data, idJornadaElectoral, candidatos) => {
             segundoFirmanteNombre: data.segundoFirmante,
             segundoFirmanteCargo:data.cargoSegundoFirmante,
 			modalidadVotacionModel: {
-				idModalidadVotacion: 1,
+				idModalidadVotacion: data.modalidadVotacion,
 			},
 			eleccionModel: {
 				idEleccion: idJornadaElectoral,
 			},
 		});
-		console.log("DATA IDBOLETA PROVIDER",data1.idEstructuraBoleta);
-
-		const variable = {
+		const candidatoDatos = {
 			claveCandidato: candidatos[0].curp,
 			apellidoPCandidato: candidatos[0].apellidoPCandidato,
 			apellidoMCandidato: candidatos[0].apellidoMCandidato,
 			nombreCandidato: candidatos[0].nombreCandidato,
 			fotoCandidato: candidatos[0].fotografiaCandidato,
 			seudonimoCandidato: candidatos[0].seudonimoCandidato,
-			// fechaNacimiento: candidatos[0].fechaNacimientoCandidato,
-			fechaNacimiento: "2019-07-04T20:38:38.604+00:00",
+			fechaNacimiento: candidatos[0].fechaNacimientoCandidato,
+			// fechaNacimiento: "2019-07-04T20:38:38.604+00:00",
 			genero: candidatos[0].generoCandidato,
 		}
-		console.log("variable",variable);
+
 		const candidatoData = await jornadasNoFormalesAPI.post(
 			"jornada/no_formal/"+data1.idEstructuraBoleta+"/registrar_candidato",
 			//https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/11/registrar_candidato
-			variable
+			candidatoDatos
 		);
-
+		
+		let asociacionDatos = {};
+		if (asociaciones.length) {
+			asociacionDatos = {
+				nombreAsociacion: asociaciones[0].nombreAsociacion,
+				emblema: asociaciones[0].emblema,
+				logo: asociaciones[0].logo,
+			};
+		} else {
+			asociacionDatos = {
+				nombreAsociacion: "",
+				emblema: "",
+				logo: "",
+			};
+		}
+		const asociacionData = await jornadasNoFormalesAPI.post("jornada/no_formal/asociacion",
+			asociacionDatos
+		);
 
 		return { ok: true, idEstructuraBoleta: data1.idEstructuraBoleta };
 	} catch (error) {
@@ -274,8 +272,8 @@ export const updateBoletaData = async (data, idJornadaElectoral, idBoleta, candi
 
 export const deleteBoleta = async (id) => {
 	try {
-		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/9
-		const resp = await jornadasNoFormalesAPI.delete("jornada/electoral/estructuraboleta/" + id);
+		// https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/estructura_boleta/10
+		const resp = await jornadasNoFormalesAPI.delete("jornada/no_formal/estructura_boleta/" + id);
 		return { ok: true };
 	} catch (error) {
 		return { ok: false, errorMessage: error.message };

@@ -1,13 +1,13 @@
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import {
-	Box, Button, Grid, Modal, Typography
+    Box, Button, Grid, Modal, Typography
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
 import {
-	onDeleteBoleta
-} from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
-import { useJornadaNoFormalStore } from '../hooks/useJornadaNoFormalStore';
+    onDeleteJornada
+} from "../../store/module-preparacion/jornada/ThunksJornada";
+import { useJornadaStore } from '../hooks/useJornadaStore';
+
 const style = {
 	position: "absolute",
 	top: "50%",
@@ -21,12 +21,12 @@ const style = {
 	p: 4,
 };
 
-export const ModalEliminarBoleta = ({ modalDeleteStatus, closeModalDelete, openModalDelete, idBoleta, encabezadoBoleta }) => {
+export const ModalDeleteJornada = ({ modalDeleteStatus, closeModalDelete, openModalDelete, id, nombreEleccion }) => {
 	const dispatch = useDispatch();
-	const params = useParams();
-	const { jornadaNoFormalSelected , status } = useJornadaNoFormalStore();
+    const { status } = useJornadaStore();
 	const onSave = () => {
-        dispatch(onDeleteBoleta(idBoleta));
+		// handleToggleModal();
+        dispatch(onDeleteJornada(id));
         closeModalDelete();
 	};
     const onCancel = () => {
@@ -53,7 +53,7 @@ export const ModalEliminarBoleta = ({ modalDeleteStatus, closeModalDelete, openM
 				
 				/>
 				<Typography id="modal-modal-title" variant= "h4"  color="initial" align="center" mr={5} ml={5} mb={2}>
-                    Si eliminas la boleta con el nombre "{encabezadoBoleta}" desaparecerá para siempre. ¿Está seguro que deseas continuar?
+                    Si eliminas la jornada "{nombreEleccion}" desaparecerá para siempre. ¿Está seguro que deseas continuar?
 				</Typography>
                 <Box ml={"2rem"} mr={"2rem"}
 				mb={"2rem"}
