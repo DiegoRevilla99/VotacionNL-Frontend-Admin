@@ -100,6 +100,7 @@ export const ModalRegistroJornadaNoFormal = ({ modalStatus, closeModal, openModa
 									<TextField
 										id="filled-select-currency"
 										name="tipoEleccion"
+										size="small"
 										select
 										disabled={status === "checking"}
 										label="Tipo de elección"

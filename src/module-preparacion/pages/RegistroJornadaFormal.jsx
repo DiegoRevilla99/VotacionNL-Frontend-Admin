@@ -16,17 +16,19 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { onSetJornadaSelected } from "../../store/module-preparacion/jornada/SliceJornada";
 import {
-  onDeleteJornada,
   onGetjornadas
 } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { GeneralTable } from "../components/GeneralTable";
+import { ModalDeleteJornada } from "../components/ModalDeleteJornada";
 import { ModalRegistroJornadaFormal } from "../components/ModalRegistroJornadaFormal";
 import { useJornadaStore } from "../hooks/useJornadaStore";
 
 export const RegistroJornadaFormal = () => {
   const navigate = useNavigate();
   const [modalStatus, setModalStatus] = useState(false);
-
+  const [modalDeleteStatus, setModalDeleteStatus] = useState(false);
+	const [id, setId] = useState(null);
+	const [nombreEleccion, setNombreEleccion] = useState(null);
   // ToDo:AQUI OBTENGAN LAS VARIABLES STATUS Y DATA DE SUS ESTADOS GLOBALES
   // const { jornadasData, status } = useJornadaStore();
   const { jornadasData, status } = useJornadaStore();
@@ -63,7 +65,7 @@ export const RegistroJornadaFormal = () => {
             </Button>
             <IconButton
               sx={{ color: "#511079" }}
-              onClick={() => handleDelete(params.id)}
+              onClick={() => handleDelete(params.id, params.row.nombreJornada)}
             >
               <DeleteIcon />
             </IconButton>
@@ -80,8 +82,11 @@ export const RegistroJornadaFormal = () => {
   }, []);
 
   // METODO PARA BORRAR UN REGISTRO
-  const handleDelete = (id) => {
-    dispatch(onDeleteJornada(id));
+  const handleDelete = (id, title) => {
+    setId(id);
+		setNombreEleccion(title);
+		openModalDelete();
+    // dispatch(onDeleteJornada(id));
   };
 
   // MÉTODO PARA EDITAR UN REGISTRO
@@ -103,7 +108,13 @@ export const RegistroJornadaFormal = () => {
   const openModal = () => {
     setModalStatus(true);
   };
+	const closeModalDelete = () => {
+		setModalDeleteStatus(false);
+	};
 
+	const openModalDelete = () => {
+		setModalDeleteStatus(true);
+	};
   if (status === "checking")
     return (
       <Box sx={{ width: "100%" }}>
@@ -204,6 +215,13 @@ export const RegistroJornadaFormal = () => {
           modalStatus={modalStatus}
           closeModal={closeModal}
           openModal={openModal}
+        />
+        {/* MODAL DONDE SE REGISTRA LA JORNADA NO FORMAL */}
+        <ModalDeleteJornada
+					modalDeleteStatus={modalDeleteStatus} 
+					closeModalDelete={closeModalDelete} 
+					id={id}
+					nombreEleccion={nombreEleccion}
         />
       </Grid>
     );

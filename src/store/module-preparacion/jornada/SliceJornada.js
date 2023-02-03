@@ -229,9 +229,9 @@ export const SliceJornada = createSlice({
 			state.jornadasData.push(payload);
 		},
 		onDeleteJornadaData: (state, { payload }) => {
-			console.log(payload);
+			// console.log(payload);
 			const id = state.jornadasData.findIndex((consulta) => consulta.idJornada === payload);
-			console.log(id);
+			// console.log(id);
 			state.jornadasData.splice(id, 1);
 		},
 		onDeleteBoletaData: (state, { payload }) => {
@@ -254,13 +254,13 @@ export const SliceJornada = createSlice({
 		},
 		onFillBoletas: (state, { payload }) => {
 			console.log("fill boletas", payload);
-			// state.jornadaSelected.boletas = payload; //!DEJA ESTE
-			state.jornadaSelected.boletas = []; //!BORRA ESTE
+			state.jornadaSelected.boletas = payload; //!DEJA ESTE
+			// state.jornadaSelected.boletas = []; //!BORRA ESTE
 
-			state.jornadaSelected.boletas.push({
-				idEstructuraBoleta: 23,
-				nombreEleccion: "Boleta para presidente",
-			});
+			// state.jornadaSelected.boletas.push({
+			// 	idEstructuraBoleta: 23,
+			// 	nombreEleccion: "Boleta para presidente",
+			// });
 		},
 		onEditBoleta: (state, { payload }) => {
 			state.jornadaSelected.boletaSelected = payload;

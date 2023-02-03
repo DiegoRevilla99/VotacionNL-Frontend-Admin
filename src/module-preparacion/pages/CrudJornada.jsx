@@ -1,3 +1,5 @@
+import BallotIcon from "@mui/icons-material/Ballot";
+import SettingsIcon from "@mui/icons-material/Settings";
 import {
   Box,
   Button,
@@ -5,22 +7,19 @@ import {
   Grid,
   IconButton,
   LinearProgress,
-  Typography,
+  Typography
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { GeneralTable } from "../components/GeneralTable";
-import { useJornadaStore } from "../hooks/useJornadaStore";
 import { Stack } from "@mui/system";
-import BallotIcon from "@mui/icons-material/Ballot";
-import SettingsIcon from "@mui/icons-material/Settings";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   onDeleteBoleta,
   onGetBoletaData,
-  onGetBoletas,
-  onGetjornadas,
+  onGetBoletas
 } from "../../store/module-preparacion/jornada/ThunksJornada";
+import { GeneralTable } from "../components/GeneralTable";
+import { useJornadaStore } from "../hooks/useJornadaStore";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useParams } from "react-router-dom";
@@ -35,7 +34,7 @@ export const CrudJornada = () => {
   const columns = [
     // field: Debe de ir la variable que se va a mostrar en la tabla
     {
-      field: "encabezadoBoleta",
+      field: "nombreEleccion",
       headerName: "Título de la boleta formal",
       flex: 10,
     },

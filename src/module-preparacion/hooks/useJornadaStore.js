@@ -168,6 +168,8 @@ export const useJornadaStore = () => {
 		seudonimoCandidato,
 		fechaNacimientoCandidato,
 		generoCandidato,
+		claveElectoralCandidato,
+		claveElectoralSuplente,
 		apellidoPSuplente,
 		apellidoMSuplente,
 		nombreSuplente,
@@ -187,6 +189,8 @@ export const useJornadaStore = () => {
 				seudonimoCandidato,
 				fechaNacimientoCandidato,
 				generoCandidato,
+				claveElectoralCandidato,
+				claveElectoralSuplente,
 				apellidoPSuplente,
 				apellidoMSuplente,
 				nombreSuplente,
@@ -246,14 +250,16 @@ export const useJornadaStore = () => {
 		);
 	};
 
-	const updatePartido = (id, nameParty, siglasParty, emblemParty, fotografiaParty) => {
+	const updatePartido = (id, clavePartido, nameParty, siglasParty, emblemParty, fotografiaParty,statusPary ) => {
 		dispatch(
 			onUpdatePartido({
 				id,
+				clavePartido,
 				nameParty,
 				siglasParty,
 				emblemParty,
 				fotografiaParty,
+				statusPary,
 			})
 		);
 	};

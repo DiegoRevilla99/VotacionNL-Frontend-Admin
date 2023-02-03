@@ -1,32 +1,27 @@
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import {
 	Box,
 	Button,
 	Grid,
 	Modal,
 	TextField,
-	Typography,
-	Stack,
-	MenuItem, 
+	Typography
 } from "@mui/material";
-import React, { useState } from "react";
 import IconButton from '@mui/material/IconButton';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { Formik, Form } from 'formik';
-import { ErrorField } from "../components/ErrorField";
-import { object, string, date } from "yup";
-import BookOnlineRoundedIcon from '@mui/icons-material/BookOnlineRounded';
+import { Form, Formik } from 'formik';
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import CircularProgress from "@mui/material/CircularProgress";
-import { DatePickerMod } from "./DatePickerMod";
-import { RadioButtMod } from "./RadioButtMod";
-import { DatePickerModSuplente } from "./DatePickerModSuplente";
-import { RadioButtModSuplente } from "./RadioButtModSuplente";
+import { useParams } from "react-router-dom";
+import { object } from "yup";
 import { useJornadaStore } from "../hooks/useJornadaStore";
-import { useNavigate, useParams } from "react-router-dom";
+import { DatePickerMod } from "./DatePickerMod";
+import { DatePickerModSuplente } from "./DatePickerModSuplente";
+import { RadioButtMod } from "./RadioButtMod";
+import { RadioButtModSuplente } from "./RadioButtModSuplente";
 // import * as React from 'react';
-import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
+import Stepper from '@mui/material/Stepper';
 const steps = ['Registrar al candidato', 'Registrar al suplente'];
 const style = {
 	position: "absolute",
@@ -103,6 +98,8 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 			values.seudonimoCandidato,
 			values.fechaNacimientoCandidato,
 			values.generoCandidato,
+			values.claveElectoralCandidato,
+			values.claveElectoralSuplente,
 			values.apellidoPSuplente,
 			values.apellidoMSuplente,
 			values.nombreSuplente,
@@ -172,6 +169,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 							initialValues={
                                         {
 								// CANDIDATO
+								claveElectoralCandidato: "",
 								apellidoPCandidato: "",
 								apellidoMCandidato: "", 
 								nombreCandidato: "", 
@@ -180,6 +178,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 								fechaNacimientoCandidato: "",//Date
 								generoCandidato: "",//Text
 								// SUPLENTE
+								claveElectoralSuplente: "",
 								apellidoPSuplente: "",
 								apellidoMSuplente: "", 
 								nombreSuplente: "", 
@@ -218,6 +217,9 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 											Finalizó el registro.
 										</Typography>
 										<Box ml={2} sx={{fontSize: "12px", color: "#791010" }}>
+											{errors.claveElectoralCandidato ? "Verifica el apellido paterno del candidato" : ""}
+										</Box>
+										<Box ml={2} sx={{fontSize: "12px", color: "#791010" }}>
 											{errors.apellidoPCandidato ? "Verifica el apellido paterno del candidato" : ""}
 										</Box>
 										<Box ml={2} sx={{fontSize: "12px", color: "#791010" }}>
@@ -241,6 +243,9 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 										<Box ml={2} sx={{fontSize: "12px", color: "#791010" }}>
 										{errors.generoCandidato? "Verifica el genero del candidato" : ""}
 
+										</Box>
+										<Box ml={2} sx={{fontSize: "12px", color: "#791010" }}>
+										{errors.claveElectoralSuplente? "Verifica el apellido paterno del suplente" : ""}
 										</Box>
 										<Box ml={2} sx={{fontSize: "12px", color: "#791010" }}>
 										{errors.apellidoPSuplente? "Verifica el apellido paterno del suplente" : ""}
@@ -302,7 +307,22 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 											// CANDIDATO
 											<>
 											<Box sx={{ mt: 4, mb: 1, ml: 2, mr: 2}}>
-											
+											<Typography variant="h7" mt={"2rem"}>
+												CLAVE ELECTORAL DEL CANDIDATO <span style={{ color: "red" }}>*</span>
+													</Typography>
+													<TextField
+														fullWidth
+														size="small"
+														id="outlined-basic" 
+														variant="outlined"
+														label=""
+														name="claveElectoralCandidato"
+														value={values.claveElectoralCandidato}
+														error = {touched.claveElectoralCandidato && errors.claveElectoralCandidato}
+														helperText={touched.claveElectoralCandidato && errors.claveElectoralCandidato}
+														onChange={handleChange}
+														onBlur={handleBlur}
+													/>
 											<Typography variant="h7" mt={"2rem"}>
 												PRIMER APELLIDO <span style={{ color: "red" }}>*</span>
 													</Typography>
@@ -453,6 +473,22 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 											// SUPLENTE
 											<>
 											<Box sx={{ mt: 4, mb: 1, ml: 2, mr: 2}}>
+											<Typography variant="h7" mt={"2rem"}>
+												CLAVE ELECTORAL DEL SUPLENTE <span style={{ color: "red" }}>*</span>
+													</Typography>
+													<TextField
+														fullWidth
+														size="small"
+														id="outlined-basic" 
+														variant="outlined"
+														label=""
+														name="claveElectoralSuplente"
+														value={values.claveElectoralSuplente}
+														error = {touched.claveElectoralSuplente && errors.claveElectoralSuplente}
+														helperText={touched.claveElectoralSuplente && errors.claveElectoralSuplente}
+														onChange={handleChange}
+														onBlur={handleBlur}
+													/>
 											<Typography variant="h7" mt={"2rem"}>
 												PRIMER APELLIDO <span style={{ color: "red" }}>*</span>
 													</Typography>

@@ -43,16 +43,12 @@ export const onGetAlljornadas = () => {
 	};
 };
 
-// Jornadas Formales
-
 export const onGetjornadas = () => {
 	return async (dispatch) => {
 		dispatch(onCheckingOperation());
 		const { ok, data, errorMessage } = await getJornadasFormales(); // PROVIDER
-		console.log("data2", data);
 		if (ok) {
 			dispatch(onSuccessOperation());
-			console.log("data3", data);
 			dispatch(onFillJornadasData(data)); // SLICE
 		} else {
 			dispatch(onErrorOperation());
@@ -103,6 +99,7 @@ export const onGetBoletas = (idJornada, navigate = () => {}) => {
 	return async (dispatch) => {
 		dispatch(onCheckingOperation());
 		const { ok, data } = await getBoletasJornada(idJornada); // PROVIDER
+		
 		if (ok) {
 			dispatch(onSuccessOperation());
 			dispatch(onSetBoletasSelectedNull());
