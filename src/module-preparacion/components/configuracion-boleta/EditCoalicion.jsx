@@ -13,6 +13,11 @@ export const EditCoalicion = memo(
       dispatch(putCoalición(id, data, funcion));
     };
 
+    useEffect(() => {
+     console.log("desdeEdit")
+    }, [])
+     
+
     // const [coalicions, setCoalicions] = useState(coalicion);
     return (
       <ModalCoalicion

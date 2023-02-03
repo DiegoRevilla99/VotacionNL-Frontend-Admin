@@ -8,31 +8,29 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 
 import { PlantillaHeader } from "../../layout/PlantillaHeader";
 import { makeStyles } from "@mui/styles";
 
 import { useParams } from "react-router-dom";
-import {
-  getBoleta,
-  getCoaliciones,
-} from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
-import { useDispatch, useSelector } from "react-redux";
-import { useCoaliciones } from "../../hooks/config-boleta/useCoaliciones";
 import { useBoleta } from "../../hooks/config-boleta/useBoleta";
-import ReplyAllIcon from "@mui/icons-material/ReplyAll";
-import { Agrupa } from "../../components/configuracion-boleta/Agrupa";
-import { AddCoalicion } from "../../components/configuracion-boleta/AddCoalicion";
 import { Representante } from "../../components/configuracion-boleta/formales/Representante";
+import { useCandidatos } from "../../../module-empadronamiento/hooks/useCandidatos";
 
-export const ConfigBoleta = () => {
+export const ConfigBoleta = memo(() => {
   const { id } = useParams();
 
-  const { boletaInfo, errorBoleta, isLoadingBoleta, changeCandNoReg } =
-    useBoleta(id);
+  const { boleta, errorBoleta, isLoadingBoleta} =useBoleta(id);
+  const {candidatos,
+    isLoadingCandidatos,
+  }=useCandidatos(id)
 
-  useEffect(() => {}, [boletaInfo]);
+  useEffect(() => {
+      console.log("cambio boleta info:",boleta)
+  }, [boleta])
+     
+  
 
   return (
     <>
@@ -58,22 +56,15 @@ export const ConfigBoleta = () => {
             <Typography>No se encontro boleta</Typography>
           </Box>
         ) :  (
-          <Representante
-            boletaInfo={boletaInfo}
-            changeCandNoReg={changeCandNoReg}
+          
+            <Representante
+            boletaInfo={boleta}
           ></Representante>
+          
+          
         ) }
       </PlantillaHeader>
     </>
   );
-};
-{
-  /* <Stack
-justifyContent="center"
-sx={{ color: "grey.500" }}
-spacing={2}
-direction="row"
->
-<CircularProgress color="primary" />
-</Stack> */
-}
+});
+

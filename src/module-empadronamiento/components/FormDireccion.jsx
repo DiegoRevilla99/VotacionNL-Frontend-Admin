@@ -68,6 +68,9 @@ export const FormDireccion = ({
   onNext = () => {},
 }) => {
   const styles = useStyles();
+  const handleChangeD = (e) => {
+    e.preventDefault();
+  };
   return (
     <Formik
       initialValues={{
@@ -126,6 +129,7 @@ export const FormDireccion = ({
               value={values.municipio}
               onChange={handleChange}
               onBlur={handleBlur}
+              onPaste={handleChangeD}
             ></TextField>
             <ErrorMessage
               name="municipio"
@@ -160,6 +164,7 @@ export const FormDireccion = ({
               value={values.colonia}
               onChange={handleChange}
               onBlur={handleBlur}
+              onPaste={handleChangeD}
             ></TextField>
             <br />
 
@@ -180,6 +185,7 @@ export const FormDireccion = ({
               value={values.cp}
               onChange={handleChange}
               onBlur={handleBlur}
+              onPaste={handleChangeD}
             ></TextField>
             <br />
 
@@ -199,6 +205,7 @@ export const FormDireccion = ({
               value={values.calle}
               onChange={handleChange}
               onBlur={handleBlur}
+              onPaste={handleChangeD}
             ></TextField>
 
             <br />
@@ -214,6 +221,7 @@ export const FormDireccion = ({
               value={values.numero}
               onChange={handleChange}
               onBlur={handleBlur}
+              onPaste={handleChangeD}
             ></TextField>
 
             <br />

@@ -1,8 +1,8 @@
 import { Box } from "@mui/system";
-import React from "react";
+import React, { memo } from "react";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
-export const ErrorField = ({ children }) => {
+export const ErrorField = memo(({ children }) => {
   return (
     <Box
       alignItems="center"
@@ -12,4 +12,4 @@ export const ErrorField = ({ children }) => {
       {children}*
     </Box>
   );
-};
+});

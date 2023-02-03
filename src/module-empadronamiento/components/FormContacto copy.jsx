@@ -12,18 +12,10 @@ let schema = yup.object().shape({
     .string()
     .email("Deber ser un correo")
     .required("Correo es necesario"),
-    correoVotante2: yup
-    .string()
-    .email("Deber ser un correo")
-    .required("Confirmación es necesaria"),
   telefonoVotante: yup
     .string()
     .matches(phoneRegExp, "No es un número de telefónico")
     .required("El telefono es necesario"),
-    telefonoVotante2: yup
-    .string()
-    .matches(phoneRegExp, "No es un número de telefónico")
-    .required("Confirmación es necesaria"),
 });
 
 const useStyles = makeStyles({
@@ -46,13 +38,6 @@ const useStyles = makeStyles({
 
 const validando = (values, props) => {
   const errors = {};
- if (values.correoVotante !== values.correoVotante2) {
-    errors.correoVotante2 = "Los correos son diferentes";
-  } 
-
-  if (values.telefonoVotante !== values.telefonoVotante2) {
-    errors.telefonoVotante2 = "Los números son diferentes";
-  } 
   /* if (logo.name === "Sin Archivo seleccionado") {
       errors.logo = "Se necesita un emblema";
     }
@@ -64,8 +49,6 @@ const validando = (values, props) => {
   return errors;
 };
 
-
-
 export const FormContacto = ({
   data = {},
   onBack = () => {},
@@ -73,22 +56,13 @@ export const FormContacto = ({
   backbtn = true,
 }) => {
   const styles = useStyles();
-  const handleChangeD = (e) => {
-    e.preventDefault();
-  };
   return (
     <Formik
       initialValues={{
         correoVotante: data.votanteModel?.correoVotante
           ? data.votanteModel.correoVotante
           : "",
-          correoVotante2: data.votanteModel?.correoVotante
-          ? data.votanteModel.correoVotante
-          : "",
         telefonoVotante: data.votanteModel?.telefonoVotante
-          ? data.votanteModel.telefonoVotante
-          : "",
-          telefonoVotante2: data.votanteModel?.telefonoVotante
           ? data.votanteModel.telefonoVotante
           : "",
       }}
@@ -120,9 +94,6 @@ export const FormContacto = ({
               id="telefonoVotante"
               className={styles.textField}
               value={values.telefonoVotante}
-      //         onCut={handleChangeD}
-      // onCopy={handleChangeD}
-      onPaste={handleChangeD}
               onChange={(e) => {
                 e.target.value = e.target.value.trim();
                 handleChange(e);
@@ -136,31 +107,6 @@ export const FormContacto = ({
                 <ErrorField>{errors.telefonoVotante}</ErrorField>
               )}
             />
-            <br />
-            <Typography>CONFIRMACIÓN NÚMERO TELÉFONICO</Typography>
-            <TextField
-              required
-              label=""
-              variant="filled"
-              name="telefonoVotante2"
-              id="telefonoVotante2"
-              className={styles.textField}
-              value={values.telefonoVotante2}
-              onChange={(e) => {
-                e.target.value = e.target.value.trim();
-                handleChange(e);
-              }}
-              onPaste={handleChangeD}
-              onBlur={handleBlur}
-            ></TextField>
-            <br />
-            <ErrorMessage
-              name="telefonoVotante2"
-              component={() => (
-                <ErrorField>{errors.telefonoVotante2}</ErrorField>
-              )}
-            />
-            <br />
             <br />
             <Typography>CORREO ELECTRÓNICO</Typography>
             <TextField
@@ -176,34 +122,11 @@ export const FormContacto = ({
                 handleChange(e);
               }}
               onBlur={handleBlur}
-              onPaste={handleChangeD}
             ></TextField>
             <br />
             <ErrorMessage
               name="correoVotante"
               component={() => <ErrorField>{errors.correoVotante}</ErrorField>}
-            />
-            <br />
-            <Typography>CONFIRMACIÓN CORREO ELECTRÓNICO</Typography>
-            <TextField
-              required
-              label=""
-              variant="filled"
-              name="correoVotante2"
-              id="correoVotante2"
-              className={styles.textField}
-              value={values.correoVotante2}
-              onChange={(e) => {
-                e.target.value = e.target.value.trim();
-                handleChange(e);
-              }}
-              onBlur={handleBlur}
-              onPaste={handleChangeD}
-            ></TextField>
-            <br />
-            <ErrorMessage
-              name="correoVotante2"
-              component={() => <ErrorField>{errors.correoVotante2}</ErrorField>}
             />
           </Box>
 

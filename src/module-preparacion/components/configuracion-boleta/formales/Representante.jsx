@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 
 import { makeStyles } from "@mui/styles";
 
@@ -60,7 +60,7 @@ const boxOpciones = {
   mb: 5,
 };
 
-export const Representante = ({ boletaInfo, changeCandNoReg }) => {
+export const Representante = memo(({boletaInfo}) => {
   const styles = useStyles();
   const { id } = useParams();
 
@@ -70,12 +70,13 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
   const [cnr, setCnr] = useState(false);
   const [vn, setVn] = useState(false);
 
+  const {
+    candidatos,isLoadingCandidatos = [],
+  } = useSelector((state) => state.configBoleta);
+
   useEffect(() => {
-    if (boletaInfo.mostrarCandidaturasNoReg != undefined)
-      setCnr(boletaInfo.mostrarCandidaturasNoReg);
-    if (boletaInfo.mostrarVotoNulo != undefined)
-      setVn(boletaInfo.mostrarVotoNulo);
-  }, [boletaInfo]);
+  
+  }, []);
 
   const abrirCerrarModalCoalicion = () => {
     setModalCoalicion(!modalCoalicion);
@@ -106,28 +107,8 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
         }}
       >
         <Typography sx={{ mb: 3, fontSize: "22px", fontWeight: "bold" }}>
-          OPCIONES DE {boletaInfo.encabezadoBoleta}
+          COALICIONES PARA {boletaInfo?.nombreEleccion}
         </Typography>
-
-        {/* <Box sx={boxOpciones}>
-          <FormGroup
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              width: "100%",
-            }}
-          >
-            <FormControlLabel
-              control={<Switch checked={cnr} onChange={handleChangeCand} />}
-              label="Opción o candidatura no registrada"
-            />
-            <FormControlLabel
-              control={<Switch checked={vn} onChange={handleChangeVoto} />}
-              label="Mostrar voto nulo"
-            />
-          </FormGroup>
-        </Box> */}
 
         <Box
           sx={{
@@ -139,7 +120,10 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
             mt: 2,
           }}
         >
-          <Button
+          {
+            !isLoadingCandidatos &&
+            candidatos.length>0 ?
+            <Button
             className={styles.boton}
             variant="contained"
             style={styleButton}
@@ -152,7 +136,12 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
           >
             Agregar coalición
           </Button>
+          :
+          <Typography sx={{color:"#09AD29"}}>¡Todas las coaliciones estan listas!</Typography>
+          }
+          
         </Box>
+
         {isLoadingCoaliciones ? (
           <Stack
             justifyContent="center"
@@ -199,14 +188,5 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
       ></AddCoalicion>
     </>
   );
-};
-{
-  /* <Stack
-  justifyContent="center"
-  sx={{ color: "grey.500" }}
-  spacing={2}
-  direction="row"
-  >
-  <CircularProgress color="primary" />
-  </Stack> */
-}
+});
+

@@ -194,6 +194,9 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
   const handleChangeDate = (newValue) => {
     setValue(newValue);
   };
+  const handleChangeD = (e) => {
+    e.preventDefault();
+  };
 
   useEffect(() => {
     console.log(data);
@@ -268,6 +271,7 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
                     e.target.value = e.target.value.trim();
                     handleChange(e);
                   }}
+                  onPaste={handleChangeD}
                   onBlur={handleBlur}
                 ></TextField>
               </Box>
@@ -293,6 +297,7 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
               value={values.nombreVotante}
               onChange={handleChange}
               onBlur={handleBlur}
+              onPaste={handleChangeD}
             ></TextField>
             <ErrorMessage
               name="nombreVotante"
@@ -311,6 +316,7 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
               value={values.apellidoPVotante}
               onChange={handleChange}
               onBlur={handleBlur}
+              onPaste={handleChangeD}
             ></TextField>
             <ErrorMessage
               name="apellidoPVotante"
@@ -331,6 +337,7 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
               value={values.apellidoMVotante}
               onChange={handleChange}
               onBlur={handleBlur}
+              onPaste={handleChangeD}
             ></TextField>
             <ErrorMessage
               name="apellidoMVotante"

@@ -1,3 +1,4 @@
+import { CoalicionApi } from "../../module-preparacion/api/CoalicionApi";
 import { EstructuraBoletaApi } from "../../module-preparacion/api/EstructuraBoletaApi";
 import { JornadaApi } from "../../module-preparacion/api/JornadaApi"
 import { deleteCoalicionAPI, getCandidatosAPI, getCoalicionesAPI, postCoalicionAPI, putCoalicionAPI } from "../../module-preparacion/helpers/ApiConfigBoletas";
@@ -52,10 +53,10 @@ export const getBoletaProvider = async (idBoleta) => {
 
 export const getCandidatosProvider = async (idBoleta) => {
     //ENDPOINT REAL
-    
+   
     return JornadaApi.get(`estructuraboleta/${idBoleta}/datos_cand_sin_coalicion`).then((response) => {
-        console.log("Candidatos")
-        console.log(response)
+        console.log("Candidatos: ")
+        
         return { ok: true, data: response.data, errorMessage: "" };
     }).catch((error) => {
         return { ok: false, data: "", errorMessage: error.message };
@@ -75,25 +76,25 @@ export const getCandidatosProvider = async (idBoleta) => {
 
 
 
-export const postCoalicionProvider = async (data) => {
+export const postCoalicionProvider = async (idboleta,idcandidato,data) => {
 
     //ENDPOINT REAL
 
-    /* return CoalicionApi.post("", data).then((response) => {
+    return JornadaApi.post(`coalicionpartidos/${idboleta}/${idcandidato}`, data).then((response) => {
         console.log(response)
         return { ok: true, data: response.data, errorMessage: "" };
     }).catch((error) => {
         return { ok: false, data: "", errorMessage: error.message };
-    }); */
+    });
 
 
     //ENDPOINT FAKE
-    return postCoalicionAPI().then((response) => {
+    /* return postCoalicionAPI().then((response) => {
 
         return { ok: true, data: response, errorMessage: "" };
     }).catch((error) => {
         return { ok: false, data: "", errorMessage: error.message };
-    });
+    }); */
 
 }
 

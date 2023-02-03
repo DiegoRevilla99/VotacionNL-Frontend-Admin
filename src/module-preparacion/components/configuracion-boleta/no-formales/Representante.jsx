@@ -191,21 +191,8 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
         </Box>
       </Stack>
 
-      {/* <AddCoalicion
-        isOpen={modalCoalicion}
-        abrirCerrarModal={abrirCerrarModalCoalicion}
-        idBoleta={id}
-      ></AddCoalicion> */}
+      
     </>
   );
 };
-{
-  /* <Stack
-    justifyContent="center"
-    sx={{ color: "grey.500" }}
-    spacing={2}
-    direction="row"
-    >
-    <CircularProgress color="primary" />
-    </Stack> */
-}
+
