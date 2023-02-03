@@ -34,11 +34,11 @@ export const CrudJornadaGenerica = () => {
     // field: Debe de ir la variable que se va a mostrar en la tabla
     {
       field: "encabezadoBoleta",
-      headerName: "Título de la boleta no formal",
+      headerName: "TÍTULO DE LA BOLETA",
       flex: 10,
     },
     {
-      field: "configuracion",
+      field: "CONFIGURACIÓN",
       headerName: "Configuración",
       flex: 5,
       sortable: false,
@@ -178,7 +178,7 @@ export const CrudJornadaGenerica = () => {
                     },
                   }}
                 >
-                  Registrar Boleta No Formal
+                  REGISTRAR BOLETA
                 </Button>
               </Grid>
             </Grid>
@@ -196,8 +196,8 @@ export const CrudJornadaGenerica = () => {
                 pt: "1rem",
               }}
             >
-              <Typography variant="h5" color="initial" mb="0.5rem">
-                Boletas no formales
+              <Typography variant="h4" color="initial" mb="0.5rem" align="center">
+                BOLETAS
               </Typography>
               <Divider />
               <Box

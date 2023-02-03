@@ -29,10 +29,10 @@ export const RegistroJornadaNoFormal = () => {
 
 	const dispatch = useDispatch();
 	const columns = [
-		{ field: "nombreEleccion", headerName: "Título de la elección", flex: 10 },
+		{ field: "nombreEleccion", headerName: "TÍTULO DE LA ELECCIÓN", flex: 10 },
 		{
 			field: "configuracion",
-			headerName: "Configuración",
+			headerName: "CONFIGURACIÓN",
 			flex: 5,
 			sortable: false,
 			disableColumnMenu: true,
@@ -156,7 +156,7 @@ export const RegistroJornadaNoFormal = () => {
 										},
 									}}
 								>
-									Registrar Jornada No Formal
+									Registrar Jornada
 								</Button>
 							</Grid>
 						</Grid>
@@ -174,8 +174,8 @@ export const RegistroJornadaNoFormal = () => {
 								pt: "1rem",
 							}}
 						>
-							<Typography variant="h5" color="initial" mb="0.5rem">
-								Jornadas no formales
+							<Typography variant="h4" color="initial" mb="0.5rem" align="center">
+								JORNADAS
 							</Typography>
 							<Divider />
 							<Box

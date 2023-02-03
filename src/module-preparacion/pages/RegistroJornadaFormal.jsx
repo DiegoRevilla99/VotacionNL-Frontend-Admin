@@ -37,12 +37,12 @@ export const RegistroJornadaFormal = () => {
   const columns = [
     {
       field: "nombreJornada",
-      headerName: "Título de la jornada formal",
+      headerName: "TÍTULO DE LA JORNADA",
       flex: 10,
     },
     {
       field: "configuracion",
-      headerName: "Configuración",
+      headerName: "CONFIGURACIÓN",
       flex: 5,
       sortable: false,
       disableColumnMenu: true,
@@ -166,7 +166,7 @@ export const RegistroJornadaFormal = () => {
                     },
                   }}
                 >
-                  Registrar Jornada Formal
+                  Registrar Jornada 
                 </Button>
               </Grid>
             </Grid>
@@ -184,8 +184,8 @@ export const RegistroJornadaFormal = () => {
                 pt: "1rem",
               }}
             >
-              <Typography variant="h5" color="initial" mb="0.5rem">
-                Jornadas formales
+							<Typography variant="h4" color="initial" mb="0.5rem" align="center">
+								JORNADAS
               </Typography>
               <Divider />
               <Box
