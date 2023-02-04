@@ -36,7 +36,7 @@ export const onCreateJornadaNoFormal = (title, tipoEleccion, navigate = (id) => 
             dispatch(onSuccessOperation());
             dispatch(onAddJornadasNoFormales({idJornada: id, nombreJornada: title}));// SLICE
             dispatch(onToastSuccessOperation({ successMessage: "Jornada creada con éxito" }));
-            dispatch(onSetjornadaNoFormalSelected({id, title, boletas: []}));
+            dispatch(onSetjornadaNoFormalSelected({id, title, boletasNoFormales: []}));
             navigate(id);
         } else {
             dispatch(onErrorOperation());
@@ -97,13 +97,22 @@ export const onGetCandidatosNoFormales = (idBoleta, navigate = () => {} ) => {
 
 export const onCreateBoleta = (data, idJornada, candidatos, asociaciones, navigate = () => {}) => {
     return async (dispatch) => {
+        console.log("data THUNKS: ", data);
+		console.log("idJornadaElectoral THUNKS: ", idJornada);
+		console.log("candidatos THUNKS: ", candidatos);
+		console.log("asociaciones THUNKS: ", asociaciones);
         dispatch(onCheckingOperation());
         dispatch(onToastCheckingOperation("Guardando boleta..."));
-        const {ok, idBoleta } = await createBoleta(data, idJornada, candidatos, asociaciones);// PROVIDER
+        const {ok, idEstructuraBoleta } = await createBoleta(data, idJornada, candidatos, asociaciones);// PROVIDER
+        console.log("IDBOLETA THUNKS: ", idEstructuraBoleta);
+		// console.log("idJornadaElectoral THUNKS: ", idJornadaElectoral);
+		// console.log("candidatos THUNKS: ", candidatos);
+		// console.log("asociaciones THUNKS: ", asociaciones);
+        // dispatch(onSetjornadaNoFormalSelected({id, title, boletasNoFormales: []}));
         if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onToastSuccessOperation({ successMessage: "Boleta creada con éxito" }));
-            dispatch(onAddBoleta({idBoleta, encabezado: data.encabezadoBoleta}));// SLICE
+            dispatch(onAddBoleta({idEstructuraBoleta, encabezado: data.encabezado}));// SLICE
             navigate();
         } else {
             dispatch(onErrorOperation());
@@ -116,6 +125,8 @@ export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
     return async (dispatch) => {
         dispatch(onCheckingOperation());
         const {ok, data, dataCandidato } = await getBoletaData(idBoleta);// PROVIDER
+        console.log("CANDIDATOS EN EL THUNKS",dataCandidato);
+        console.log("boleta EN EL THUNKS",data);
         if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onEditBoleta({idBoleta, ...data}));// SLICE
@@ -132,14 +143,14 @@ export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
 export const onUpdateBoletaData = (
     values, 
     idJornada, 
-    idBoleta,
     candidatos, 
-    suplentes, 
-    partidos, 
+    asociaciones, 
+    idBoleta,
     navigate = () => {}) => {
         return async (dispatch) => {
             dispatch(onCheckingOperation());
-            const { ok } = await updateBoletaData(values, candidatos, suplentes, partidos, idBoleta, idJornada );// PROVIDER
+            console.log("VALORES EN EL THUNKS",idBoleta);
+            const { ok } = await updateBoletaData(values, idJornada, candidatos, asociaciones, idBoleta );// PROVIDER
             if (ok) {
                 dispatch(onSuccessOperation());
                 console.log("BOLETA ACTUALIZADA");

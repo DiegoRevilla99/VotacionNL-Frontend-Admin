@@ -3,37 +3,36 @@ import { createSlice } from '@reduxjs/toolkit';
 export const SliceJornadaNoFormal = createSlice({
     name: 'jornadaNoFormal',
     initialState: {
-        status: "off",
-        errorMessage: "",
-        successMessage: "",
+      status: 'off',
+      errorMessage: '',
+      successMessage: '',
         candidatos:[],
         candidatoSelected: {},
         asociaciones: [],
         asociacionesSelected: {},
         jornadasNoFormalesData: [],
         jornadaNoFormalSelected: {
-            id: "",
-            title: "",
-            nombre: "",
-            boletasNoFormales: [],
-            boletaNoFormalSelected: {},
+          id: '',
+          title: '',
+          boletasNoFormales: [],
+          boletaNoFormalSelected: {},
         },
-    },
+      },
     reducers: {
         onCheckingOperation: (state) => {
-            state.status = "checking";
-        },
-        onSuccessOperation: (state, { payload }) => {
-            state.status = "success";
-            state.okMessage = payload?.successMessage || "Operación realizada con éxito";
-        },
-        onErrorOperation: (state, { payload }) => {
-            state.status = "error";
+            state.status = 'checking';
+          },
+          onSuccessOperation: (state, { payload }) => {
+            state.status = 'success';
+            state.successMessage = payload?.successMessage || 'Operación realizada con éxito';
+          },
+          onErrorOperation: (state, { payload }) => {
+            state.status = 'error';
             state.errorMessage = payload?.errorMessage;
-        },
-        onOffOperation: (state) => {
-            state.status = "off";
-        },
+          },
+          onOffOperation: (state) => {
+            state.status = 'off';
+          },
 
         // Candidato
         onAddCandidato: (state, { payload }) => {
@@ -102,10 +101,9 @@ export const SliceJornadaNoFormal = createSlice({
         onFillCandidatosNoFormalesData: (state, { payload }) => {
             state.candidatosNoFormalesData = payload;
         },
-
-
         // Asociaciones
         onAddAsociacion: (state, { payload }) => {
+            console.log("payload de asociaciones", payload);
             if (!Array.isArray(payload)) {
                 state.asociaciones.push({
                     id: payload?.id,
@@ -149,45 +147,46 @@ export const SliceJornadaNoFormal = createSlice({
             state.asociaciones = payload;
         },
 
-
-        // Jornadas
+            // Jornadas
         onFillJornadasNoFormalesData: (state, { payload }) => {
             state.jornadasNoFormalesData = payload;
         },
         onAddJornadasNoFormales: (state, { payload }) => {
+            console.log('onAddJornadasNoFormales', payload);
             state.jornadasNoFormalesData.push(payload);
         },
         onDeleteJornadaData: (state, { payload }) => {
-            console.log("ELIMIANDO EN EL SLIDE",state.jornadasNoFormalesData);
-            // console.log("ELIMIANDO EN EL SLIDE",payload);
-            const id = state.jornadasNoFormalesData.findIndex((consulta) => consulta.idJornada === payload);
-            // console.log(id);
+            console.log('ELIMIANDO EN EL SLIDE', state.jornadasNoFormalesData);
+            const id = state.jornadasNoFormalesData.findIndex(
+            (consulta) => consulta.idJornada === payload
+            );
             state.jornadasNoFormalesData.splice(id, 1);
-        
         },
         onSetjornadaNoFormalSelected: (state, { payload }) => {
             console.log(payload);
-            state.jornadaNoFormalSelected.id = payload.idJornada;
+            state.jornadaNoFormalSelected.id = payload.id;
             state.jornadaNoFormalSelected.title = payload.title;
-            state.jornadaNoFormalSelected.boletasNoFormales = payload.boletasNoFormales || [];
+            state.jornadaNoFormalSelected.boletasNoFormales =
+            payload.boletasNoFormales || [];
+
+            console.log('jornadaNoFormalSelected', state.jornadaNoFormalSelected);
+            console.log('id', state.jornadaNoFormalSelected.id);
+            console.log('title', state.jornadaNoFormalSelected.title);
+            console.log('boletasNoFormales', state.jornadaNoFormalSelected.boletasNoFormales);
         },
+
         // Boletas
         onDeleteBoletaData: (state, { payload }) => {
-            console.log("ELIMIANDO EN EL SLIDE",payload);
-            const id = state.jornadaNoFormalSelected.boletasNoFormales.listBoletas.findIndex(consulta => consulta.idBoleta === payload);
+            console.log('ELIMIANDO EN EL SLIDE', payload);
+            const id = state.jornadaNoFormalSelected.boletasNoFormales.listBoletas.findIndex(
+                (consulta) => consulta.idBoleta === payload
+            );
             state.jornadaNoFormalSelected.boletasNoFormales.listBoletas.splice(id, 1);
-
-              
         },
         onAddBoleta: (state, { payload }) => {
-            // console.log("AYUDA 1",state.jornadaNoFormalSelected.boletasNoFormales);
-            if (!Array.isArray(state.jornadaNoFormalSelected.boletasNoFormales)) {
-                state.jornadaNoFormalSelected.boletasNoFormales = [];
-            }
-            state.jornadaNoFormalSelected.boletasNoFormales.push(payload);
-            // console.log("AYUDA 2",state.jornadaNoFormalSelected.boletasNoFormales);
+            state.jornadaNoFormalSelected.boletasNoFormales.listBoletas.push(payload);
         },
-        onSetBoletaNoFormal( state, { payload } ) {
+        setBoletaNoFormal: (state, { payload }) => {
             state.jornadaNoFormalSelected.boletaNoFormalSelected = payload;
         },
         onFillBoletas: (state, { payload }) => {

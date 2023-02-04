@@ -37,7 +37,7 @@ const validationSchema = object({
 	// seudonimoCandidato: string(
 	// 	"Por favor, ingresa el seudónimo del candidato/a"
 	// 	).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
-	// 	fechaNacimientoCandidato: date().required(
+	// 	fechaNacimientoCandidatos: date().required(
 	// 	"Por favor, ingresa la fecha de nacimiento del candidato/a"
 	// 	).max(new Date(), "No puedes ingresar una fecha futura"),
 	// 	generoCandidato: string("").required("Por favor, selecciona el género"),
@@ -48,6 +48,7 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 	const navigate = useNavigate();
 	const { status, candidatos, addCandidato, setCandidatosSelectedNull } = useJornadaNoFormalStore();
 	const onSubmit = (values) => {
+		const fechaNacimientoCandidato = values.fechaNacimientoCandidatos.toISOString();
 		setFotografia({ name: "Sin Archivo seleccionado" });
 		console.log(values);
 		addCandidato(
@@ -58,7 +59,7 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 			values.nombreCandidato,
 			values.seudonimoCandidato,
 			values.fotografiaCandidato,
-			values.fechaNacimientoCandidato,	
+			fechaNacimientoCandidato,	
 			values.generoCandidato
 		);
 		setCandidatosSelectedNull();
@@ -102,7 +103,7 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 								nombreCandidato: "",
 								seudonimoCandidato: "",//Text
 								fotografiaCandidato: "",
-								fechaNacimientoCandidato: "",//Date
+								fechaNacimientoCandidatos: "",//Date
 								generoCandidato: "",//Text
 							}}
 							validate = {validando}
@@ -241,12 +242,12 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 									<Grid>				
 										<DatePickerModGenerico
 											label=""
-											name={"fechaNacimientoCandidato"}
-											value={values.fechaNacimientoCandidato}
+											name={"fechaNacimientoCandidatos"}
+											value={values.fechaNacimientoCandidatos}
 											setFieldValue={setFieldValue}
 											handleChange={handleChange}
-											error={errors.fechaNacimientoCandidato}
-											touched={touched.fechaNacimientoCandidato}
+											error={errors.fechaNacimientoCandidatos}
+											touched={touched.fechaNacimientoCandidatos}
 										/>
 									</Grid>
 									<Typography variant="h7" mt={"2rem"}>
