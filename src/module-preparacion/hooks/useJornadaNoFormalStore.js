@@ -14,7 +14,7 @@ export const useJornadaNoFormalStore = () => {
 		errorMessage,
 		successMesage,
 		candidatos,
-        candidatosSelected,
+        candidatoSelected,
         asociaciones,
         asociacionesSelected,
         jornadasNoFormalesData,
@@ -72,7 +72,7 @@ export const useJornadaNoFormalStore = () => {
     // Add
     const addCandidato = (
         id,
-        curp,
+        claveCandidato,
         apellidoPCandidato,
         apellidoMCandidato,
         nombreCandidato,
@@ -84,7 +84,7 @@ export const useJornadaNoFormalStore = () => {
         dispatch(
             onAddCandidato({
                 id,
-                curp,
+                claveCandidato,
                 apellidoPCandidato,
                 apellidoMCandidato,
                 nombreCandidato,
@@ -115,6 +115,7 @@ export const useJornadaNoFormalStore = () => {
     
     const updateCandidato = (
         id,
+        claveCandidato,
         apellidoPCandidate,
         apellidoMCandidate,
         nameCandidate,
@@ -125,6 +126,7 @@ export const useJornadaNoFormalStore = () => {
     ) => {
         dispatch( onUpdateCandidato({
             id,
+            claveCandidato,
             apellidoPCandidate,
             apellidoMCandidate,
             nameCandidate,
@@ -157,7 +159,7 @@ export const useJornadaNoFormalStore = () => {
 		errorMessage,
 		successMesage,
 		candidatos,
-        candidatosSelected,
+        candidatoSelected,
         asociaciones,
         asociacionesSelected,
 		jornadasNoFormalesData,

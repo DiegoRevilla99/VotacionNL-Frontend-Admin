@@ -1,65 +1,108 @@
-import { Box, Button, Divider, Grid, Typography } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
+import { Box, Button, CircularProgress, Divider, Grid, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { Stack } from "@mui/system";
 import { Formik } from 'formik';
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { number, object, string } from "yup";
+import { object } from "yup";
 import { useUiStore } from "../../hooks/useUiStore";
-import { AddPartidosMod } from "../components/AddPartidosMod";
 import { FielTextCustom } from "../components/FielTextCustom";
 import { ModalAsociacionCP } from "../components/ModalAsociacionCP";
 import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
 import { ModalRegisterCS } from "../components/ModalRegisterCS";
 
 import { onCreateBoleta } from "../../store/module-preparacion/jornada/ThunksJornada";
-import { DataGridRowGrouping } from "../../ui/components/DataGridRowGrouping";
+// import { DataGridRowGrouping } from "../../ui/components/DataGridRowGrouping";
 import { AddCandidatoMod } from "../components/AddCandidatoMod";
 import { ModalEliminarCandidato } from "../components/ModalEliminarCandidato";
 import { ModalEliminarPartido } from "../components/ModalEliminarPartido";
 import { useJornadaStore } from "../hooks/useJornadaStore";
 
+import { AddAsociacion } from "../components/configuracion-boleta/AddAsociacion";
+import { Agrupa } from "../components/configuracion-boleta/Agrupa";
+import { useAsociaciones } from "../hooks/config-boleta/useAsociaciones";
+
+const useStyles = makeStyles({
+	hr: {
+	  height: "3px",
+	  color: "rgb(210, 210, 210)",
+	  background: "rgb(210, 210, 210)",
+	  width: "100%",
+	  boxShadow: 3,
+	},
+	boton: {
+	  boxShadow: 1,
+	  color: "white",
+	  height: 42,
+	},
+  });
+
+  const styleButton = {
+	borderRadius: 50,
+  };
+  
+  const botones = {
+	display: "flex",
+	justifyContent: "end",
+	alignContent: "space-around",
+	width: "95%",
+	height: "50px",
+	pt: 2,
+  };
+  
+  const boxOpciones = {
+	display: "flex",
+	flexDirection: "column",
+	width: "100%",
+	alignItems: "center",
+	mt: 1,
+	mb: 5,
+  };
 
 const validationSchema = object({
-	encabezado: string("").required(
-		"Por favor, ingresa un encabezado"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	nombreCandidatura: string("").required(
-		"Por favor, ingresa un nombre de Candidatura"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// encabezado: string("").required(
+	// 	"Por favor, ingresa un encabezado"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// nombreCandidatura: string("").required(
+	// 	"Por favor, ingresa un nombre de Candidatura"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
 	// modalidadVotacion: string(""),
-	entidadFederativa: string("").required(
-		"Por favor, ingresa una entidad Federativa"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	municipio: string("").required(
-		"Por favor, ingresa un municipio"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	distritoElectoralLocal: number("").required(
-		"Por favor, ingresa un distrito Electoral Local"
-		).max("26").positive("Solo números positivos, por favor.").integer(""),
-	distritoElectoral: number("").required(
-		"Por favor, ingresa un distrito Electoral"
-		).max("3000").positive("Solo números positivos, por favor.").integer(""),
-	tipoCasilla: string("").required(
-		"Por favor, ingresa un tipo de Casilla"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	primerFirmante: string("").required(
-		"Por favor, ingresa el nombre del Primer Firmante"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	cargoPrimerFirmante: string("").required(
-		"Por favor, ingresa un segundo Firmante"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	segundoFirmante: string("").required(
-		"Por favor, ingresa el nombre de Segundo Firmante"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	cargoSegundoFirmante: string("").required(
-		"Por favor, ingresa el cargo de Segundo Firmante"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// entidadFederativa: string("").required(
+	// 	"Por favor, ingresa una entidad Federativa"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// municipio: string("").required(
+	// 	"Por favor, ingresa un municipio"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// distritoElectoralLocal: number("").required(
+	// 	"Por favor, ingresa un distrito Electoral Local"
+	// 	).max("26").positive("Solo números positivos, por favor.").integer(""),
+	// distritoElectoral: number("").required(
+	// 	"Por favor, ingresa un distrito Electoral"
+	// 	).max("3000").positive("Solo números positivos, por favor.").integer(""),
+	// tipoCasilla: string("").required(
+	// 	"Por favor, ingresa un tipo de Casilla"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// primerFirmante: string("").required(
+	// 	"Por favor, ingresa el nombre del Primer Firmante"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// cargoPrimerFirmante: string("").required(
+	// 	"Por favor, ingresa un segundo Firmante"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// segundoFirmante: string("").required(
+	// 	"Por favor, ingresa el nombre de Segundo Firmante"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// cargoSegundoFirmante: string("").required(
+	// 	"Por favor, ingresa el cargo de Segundo Firmante"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
 });
 
 export const AddBoletaJornada = () => {
-
+	const styles = useStyles();
+	const [modalAsociacion, setModalAsociacion] = useState(false);
+	const abrirCerrarModalAsociacion = () => {
+		setModalAsociacion(!modalAsociacion);
+	};
 	const [isSubmited, setIsSubmited] = useState(false);
 	const { toastOffOperation } = useUiStore();
 	// const { status, questions, consultaSelected } = useConsultaCiudadanaStore();
@@ -80,7 +123,8 @@ export const AddBoletaJornada = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const params = useParams();
-
+	const { asociaciones, isLoadingAsociaciones } = useAsociaciones(params.id);
+	
 	const values = Object.values(jornadaSelected.boletaSelected).length === 0 ? {
 
 		nombreCandidatura: "",
@@ -151,15 +195,41 @@ export const AddBoletaJornada = () => {
 	};
 
 	const onSubmit = (values) => {
-		// dispatch(
-			onCreateBoleta(values, params.id, candidatoAndSuplente, partidos);
-		// console.log("PARTIDOOOOOS: ", partidos);
-		// console.log("CANDIDATOS: ", candidatoAndSuplente);
-		// console.log("VALORRRRRRRRRRRRRRRRR: ", values);
+		dispatch(
+			onCreateBoleta( values, params.id, candidatoAndSuplente, partidos, ()=>{
+				navigate("/preparacion/jornada/"+ params.id);
+			})
+		);
+		// console.log("llega: ", values); llega http://localhost:5173/preparacion/jornada/NU-NUE-2023/boleta/0
+		console.log("candidato y suplente: ", candidatoAndSuplente); // No llega
+		// console.log("partidosssssss: ", partidos); // LEGA
+		// console.log("IDDDD: ", params.id); // LEGA
+
 	};
 
-
-	
+	// const onSubmit = (values) => {
+	// 	if(Object.values(jornadaNoFormalSelected.boletaNoFormalSelected).length === 0){
+	// 		if(candidatos.length > 0)
+	// 			dispatch(
+	// 				onCreateBoleta( values, params.id, candidatos, asociaciones, ()=>{
+	// 					navigate("/preparacion/jornada/noFormal/"+params.id);
+	// 				})
+	// 			) 
+	// 	}else{
+	// 		dispatch(
+	// 			onUpdateBoletaData( 
+	// 				values, 
+	// 				params.id, 
+	// 				candidatos, 
+	// 				asociaciones, 
+	// 				params.idBoleta,
+	// 				()=>{
+	// 					navigate("/preparacion/jornada/noFormal/"+params.id);
+	// 				}
+	// 			)
+	// 		);
+	// 	}
+	// };
 
 	return (
 		<>
@@ -324,12 +394,64 @@ export const AddBoletaJornada = () => {
 							handleOpenDeleteCandidatoModal={handleOpenDeleteCandidatoModal}
 							status={status}
 						/> 
-						<AddPartidosMod 
+						<>
+						<Box
+							pl={3}
+							width="100%"
+							mt={5}
+						>
+							
+								  <Button
+								  	// mt={5}
+									className={styles.boton}
+									variant="contained"
+									style={styleButton}
+									sx={{
+									  width: { sm: `270px`, xs: "150px" },
+									  backgroundColor: "#511079",
+									  color: "#fff",
+									}}
+									onClick={abrirCerrarModalAsociacion}
+								  >
+									Agrega asociacion
+								  </Button>
+							<Box
+							  sx={{
+								display: "flex",
+								width: "100%",
+								alignItems: "center",
+								justifyContent: "center",
+								mt: 3,
+								mb: 2,
+							  }}
+							>
+							</Box>
+							{isLoadingAsociaciones ? (
+							  <Stack
+								justifyContent="center"
+								sx={{ color: "grey.500" }}
+								spacing={2}
+								direction="row"
+							  >
+								<CircularProgress color="primary" />
+							  </Stack>
+							) : (
+							  <Agrupa info={{ asociaciones: asociaciones }} tipo={2}></Agrupa>
+							)}
+							</Box>
+
+							<AddAsociacion
+								isOpen={modalAsociacion}
+								abrirCerrarModal={abrirCerrarModalAsociacion}
+								idBoleta={params.id}
+							/>
+						  </>
+						{/* <AddPartidosMod  
 							handleOpenModal={handleOpenMatchModal}
 							handleOpenDeletePartidoModal={handleOpenDeletePartidoModal}
 							status={status}
-						/> 
-						<Grid item xs={12} md={6} lg={4}>
+						/>  */}
+						{/* <Grid item xs={12} md={6} lg={4}>
 							<Button
 								onClick={handleOpenAsociacionModal}
 								variant="contained"
@@ -353,9 +475,9 @@ export const AddBoletaJornada = () => {
 							>
 								Afiliar participantes a partido
 							</Button>
-						</Grid>
+						</Grid> */}
 
-						<DataGridRowGrouping/>
+						{/* <DataGridRowGrouping/> */}
 
 					</Grid>
 					<Grid mt={"1rem"} container direction="row" justifyContent="flex-end" spacing={2}>

@@ -40,7 +40,7 @@ export const SliceJornadaNoFormal = createSlice({
             if (!Array.isArray(payload)) {
                 state.candidatos.push({
                     id: payload?.id,
-                    curp: payload?.curp,
+                    claveCandidato: payload?.claveCandidato,
                     apellidoPCandidato: payload?.apellidoPCandidato,
                     apellidoMCandidato: payload?.apellidoMCandidato,
                     nombreCandidato: payload?.nombreCandidato,
@@ -54,7 +54,7 @@ export const SliceJornadaNoFormal = createSlice({
             payload.forEach((candidato) => {
                 state.candidatos.push({
                     id: candidato?.id,
-                    curp: payload?.curp,
+                    claveCandidato: payload?.claveCandidato,
                     apellidoPCandidato: candidato?.apellidoPCandidato,
                     apellidoMCandidato: candidato?.apellidoMCandidato,
                     nombreCandidato: candidato?.nombreCandidato,
@@ -80,7 +80,7 @@ export const SliceJornadaNoFormal = createSlice({
                 (candidato) => candidato.id === state.candidatoSelected.id
             );
             candidato.id = payload?.id;
-            candidato.curp = payload?.curp;
+            candidato.claveCandidato = payload?.claveCandidato;
             candidato.apellidoPCandidato = payload?.apellidoPCandidate;
             candidato.apellidoMCandidato = payload?.apellidoMCandidate;
             candidato.nombreCandidato = payload?.nameCandidate;
@@ -223,21 +223,10 @@ export const {
     onErrorOperation,
     onOffOperation,
     onAddCandidato,
-    onAddSuplente,
-    onAddPartido,
-    onAddCandidatoAndSuplente,
     onDeleteCandidato,
-    onDeleteSuplente,
-    onDeletePartido,
-    onDeleteCandidatoAndSuplente,
     onEditCandidato,
-    onEditSuplente,
-    onEditPartido,
-    onEditCandidatoAndSuplente,
     onUpdateCandidato,
-    onUpdateSuplente,
-    onUpdatePartido,
-    onUpdateCandidatoAndSuplente,
+
     onSetCandidatoSelectedNull,
     onSetSuplenteSelectedNull,
     onSetPartidoSelectedNull,

@@ -51,13 +51,12 @@ export const deleteJornada = async (id) => {
 
 export const getBoletasJornada = async (idJornadaElectoral) => {
 	try {
-		console.log("DATA BOLETASSSS", idJornadaElectoral);
 		// **FETCH
 		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/jornada/JO-EL-GO-OR-20-NUE-2023/estructurasboletas
 		const { data } = await jornadasAPI.get(
 			"jornada/electoral/jornada/" + idJornadaElectoral + "/estructurasboletas"
 		);
-		console.log("DATA BOLETASSSS", data);
+		// console.log("DATA BOLETASSSS", data);
 		return { ok: true, data: data.data };
 	} catch (error) {
 		return { ok: false };
@@ -222,6 +221,10 @@ export const getBoletaData2 = async (idTicket) => {
 
 export const createBoleta = async (data, idJornadaElectoral, candidatoAndSuplente, partidos) => {
 	try {
+		console.log("DATA", data); // si esta
+		console.log("ID JORNADA ELECTORAL", idJornadaElectoral); // si esta
+		console.log("CANDIDATO AND SUPLENTE", candidatoAndSuplente);
+		console.log("PARTIDOS", partidos); // si esta
 		// Boletas
 		const { data: data1 } = await jornadasAPI.post("jornada/electoral/estructuraboleta", {
 			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta
@@ -240,7 +243,7 @@ export const createBoleta = async (data, idJornadaElectoral, candidatoAndSuplent
 			},
 		});
 
-
+		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/candidato
 		const { data: candidatoSuplenteRespData } = await jornadasAPI.post(
 			"jornada/electoral/candidato",
 			{
@@ -253,9 +256,6 @@ export const createBoleta = async (data, idJornadaElectoral, candidatoAndSuplent
 					seudonimoCandidato: candidatoAndSuplente[0].seudonimoCandidato,
 					fechaNacimiento: candidatoAndSuplente[0].fechaNacimientoCandidato,
 					genero: candidatoAndSuplente[0].generoCandidato,
-					// estructuraBoletaModel: {
-					// 	idEstructuraBoleta: idJornadaElectoral, // DUDA EXISTENCIAL XDDD
-					// },
 				},
 				suplenteModel: {
 					claveElectoral: candidatoAndSuplente[0].claveElectoralSuplente, // esto es new
@@ -273,7 +273,7 @@ export const createBoleta = async (data, idJornadaElectoral, candidatoAndSuplent
 		// Partido
 		const { data: partidoRespData } = await jornadasAPI.post(
 			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/partido/candidato/DIRUAL01
-			"jornada/electoral/partido/candidato/" + data1.data.idBoleta,
+			"jornada/electoral/partido/candidato/" + data1.idBoleta,
 			{
 				// API FORMAT || MY FORMAT
 				clavePartido:partidos[0].clavePartido,
@@ -286,12 +286,12 @@ export const createBoleta = async (data, idJornadaElectoral, candidatoAndSuplent
 				estructuraBoletaModel:{
 					idEstructuraBoleta: idBoleta,
 				},
-				candidatoModel:{
-					idCandidato: idCandidato,
-				},
-				coalicionModel:{
-					claveCoalicion: idCoalicion,
-				}
+				// candidatoModel:{
+				// 	idCandidato: idCandidato,
+				// },
+				// coalicionModel:{
+				// 	claveCoalicion: idCoalicion,
+				// }
 			}
 		);
 		console.log("Data de respuesta", partidoRespData);

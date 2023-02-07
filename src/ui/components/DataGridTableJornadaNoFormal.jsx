@@ -10,7 +10,8 @@ export const DataGridTableJornadaNoFormal = ({ handleOpenModal, handleOpenDelete
 	
 	const dispatch = useDispatch();
     const handleDelete = (id) => {
-		dispatch(deleteCandidato(id));
+		// dispatch(deleteCandidato(id));
+		deleteCandidato(id);
 		console.log("Estas por el iliminar el ID", id);
 	};
 	const handleEdit = (id) => {
@@ -20,7 +21,7 @@ export const DataGridTableJornadaNoFormal = ({ handleOpenModal, handleOpenDelete
 
 	const columns = [
 		{ field: "id", headerName: "ID", width: 65 },
-		{ field: "curp", headerName: "clave Electoral", width: 130 },
+		{ field: "claveCandidato", headerName: "clave Electoral", width: 130 },
 		{ field: "nombreCandidato", headerName: "Nombres Candidato", width: 210 },
 		{ field: "apellidoPCandidato", headerName: "Primer Apellido", width: 180 },
 		{ field: "apellidoMCandidato", headerName: "Segundo Apellido", width: 180 },

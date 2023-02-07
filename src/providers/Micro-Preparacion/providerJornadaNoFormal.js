@@ -69,30 +69,30 @@ export const getCandidatoBoletaNoFormal = async (idJornadaElectoral) => {
 	}
 };
 
-export const getBoletaData = async (idJornadaElectoral) => {
+export const getBoletaData = async (idBoleta) => {
 	try {
 		// **FETCH
 		const { data } = await jornadasNoFormalesAPI.get(
-            `jornada/no_formal/estructura_boleta/${idJornadaElectoral}`);
+            `jornada/no_formal/estructura_boleta/${idBoleta}`);
 			//https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/estructura_boleta/17
 		// console.log("Data boleta: ", data);
 		// **Fetch de candidatos
 		const { data: data1 } = await jornadasNoFormalesAPI.get(
-			`jornada/no_formal/estructura_boleta/${idJornadaElectoral}/candidatos`
+			`jornada/no_formal/estructura_boleta/${idBoleta}/candidatos`
 			//https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/estructura_boleta/11/candidatos
 		);
+		// console.log("Data candidato: ", data1.candidatoModels);
 		// console.log("Data candidato: ", data1);
 		// **Fetch de asociaciones
-		const { data: data2 } = await jornadasNoFormalesAPI.get(
-			`jornada/no_formal/estructura_boleta/${idJornadaElectoral}/asociaciones_candidatos`
-			//https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/estructura_boleta/11/asociaciones_candidatos
-		);
-		console.log("Data asociacion: ", data2);
+		// const { data: data2 } = await jornadasNoFormalesAPI.get(
+		// 	`jornada/no_formal/estructura_boleta/${idBoleta}/asociaciones_candidatos`
+		// 	//https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/estructura_boleta/11/asociaciones_candidatos
+		// );
+		// console.log("Data asociacion: ", data2);
 		const format = {
 			// MY FORMAT || API FORMAT
 			// id: data.data.idEstructuraBoleta,
 			encabezado: data.encabezadoBoleta,
-			// modalidadVotacion: data.modalidadVotacion,
 			entidadFederativa: data.entidadFederativa,
 			municipio: data.municipio,
 			primerFirmante: data.primerFirmanteNombre,
@@ -101,12 +101,7 @@ export const getBoletaData = async (idJornadaElectoral) => {
 			cargoSegundoFirmante:data.segundoFirmanteCargo,
 			modalidadVotacionModel: {
 				modalidadVotacion: data.modalidadVotacionModel.idModalidadVotacion,
-				// modalidadVotacion: data.modalidadVotacionModel.modalidad,
-				// modalidad: "REPRESENTANTE",
 			},
-			// eleccionModel: {
-				// idEleccion: idJornadaElectoral,
-			// },
 		}
 		console.log("Format: ", format);
 		const formatCandidato = data1.candidatoModels.map(candidato => {
@@ -137,7 +132,8 @@ export const getBoletaData = async (idJornadaElectoral) => {
 		// 	  generoCandidato: candidato.genero
 		// 	};
 		//   });
-		return { ok: true, data: format, dataCandidato: formatCandidato, dataAsociacion: formatAsociacion };
+		return { ok: true, data: format, dataCandidato: formatCandidato};
+		// return { ok: true, data: format, dataCandidato: formatCandidato, dataAsociacion: formatAsociacion };
 	} catch (error) {
 		return { ok: false, errorMessage: error.message };
 	
@@ -170,7 +166,8 @@ export const createBoleta = async (data, idJornadaElectoral, candidatos, asociac
 
 		console.log("AQUI VA LA ID ESTRUCTURA DE LA BOLETA",data1.idEstructuraBoleta);
 		const candidatoDatos = {
-			claveCandidato: candidatos[0].curp,
+			id: candidatos[0].id,
+			claveCandidato: candidatos[0].claveCandidato,
 			apellidoPCandidato: candidatos[0].apellidoPCandidato,
 			apellidoMCandidato: candidatos[0].apellidoMCandidato,
 			nombreCandidato: candidatos[0].nombreCandidato,
@@ -264,27 +261,27 @@ export const updateBoletaData = async (data, idJornadaElectoral, candidatos, aso
 		// console.log("Data candidato de respuesta", candidateRespData);
 
 		// Asociaciones
-		let asociacionDatos = {};
-		if (asociaciones.length) {
-			asociacionDatos = {
-				nombreAsociacion: asociaciones[0].nombreAsociacion,
-				emblema: asociaciones[0].emblema,
-				logo: asociaciones[0].logo,
-			};
-		} else {
-			asociacionDatos = {
-				nombreAsociacion: "",
-				emblema: "",
-				logo: "",
-			};
-		}
-		console.log("Data asociacion", asociaciones[0]);
-		const { data: asociacionRespData } = await jornadasNoFormalesAPI.put(
-			// https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/asociacion/14
-			"jornada/no_formal/asociacion/" + asociaciones[0].id,
-			asociacionDatos
-		);
-		console.log("Data asociacion de respuesta", asociacionRespData);
+		// let asociacionDatos = {};
+		// if (asociaciones.length) {
+		// 	asociacionDatos = {
+		// 		nombreAsociacion: asociaciones[0].nombreAsociacion,
+		// 		emblema: asociaciones[0].emblema,
+		// 		logo: asociaciones[0].logo,
+		// 	};
+		// } else {
+		// 	asociacionDatos = {
+		// 		nombreAsociacion: "",
+		// 		emblema: "",
+		// 		logo: "",
+		// 	};
+		// }
+		// console.log("Data asociacion", asociaciones[0]);
+		// const { data: asociacionRespData } = await jornadasNoFormalesAPI.put(
+		// 	// https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/asociacion/14
+		// 	"jornada/no_formal/asociacion/" + asociaciones[0].id,
+		// 	asociacionDatos
+		// );
+		// console.log("Data asociacion de respuesta", asociacionRespData);
 
 		return { ok: true };
 	} catch (error) {

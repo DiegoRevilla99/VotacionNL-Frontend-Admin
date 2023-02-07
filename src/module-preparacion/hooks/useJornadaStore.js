@@ -147,14 +147,24 @@ export const useJornadaStore = () => {
 		);
 	};
 
-	const addPartido = (id, nombrePartido, siglasPartido, emblemaPartido, fotografiaPartido) => {
+	const addPartido = (
+		id, 
+		clavePartido,
+		nameParty,
+		siglasParty,
+		emblemParty,
+		fotografiaParty,
+		statusParty,
+		) => {
 		dispatch(
 			onAddPartido({
-				id,
-				nombrePartido,
-				siglasPartido,
-				emblemaPartido,
-				fotografiaPartido,
+				id, 
+				clavePartido,
+				nameParty,
+				siglasParty,
+				emblemParty,
+				fotografiaParty,
+				statusParty,
 			})
 		);
 	};
@@ -178,7 +188,6 @@ export const useJornadaStore = () => {
 		fechaNacimientoSuplente,
 		generoSuplente
 	) => {
-		console.log("EL ID DEL CANDIDATO", id);
 		dispatch(
 			onAddCandidatoAndSuplente({
 				id,
@@ -250,22 +259,22 @@ export const useJornadaStore = () => {
 		);
 	};
 
-	const updatePartido = (id, clavePartido, nameParty, siglasParty, emblemParty, fotografiaParty,statusPary ) => {
+	const updatePartido = (id, clavePartido, nameParty, siglasParty, emblemParty, fotografiaParty,statusParty ) => {
 		dispatch(
 			onUpdatePartido({
 				id,
-				clavePartido,
-				nameParty,
-				siglasParty,
-				emblemParty,
-				fotografiaParty,
-				statusPary,
+				clavePartidot,
+				namePartyt,
+				siglasPartyt,
+				emblemPartyt,
+				fotografiaPartyt,
+				statusParty,
 			})
 		);
 	};
 
 	const updateCandidatoAndSuplente = (
-		idCandidate,
+		id,
 		apellidoPCandidate,
 		apellidoMCandidate,
 		nameCandidate,
@@ -273,7 +282,8 @@ export const useJornadaStore = () => {
 		seudonimoCandidate,
 		fechaNacimientoCandidate,
 		generoCandidate,
-		idSubstitute,
+		claveElectoralCandidato,
+		claveElectoralSuplente,
 		apellidoPSubstitute,
 		apellidoMSubstitute,
 		nameSubstitute,
@@ -284,7 +294,7 @@ export const useJornadaStore = () => {
 	) => {
 		dispatch(
 			onUpdateCandidatoAndSuplente({
-				idCandidate,
+				id,
 				apellidoPCandidate,
 				apellidoMCandidate,
 				nameCandidate,
@@ -292,14 +302,15 @@ export const useJornadaStore = () => {
 				seudonimoCandidate,
 				fechaNacimientoCandidate,
 				generoCandidate,
-				idSubstitute,
+				claveElectoralCandidato,
+				claveElectoralSuplente,
 				apellidoPSubstitute,
 				apellidoMSubstitute,
 				nameSubstitute,
 				fotografiaSubstitute,
 				seudonimoSubstitute,
 				fechaNacimientoSubstitute,
-				generoSubstitute,
+				generoSubstitute
 			})
 		);
 	};

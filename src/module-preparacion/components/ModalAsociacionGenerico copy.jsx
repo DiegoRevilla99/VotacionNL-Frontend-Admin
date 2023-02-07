@@ -188,58 +188,36 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 										</Box>
 										)}
 
-										{/* Esto es del recuadrod el componente de lso candidatos */}
-										<Box
-										id="candidato"
-										name="candidato"
-										onBlur={handleBlur}
-										sx={{
-										boxShadow: 1,
-										width: "100%",
-										height: { xl: "400px", lg: "350px" },
-										mt: 2,
-										p: 3,
-										border: "1px solid rgba(0,0,0,0.4)",
-										borderRadius: "15px",
-										// background: "#F1F1F1",
-										}}
-									>
-										{/* <Typography sx={{ fontWeight: "bold" }}> */}
-										{/* <Typography sx={{ fontWeight: "bold" }}>
-										SELECCIONE LOS CANDIDATOS CORRESPONDIENTES A ESTA ASOCIACIÓN
-										</Typography> */}
-										<Typography variant="h7" mt={"1rem"}>
-										SELECCIONE LOS CANDIDATOS CORRESPONDIENTES A ESTA ASOCIACIÓN  <span style={{ color: "red" }}>*</span>
-									</Typography>
-										<Box
-										sx={{
-											display: "flex",
-											width: "100%",
-											height: "100%",
-											overflowY: "scroll",
-											flexDirection: "row",
-											flexWrap: "wrap",
-											p: 1,
-											mb: 1,
-										}}
-										>
-										{candidatos.map((candidat) => (
-											<CandidatoCheck
-											key={candidat.claveElectoral}
-											claveElectoral={candidat.claveElectoral}
-											candidato={candidat.nombreCandidato}
-											onSelect={onSelectCandidato}
-											candidatosSeleted={candidatosS}
-											></CandidatoCheck>
-										))}
-										</Box>
-										{touched.candidatos && candidatosS.length === 0 && (
-										<ErrorField>{errors.candidatos}</ErrorField>
-										)}
-									</Box>
-									<br />
 
-									{/* Esto es del los botones */}
+								<Box
+									sx={{
+										display: "flex",
+										width: "100%",
+										height: "100%",
+										overflowY: "scroll",
+										flexDirection: "row",
+										flexWrap: "wrap",
+										p: 1,
+										mb: 1,
+									}}
+									>
+									{candidatos.map((candidat) => (
+										<CandidatoCheck
+										key={candidat.claveElectoral}
+										claveElectoral={candidat.claveElectoral}
+										candidato={candidat.nombreCandidato}
+										onSelect={onSelectCandidato}
+										candidatosSeleted={candidatosS}
+										></CandidatoCheck>
+									))}
+								</Box>
+									{/* {touched.candidatos && candidatosS.length === 0 && (
+									<ErrorField>{errors.candidatos}</ErrorField>
+									)} */}
+
+
+
+
 									<Grid
 										container
 										direction="row"

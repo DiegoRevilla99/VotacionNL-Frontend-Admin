@@ -57,7 +57,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 
 	const onSubmit = (values) => {
 		setfotografiaPartido({ name: "Sin Archivo seleccionado" });
-		console.log("hola", partidos.length);
+		console.log("valuessssssss", values);
 		addPartido(
 			partidos.length,
 			values.clavePartido,
@@ -65,9 +65,8 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 			values.siglasParty,
 			values.emblemParty,
 			values.fotografiaParty,
-			values.statusPary,
+			values.statusParty,
 		);
-		console.log(values);
 		setPartidoSelectedNull();
 		handleToggleModal();
 	};
@@ -90,6 +89,13 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 	   }
 	   return errors;
 	 };
+
+
+	 const [switchValue, setSwitchValue] = useState(false);
+	 const handleChangeSwitch = (event) => {
+		setSwitchValue(event.target.checked);
+	  };
+	  
 	return (
 
 		<>
@@ -106,13 +112,15 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 			emblemParty: "",
 			fotografiaParty: "",
 			clavePartido: "",
-			statusPary: "",
+			// statusParty: "",
+			statusParty: switchValue,
 		}}
 		validate = {validando}
 		validationSchema={validationSchema}
 		onSubmit={(values, {resetForm}) => {
 			// dispatch(savePartido(values, onSave));
-			onSubmit(values);
+			// onSubmit(values);
+			onSubmit({ ...values, statusParty: switchValue });
 			resetForm();
 		}}
 	>
@@ -140,10 +148,10 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						id="outlined-basic" 
 						variant="outlined"
 						label=""
-						name="nameParty"
-						value={values.nameParty}
-						error = {touched.nameParty && errors.nameParty}
-						helperText={touched.nameParty && errors.nameParty}
+						name="clavePartido"
+						value={values.clavePartido}
+						error = {touched.clavePartido && errors.clavePartido}
+						helperText={touched.clavePartido && errors.clavePartido}
 						onChange={handleChange}
 						onBlur={handleBlur}
 					/>
@@ -246,12 +254,12 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						<FormControlLabel
 							control={
 								<Switch 
-									name={"statusPary"}
-									checked={values.statusPary}
-									onChange={handleChange}
-									// defaultChecked 
+									name={"statusParty"}
+									checked={switchValue}
+									onChange={handleChangeSwitch}
+									defaultChecked 
 								/>}
-						/>
+							/>
 						<Typography>Sí</Typography>
 					</Stack>
 					<Grid

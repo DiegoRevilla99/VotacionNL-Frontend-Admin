@@ -1,19 +1,11 @@
 import {
-	getJornadas,
-	getJornadasFormales,
-	createJornada,
-	deleteJornada,
-	getBoletasJornada,
-	getBoletaData,
-	createBoleta,
-	updateBoletaData,
-	deleteBoleta,
-	getJornadaVotos,
+	createBoleta, createJornada, deleteBoleta, deleteJornada, getBoletaData, getBoletasJornada, getJornadas,
+	getJornadasFormales, getJornadaVotos, updateBoletaData
 } from "../../../providers/Micro-Preparacion/providerJornada";
 import {
 	onToastCheckingOperation,
 	onToastErrorOperation,
-	onToastSuccessOperation,
+	onToastSuccessOperation
 } from "../../ui/uiSlice";
 
 import {
@@ -30,7 +22,7 @@ import {
 	onSetBoletasSelectedNull,
 	onSetJornadaSelected,
 	onSetJornadasVotosData,
-	onSuccessOperation,
+	onSuccessOperation
 } from "./SliceJornada";
 
 export const onGetAlljornadas = () => {
@@ -148,9 +140,12 @@ export const onCreateBoleta = (
 	navigate = () => {}
 ) => {
 	return async (dispatch) => {
+		console.log("DATA THUNKS",data);
+		console.log("idJornada THUNKS",idJornada);
+		console.log("candidatoandSuplentes THUNKS",candidatoandSuplentes);
+		console.log("partidos THUNKS",partidos);
 		dispatch(onCheckingOperation());
 		dispatch(onToastCheckingOperation("Guardando boleta..."));
-
 		const { ok, idBoleta } = await createBoleta(
 			data,
 			idJornada,
@@ -160,7 +155,7 @@ export const onCreateBoleta = (
 		if (ok) {
 			dispatch(onSuccessOperation());
 			dispatch(onToastSuccessOperation({ successMessage: "Boleta creada con éxito" }));
-			dispatch(onAddBoleta({ idBoleta, encabezado: data.encabezadoJornada })); // SLICE
+			dispatch(onAddBoleta({ idBoleta, encabezado: data.nombreCandidatura})); // SLICE
 			navigate();
 		} else {
 			dispatch(onErrorOperation());

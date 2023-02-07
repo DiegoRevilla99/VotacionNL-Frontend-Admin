@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { object } from "yup";
+import { useUiStore } from "../../hooks/useUiStore";
 import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 import { DatePickerModGenerico } from "./DatePickerModGenerico";
 import { GeneroRadioButton } from "./GeneroRadioButton";
@@ -46,27 +47,46 @@ const validationSchema = object({
 export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseRegisterModal }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const { status, candidatos, addCandidato, setCandidatosSelectedNull } = useJornadaNoFormalStore();
+	const { toastSuccesOperation } = useUiStore();
+	const { status, candidatos, addCandidato, setCandidatosSelectedNull, candidatoSelected, updateCandidato } = useJornadaNoFormalStore();
 	const onSubmit = (values) => {
-		const fechaNacimientoCandidato = values.fechaNacimientoCandidatos.toISOString();
+
+
 		setFotografia({ name: "Sin Archivo seleccionado" });
-		console.log(values);
-		addCandidato(
-			candidatos.length,
-			values.curp,
-			values.apellidoPCandidato,
-			values.apellidoMCandidato,
-			values.nombreCandidato,
-			values.seudonimoCandidato,
-			values.fotografiaCandidato,
-			fechaNacimientoCandidato,	
-			values.generoCandidato
-		);
+		// console.log(values);
+		if (Object.values(candidatoSelected).length === 0) {
+			const fechaNacimientoCandidato = values.fechaNacimientoCandidatos.toISOString();
+			addCandidato(
+				candidatos.length,
+				values.claveCandidato,
+				values.apellidoPCandidato,
+				values.apellidoMCandidato,
+				values.nombreCandidato,
+				values.seudonimoCandidato,
+				values.fotografiaCandidato,
+				fechaNacimientoCandidato,	
+				values.generoCandidato
+			  );
+			toastSuccesOperation("Candidato/a registrado/a con éxito");
+		} else {
+			updateCandidato(
+				candidatoSelected.id,
+				values.claveCandidato,
+				values.apellidoPCandidato,
+				values.apellidoMCandidato,
+				values.nombreCandidato,
+				values.seudonimoCandidato,
+				values.fotografiaCandidato,
+				values.fechaNacimientoCandidatos,	
+				values.generoCandidato
+			  );
+			toastSuccesOperation("Registro actualizada con éxito");
+		}
 		setCandidatosSelectedNull();
 		handleCloseRegisterModal();
 	};
 	const onCancel = () => {
-		// setPartidoSelectedNull();
+		setCandidatosSelectedNull();
 		handleCloseRegisterModal();
 	};
 	 //Validacion del formato imagen 
@@ -96,16 +116,29 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 					</Typography>
 					<Box m={"2rem"}>
 						<Formik
-							initialValues={{
-								curp: "",//Text
-								apellidoPCandidato: "",
-								apellidoMCandidato: "",
-								nombreCandidato: "",
-								seudonimoCandidato: "",//Text
-								fotografiaCandidato: "",
-								fechaNacimientoCandidatos: "",//Date
-								generoCandidato: "",//Text
-							}}
+							initialValues={
+								Object.values(candidatoSelected).length === 0
+								? {
+									claveCandidato: "",//Text
+									apellidoPCandidato: "",
+									apellidoMCandidato: "",
+									nombreCandidato: "",
+									seudonimoCandidato: "",//Text
+									fotografiaCandidato: "",
+									fechaNacimientoCandidatos: "",//Date
+									generoCandidato: "",//Text
+								}
+								: {
+									claveCandidato: candidatoSelected["claveCandidato"],
+									apellidoPCandidato: candidatoSelected["apellidoPCandidato"],
+									apellidoMCandidato: candidatoSelected["apellidoMCandidato"],
+									nombreCandidato: candidatoSelected["nombreCandidato"],
+									seudonimoCandidato: candidatoSelected["fotografiaCandidato"],
+									fotografiaCandidato: candidatoSelected["seudonimoCandidato"],
+									fechaNacimientoCandidatos: candidatoSelected["fechaNacimientoCandidato"],
+									generoCandidato: candidatoSelected["generoCandidato"],
+								}
+							}
 							validate = {validando}
 							validationSchema={validationSchema}
 							onSubmit={(values, {resetForm}) => {
@@ -116,19 +149,19 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 							{({ values, handleSubmit, handleChange, errors, touched, handleBlur, setFieldValue }) => (
 								<Form onSubmit={handleSubmit}>
 									<Typography variant="h7">
-										CURP <span style={{ color: "red" }}>*</span>
+										claveCandidato <span style={{ color: "red" }}>*</span>
 									</Typography>
 									<TextField
-										name="curp"
+										name="claveCandidato"
 										fullWidth
 										size="small"
 										// id="titulo"
 										label=""
 										variant="outlined"
 										onChange={handleChange}
-										value={values.curp}
-										error={touched.curp && Boolean(errors.curp)}
-										helperText={touched.curp && errors.curp}
+										value={values.claveCandidato}
+										error={touched.claveCandidato && Boolean(errors.claveCandidato)}
+										helperText={touched.claveCandidato && errors.claveCandidato}
 										onBlur={handleBlur}
 									/>
 									<Typography variant="h7">

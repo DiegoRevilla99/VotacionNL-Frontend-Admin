@@ -111,6 +111,7 @@ export const CrudJornadaGenerica = () => {
   };
   // MÉTODO PARA EDITAR UN REGISTRO
   const handleEdit = (id) => {
+    // console.log("Presionaste editar, el ID es",id);
     dispatch(
       onGetBoletaData(id, () => {
         navigate(

@@ -124,6 +124,7 @@ export const onCreateBoleta = (data, idJornada, candidatos, asociaciones, naviga
 export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
     return async (dispatch) => {
         dispatch(onCheckingOperation());
+        console.log("IDBOLETA THUNKS: ", idBoleta);
         const {ok, data, dataCandidato } = await getBoletaData(idBoleta);// PROVIDER
         console.log("CANDIDATOS EN EL THUNKS",dataCandidato);
         console.log("boleta EN EL THUNKS",data);

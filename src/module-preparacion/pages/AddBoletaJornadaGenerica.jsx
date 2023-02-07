@@ -1,21 +1,60 @@
-import { Box, Button, Divider, Grid, MenuItem, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Divider, Grid, MenuItem, TextField, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { Stack } from "@mui/system";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { FielTextCustom } from "../components/FielTextCustom";
-
 // import { ModalEliminarPC } from "../components/ModalEliminarPC";
-import CircularProgress from "@mui/material/CircularProgress";
 import { Formik } from 'formik';
 import { useNavigate, useParams } from "react-router-dom";
 import { object } from "yup";
 import { onCreateBoleta, onUpdateBoletaData } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
-import { AddAsociacionMod } from "../components/AddAsociacionMod";
 import { AddCandidatoGenericoMod } from "../components/AddCandidatoGenericoMod";
 import { ModalAsociacionGenerico } from "../components/ModalAsociacionGenerico";
 import { ModalBoletaCandidatoGenerico } from "../components/ModalBoletaCandidatoGenerico";
 import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 
+import { AddAsociacion } from "../components/configuracion-boleta/AddAsociacion";
+import { Agrupa } from "../components/configuracion-boleta/Agrupa";
+import { useAsociaciones } from "../hooks/config-boleta/useAsociaciones";
+
+
+const useStyles = makeStyles({
+	hr: {
+	  height: "3px",
+	  color: "rgb(210, 210, 210)",
+	  background: "rgb(210, 210, 210)",
+	  width: "100%",
+	  boxShadow: 3,
+	},
+	boton: {
+	  boxShadow: 1,
+	  color: "white",
+	  height: 42,
+	},
+  });
+
+  const styleButton = {
+	borderRadius: 50,
+  };
+  
+  const botones = {
+	display: "flex",
+	justifyContent: "end",
+	alignContent: "space-around",
+	width: "95%",
+	height: "50px",
+	pt: 2,
+  };
+  
+  const boxOpciones = {
+	display: "flex",
+	flexDirection: "column",
+	width: "100%",
+	alignItems: "center",
+	mt: 1,
+	mb: 5,
+  };
 const modalidadNoFormal = [ {
     value: 1,
     label: 'REPRESENTANTE',
@@ -24,10 +63,10 @@ const modalidadNoFormal = [ {
     value: 2,
     label: 'COMITÉ',
   },
-//   {
-//     value: 3,
-//     label: 'PLANILLA',
-//   },
+  {
+    value: 3,
+    label: 'PLANILLA',
+  },
 ];
 const validationSchema = object({
 	// encabezado: string("").required(
@@ -56,15 +95,22 @@ const validationSchema = object({
 });
 
 export const AddBoletaJornadaGenerica = () => {
-
+	const styles = useStyles();
+	const [modalAsociacion, setModalAsociacion] = useState(false);
+	const abrirCerrarModalAsociacion = () => {
+		setModalAsociacion(!modalAsociacion);
+	};
+	// const { id } = useParams();
+	
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const params = useParams();
-
+	
+	const { asociaciones, isLoadingAsociaciones } = useAsociaciones(params.id);
 	const { 
 		status,
 		candidatos,
-		asociaciones,
+		// asociaciones,
         candidatosSelected,
 		jornadaNoFormalSelected,
 	} = useJornadaNoFormalStore();
@@ -89,6 +135,20 @@ export const AddBoletaJornadaGenerica = () => {
 		segundoFirmante: jornadaNoFormalSelected.boletaNoFormalSelected.segundoFirmante,//Text
 		cargoSegundoFirmante: jornadaNoFormalSelected.boletaNoFormalSelected.cargoSegundoFirmante,//Text
 	}
+
+	const [candidatosS, setCandidatosS] = useState(
+		asociaciones ? asociaciones.candidatos : []
+	);
+	const onSelectCandidato = (candidato) => {
+		console.log("cnadidato: " + candidato);
+		let candi = null;
+		candi = candidatosS.find((c) => c === candidato);
+		if (candi) {
+			setCandidatosS(candidatosS.filter((c) => c !== candidato));
+		} else {
+			setCandidatosS([...candidatosS, candidato]);
+		}
+	};
 
 	const [, forceUpdate] = React.useState();
 	const [statusDeleteCandidatoModal, setStatusDeleteCandidatoModal] = useState(false);
@@ -347,11 +407,67 @@ export const AddBoletaJornadaGenerica = () => {
 							status={status}
 						/> 
 						{values.modalidadVotacion === 3 && 
-							<AddAsociacionMod
-								handleOpenModal={handleOpenRegisterAsociacionModal}
-								handleDeleteAsociacionModal={handleDeleteAsociacionModal}
-								status={status}
-							/> 
+						<>
+						<Box
+							pl={3}
+							width="100%"
+							mt={5}
+						>
+							<Grid item xs={12} md={6} lg={4}>
+								<Button
+									
+									// onClick={abrirCerrarModalAsociacion}
+									onClick={handleOpenRegisterAsociacionModal}
+									variant="contained"
+									size="large"
+									disabled={status === "checking"}
+									sx={{
+										boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+										transition: "all 0.5s ease",
+										backgroundColor: "#511079",
+										width: "100%",
+										borderRadius: "25px 25px 25px 25px",
+										"&:hover": {
+											backgroundColor: "#7E328B !important",
+											transform: "translate(-5px, -5px)",
+											boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+										},
+									}}
+								>
+									AGREGAR ASOCIACIÓN
+								</Button>
+							</Grid>
+							<Box
+							  sx={{
+								display: "flex",
+								width: "100%",
+								alignItems: "center",
+								justifyContent: "center",
+								mt: 3,
+								mb: 2,
+							  }}
+							>
+							</Box>
+							{isLoadingAsociaciones ? (
+							  <Stack
+								justifyContent="center"
+								sx={{ color: "grey.500" }}
+								spacing={2}
+								direction="row"
+							  >
+								<CircularProgress color="primary" />
+							  </Stack>
+							) : (
+							  <Agrupa info={{ asociaciones: asociaciones }} tipo={2}></Agrupa>
+							)}
+							</Box>
+
+							<AddAsociacion
+								isOpen={modalAsociacion}
+								abrirCerrarModal={abrirCerrarModalAsociacion}
+								idBoleta={params.id}
+							/>
+						  </>
 						}
 					</Grid>
 					<Grid mt={"1rem"} container direction="row" justifyContent="flex-end" spacing={2}>
