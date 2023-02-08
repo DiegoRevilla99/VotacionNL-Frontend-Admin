@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { object } from "yup";
+import { useUiStore } from "../../hooks/useUiStore";
 import { useJornadaStore } from "../hooks/useJornadaStore";
 import { DatePickerMod } from "./DatePickerMod";
 import { DatePickerModSuplente } from "./DatePickerModSuplente";
@@ -76,6 +77,7 @@ const validationSchema = object({
 });
 export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 	const dispatch = useDispatch();
+	const { toastSuccesOperation } = useUiStore();
 	const params = useParams();
 	const {
 		status,
@@ -87,11 +89,11 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 	} = useJornadaStore();
 
 	const onSubmit = (values) => {
-		const fechaNacimientoCandidato = values.fechaNacimientoCandidatos.toISOString();
-		const fechaNacimientoSuplente = values.fechaNacimientoSuplentes.toISOString();
 		setFotografia({ name: "Sin Archivo seleccionado" });
 		setFotografiaSuplente({ name: "Sin Archivo seleccionado" });
 		if (Object.values(candidatoandSuplenteSelected).length === 0) {
+			const fechaNacimientoCandidato = values.fechaNacimientoCandidatos.toISOString();
+			const fechaNacimientoSuplente = values.fechaNacimientoSuplentes.toISOString();
 			addCandidatoAndSuplente(
 				candidatoandSuplentes.length,
 				values.apellidoPCandidato,
@@ -122,8 +124,8 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 				values.nombreCandidato,
 				values.fotografiaCandidato,
 				values.seudonimoCandidato,
-				// values.fechaNacimientoCandidatos,
-				fechaNacimientoCandidato,
+				values.fechaNacimientoCandidatos,
+				// fechaNacimientoCandidato,
 				values.generoCandidato,
 				values.claveElectoralCandidato,
 				values.claveElectoralSuplente,
@@ -132,8 +134,8 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 				values.nombreSuplente,
 				values.fotografiaSuplente,
 				values.seudonimoSuplente,
-				// values.fechaNacimientoSuplentes,
-				fechaNacimientoSuplente,
+				values.fechaNacimientoSuplentes,
+				// fechaNacimientoSuplente,
 				values.generoSuplente
 			);
 			toastSuccesOperation("Datos actualizados con éxito");
@@ -235,7 +237,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 										const labelProps = {};
 										return (
 
-											<Step	Step key={label} {...stepProps}>
+											<Step key={label} {...stepProps}>
 												<StepLabel {...labelProps}>{label}</StepLabel>
 											</Step>
 										);

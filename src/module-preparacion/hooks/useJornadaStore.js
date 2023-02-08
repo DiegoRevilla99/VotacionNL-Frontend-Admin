@@ -1,9 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-	onAddCandidato, onAddCandidatoAndSuplente, onAddJornadas, onAddPartido, onAddSuplente, onCheckingOperation, onDeleteCandidato, onDeleteCandidatoAndSuplente, onDeletePartido, onDeleteSuplente, onEditBoleta, onEditCandidato, onEditCandidatoAndSuplente, onEditPartido, onEditSuplente, onErrorOperation, onFillJornadasData, onOffOperation, onSetCandidatoAndSuplenteNull, onSetCandidatoAndSuplenteSelectedNull,
-	onSetCandidatoNull, onSetCandidatoSelectedNull, onSetPartidoNull, onSetPartidoSelectedNull, onSetSuplenteNull, onSetSuplenteSelectedNull, onSuccessOperation, onUpdateBoleta, onUpdateCandidato, onUpdateCandidatoAndSuplente,
-	onUpdatePartido,
-	onUpdateSuplente
+	onAddCandidatoAndSuplente, onAddJornadas, onAddPartido, onCheckingOperation, onDeleteCandidato, onDeleteCandidatoAndSuplente, onDeletePartido, onDeleteSuplente, onEditBoleta, onEditCandidato, onEditCandidatoAndSuplente, onEditPartido, onEditSuplente, onErrorOperation, onFillJornadasData, onOffOperation, onSetCandidatoAndSuplenteNull, onSetCandidatoAndSuplenteSelectedNull,
+	onSetCandidatoNull, onSetCandidatoSelectedNull, onSetPartidoNull, onSetPartidoSelectedNull, onSetSuplenteNull, onSetSuplenteSelectedNull, onSuccessOperation, onUpdateBoleta, onUpdateCandidatoAndSuplente,
+	onUpdatePartido
 } from "../../store/module-preparacion/jornada/SliceJornada";
 
 export const useJornadaStore = () => {
@@ -99,53 +98,53 @@ export const useJornadaStore = () => {
 	};
 
 	// Add
-	const addCandidato = (
-		id,
-		apellidoPCandidato,
-		apellidoMCandidato,
-		nombreCandidato,
-		fotografiaCandidato,
-		seudonimoCandidato,
-		fechaNacimientoCandidato,
-		generoCandidato
-	) => {
-		dispatch(
-			onAddCandidato({
-				id,
-				apellidoPCandidato,
-				apellidoMCandidato,
-				nombreCandidato,
-				fotografiaCandidato,
-				seudonimoCandidato,
-				fechaNacimientoCandidato,
-				generoCandidato,
-			})
-		);
-	};
+	// const addCandidato = (
+	// 	id,
+	// 	apellidoPCandidato,
+	// 	apellidoMCandidato,
+	// 	nombreCandidato,
+	// 	fotografiaCandidato,
+	// 	seudonimoCandidato,
+	// 	fechaNacimientoCandidato,
+	// 	generoCandidato
+	// ) => {
+	// 	dispatch(
+	// 		onAddCandidato({
+	// 			id,
+	// 			apellidoPCandidato,
+	// 			apellidoMCandidato,
+	// 			nombreCandidato,
+	// 			fotografiaCandidato,
+	// 			seudonimoCandidato,
+	// 			fechaNacimientoCandidato,
+	// 			generoCandidato,
+	// 		})
+	// 	);
+	// };
 
-	const addSuplente = (
-		id,
-		apellidoPSuplente,
-		apellidoMSuplente,
-		nombreSuplente,
-		fotografiaSuplente,
-		seudonimoSuplente,
-		fechaNacimientoSuplente,
-		generoSuplente
-	) => {
-		dispatch(
-			onAddSuplente({
-				id,
-				apellidoPSuplente,
-				apellidoMSuplente,
-				nombreSuplente,
-				fotografiaSuplente,
-				seudonimoSuplente,
-				fechaNacimientoSuplente,
-				generoSuplente,
-			})
-		);
-	};
+	// const addSuplente = (
+	// 	id,
+	// 	apellidoPSuplente,
+	// 	apellidoMSuplente,
+	// 	nombreSuplente,
+	// 	fotografiaSuplente,
+	// 	seudonimoSuplente,
+	// 	fechaNacimientoSuplente,
+	// 	generoSuplente
+	// ) => {
+	// 	dispatch(
+	// 		onAddSuplente({
+	// 			id,
+	// 			apellidoPSuplente,
+	// 			apellidoMSuplente,
+	// 			nombreSuplente,
+	// 			fotografiaSuplente,
+	// 			seudonimoSuplente,
+	// 			fechaNacimientoSuplente,
+	// 			generoSuplente,
+	// 		})
+	// 	);
+	// };
 
 	const addPartido = (
 		id, 
@@ -211,53 +210,53 @@ export const useJornadaStore = () => {
 		);
 	};
 
-	const updateCandidato = (
-		id,
-		apellidoPCandidate,
-		apellidoMCandidate,
-		nameCandidate,
-		fotografiaCandidate,
-		seudonimoCandidate,
-		fechaNacimientoCandidate,
-		generoCandidate
-	) => {
-		dispatch(
-			onUpdateCandidato({
-				id,
-				apellidoPCandidate,
-				apellidoMCandidate,
-				nameCandidate,
-				fotografiaCandidate,
-				seudonimoCandidate,
-				fechaNacimientoCandidate,
-				generoCandidate,
-			})
-		);
-	};
+	// const updateCandidato = (
+	// 	id,
+	// 	apellidoPCandidate,
+	// 	apellidoMCandidate,
+	// 	nameCandidate,
+	// 	fotografiaCandidate,
+	// 	seudonimoCandidate,
+	// 	fechaNacimientoCandidate,
+	// 	generoCandidate
+	// ) => {
+	// 	dispatch(
+	// 		onUpdateCandidato({
+	// 			id,
+	// 			apellidoPCandidate,
+	// 			apellidoMCandidate,
+	// 			nameCandidate,
+	// 			fotografiaCandidate,
+	// 			seudonimoCandidate,
+	// 			fechaNacimientoCandidate,
+	// 			generoCandidate,
+	// 		})
+	// 	);
+	// };
 
-	const updateSuplente = (
-		id,
-		apellidoPSubstitute,
-		apellidoMSubstitute,
-		nameSubstitute,
-		fotografiaSubstitute,
-		seudonimoSubstitute,
-		fechaNacimientoSubstitute,
-		generoSubstitute
-	) => {
-		dispatch(
-			onUpdateSuplente({
-				id,
-				apellidoPSubstitute,
-				apellidoMSubstitute,
-				nameSubstitute,
-				fotografiaSubstitute,
-				seudonimoSubstitute,
-				fechaNacimientoSubstitute,
-				generoSubstitute,
-			})
-		);
-	};
+	// const updateSuplente = (
+	// 	id,
+	// 	apellidoPSubstitute,
+	// 	apellidoMSubstitute,
+	// 	nameSubstitute,
+	// 	fotografiaSubstitute,
+	// 	seudonimoSubstitute,
+	// 	fechaNacimientoSubstitute,
+	// 	generoSubstitute
+	// ) => {
+	// 	dispatch(
+	// 		onUpdateSuplente({
+	// 			id,
+	// 			apellidoPSubstitute,
+	// 			apellidoMSubstitute,
+	// 			nameSubstitute,
+	// 			fotografiaSubstitute,
+	// 			seudonimoSubstitute,
+	// 			fechaNacimientoSubstitute,
+	// 			generoSubstitute,
+	// 		})
+	// 	);
+	// };
 
 	const updatePartido = (id, clavePartido, nameParty, siglasParty, emblemParty, fotografiaParty,statusParty ) => {
 		dispatch(
@@ -352,12 +351,12 @@ export const useJornadaStore = () => {
 		errorOperation,
 		offOperation,
 		addJornada,
-		addCandidato,
-		addSuplente,
+		// addCandidato,
+		// addSuplente,
 		addPartido,
 		addCandidatoAndSuplente,
-		updateCandidato,
-		updateSuplente,
+		// updateCandidato,
+		// updateSuplente,
 		updatePartido,
 		updateCandidatoAndSuplente,
 		updateBoleta,

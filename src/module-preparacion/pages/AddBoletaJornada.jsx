@@ -8,7 +8,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { object } from "yup";
 import { useUiStore } from "../../hooks/useUiStore";
 import { FielTextCustom } from "../components/FielTextCustom";
-import { ModalAsociacionCP } from "../components/ModalAsociacionCP";
 import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
 import { ModalRegisterCS } from "../components/ModalRegisterCS";
 
@@ -114,8 +113,8 @@ export const AddBoletaJornada = () => {
         suplentesSelected,
         partidos,
         partidoSelected,
-        candidatoAndSuplente,
-        candidatoandSuplenteSelected,
+		candidatoandSuplentes,
+		candidatoandSuplenteSelected,
 		
 		jornadaSelected,
 	} = useJornadaStore();
@@ -137,7 +136,7 @@ export const AddBoletaJornada = () => {
 	} : {
 
 		nombreCandidatura: jornadaSelected.boletaSelected.nombreCandidatura,
-		modalidadVotacion: jornadaSelected.boletaSelected.modalidadVotacion,
+		// modalidadVotacion: jornadaSelected.boletaSelected.modalidadVotacion,
 		municipio: jornadaSelected.boletaSelected.municipio,
 		distritoElectoral: jornadaSelected.boletaSelected.distritoElectoral,
 		primerFirmante: jornadaSelected.boletaSelected.primerFirmante,
@@ -196,16 +195,18 @@ export const AddBoletaJornada = () => {
 
 	const onSubmit = (values) => {
 		dispatch(
-			onCreateBoleta( values, params.id, candidatoAndSuplente, partidos, ()=>{
+			onCreateBoleta( values, params.id, candidatoandSuplentes, ()=>{
 				navigate("/preparacion/jornada/"+ params.id);
 			})
 		);
-		// console.log("llega: ", values); llega http://localhost:5173/preparacion/jornada/NU-NUE-2023/boleta/0
-		console.log("candidato y suplente: ", candidatoAndSuplente); // No llega
-		// console.log("partidosssssss: ", partidos); // LEGA
-		// console.log("IDDDD: ", params.id); // LEGA
-
 	};
+	// const onSubmit = (values) => {
+	// 	dispatch(
+	// 		onCreateBoleta( values, params.id, candidatoandSuplentes, partidos, ()=>{
+	// 			navigate("/preparacion/jornada/"+ params.id);
+	// 		})
+	// 	);
+	// };
 
 	// const onSubmit = (values) => {
 	// 	if(Object.values(jornadaNoFormalSelected.boletaNoFormalSelected).length === 0){
@@ -401,20 +402,30 @@ export const AddBoletaJornada = () => {
 							mt={5}
 						>
 							
-								  <Button
-								  	// mt={5}
-									className={styles.boton}
+							<Grid item xs={12} md={6} lg={4}>
+								<Button
+									
+									// onClick={abrirCerrarModalAsociacion}
+									onClick={handleOpenMatchModal}
 									variant="contained"
-									style={styleButton}
+									size="large"
+									disabled={status === "checking"}
 									sx={{
-									  width: { sm: `270px`, xs: "150px" },
-									  backgroundColor: "#511079",
-									  color: "#fff",
+										boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+										transition: "all 0.5s ease",
+										backgroundColor: "#511079",
+										width: "100%",
+										borderRadius: "25px 25px 25px 25px",
+										"&:hover": {
+											backgroundColor: "#7E328B !important",
+											transform: "translate(-5px, -5px)",
+											boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+										},
 									}}
-									onClick={abrirCerrarModalAsociacion}
-								  >
-									Agrega asociacion
-								  </Button>
+								>
+									AGREGAR PARTIDO
+								</Button>
+							</Grid>
 							<Box
 							  sx={{
 								display: "flex",
@@ -436,7 +447,7 @@ export const AddBoletaJornada = () => {
 								<CircularProgress color="primary" />
 							  </Stack>
 							) : (
-							  <Agrupa info={{ asociaciones: asociaciones }} tipo={2}></Agrupa>
+							  <Agrupa info={{ asociaciones: asociaciones }} tipo={2}/>
 							)}
 							</Box>
 
@@ -533,8 +544,6 @@ export const AddBoletaJornada = () => {
 			<ModalBoletaPartido statusMatchModal={statusMatchModal} handleToggleModal={handleCloseMatchModal} />
 			{/* MODAL PARA REGISTRAR A LOS CANDIDATOS Y SUPLENTES */}
 			<ModalRegisterCS statusRegisterModal={statusRegisterModal} handleToggleModal={handleCloseRegisterModal} />
-			{/* MODAL PARA REGISTRAR ASOCIAR CANDIDATOS Y PARTIDOS */}
-			<ModalAsociacionCP statusAsociacionModal={statusAsociacionModal} handleToggleModal={handleCloseAsociacionModal} />
 
 			{/* MODAL PARA CONFIRMAR LA ELIMINACIÓN */}
 			<ModalEliminarPartido statusDeletePartidoModal={statusDeletePartidoModal} handleToggleModal={handleCloseDeletePartidoModal} />

@@ -10,9 +10,7 @@ import {
 
 import {
 	onAddBoleta,
-	onAddJornadas,
-	onAddPartido,
-	onCheckingOperation,
+	onAddJornadas, onCheckingOperation,
 	onDeleteBoletaData,
 	onDeleteJornadaData,
 	onEditBoleta,
@@ -136,26 +134,26 @@ export const onCreateBoleta = (
 	data,
 	idJornada,
 	candidatoandSuplentes,
-	partidos,
+	// partidos,
 	navigate = () => {}
 ) => {
 	return async (dispatch) => {
 		console.log("DATA THUNKS",data);
 		console.log("idJornada THUNKS",idJornada);
 		console.log("candidatoandSuplentes THUNKS",candidatoandSuplentes);
-		console.log("partidos THUNKS",partidos);
+		// console.log("partidos THUNKS",partidos);
 		dispatch(onCheckingOperation());
 		dispatch(onToastCheckingOperation("Guardando boleta..."));
-		const { ok, idBoleta } = await createBoleta(
+		const { ok, idEstructuraBoleta } = await createBoleta(
 			data,
 			idJornada,
 			candidatoandSuplentes,
-			partidos
+			// partidos
 		); // PROVIDER
 		if (ok) {
 			dispatch(onSuccessOperation());
 			dispatch(onToastSuccessOperation({ successMessage: "Boleta creada con éxito" }));
-			dispatch(onAddBoleta({ idBoleta, encabezado: data.nombreCandidatura})); // SLICE
+			dispatch(onAddBoleta({ idEstructuraBoleta, encabezado: data.nombreCandidatura})); // SLICE
 			navigate();
 		} else {
 			dispatch(onErrorOperation());
@@ -185,13 +183,12 @@ export const onCreateBoleta = (
 export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
 	return async (dispatch) => {
 		dispatch(onCheckingOperation());
-		const { ok, data, dataPartido, dataCandidato, dataSuplente } = await getBoletaData(
-			idBoleta
-		); // PROVIDER
+		const { ok, data, dataCandidato } = await getBoletaData(idBoleta); // PROVIDER
+		// const { ok, data, dataPartido, dataCandidato, dataSuplente } = await getBoletaData(idBoleta); // PROVIDER
 		if (ok) {
 			dispatch(onSuccessOperation());
 			dispatch(onEditBoleta({ idBoleta, ...data })); // SLICE
-			dispatch(onAddPartido(dataPartido)); // SLICE
+			// dispatch(onAddPartido(dataPartido)); // SLICE
 			// dispatch(onAddCandidato(dataCandidato));// SLICE
 			// dispatch(onAddSuplente(dataSuplente));// SLICE
 			navigate();

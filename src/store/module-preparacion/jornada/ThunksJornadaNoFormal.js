@@ -34,7 +34,7 @@ export const onCreateJornadaNoFormal = (title, tipoEleccion, navigate = (id) => 
         const {ok, id } = await createJornada(title, tipoEleccion);// PROVIDER
         if (ok) {
             dispatch(onSuccessOperation());
-            dispatch(onAddJornadasNoFormales({idJornada: id, nombreJornada: title}));// SLICE
+            dispatch(onAddJornadasNoFormales({idEleccion: id, nombreJornada: title}));// SLICE
             dispatch(onToastSuccessOperation({ successMessage: "Jornada creada con éxito" }));
             dispatch(onSetjornadaNoFormalSelected({id, title, boletasNoFormales: []}));
             navigate(id);

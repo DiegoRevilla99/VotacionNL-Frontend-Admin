@@ -163,8 +163,9 @@ export const createBoleta = async (data, idJornadaElectoral, candidatos, asociac
 				idEleccion: idJornadaElectoral,
 			},
 		});
-
-		console.log("AQUI VA LA ID ESTRUCTURA DE LA BOLETA",data1.idEstructuraBoleta);
+		
+		console.log("hjaber la peticion",data1);
+		// console.log("AQUI VA LA ID ESTRUCTURA DE LA BOLETA",data1.idEstructuraBoleta);
 		const candidatoDatos = {
 			id: candidatos[0].id,
 			claveCandidato: candidatos[0].claveCandidato,

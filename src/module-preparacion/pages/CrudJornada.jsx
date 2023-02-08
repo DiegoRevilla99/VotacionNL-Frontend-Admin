@@ -10,11 +10,10 @@ import {
   Typography
 } from "@mui/material";
 import { Stack } from "@mui/system";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  onDeleteBoleta,
   onGetBoletaData,
   onGetBoletas
 } from "../../store/module-preparacion/jornada/ThunksJornada";
@@ -31,6 +30,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Chip from '@mui/material/Chip';
 import { emphasize, styled } from '@mui/material/styles';
+import { ModalEliminarBoletaFormal } from "../components/ModalEliminarBoletaFormal";
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
     const backgroundColor =
       theme.palette.mode === 'light'
@@ -56,7 +56,9 @@ const StyledBreadcrumb = styled(Chip)(({ theme }) => {
 
 export const CrudJornada = () => {
   const navigate = useNavigate();
-
+	const [modalDeleteStatus, setModalDeleteStatus] = useState(false);
+  const [idBoleta, setIdBoleta] = useState(null);
+	const [encabezadoBoleta, setNombreBoleta] = useState(null);
   // ToDo:AQUI OBTENGAN LAS VARIABLES STATUS Y DATA DE SUS ESTADOS GLOBALES
   const { jornadaSelected, status } = useJornadaStore();
   const params = useParams();
@@ -93,7 +95,7 @@ export const CrudJornada = () => {
             </Button>
             <IconButton
               sx={{ color: "#511079" }}
-              onClick={() => handleDelete(params.id)}
+              onClick={() => handleDelete(params.id, params.row.nombreEleccion)}
             >
               <DeleteIcon />
             </IconButton>
@@ -109,12 +111,16 @@ export const CrudJornada = () => {
   }, []);
 
   // METODO PARA BORRAR UN REGISTRO
-  const handleDelete = (id) => {
-    dispatch(onDeleteBoleta(id));
+  const handleDelete = (id, title) => {
+    setIdBoleta(id);
+		setNombreBoleta(title);
+    openModalDelete();
+    // dispatch(onDeleteBoleta(id));
   };
 
   // MÉTODO PARA EDITAR UN REGISTRO
   const handleEdit = (id) => {
+    console.log("id boleta", id);
     dispatch(
       onGetBoletaData(id, () => {
         navigate("/preparacion/jornada/" + params.id + "/boleta/" + id);
@@ -137,7 +143,14 @@ export const CrudJornada = () => {
         jornadaSelected.boletas.length
     );
   };
+  const closeModalDelete = () => {
+		setModalDeleteStatus(false);
+	};
 
+	const openModalDelete = () => {
+		setModalDeleteStatus(true);
+	};
+  
   if (status === "checking")
     return (
       <Box sx={{ width: "100%" }}>
@@ -256,6 +269,13 @@ export const CrudJornada = () => {
             </Box>
           </Box>
         </Grid>
+        <ModalEliminarBoletaFormal 
+					modalDeleteStatus={modalDeleteStatus} 
+					closeModalDelete={closeModalDelete} 
+					idBoleta={idBoleta}
+					encabezadoBoleta={encabezadoBoleta}
+				/>	
       </Grid>
+      
     );
 };

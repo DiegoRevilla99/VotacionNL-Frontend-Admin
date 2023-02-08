@@ -6,8 +6,8 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
 	onDeleteBoleta
-} from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
-import { useJornadaNoFormalStore } from '../hooks/useJornadaNoFormalStore';
+} from "../../store/module-preparacion/jornada/ThunksJornada";
+import { useJornadaStore } from '../hooks/useJornadaStore';
 const style = {
 	position: "absolute",
 	top: "50%",
@@ -21,10 +21,10 @@ const style = {
 	p: 4,
 };
 
-export const ModalEliminarBoleta = ({ modalDeleteStatus, closeModalDelete, openModalDelete, idBoleta, encabezadoBoleta }) => {
+export const ModalEliminarBoletaFormal = ({ modalDeleteStatus, closeModalDelete, openModalDelete, idBoleta, encabezadoBoleta }) => {
 	const dispatch = useDispatch();
 	const params = useParams();
-	const { status } = useJornadaNoFormalStore();
+	const { status } = useJornadaStore();
 	const onSave = () => {
         dispatch(onDeleteBoleta(idBoleta));
         closeModalDelete();

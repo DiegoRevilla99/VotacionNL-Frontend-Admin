@@ -258,8 +258,9 @@ export const SliceJornada = createSlice({
 			state.jornadaSelected.boletas = payload.boletas || [];
 		},
 		onAddBoleta: (state, { payload }) => {
-			state.jornadaSelected.boletas.push("PAYLOAD",payload);
-			console.log(state.jornadaSelected.boletas);
+			console.log("PAYLOAD", payload);
+			state.jornadaSelected.boletas.push(payload);
+			// console.log(state.jornadaSelected.boletas);
 		},
 		onFillBoletas: (state, { payload }) => {
 			console.log("fill boletas", payload);
