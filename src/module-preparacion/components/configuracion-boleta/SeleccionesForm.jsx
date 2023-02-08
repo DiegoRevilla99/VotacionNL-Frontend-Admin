@@ -10,7 +10,10 @@ import { Form, Formik } from "formik";
 import * as yup from "yup";
 import { makeStyles } from "@mui/styles";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { putCandVotoNFProvider } from "../../../providers/Micro-NoFormales/providerBoletas";
+import { putCandRegNF, putMaxMinNF } from "../../../store/module-preparacion/configuracion-boletaNF/thunksConfigBoletaNF";
+import { useParams } from "react-router-dom";
 
 let schema = yup.object().shape({
   max: yup
@@ -41,9 +44,10 @@ export const SeleccionesForm = ({
   maxC,
   cnr,
   vn,
-  onGuardar = () => {},
 }) => {
   const styles = useStyles();
+  const dispatch = useDispatch();
+  const { id } = useParams();
   const [cnrS, setCnrS] = useState(cnr);
   const [vnS, setVnS] = useState(vn);
 
@@ -58,13 +62,19 @@ export const SeleccionesForm = ({
   };
 
   const guardarSubmit = (valores) => {
-    const data = {
-      candidaturaNoRegistrada: cnrS,
-      mostrarVotoNulo: vnS,
-      ...valores,
+    const candRg = {
+      mostrarCandidaturasNoReg: cnrS,
+    mostrarVotoNulo:vnS
+  }
+    const maxMin = { 
+      minOpciones: valores.min,
+      maxOpciones: valores.max,
     };
 
-    onGuardar(data);
+    dispatch(putCandRegNF(id,candRg));
+    dispatch(putMaxMinNF(id,maxMin));
+
+    
   };
 
   return (
@@ -86,7 +96,7 @@ export const SeleccionesForm = ({
         }}
         // validate={validando}
         validationSchema={schema}
-        onSubmit={guardarSubmit}
+        onSubmit={(values)=>guardarSubmit(values)}
       >
         {({ touched, errors, handleBlur, handleChange, values }) => (
           <Form className={styles.fomi}>

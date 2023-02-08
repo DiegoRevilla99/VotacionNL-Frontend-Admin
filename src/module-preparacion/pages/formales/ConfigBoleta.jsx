@@ -17,10 +17,12 @@ import { useParams } from "react-router-dom";
 import { useBoleta } from "../../hooks/config-boleta/useBoleta";
 import { Representante } from "../../components/configuracion-boleta/formales/Representante";
 import { useCandidatos } from "../../../module-empadronamiento/hooks/useCandidatos";
+import { getCandidatos } from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
+import { useDispatch } from "react-redux";
 
 export const ConfigBoleta = memo(() => {
   const { id } = useParams();
-
+  const dispatch = useDispatch();
   const { boleta, errorBoleta, isLoadingBoleta} =useBoleta(id);
   const {candidatos,
     isLoadingCandidatos,
@@ -29,6 +31,11 @@ export const ConfigBoleta = memo(() => {
   useEffect(() => {
       console.log("cambio boleta info:",boleta)
   }, [boleta])
+
+  const updateCand =()=>{
+    console.log("Actualizando candi")
+    dispatch(getCandidatos(id));
+  }
      
   
 
@@ -58,6 +65,7 @@ export const ConfigBoleta = memo(() => {
         ) :  (
           
             <Representante
+            updateCand={updateCand}
             boletaInfo={boleta}
           ></Representante>
           

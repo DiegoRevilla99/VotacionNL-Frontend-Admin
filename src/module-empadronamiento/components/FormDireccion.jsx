@@ -22,10 +22,11 @@ let schema = yup.object().shape({
     .number()
     .typeError("Debe ser un número")
     .required("El número es necesario"),
-  cp: yup
-    .number()
-    .typeError("Debe ser un número")
-    .required("Codigo postal es necesario"),
+  cp: yup.string().matches(/^[0-9]+$/, "Solo numeros")
+.min(5, 'Deben ser 5 digitos')
+.max(5, 'Deben ser 5 digitos')
+.required("El código postas es necesario"),
+
   municipio: yup.string().required("Municipio es necesario"),
 });
 

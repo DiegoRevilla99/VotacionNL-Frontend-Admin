@@ -22,6 +22,7 @@ import { Agrupa } from "../Agrupa";
 import { AddCoalicion } from "../AddCoalicion";
 import { useCoaliciones } from "../../../hooks/config-boleta/useCoaliciones";
 import { useBoleta } from "../../../hooks/config-boleta/useBoleta";
+import { putCandRegNF } from "../../../../store/module-preparacion/configuracion-boletaNF/thunksConfigBoletaNF";
 
 const useStyles = makeStyles({
   hr: {
@@ -59,13 +60,11 @@ const boxOpciones = {
   mb: 3,
 };
 
-export const Representante = ({ boletaInfo, changeCandNoReg }) => {
+export const Representante = ({ boletaInfo }) => {
   const styles = useStyles();
+  const dispatch = useDispatch();
   const { id } = useParams();
 
-  //const { coaliciones, isLoadingCoaliciones } = useCoaliciones(id);
-
-  //const [modalCoalicion, setModalCoalicion] = useState(false);
   const [cnr, setCnr] = useState(false);
   const [vn, setVn] = useState(false);
 
@@ -81,13 +80,21 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
   // };
 
   const handleChangeCand = (event) => {
-    changeCandNoReg(event.target.checked);
     setCnr(event.target.checked);
   };
 
   const handleChangeVoto = (event) => {
     setVn(event.target.checked);
   };
+
+  const onGuardar=()=>{
+    console.log("guardando config")
+    const datasend={
+      mostrarCandidaturasNoReg: cnr,
+    mostrarVotoNulo:vn
+  }
+    dispatch(putCandRegNF(id,datasend))
+  }
 
   return (
     <>
@@ -126,8 +133,17 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
               label="Mostrar voto nulo"
             />
           </FormGroup>
+          
+          
         </Box>
-
+        <Button
+                  
+                  type="submit"
+                  variant="contained"
+                  onClick={onGuardar}
+                >
+                  Guardar
+                </Button>
         {/* <Box
           sx={{
             display: "flex",
@@ -174,7 +190,7 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
               justifyContent: "start",
             }}
           >
-            <Button
+            {/* <Button
               type="submit"
               className={styles.boton}
               variant="contained"
@@ -186,7 +202,7 @@ export const Representante = ({ boletaInfo, changeCandNoReg }) => {
             >
               <ReplyAllIcon />
               Regresar
-            </Button>
+            </Button> */}
           </Box>
         </Box>
       </Stack>

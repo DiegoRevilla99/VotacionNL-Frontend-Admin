@@ -55,10 +55,6 @@ export const getCoaliciones = (idBoleta) => {
 
 
 export const postCoalición = (idboleta,idcandidato,datainfo, funcion) => {
-    console.log("id boleta: ",idboleta)
-    console.log("id candidato: ",idcandidato)
-    console.log("informacion post: ",datainfo)
-    console.log(datainfo)
     return async (dispatch, getState) => {
 
         dispatch(onToastCheckingOperation("Guardando Coalicion..."));
@@ -101,14 +97,16 @@ export const deleteCoalicion = (datainfo, funcion) => {
 }
 
 
-export const putCoalición = (id, datainfo, funcion) => {
+export const putCoalición = (idBoleta,idCandidato,id, datainfo, funcion) => {
     console.log("informacion put")
-    console.log(id)
+    console.log("boleta: ",idBoleta)
+    console.log("candidato: ",idCandidato)
+    console.log("coali: ",id)
     console.log(datainfo)
     return async (dispatch, getState) => {
         dispatch(onToastCheckingOperation("Editando Coalicion..."));
         dispatch(onCheckingOperation());
-        const { ok, data, errorMessage } = await putCoalicionProvider(id,datainfo);
+        const { ok, data, errorMessage } = await putCoalicionProvider(idBoleta,idCandidato,id,datainfo);
 
         if (ok) {
             dispatch(onSuccessOperation());

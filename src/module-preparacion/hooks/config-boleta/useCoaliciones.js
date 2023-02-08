@@ -9,6 +9,10 @@ export const useCoaliciones = (id) => {
         (state) => state.configBoleta
     );
 
+    const update=()=>{
+        //dispatch(getCoaliciones(id));
+    }
+
     useEffect(() => {
         dispatch(getCoaliciones(id));
 

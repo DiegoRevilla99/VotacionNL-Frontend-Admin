@@ -81,6 +81,7 @@ export const ModalCoalicion = memo(
     },
     idBoleta = null,
     coalicion = null,
+    actualizarC,
   }) => {
     const styles = useStyles();
     const dispatch = useDispatch();
@@ -108,6 +109,7 @@ export const ModalCoalicion = memo(
     
 
     const onSelectPartido = (info) => {
+      console.log(info)
       setCandidato(info);
     };
 
@@ -156,7 +158,8 @@ export const ModalCoalicion = memo(
 
     const afterUpdate = () => {
       console.log("Actualizando...");
-      dispatch(getCoaliciones(id));
+      //dispatch(getCoaliciones(id));
+      actualizarC(),
       cerrarM();
     };
 
@@ -183,6 +186,8 @@ export const ModalCoalicion = memo(
 
             if (coalicion) {
               actualizar(
+                id,
+                candidato.idCandidato,
                 coalicion.coalicionModel.claveCoalicion,
                 data,
                 afterUpdate

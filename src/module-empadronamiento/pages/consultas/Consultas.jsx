@@ -20,6 +20,7 @@ import { getConsultasConfig } from "../../../store/module-empadronamiento/consul
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import { Searcher } from "../../components/Searcher";
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 
 
 export const Consultas = () => {
@@ -63,12 +64,12 @@ export const Consultas = () => {
       flex: 4,
       sortable: true,
     },
-    { field: "inicioEmpadronamiento", headerName: "Inicio", flex: 2 },
-    { field: "finEmpadronamiento", headerName: "Fin", flex: 2 },
+    { field: "inicioEmpadronamiento", headerName: "Inicio", flex: 1 },
+    { field: "finEmpadronamiento", headerName: "Fin", flex: 1 },
     {
       field: "status",
       headerName: "Estado",
-      flex: 2,
+      flex: 1,
       renderCell: ({ row }) => {
         return (
           <Box sx={{}}>
@@ -119,7 +120,7 @@ export const Consultas = () => {
     {
       field: "empadronamiento",
       headerName: "Empadronamiento",
-      flex: 3,
+      flex: 2,
       sortable: false,
       disableColumnMenu: true,
       renderCell: ({ row }) => {
@@ -127,9 +128,11 @@ export const Consultas = () => {
           <Stack spacing={2} direction="row">
             <Button
               disabled={row.status === "noiniciada"}
+              color={row.status === "activo" ? "success": "primary"}
               variant="outlined"
+              sx={{width:"120px"}}
               onClick={(e) => goTo(row.idJornada)}
-              startIcon={<BallotIcon />}
+              startIcon={row.status === "activo"?<AppRegistrationIcon/>:<BallotIcon />}
             >
               {(row.status === "activo") | (row.status === "noiniciada")
                 ? "REALIZAR"
@@ -177,6 +180,7 @@ export const Consultas = () => {
             alignItems: "center",
             background: "#fff",
             boxShadow: 1,
+            pl:3,
             borderRadius: "20px",
             mt: 0,
 

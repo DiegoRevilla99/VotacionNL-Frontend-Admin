@@ -66,7 +66,7 @@ const boxOpciones = {
 
 export const Comite = ({ boletaInfo }) => {
   const styles = useStyles();
-  const dispatch = useDispatch();
+  
   const { id } = useParams();
   const [cnr, setCnr] = useState(false);
   const [vn, setVn] = useState(false);
@@ -75,11 +75,7 @@ export const Comite = ({ boletaInfo }) => {
     setModalCoalicion(!modalCoalicion);
   };
 
-  const guardarOpciones = (data) => {
-    const newData = { idBoleta: id, modalida: data };
-    console.log(newData);
-    dispatch(putComite(newData));
-  };
+ 
 
   return (
     <>
@@ -106,7 +102,6 @@ export const Comite = ({ boletaInfo }) => {
             maxC={boletaInfo.maxOpciones}
             cnr={boletaInfo.mostrarCandidaturasNoReg}
             vn={boletaInfo.mostrarVotoNulo}
-            onGuardar={guardarOpciones}
           ></SeleccionesForm>
         </Box>
         <Box sx={botones}>

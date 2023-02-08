@@ -60,12 +60,33 @@ const useStyles = makeStyles({
 
 let validationCurp =
   /^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$/;
+
+
 const validando = (values, props) => {
   // console.log(values.curp);
   const errors = {};
   if (!validationCurp.test(values.curp.toUpperCase())) {
     errors.curp = "Esta curp no es valida";
   }
+
+  if(validationCurp.test(values.curp.toUpperCase())&& values.nombreVotante.trim().length>0){
+    if(values.nombreVotante.toUpperCase().charAt(0)!==values.curp.charAt(3)) errors.nombreVotante = "La inical debe ser '"+values.curp.charAt(3)+"'";
+  }
+  if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoPVotante.trim().length>1){
+    if(values.apellidoPVotante.toUpperCase().charAt(1)!==values.curp.charAt(1)) errors.apellidoPVotante = "La segunda letra debe ser '"+values.curp.charAt(1)+"'";
+  }
+
+  if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoPVotante.trim().length>0){
+    if(values.apellidoPVotante.toUpperCase().charAt(0)!==values.curp.charAt(0)) errors.apellidoPVotante = "La inical debe ser '"+values.curp.charAt(0)+"'";
+  }
+
+  
+
+  if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoMVotante.trim().length>0){
+    if(values.apellidoMVotante.toUpperCase().charAt(0)!==values.curp.charAt(2)) errors.apellidoMVotante = "La inicial debe ser '"+values.curp.charAt(2)+"'";
+  }
+
+
   return errors;
 };
 
@@ -99,6 +120,44 @@ const getGender = (curp = "") => {
 };
 
 const FechaNacimientoField = ({ name }) => {
+  const {
+    values: {
+      curp,
+      nombreVotante,
+      apellidoMVotante,
+      apellidoPVotante,
+      fechaNacimiento,
+    },
+    genero,
+    touched,
+    setFieldValue,
+  } = useFormikContext();
+
+  const [field, meta] = useField({ name });
+
+  useEffect(() => {
+    // set the value of textC, based on textA and textB
+    if (curp) {
+      const fecha = getDateBirth(curp);
+      setFieldValue(name, fecha);
+    }
+  }, [curp, touched.curp, setFieldValue, name]);
+
+  return (
+    <>
+      <Typography>FECHA NACIMIENTO</Typography>
+      <DateField
+        name="fechaNacimiento"
+        value={fechaNacimiento}
+        // onChange={handleChange}
+        disabled={true}
+      ></DateField>
+      {!!meta.touched && !!meta.error && <div>{meta.error}</div>}
+    </>
+  );
+};
+
+const NombreField = ({ name }) => {
   const {
     values: {
       curp,
@@ -225,16 +284,16 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
       onSubmit={(valores) => {
         const info = { ...valores };
         info.fechaNacimiento = new Date(valores.fechaNacimiento).toISOString();
-        info.nombreVotante = info.nombreVotante.trim();
-        info.apellidoMVotante = info.apellidoMVotante.trim();
-        info.apellidoPVotante = info.apellidoPVotante.trim();
+        info.nombreVotante = info.nombreVotante.trim().toUpperCase();
+        info.apellidoMVotante = info.apellidoMVotante.trim().toUpperCase();
+        info.apellidoPVotante = info.apellidoPVotante.trim().toUpperCase();
         info.validacion = false;
 
         onNext({ votanteModel: info });
       }}
     >
       {({ touched, errors, handleBlur, handleChange, values }) => (
-        <Form className={styles.fomi}>
+        <Form autoComplete="off" className={styles.fomi}>
           <Box
             sx={{
               height: "100%",
@@ -266,7 +325,7 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
                   name="curp"
                   id="curp"
                   className={styles.textField}
-                  value={values.curp}
+                  value={values.curp.toUpperCase()}
                   onChange={(e) => {
                     e.target.value = e.target.value.trim();
                     handleChange(e);
@@ -294,7 +353,7 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
               name="nombreVotante"
               id="nombreVotante"
               className={styles.textField}
-              value={values.nombreVotante}
+              value={values.nombreVotante.toUpperCase()}
               onChange={handleChange}
               onBlur={handleBlur}
               onPaste={handleChangeD}
@@ -313,7 +372,7 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
               name="apellidoPVotante"
               id="apellidoPVotante"
               className={styles.textField}
-              value={values.apellidoPVotante}
+              value={values.apellidoPVotante.toUpperCase()}
               onChange={handleChange}
               onBlur={handleBlur}
               onPaste={handleChangeD}
@@ -334,7 +393,7 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
               name="apellidoMVotante"
               id="apellidoMVotante"
               className={styles.textField}
-              value={values.apellidoMVotante}
+              value={values.apellidoMVotante.toUpperCase()}
               onChange={handleChange}
               onBlur={handleBlur}
               onPaste={handleChangeD}

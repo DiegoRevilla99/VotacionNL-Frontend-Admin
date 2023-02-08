@@ -87,7 +87,7 @@ export const RegistroJornadaNoFormal = () => {
 
 	// MÉTODO PARA IR A LA PAGINA DE CONFIGURACIÓN DEL REGISTRO
 	const handleConfig = (id) => {
-		// navigate("/preparacion/consulta/config/" + id);
+		navigate("/preparacion/jornadaNoFormal/config/" + id);
 		// dispatch(onGetConfig(id));
 	};
 

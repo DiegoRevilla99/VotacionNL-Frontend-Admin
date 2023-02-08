@@ -10,7 +10,7 @@ import {
     onToastSuccessOperation,
 } from "../../ui/uiSlice";
 
-import { getBoletaProvider } from "../../../providers/Micro-NoFormales/providerBoletas";
+import { getBoletaProvider, putCandVotoNFProvider, putMaxMinNFProvider } from "../../../providers/Micro-NoFormales/providerBoletas";
 import { endLoadingBoleta, onCheckingOperation, onErrorOperation, onSuccessOperation, setAsociaciones, setBoleta, setCandidatos, startLoadingAsociaciones, startLoadingBoleta, startLoadingCandidatos } from "./configBoletaNFSlice";
 import { getCandidatosProviderNF } from "../../../providers/Micro-NoFormales/providerCandidatos";
 
@@ -32,6 +32,46 @@ export const getBoletaNF = (idBoleta) => {
     }
 }
 
+//EDIT cand y voto nullo
+export const putMaxMinNF = (idBoleta,datasend) => {
+    console.log("entre MaxMinNF")
+    return async (dispatch, getState) => {
+        dispatch(onToastCheckingOperation("Editando..."));
+        dispatch(onCheckingOperation());
+        // dispatch(startLoadingBoleta());
+        const { ok, data, errorMessage } = await putMaxMinNFProvider(idBoleta,datasend);
+
+        if (ok) {
+            dispatch(onSuccessOperation());
+            dispatch(onToastSuccessOperation({ successMessage: "Se  actualizó" }));
+            funcion();
+        } else {
+            dispatch(onErrorOperation());
+            dispatch(onToastErrorOperation({ errorMessage: "No se actualizó" }));
+        }
+
+    }
+}
+
+export const putCandRegNF = (idBoleta,datasend) => {
+    console.log("putCandRegNF")
+    return async (dispatch, getState) => {
+        dispatch(onToastCheckingOperation("Editando..."));
+        dispatch(onCheckingOperation());
+        // dispatch(startLoadingBoleta());
+        const { ok, data, errorMessage } = await putCandVotoNFProvider(idBoleta,datasend);
+
+        if (ok) {
+            dispatch(onSuccessOperation());
+            dispatch(onToastSuccessOperation({ successMessage: "Se  actualizó" }));
+            funcion();
+        } else {
+            dispatch(onErrorOperation());
+            dispatch(onToastErrorOperation({ errorMessage: "No se actualizó" }));
+        }
+
+    }
+}
 
 
 export const getCandidatosNF = (idBoleta) => {

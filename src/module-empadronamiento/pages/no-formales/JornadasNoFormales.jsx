@@ -19,7 +19,7 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import { Searcher } from "../../components/Searcher";
-
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 
 export const JornadasNoFormales = () => {
   let location = useLocation();
@@ -128,8 +128,9 @@ export const JornadasNoFormales = () => {
             <Button
               disabled={row.status === "noiniciada"}
               variant="outlined"
+              sx={{width:"120px"}}
               onClick={(e) => goTo(row.idEleccion)}
-              startIcon={<BallotIcon />}
+              startIcon={row.status === "activo"?<AppRegistrationIcon/>:<BallotIcon />}
             >
               {(row.status === "activo") | (row.status === "noiniciada")
                 ? "REALIZAR"
@@ -178,7 +179,7 @@ export const JornadasNoFormales = () => {
             boxShadow: 1,
             borderRadius: "20px",
             mt: 0,
-
+            pl:3,
             width: "95%",
             height: "calc(100% - 80px)",
           }}

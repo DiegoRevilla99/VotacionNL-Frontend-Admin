@@ -6,16 +6,16 @@ import { putCoalición } from "../../../store/module-preparacion/configuracion-b
 import { ModalCoalicion } from "./ModalCoalicion";
 
 export const EditCoalicion = memo(
-  ({ isOpen = false, abrirCerrarModal = () => {}, coalicion = null }) => {
+  ({ isOpen = false, abrirCerrarModal = () => {}, coalicion = null,actualizar }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const enviar = (id, data, funcion) => {
-      dispatch(putCoalición(id, data, funcion));
+    const enviar = (idBoleta,idCandidato,idC, data, funcion) => {
+      dispatch(putCoalición(idBoleta,idCandidato, idC,data, funcion));
     };
 
-    useEffect(() => {
-     console.log("desdeEdit")
-    }, [])
+    /* useEffect(() => {
+     console.log("Coalicion Edit: ",coalicion)
+    }, [isOpen]) */
      
 
     // const [coalicions, setCoalicions] = useState(coalicion);
@@ -25,6 +25,7 @@ export const EditCoalicion = memo(
         isOpen={isOpen}
         abrirCerrarModal={abrirCerrarModal}
         actualizar={enviar}
+        actualizarC={actualizar}
       ></ModalCoalicion>
     );
   }
