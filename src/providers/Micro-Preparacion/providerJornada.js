@@ -152,94 +152,73 @@ export const getBoletaData = async (idTicket) => {
 };
 
 
-export const createBoleta = async (data, idJornadaElectoral, candidatoAndSuplente, partidos) => {
+export const createBoletaFormal = async (data, idJornadaElectoral, partidos) => {
 
 	try {
 		console.log("DATA PROVIDER", data); // si esta
 		console.log("ID JORNADA ELECTORAL", idJornadaElectoral); // si esta
 		// console.log("CANDIDATO AND SUPLENTE", candidatoAndSuplente);
-		// console.log("PARTIDOS", partidos); // si esta
+		console.log("PARTIDOS", partidos); // si esta
+		console.log("candidato del partido", partidos.candidatosPartido);
 		// Boletas
-
 		const boletaInformacion = {
-			nombreEleccion: data.nombreCandidatura,
-			distrito: data.distritoElectoral,
-			municipio: data.municipio,
-			primerFirmanteNombre: data.primerFirmante,
-			primerFirmanteCargo: data.cargoPrimerFirmante,
-			segundoFirmanteNombre: data.segundoFirmante,
-			segundoFirmanteCargo: data.cargoSegundoFirmante,
-			modalidadVotacionModel: {
-				idModalidadVotacion: 4,
+			estructuraBoletaModel: {
+				nombreEleccion: data.nombreCandidatura,
+				distrito: data.distritoElectoral,
+				municipio: data.municipio,
+				primerFirmanteNombre: data.primerFirmante,
+				primerFirmanteCargo: data.cargoPrimerFirmante,
+				segundoFirmanteNombre: data.segundoFirmante,
+				segundoFirmanteCargo: data.cargoSegundoFirmante,
+				modalidadVotacionModel: {
+					idModalidadVotacion: 1,
+				},
+				jornadaModel: {
+					idJornada: idJornadaElectoral,
+				},
 			},
-			jornadaModel: {
-				idJornada: idJornadaElectoral,
-			},
+			partidos: []
 		}
-		const respuesta = await jornadasAPI.post("jornada/electoral/estructuraboleta", 
+		partidos.forEach(partido => {
+			const boletaPartido = {
+			  partidoModel: {
+				clavePartido: partido.clavePartido,
+				nombre: partido.nameParty,
+				siglas: partido.siglasParty,
+				emblema: partido.emblemParty,
+				logo: partido.fotografiaParty,
+				status: partido.statusPary,
+			  },
+			  candidatoModel: {
+				claveElectoral: partido.candidatosPartido[0].claveElectoralCandidato,
+				apellidoPCandidato: partido.candidatosPartido[0].apellidoPCandidato,
+				apellidoMCandidato: partido.candidatosPartido[0].apellidoMCandidato,
+				nombreCandidato: partido.candidatosPartido[0].nombreCandidato,
+				fotoCandidato: partido.candidatosPartido[0].fotografiaCandidato,
+				seudonimoCandidato: partido.candidatosPartido[0].seudonimoCandidato,
+				fechaNacimiento: partido.candidatosPartido[0].fechaNacimientoCandidato,
+				genero: partido.candidatosPartido[0].generoCandidato,
+			  },
+			  suplenteModel: {
+				claveElectoral: partido.candidatosPartido[0].claveElectoralSuplente,
+				apellidoPSuplente: partido.candidatosPartido[0].apellidoPSuplente,
+				apellidoMSuplente: partido.candidatosPartido[0].apellidoMSuplente,
+				nombreSuplente: partido.candidatosPartido[0].nombreSuplente,
+				fotoSuplente: partido.candidatosPartido[0].fotografiaSuplente,
+				seudonimoSuplente: partido.candidatosPartido[0].seudonimoSuplente,
+				fechaNacimiento: partido.candidatosPartido[0].fechaNacimientoSuplente,
+				genero: partido.candidatosPartido[0].generoSuplente,
+			  }
+			};
+			boletaInformacion.partidos.push(boletaPartido);
+		  });
+		  
+
+		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/boletapartidos
+		const respuesta = await jornadasAPI.post("jornada/electoral/boletapartidos", 
 			boletaInformacion
 		);
-		console.log("RESPUESTA PETICIÓN", respuesta);
-
-		const { data: candidatoSuplenteRespData } = await jornadasAPI.post(
-			"jornada/electoral/candidato",
-			{
-				// API FORM 		// MY FORM
-				candidatoModel: {
-					claveElectoral: candidatoAndSuplente[0].claveElectoralCandidato, // esto es new
-					apellidoPCandidato: candidatoAndSuplente[0].apellidoPCandidato,
-					apellidoMCandidato: candidatoAndSuplente[0].apellidoMCandidato,
-					nombreCandidato: candidatoAndSuplente[0].nombreCandidato,
-					fotoCandidato: candidatoAndSuplente[0].fotografiaCandidato,
-					seudonimoCandidato: candidatoAndSuplente[0].seudonimoCandidato,
-					fechaNacimiento: candidatoAndSuplente[0].fechaNacimientoCandidato,
-					genero: candidatoAndSuplente[0].generoCandidato,
-				},
-				suplenteModel: {
-					claveElectoral: candidatoAndSuplente[0].claveElectoralSuplente, // esto es new
-					apellidoPSuplente: candidatoAndSuplente[0].apellidoPSuplente,
-					apellidoMSuplente: candidatoAndSuplente[0].apellidoMSuplente,
-					nombreSuplente: candidatoAndSuplente[0].nombreSuplente,
-					fotoSuplente: candidatoAndSuplente[0].fotografiaSuplente,
-					seudonimoSuplente: candidatoAndSuplente[0].seudonimoSuplente,
-					fechaNacimiento: candidatoAndSuplente[0].fechaNacimientoSuplente,
-					genero: candidatoAndSuplente[0].generoSuplente,
-				},
-			}
-		);
-
-		console.log("Data de respuesta candidato con suplente", candidatoSuplenteRespData);
-		console.log("ID DEL CANDIDATO", candidatoSuplenteRespData.data.candidatoModel.idCandidato);
-		// Partido
-		const { data: partidoRespData } = await jornadasAPI.post(
-			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/partido/candidato/DIRUAL01
-			"jornada/electoral/partido/" + respuesta.data.data.idEstructuraBoleta,
-			{
-				// API FORMAT || MY FORMAT
-				clavePartido:partidos[0].clavePartido,
-				nombre: partidos[0].nameParty,
-				siglas: partidos[0].siglasParty,
-				emblema: partidos[0].emblemParty,
-				logo: partidos[0].fotografiaParty,
-				status: partidos[0].statusPary,
-				estructuraBoletaModel:{
-					idEstructuraBoleta: respuesta.data.data.idEstructuraBoleta,
-				},
-				// candidatoModel:{
-				// 	idCandidato: candidatoSuplenteRespData.data.candidatoModel.idCandidato,
-				// },
-				// candidatoModel:{
-				// 	idCandidato: candidatoSuplenteRespData.data.candidatoModel.idCandidato,
-				// },
-				// candidatoModel: 
-				// 	candidatos.map(candidato => ({
-				// 		idCandidato: candidato.idCandidato
-				// }))
-			}
-		);
-		console.log("Data de respuesta ", partidoRespData);
-			// console.log("ID DE LA BOLETA",respuesta.idEstructuraBoleta);
-		return { ok: true, idEstructuraBoleta: respuesta.data.data.idEstructuraBoleta };
+		return { ok: true, idEstructuraBoleta: respuesta.data.data.estructuraBoletaModel.idEstructuraBoleta };
 	} catch (error) {
 		console.log("ERROR", error);
 		return { ok: false, errorMessage: error.message };

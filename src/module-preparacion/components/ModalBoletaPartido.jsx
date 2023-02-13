@@ -135,7 +135,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 				nameParty: "",	//Text
 				siglasParty: "",//Text
 				emblemParty: "",
-				fotografiaParty: "",
+				fotografiaParty: "partido.jpg",
 				clavePartido: "",
 				statusParty: switchValue,
 				candidatosPartido: [],

@@ -85,7 +85,6 @@ export const SliceJornada = createSlice({
 			console.log("payload SLICE", payload);
 			state.candidatoandSuplentes.push({
 				id: payload?.id,
-				statusParty: payload?.statusParty, // Esto es nuevo
 				apellidoPCandidato: payload?.apellidoPCandidato,
 				apellidoMCandidato: payload?.apellidoMCandidato,
 				nombreCandidato: payload?.nombreCandidato,
@@ -202,7 +201,6 @@ export const SliceJornada = createSlice({
 			);
 			// candidatoandSuplente.idCandidato = payload?.idCandidate;
 			candidatoandSuplente.id = payload?.id;
-			candidatoandSuplente.statusParty = payload?.statusParty;
 			candidatoandSuplente.apellidoPCandidato = payload?.apellidoPCandidate;
 			candidatoandSuplente.apellidoMCandidato = payload?.apellidoMCandidate;
 			candidatoandSuplente.nombreCandidato = payload?.nameCandidate;

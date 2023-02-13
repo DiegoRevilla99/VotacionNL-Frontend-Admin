@@ -169,7 +169,6 @@ export const useJornadaStore = () => {
 
 	const addCandidatoAndSuplente = (
 		id,
-		statusParty,
 		apellidoPCandidato,
 		apellidoMCandidato,
 		nombreCandidato,
@@ -190,7 +189,6 @@ export const useJornadaStore = () => {
 		dispatch(
 			onAddCandidatoAndSuplente({
 				id,
-				statusParty,
 				apellidoPCandidato,
 				apellidoMCandidato,
 				nombreCandidato,
@@ -236,7 +234,6 @@ export const useJornadaStore = () => {
 
 	const updateCandidatoAndSuplente = (
 		id,
-		statusParty,
 		apellidoPCandidate,
 		apellidoMCandidate,
 		nameCandidate,
@@ -257,7 +254,6 @@ export const useJornadaStore = () => {
 		dispatch(
 			onUpdateCandidatoAndSuplente({
 				id,
-				statusParty,
 				apellidoPCandidate,
 				apellidoMCandidate,
 				nameCandidate,

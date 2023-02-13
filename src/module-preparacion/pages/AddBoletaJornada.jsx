@@ -215,20 +215,6 @@ export const AddBoletaJornada = () => {
 		navigate("/preparacion/jornada/"+ params.id);
 	};
 
-	// const onSubmit = (values) => {
-	// 	dispatch(
-	// 		onCreateBoleta( values, params.id, candidatoandSuplentes, ()=>{
-	// 			navigate("/preparacion/jornada/"+ params.id);
-	// 		})
-	// 	);
-	// };
-	// const onSubmit = (values) => {
-	// 	dispatch(
-	// 		onCreateBoleta( values, params.id, candidatoandSuplentes, partidos, ()=>{
-	// 			navigate("/preparacion/jornada/"+ params.id);
-	// 		})
-	// 	);
-	// };
 
 	const onSubmit = (values) => {
 		if(Object.values(jornadaSelected.boletaSelected).length === 0){
@@ -237,9 +223,6 @@ export const AddBoletaJornada = () => {
 					onCreateBoleta( values, params.id, candidatoandSuplentes, partidos, ()=>{
 						navigate("/preparacion/jornada/"+params.id);
 					})
-					// onCreateBoleta( values, params.id, candidatoandSuplentes, asociaciones, ()=>{
-					// 	navigate("/preparacion/jornada/"+params.id);
-					// })
 				) 
 		}else{
 			dispatch(
@@ -475,38 +458,6 @@ export const AddBoletaJornada = () => {
 							)}
 							</Box>
 						  </>
-						{/* <AddPartidosMod  
-							handleOpenModal={handleOpenMatchModal}
-							handleOpenDeletePartidoModal={handleOpenDeletePartidoModal}
-							status={status}
-						/>  */}
-						{/* <Grid item xs={12} md={6} lg={4}>
-							<Button
-								onClick={handleOpenAsociacionModal}
-								variant="contained"
-								size="large"
-								
-								disabled={status === "checking"}
-								sx={{
-									width: "100%",
-									height: "100%",
-									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
-									transition: "all 0.5s ease",
-									backgroundColor: "#511079",
-									fontSize: { xl: "14px", lg: "14px", sm: "15px", xs: "15px" },
-									borderRadius: "25px 25px 25px 25px",
-									"&:hover": {
-										backgroundColor: "#7E328B !important",
-										transform: "translate(-5px, -5px)",
-										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
-									},
-								}}
-							>
-								Afiliar participantes a partido
-							</Button>
-						</Grid> */}
-
-						{/* <DataGridRowGrouping/> */}
 
 					</Grid>
 					<Grid mt={"1rem"} container direction="row" justifyContent="flex-end" spacing={2}>
@@ -562,7 +513,6 @@ export const AddBoletaJornada = () => {
 			<ModalBoletaPartido statusMatchModal={statusMatchModal} handleToggleModal={handleCloseMatchModal} />
 			{/* MODAL PARA REGISTRAR A LOS candidatoandSuplentes Y SUPLENTES */}
 			<ModalRegisterCS statusRegisterModal={statusRegisterModal} handleToggleModal={handleCloseRegisterModal} />
-
 			{/* MODAL PARA CONFIRMAR LA ELIMINACIÓN */}
 			<ModalEliminarPartido statusDeletePartidoModal={statusDeletePartidoModal} handleToggleModal={handleCloseDeletePartidoModal} />
 			<ModalEliminarCandidato statusDeleteCandidatoModal={statusDeleteCandidatoModal} handleToggleModal={handleCloseDeleteCandidatoModal} />

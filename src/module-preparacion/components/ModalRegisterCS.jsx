@@ -96,7 +96,6 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 			const fechaNacimientoSuplente = values.fechaNacimientoSuplentes.toISOString();
 			addCandidatoAndSuplente(
 				candidatoandSuplentes.length,
-				values.statusParty,
 				values.apellidoPCandidato,
 				values.apellidoMCandidato,
 				values.nombreCandidato,
@@ -120,7 +119,6 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		} else {
 			updateCandidatoAndSuplente(
 				candidatoandSuplenteSelected.length,
-				values.statusParty,
 				values.apellidoPCandidato,
 				values.apellidoMCandidato,
 				values.nombreCandidato,
@@ -204,12 +202,11 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 								Object.values(candidatoandSuplenteSelected).length === 0
                                 ? 	{
 									// CANDIDATO
-									statusParty: false,
 									claveElectoralCandidato: "",
 									apellidoPCandidato: "",
 									apellidoMCandidato: "", 
 									nombreCandidato: "", 
-									fotografiaCandidato: "",
+									fotografiaCandidato: "candidato.jpg",
 									seudonimoCandidato: "",//Text
 									fechaNacimientoCandidatos: "",//Date
 									generoCandidato: "",//Text
@@ -218,7 +215,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 									apellidoPSuplente: "",
 									apellidoMSuplente: "", 
 									nombreSuplente: "", 
-									fotografiaSuplente: "",
+									fotografiaSuplente: "suplente.jpg",
 									seudonimoSuplente: "",//Text
 									fechaNacimientoSuplentes: "",//Date
 									generoSuplente: "",//Text

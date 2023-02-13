@@ -94,17 +94,12 @@ const validationSchema = object({
 
 export const AddBoletaJornadaGenerica = () => {
 	const styles = useStyles();
-	const [modalAsociacion, setModalAsociacion] = useState(false);
-	const abrirCerrarModalAsociacion = () => {
-		setModalAsociacion(!modalAsociacion);
-	};
-	// const { id } = useParams();
-	
+
+
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const params = useParams();
 	
-	// const { asociaciones, isLoadingAsociaciones } = useAsociaciones(params.id);
 	const { 
 		status,
 		candidatos,

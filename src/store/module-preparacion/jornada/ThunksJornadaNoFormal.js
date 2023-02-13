@@ -66,6 +66,7 @@ export const onGetBoletasNoFormales = (idJornada, navigate = () => {} ) => {
     return async (dispatch) => {
         dispatch(onCheckingOperation());
         const {ok, data, errorMessage } = await getBoletasJornadaNoFormal(idJornada);// PROVIDER
+        console.log("retorno del back en boletas",data);  
         if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onSetBoletasSelectedNull());
