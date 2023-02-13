@@ -110,6 +110,7 @@ export const SliceJornadaNoFormal = createSlice({
                     nombreAsociacion: payload?.nombreAsociacion,
                     emblema: payload?.emblema,
                     logo: payload?.logo,
+                    candidatosAsociacion: payload?.candidatosAsociacion,
                 });
                 return;
             }
@@ -119,6 +120,7 @@ export const SliceJornadaNoFormal = createSlice({
                     nombreAsociacion: asociacion?.nombreAsociacion,
                     emblema: asociacion?.emblema,
                     logo: asociacion?.logo,
+                    candidatosAsociacion: asociacion?.candidatosAsociacion,
                 });
             });
             
@@ -136,6 +138,7 @@ export const SliceJornadaNoFormal = createSlice({
             asociacion.nombreAsociacion = payload?.nombreAsociacion;
             asociacion.emblema = payload?.emblema;
             asociacion.logo = payload?.logo;
+            asociacion.candidatosAsociacion = payload?.candidatosAsociacion;
         },
         onSetAsociacionSelectedNull: (state, { payload }) => {
             state.asociacionesSelected = {};
@@ -158,7 +161,7 @@ export const SliceJornadaNoFormal = createSlice({
         onDeleteJornadaData: (state, { payload }) => {
             console.log('ELIMIANDO EN EL SLIDE', state.jornadasNoFormalesData);
             const id = state.jornadasNoFormalesData.findIndex(
-            (consulta) => consulta.idJornada === payload
+            (consulta) => consulta.idEleccion === payload
             );
             state.jornadasNoFormalesData.splice(id, 1);
         },
@@ -169,17 +172,17 @@ export const SliceJornadaNoFormal = createSlice({
             state.jornadaNoFormalSelected.boletasNoFormales =
             payload.boletasNoFormales || [];
 
-            console.log('jornadaNoFormalSelected', state.jornadaNoFormalSelected);
-            console.log('id', state.jornadaNoFormalSelected.id);
-            console.log('title', state.jornadaNoFormalSelected.title);
-            console.log('boletasNoFormales', state.jornadaNoFormalSelected.boletasNoFormales);
+            // console.log('jornadaNoFormalSelected', state.jornadaNoFormalSelected);
+            // console.log('id', state.jornadaNoFormalSelected.id);
+            // console.log('title', state.jornadaNoFormalSelected.title);
+            // console.log('boletasNoFormales', state.jornadaNoFormalSelected.boletasNoFormales);
         },
 
         // Boletas
         onDeleteBoletaData: (state, { payload }) => {
             console.log('ELIMIANDO EN EL SLIDE', payload);
             const id = state.jornadaNoFormalSelected.boletasNoFormales.listBoletas.findIndex(
-                (consulta) => consulta.idBoleta === payload
+                (consulta) => consulta.idEstructuraBoleta === payload
             );
             state.jornadaNoFormalSelected.boletasNoFormales.listBoletas.splice(id, 1);
         },

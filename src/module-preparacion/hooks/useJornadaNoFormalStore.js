@@ -3,7 +3,7 @@ import {
     onAddAsociacion,
     onAddCandidato, onAddJornadasNoFormales, onCheckingOperation, onDeleteAsociacion, onDeleteCandidato, onEditAsociacion, onEditBoleta, onEditCandidato, onErrorOperation, onFillJornadasNoFormalesData, onOffOperation,
     onSetAsociacionSelectedNull,
-    onSetCandidatoNull, onSetCandidatoSelectedNull, onSetPartidoSelectedNull, onSuccessOperation, onUpdateCandidato
+    onSetCandidatoNull, onSetCandidatoSelectedNull, onSetPartidoSelectedNull, onSuccessOperation, onUpdateAsociacion, onUpdateCandidato
 } from "../../store/module-preparacion/jornada/SliceJornadaNoFormal";
 
 export const useJornadaNoFormalStore = () => {
@@ -101,6 +101,7 @@ export const useJornadaNoFormalStore = () => {
         nombreAsociacion,
         emblema,
         logo,
+        candidatosAsociacion,
     ) => {
         dispatch(
             onAddAsociacion({
@@ -108,6 +109,7 @@ export const useJornadaNoFormalStore = () => {
                 nombreAsociacion,
                 emblema,
                 logo,
+                candidatosAsociacion,
             })
         );
     };
@@ -136,7 +138,21 @@ export const useJornadaNoFormalStore = () => {
             generoCandidate,
         }));
     };
-
+    const updateAsociacion = (
+        id,
+        nameAsociacion,
+        emblema,
+        picture,
+        candidatosAsociacion,
+    ) => {
+        dispatch( onUpdateAsociacion({
+            id,
+            nameAsociacion,
+            emblema,
+            picture,
+            candidatosAsociacion,
+        }));
+    };
    
     // JORNADAS NO FORMALES
 
@@ -178,7 +194,7 @@ export const useJornadaNoFormalStore = () => {
         fillJornadasNoFormalesData,
         setBoletasSelectedNull,
         setCandidatosSelectedNull,
-
+        updateAsociacion,
         setAsociacionesSelectedNull,
         addAsociacion,
 	};

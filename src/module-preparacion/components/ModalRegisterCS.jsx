@@ -96,6 +96,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 			const fechaNacimientoSuplente = values.fechaNacimientoSuplentes.toISOString();
 			addCandidatoAndSuplente(
 				candidatoandSuplentes.length,
+				values.statusParty,
 				values.apellidoPCandidato,
 				values.apellidoMCandidato,
 				values.nombreCandidato,
@@ -119,6 +120,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		} else {
 			updateCandidatoAndSuplente(
 				candidatoandSuplenteSelected.length,
+				values.statusParty,
 				values.apellidoPCandidato,
 				values.apellidoMCandidato,
 				values.nombreCandidato,
@@ -199,26 +201,47 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 
 						<Formik
 							initialValues={
-                                        {
-								// CANDIDATO
-								claveElectoralCandidato: "",
-								apellidoPCandidato: "",
-								apellidoMCandidato: "", 
-								nombreCandidato: "", 
-								fotografiaCandidato: "",
-								seudonimoCandidato: "",//Text
-								fechaNacimientoCandidatos: "",//Date
-								generoCandidato: "",//Text
-								// SUPLENTE
-								claveElectoralSuplente: "",
-								apellidoPSuplente: "",
-								apellidoMSuplente: "", 
-								nombreSuplente: "", 
-								fotografiaSuplente: "",
-								seudonimoSuplente: "",//Text
-								fechaNacimientoSuplentes: "",//Date
-								generoSuplente: "",//Text
-									  }
+								Object.values(candidatoandSuplenteSelected).length === 0
+                                ? 	{
+									// CANDIDATO
+									statusParty: false,
+									claveElectoralCandidato: "",
+									apellidoPCandidato: "",
+									apellidoMCandidato: "", 
+									nombreCandidato: "", 
+									fotografiaCandidato: "",
+									seudonimoCandidato: "",//Text
+									fechaNacimientoCandidatos: "",//Date
+									generoCandidato: "",//Text
+									// SUPLENTE
+									claveElectoralSuplente: "",
+									apellidoPSuplente: "",
+									apellidoMSuplente: "", 
+									nombreSuplente: "", 
+									fotografiaSuplente: "",
+									seudonimoSuplente: "",//Text
+									fechaNacimientoSuplentes: "",//Date
+									generoSuplente: "",//Text
+								} : {
+									// CANDIDATO
+									claveElectoralCandidato: candidatoandSuplenteSelected["claveElectoralCandidato"],
+									apellidoPCandidato:candidatoandSuplenteSelected["apellidoPCandidato"],
+									apellidoMCandidato: candidatoandSuplenteSelected["apellidoMCandidato"],
+									nombreCandidato: candidatoandSuplenteSelected["nombreCandidato"],
+									fotografiaCandidato:candidatoandSuplenteSelected["fotografiaCandidato"],
+									seudonimoCandidato: candidatoandSuplenteSelected["seudonimoCandidato"],
+									fechaNacimientoCandidatos: candidatoandSuplenteSelected["fechaNacimientoCandidato"],
+									generoCandidato: candidatoandSuplenteSelected["generoCandidato"],
+									// SUPLENTE
+									claveElectoralSuplente:candidatoandSuplenteSelected["claveElectoralSuplente"],
+									apellidoPSuplente:candidatoandSuplenteSelected["apellidoPSuplente"],
+									apellidoMSuplente: candidatoandSuplenteSelected["apellidoMSuplente"],
+									nombreSuplente: candidatoandSuplenteSelected["nombreSuplente"],
+									fotografiaSuplente:candidatoandSuplenteSelected["fotografiaSuplente"],
+									seudonimoSuplente: candidatoandSuplenteSelected["seudonimoSuplente"],
+									fechaNacimientoSuplentes: candidatoandSuplenteSelected["fechaNacimientoSuplente"],
+									generoSuplente: candidatoandSuplenteSelected["generoSuplente"],
+								}
 							}
 							validationSchema={validationSchema}
 							validate = {validando}

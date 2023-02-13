@@ -1,15 +1,14 @@
-import { DataGrid } from "@mui/x-data-grid";
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Box, IconButton } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { Box, IconButton, Tooltip } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
+import React from "react";
 import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
-import { Tooltip } from '@mui/material';
 export const DataGridTableJornada = ({ handleOpenModal, handleOpenDeleteCandidatoModal}) => {
 	const { candidatoandSuplentes, deleteCandidatoAndSuplente, editCandidatoAndSuplente} = useJornadaStore();
 
     const handleDelete = (id) => {
-		handleOpenDeleteCandidatoModal(id);
+		deleteCandidatoAndSuplente(id);
 	};
 	const handleEdit = (id) => {
 		handleOpenModal();
@@ -18,7 +17,7 @@ export const DataGridTableJornada = ({ handleOpenModal, handleOpenDeleteCandidat
 
 
 	const columns = [
-		{ field: "id", headerName: "clave Electoral", width: 100 },
+		{ field: "id", headerName: "ID", width: 80 },
 		{ field: "nombreCandidato", headerName: "Nombres Candidato", width: 140 },
 		{ field: "apellidoPCandidato", headerName: "Primer Apellido", width: 120 },
 		{ field: "apellidoMCandidato", headerName: "Segundo Apellido", width: 120 },

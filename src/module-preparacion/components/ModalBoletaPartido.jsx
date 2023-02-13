@@ -2,6 +2,7 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import {
 	Box,
 	Button,
+	Checkbox,
 	Grid,
 	Modal, Stack, TextField,
 	Typography
@@ -9,12 +10,12 @@ import {
 import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton';
 import Switch from '@mui/material/Switch';
-
 import { Formik } from 'formik';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { object } from "yup";
+import { useUiStore } from "../../hooks/useUiStore";
 import { useJornadaStore } from "../hooks/useJornadaStore";
 
 const style = {
@@ -43,21 +44,26 @@ const validationSchema = object({
 
 });
 export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
-
+	const { toastSuccesOperation } = useUiStore();
 	const dispatch = useDispatch();
 	const params = useParams();
 	const { 
 		status, 
 		partidos, 
 		partidoSelected, 
+		candidatoandSuplentes,
+		candidatoandSuplenteSelected,
 		addPartido, 
 		setPartidoSelectedNull, 
-		updatePartido
+		updateCandidatoAndSuplente,
+		updatePartido,
+		candidatosAMostrar,
 	} = useJornadaStore();
 
 	const onSubmit = (values) => {
 		setfotografiaPartido({ name: "Sin Archivo seleccionado" });
 		console.log("valuessssssss", values);
+		if (Object.values(partidoSelected).length === 0) {
 		addPartido(
 			partidos.length,
 			values.clavePartido,
@@ -66,12 +72,29 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 			values.emblemParty,
 			values.fotografiaParty,
 			values.statusParty,
+			values.candidatosPartido,
 		);
+		toastSuccesOperation("Datos registrados con éxito");
+		} else {
+		updatePartido(
+			partidoSelected.id,
+			values.clavePartido,
+			values.nameParty,
+			values.siglasParty,
+			values.emblemParty,
+			values.fotografiaParty,
+			values.statusParty,
+			values.candidatosPartido,
+		);
+		toastSuccesOperation("Datos actualizados con éxito");
+		}
 		setPartidoSelectedNull();
+		// setCandidatosPartido({});
 		handleToggleModal();
 	};
 
 	const onCancel = () => {
+		// setCandidatosPartido({});
 		setPartidoSelectedNull();
 		handleToggleModal();
 	};
@@ -95,7 +118,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 	 const handleChangeSwitch = (event) => {
 		setSwitchValue(event.target.checked);
 	  };
-	  
+
 	return (
 
 		<>
@@ -106,25 +129,70 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 			aria-describedby="modal-modal-description"
 		>
 	<Formik
-		initialValues={{
-			nameParty: "",	//Text
-			siglasParty: "",//Text
-			emblemParty: "",
-			fotografiaParty: "",
-			clavePartido: "",
-			// statusParty: "",
-			statusParty: switchValue,
-		}}
+		initialValues={ 
+			Object.values(partidoSelected).length === 0 ?
+				{
+				nameParty: "",	//Text
+				siglasParty: "",//Text
+				emblemParty: "",
+				fotografiaParty: "",
+				clavePartido: "",
+				statusParty: switchValue,
+				candidatosPartido: [],
+			} : {
+				nameParty: partidoSelected.nameParty,
+				siglasParty: partidoSelected.siglasParty,
+				emblemParty: partidoSelected.emblemParty,
+				fotografiaParty: partidoSelected.fotografiaParty,
+				clavePartido: partidoSelected.clavePartido,
+				statusParty: partidoSelected.statusParty,
+				candidatosPartido: partidoSelected.candidatosPartido,
+			}
+		}
 		validate = {validando}
 		validationSchema={validationSchema}
 		onSubmit={(values, {resetForm}) => {
-			// dispatch(savePartido(values, onSave));
-			// onSubmit(values);
 			onSubmit({ ...values, statusParty: switchValue });
 			resetForm();
 		}}
 	>
-		{( {values, errors, touched, handleSubmit, handleChange, handleBlur} ) => (
+		{({
+			values,
+			handleSubmit,
+			handleChange,
+			errors,
+			touched,
+			handleBlur,
+			setFieldValue,
+			}) => {
+
+				const [candidatosDisponibles, setCandidatosDisponibles] = useState(candidatoandSuplentes);
+
+				useEffect(() => {
+					setCandidatosDisponibles(
+						candidatoandSuplentes.filter(candidato => !values.candidatosPartido.includes(candidato.id))
+					);
+				}, [values.candidatosPartido]);
+					
+				const candidatosNoAsociados = [];
+
+				candidatosDisponibles.map(candidato => {
+					let candidatoEncontrado = false;
+					
+					partidos.map(partido => {
+					partido.candidatosPartido.map(candidatoPartido => {
+						if (candidato.id === candidatoPartido.id) {
+						candidatoEncontrado = true;
+						}
+					});
+					});
+				
+					if (!candidatoEncontrado) {
+					candidatosNoAsociados.push(candidato);
+					}
+				});
+				
+			return (
 
 			<Box sx={style}>
 				<Typography id="modal-modal-title" variant="h5" color="initial" align="center">
@@ -153,7 +221,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						error = {touched.clavePartido && errors.clavePartido}
 						helperText={touched.clavePartido && errors.clavePartido}
 						onChange={handleChange}
-						onBlur={handleBlur}
+						// onBlur={handleBlur}
 					/>
 					<Typography variant= {{ xl: "2rem", lg: "1.5rem", sm: "1rem", xs: "0.8rem" }}>
 						NOMBRE DEL PARTIDO <span style={{ color: "red" }}>*</span>
@@ -169,7 +237,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						error = {touched.nameParty && errors.nameParty}
 						helperText={touched.nameParty && errors.nameParty}
 						onChange={handleChange}
-						onBlur={handleBlur}
+						// onBlur={handleBlur}
 					/>				
 					<Typography variant="h7" mt={"1rem"}>
 						SIGLAS DEL PARTIDO <span style={{ color: "red" }}>*</span>
@@ -185,7 +253,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						error = {touched.siglasParty && errors.siglasParty}
 						helperText={touched.siglasParty && errors.siglasParty}
 						onChange={handleChange}
-						onBlur={handleBlur}
+						// onBlur={handleBlur}
 					/>
 					<Typography variant="h7" mt={"1rem"}>
 					EMBLEMA DEL PARTIDO <span style={{ color: "red" }}>*</span>
@@ -201,7 +269,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						error = {touched.emblemParty && errors.emblemParty}
 						helperText={touched.emblemParty && errors.emblemParty}
 						onChange={handleChange}
-						onBlur={handleBlur}
+						// onBlur={handleBlur}
 					/>
 					<Typography variant="h7" mt={"1rem"}>
 						INSERTAR FOTOGRAFÍA DEL PARTIDO <span style={{ color: "red" }}>*</span>
@@ -247,7 +315,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						  </Box>
 						)}
 					<Typography variant="h7" mt={"1rem"}>
-						¿EL PARTIDO ESTÁ VIEGENTE? <span style={{ color: "red" }}>*</span>
+						¿EL PARTIDO ESTÁ VIGENTE? <span style={{ color: "red" }}>*</span>
 					</Typography>
 					<Stack direction="row" spacing={1} alignItems="center"> 
 						<Typography>No</Typography>
@@ -262,6 +330,108 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 							/>
 						<Typography>Sí</Typography>
 					</Stack>
+
+					{/* AQUI VA LO DE CANDIDATOS */}
+					<Box
+						id="candidato"
+						name="candidato"
+						sx={{
+							boxShadow: 1,
+							width: "100%",
+							height: { xl: "400px", lg: "350px" },
+							marginTop: 5,
+							padding: 3,
+							border: "1px solid rgba(0, 0, 0, 0.4)",
+							borderRadius: "15px",
+						}}
+						>
+
+						<Typography sx={{ fontWeight: "bold" }}>
+						SELECCIONE LOS CANDIDATOS CORRESPONDIENTES A ESTE PARTIDO
+						</Typography>
+
+						<Box
+							sx={{
+								display: "flex",
+								width: "100%",
+								height: "100%",
+								overflowY: "scroll",
+								flexDirection: "row",
+								flexWrap: "wrap",
+								p: 1,
+								mb: 1,
+							}}
+							>
+
+								{candidatosNoAsociados.map(candidato => (
+								<Box
+									sx={{
+									boxShadow: values.candidatosPartido.findIndex(c => c.id === candidato.id) !== -1 ? 3 : 0,
+									display: "flex",
+									justifyContent: "space-around",
+									alignItems: "center",
+									width: "300px",
+									height: "80px",
+									m: 1,
+									border: "1px solid rgba(0,0,0,0.2)",
+									borderRadius: "8px",
+									background: values.candidatosPartido.findIndex(c => c.id === candidato.id) !== -1 ? "#E7C0F9" : "#FFF",
+									transition: "boxShadow,background 0.4s ease-in-out",
+									}}
+								>
+									<Box
+									sx={{
+										borderRadius: "15px",
+										width: "50px",
+										height: "50px",
+										background: "#000",
+										ml: 1,
+									}}
+									></Box>
+									<Box sx={{ p: 2 }}>
+									<Typography sx={{ fontSize: "15px", fontWeight: "bold" }}>
+										{candidato.nombreCandidato}
+									</Typography>
+									</Box>
+									<FormControlLabel
+									control={
+										<Checkbox
+										checked={values.candidatosPartido.findIndex(c => c.id === candidato.id) !== -1}
+										onChange={() => {
+											if (values.candidatosPartido.findIndex(c => c.id === candidato.id) !== -1) {
+											  setFieldValue("candidatosPartido", values.candidatosPartido.filter(c => c.id !== candidato.id));
+											} else {
+											  if (values.candidatosPartido.length === 0) {
+												setFieldValue("candidatosPartido", [...values.candidatosPartido, candidato]);
+											  }
+											}
+										  }}
+										// }}
+										// onChange={() => {
+										// 	if (values.candidatosPartido.findIndex(c => c.id === candidato.id) !== -1) {
+										// 	setFieldValue(
+										// 		"candidatosPartido",
+										// 		values.candidatosPartido.filter(c => c.id !== candidato.id)
+										// 	);
+										// 	} else {
+										// 	setFieldValue(
+										// 		"candidatosPartido",
+										// 		[...values.candidatosPartido, candidato]
+										// 	);
+										// 	}
+										// }}
+										/>
+									}
+									/>
+								</Box>
+								))}
+							</Box>
+							{touched.candidatos && candidatosS.length === 0 && (
+							<ErrorField>{errors.candidatos}</ErrorField>
+							)}
+						</Box>
+						<br />
+					{/* AQUI TERMINA LO DE CANDIDATOS */}
 					<Grid
 						container
 						direction="row"
@@ -320,7 +490,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 		</Box>
 	
 	
-	)}
+	)}}
 	</Formik>
 	</Modal>
 	</>

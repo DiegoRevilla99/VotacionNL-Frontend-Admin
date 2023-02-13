@@ -9,7 +9,10 @@ export const SliceJornada = createSlice({
 		partidos: [],
 		partidoSelected: {},
 		candidatoandSuplentes: [],
-		candidatoandSuplenteSelected: {},
+		candidatoandSuplenteSelected: {
+			// assignedToParty: false,
+		},
+		candidatosAMostrar: [],
 		candidatos: [],
 		candidatoSelected: {},
 		suplentes: [],
@@ -64,6 +67,7 @@ export const SliceJornada = createSlice({
 			});
 		},
 		onAddPartido: (state, { payload }) => {
+			console.log(" payload en SLICE", payload);
 			state.partidos.push({
 				id: payload?.id,
 				clavePartido: payload?.clavePartido,
@@ -72,6 +76,7 @@ export const SliceJornada = createSlice({
 				emblemParty: payload?.emblemParty,
 				fotografiaParty: payload?.fotografiaParty,
 				statusParty: payload?.statusParty,
+				candidatosPartido: payload?.candidatosPartido || [], // Agregar un arreglo vacío por defecto si no hay candidatos
 			});
 			console.log("state.partidos en SLICE", state.partidos[0]);
 		},
@@ -80,6 +85,7 @@ export const SliceJornada = createSlice({
 			console.log("payload SLICE", payload);
 			state.candidatoandSuplentes.push({
 				id: payload?.id,
+				statusParty: payload?.statusParty, // Esto es nuevo
 				apellidoPCandidato: payload?.apellidoPCandidato,
 				apellidoMCandidato: payload?.apellidoMCandidato,
 				nombreCandidato: payload?.nombreCandidato,
@@ -181,14 +187,22 @@ export const SliceJornada = createSlice({
 			partido.emblemParty= payload?.emblemParty;
 			partido.fotografiaParty= payload?.fotografiaParty;
 			partido.statusParty= payload?.statusParty;
+			partido.candidatosPartido= payload?.candidatosPartido || [];
+		},
+		// Vamos a probar este
+		DeleteCanidatosSuccess(state, action) {
+			const arrids = action.payload;
+			state.candidatoandSuplentes = state.candidatoandSuplentes.filter(candidate => !arrids.includes(candidate.id));
 		},
 		onUpdateCandidatoAndSuplente: (state, { payload }) => {
+			console.log("Estoy editando en el update",payload);
 			const candidatoandSuplente = state.candidatoandSuplentes.find(
 				(candidatoandSuplente) =>
 					candidatoandSuplente.id === state.candidatoandSuplenteSelected.id
 			);
 			// candidatoandSuplente.idCandidato = payload?.idCandidate;
 			candidatoandSuplente.id = payload?.id;
+			candidatoandSuplente.statusParty = payload?.statusParty;
 			candidatoandSuplente.apellidoPCandidato = payload?.apellidoPCandidate;
 			candidatoandSuplente.apellidoMCandidato = payload?.apellidoMCandidate;
 			candidatoandSuplente.nombreCandidato = payload?.nameCandidate;
@@ -244,16 +258,15 @@ export const SliceJornada = createSlice({
 			state.jornadasData.splice(id, 1);
 		},
 		onDeleteBoletaData: (state, { payload }) => {
-			console.log(payload);
 			const id = state.jornadaSelected.boletas.findIndex(
-				(consulta) => consulta.idBoleta === payload
+				(consulta) => consulta.idEstructuraBoleta === payload
 			);
-			console.log(id);
 			state.jornadaSelected.boletas.splice(id, 1);
 		},
+
 		onSetJornadaSelected: (state, { payload }) => {
 			console.log(payload);
-			state.jornadaSelected.id = payload.idJornada;
+			state.jornadaSelected.id = payload.id;
 			state.jornadaSelected.title = payload.title;
 			state.jornadaSelected.boletas = payload.boletas || [];
 		},
@@ -292,6 +305,8 @@ export const SliceJornada = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
+	DeleteCanidatosSuccess,//Probando
+	candidatosAMostrar,
 	onFillCandidatosData,
 	onFillSuplentesData,
 	onFillPartidosData,

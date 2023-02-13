@@ -69,10 +69,11 @@ export const getBoletaData = async (idTicket) => {
 		const { data } = await jornadasAPI.get("jornada/electoral/estructuraboleta/" + idTicket);
 		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/5
 		// **Fetch de candidatos
-		// const { data: data1 } = await jornadasAPI.get(
-		// 	"jornada/electoral/candidato/" + idTicket
-		// 	// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/candidato/PEHEFE020722
-		// );
+		const { data: data1 } = await jornadasAPI.get(
+			"jornada/electoral/estructuraboleta/" + idTicket+ "/candidatoSuplente"
+			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/candidato/PEHEFE020722
+			//https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/5/candidatoSuplente
+		);
 		// **Fetch de suplentes
 		// const { data: data2 } = await jornadasAPI.get(
 		// 	"jornada/electoral/suplente/" + idTicket
@@ -85,33 +86,36 @@ export const getBoletaData = async (idTicket) => {
 		// 	// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/partido/0
 		// );
 
-		// console.log("DATA CANDIDATO", data1);
-		console.log("DATA BOLETA", data);
+		// console.log("DATA BOLETA", data);
+		console.log("DATA CANDIDATO", data1);
 		// console.log("DATA SUPLENTE", data2);
 		// console.log("DATA PARTIDO", data3);
 
-		// const formatCandidato = {
-		// 	// MY FORMAT || API FORMAT
-		// 	id: data1.data.claveElectoral,
-		// 	apellidoPCandidato: data1.data.apellidoPCandidato,
-		// 	apellidoMCandidato: data1.data.apellidoMCandidato,
-		// 	nombreCandidato: data1.data.nombreCandidato,
-		// 	fotografia: data1.data.fotoCandidato,
-		// 	seudonimoCandidato: data1.data.seudonimoCandidato,
-		// 	fechaNacimientoCandidato: data1.data.fechaNacimiento,
-		// 	generoCandidato: data1.data.genero,
-		// };
-		// const formatSuplente = {
-		// 	// MY FORMAT || API FORMAT
-		// 	id: data2.data.claveElectoral,
-		// 	apellidoPSuplente: data2.data.apellidoPSuplente,
-		// 	apellidoMSuplente: data2.data.apellidoMSuplente,
-		// 	nombreSuplente: data2.data.nombreSuplente,
-		// 	fotografiaSuplente: data2.data.fotoSuplente,
-		// 	seudonimoSuplente: data2.data.seudonimoSuplente,
-		// 	fechaNacimientoSuplente: data2.data.fechaNacimiento,
-		// 	generoSuplente: data2.data.genero,
-		// };
+		const formatCandidato = {
+			// MY FORMAT || API FORMAT
+			id: "",
+			claveElectoral: data1.data.claveElectoralCandidato,
+			apellidoPCandidato: data1.data.apellidoPCandidato,
+			apellidoMCandidato: data1.data.apellidoMCandidato,
+			nombreCandidato: data1.data.nombreCandidato,
+			fotografia: data1.data.fotoCandidato,
+			seudonimoCandidato: data1.data.seudonimoCandidato,
+			fechaNacimientoCandidato: data1.data.fechaNacimiento,
+			generoCandidato: data1.data.genero,
+		};
+
+		const formatSuplente = {
+			// MY FORMAT || API FORMAT
+			id: "",
+			claveElectoral: data2.data.claveElectoralSuplente,
+			apellidoPSuplente: data2.data.apellidoPSuplente,
+			apellidoMSuplente: data2.data.apellidoMSuplente,
+			nombreSuplente: data2.data.nombreSuplente,
+			fotografiaSuplente: data2.data.fotoSuplente,
+			seudonimoSuplente: data2.data.seudonimoSuplente,
+			fechaNacimientoSuplente: data2.data.fechaNacimiento,
+			generoSuplente: data2.data.genero,
+		};
 		// const formatPartido = {
 		// 	// MY FORMAT || API FORMAT
 		// 	id: data3.data.clavePartido,
@@ -138,8 +142,8 @@ export const getBoletaData = async (idTicket) => {
 		return {
 			ok: true,
 			data: format,
-			// dataCandidato: formatCandidato,
-			// dataSuplente: formatSuplente,
+			dataCandidato: formatCandidato,
+			dataSuplente: formatSuplente,
 			// dataPartido: formatPartido,
 		};
 	} catch (error) {
@@ -172,39 +176,11 @@ export const createBoleta = async (data, idJornadaElectoral, candidatoAndSuplent
 				idJornada: idJornadaElectoral,
 			},
 		}
-		// console.log("PROVIDER BOLETA INFORMACION", boletaInformacion);
 		const respuesta = await jornadasAPI.post("jornada/electoral/estructuraboleta", 
-		// {
-		// 	nombreEleccion: data.nombreCandidatura,
-		// 	distrito: data.distritoElectoral,
-		// 	municipio: data.municipio,
-		// 	primerFirmanteNombre: data.primerFirmante,
-		// 	primerFirmanteCargo: data.cargoPrimerFirmante,
-		// 	segundoFirmanteNombre: data.segundoFirmante,
-		// 	segundoFirmanteCargo: data.cargoSegundoFirmante,
-		// 	modalidadVotacionModel: {
-		// 		idModalidadVotacion: 1,
-		// 	},
-		// 	jornadaModel: {
-		// 		idJornada: idJornadaElectoral,
-		// 	},
-		// }
-
 			boletaInformacion
 		);
-		console.log("data1", respuesta);
-		// console.log("respuesta PROVIDER", respuesta);
-		// 	// {
-		// 		// boletaInformacion
-		// 	}
-		// // }
-		// );
-		// console.log("data1.idEstructuraBoleta en el PROVIDER", respuesta); 
-		// console.log("data1.data.idEstructuraBoleta en el PROVIDER", data1.data.idEstructuraBoleta); error
-		// console.log("data.idEstructuraBoleta en el PROVIDER", hola); //indefinido
-		// console.log("Esto va despu[es de la peticion"); // si esta
-		// console.log("id de la boleta en el PROVIDER", data1.idEstructuraBoleta);
-		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/candidato
+		console.log("RESPUESTA PETICIÓN", respuesta);
+
 		const { data: candidatoSuplenteRespData } = await jornadasAPI.post(
 			"jornada/electoral/candidato",
 			{
@@ -233,31 +209,35 @@ export const createBoleta = async (data, idJornadaElectoral, candidatoAndSuplent
 		);
 
 		console.log("Data de respuesta candidato con suplente", candidatoSuplenteRespData);
+		console.log("ID DEL CANDIDATO", candidatoSuplenteRespData.data.candidatoModel.idCandidato);
 		// Partido
-		// const { data: partidoRespData } = await jornadasAPI.post(
-		// 	// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/partido/candidato/DIRUAL01
-		// 	"jornada/electoral/partido/candidato/" + data1.idBoleta,
-		// 	{
-		// 		// API FORMAT || MY FORMAT
-		// 		clavePartido:partidos[0].clavePartido,
-		// 		nombre: partidos[0].nameParty,
-		// 		siglas: partidos[0].siglasParty,
-		// 		emblema: partidos[0].emblemParty,
-		// 		logo: partidos[0].fotografiaParty,
-		// 		fechaCreacion:"2020-07-04T20:38:38.604+00:00",
-		// 		status: partidos[0].statusPary,
-		// 		estructuraBoletaModel:{
-		// 			idEstructuraBoleta: idEstructuraBoleta,
-		// 		},
-		// 		// candidatoModel:{
-		// 		// 	idCandidato: idCandidato,
-		// 		// },
-		// 		// coalicionModel:{
-		// 		// 	claveCoalicion: idCoalicion,
-		// 		// }
-		// 	}
-		// );
-		// console.log("Data de respuesta", partidoRespData);
+		const { data: partidoRespData } = await jornadasAPI.post(
+			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/partido/candidato/DIRUAL01
+			"jornada/electoral/partido/" + respuesta.data.data.idEstructuraBoleta,
+			{
+				// API FORMAT || MY FORMAT
+				clavePartido:partidos[0].clavePartido,
+				nombre: partidos[0].nameParty,
+				siglas: partidos[0].siglasParty,
+				emblema: partidos[0].emblemParty,
+				logo: partidos[0].fotografiaParty,
+				status: partidos[0].statusPary,
+				estructuraBoletaModel:{
+					idEstructuraBoleta: respuesta.data.data.idEstructuraBoleta,
+				},
+				// candidatoModel:{
+				// 	idCandidato: candidatoSuplenteRespData.data.candidatoModel.idCandidato,
+				// },
+				// candidatoModel:{
+				// 	idCandidato: candidatoSuplenteRespData.data.candidatoModel.idCandidato,
+				// },
+				// candidatoModel: 
+				// 	candidatos.map(candidato => ({
+				// 		idCandidato: candidato.idCandidato
+				// }))
+			}
+		);
+		console.log("Data de respuesta ", partidoRespData);
 			// console.log("ID DE LA BOLETA",respuesta.idEstructuraBoleta);
 		return { ok: true, idEstructuraBoleta: respuesta.data.data.idEstructuraBoleta };
 	} catch (error) {
@@ -269,48 +249,47 @@ export const createBoleta = async (data, idJornadaElectoral, candidatoAndSuplent
 export const updateBoletaData = async (
 	data,
 	idJornadaElectoral,
+	candidatoandSuplentes, 
 	idBoleta,
-	candidatos,
-	suplentes,
-	partidos
 ) => {
 	try {
+		console.log("data provider",data);
+		console.log("idJornadaElectoral provider",idJornadaElectoral);
+		console.log("candidatoandSuplentes provider",candidatoandSuplentes);
+		// console.log("asociaciones provider",partidos);
+		console.log("idBoleta provider",idBoleta);
+
+
+		const boletaInformacion = {
+			nombreEleccion: data.nombreCandidatura,
+			distrito: data.distritoElectoral,
+			municipio: data.municipio,
+			primerFirmanteNombre: data.primerFirmante,
+			primerFirmanteCargo: data.cargoPrimerFirmante,
+			segundoFirmanteNombre: data.segundoFirmante,
+			segundoFirmanteCargo: data.cargoSegundoFirmante,
+			jornadaModel: {
+				idJornada: idJornadaElectoral,
+			},
+		}
 		const { data: data1 } = await jornadasAPI.put(
 			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/10
 			"jornada/electoral/estructuraboleta/" + idBoleta,
-			{
-				encabezadoBoleta: data.encabezado,
-				nombreCandidatura: data.nombreCandidatura,
-				modalidadVotacion: data.modalidadVotacion,
-				entidadFederativa: data.entidadFederativa,
-				municipio: data.municipio,
-				distritoElectoralLocal: data.distritoElectoralLocal,
-				distritoElectoral: data.distritoElectoral,
-				tipoCasilla: data.tipoCasilla,
-				primerFirmante: data.primerFirmante,
-				cargoPrimerFirmante: data.cargoPrimerFirmante,
-				segundoFirmante: data.segundoFirmante,
-				cargoSegundoFirmante: data.cargoSegundoFirmante,
-				jornadaModel: {
-					idJornada: idJornadaElectoral,
-				},
-			}
+			boletaInformacion
 		);
+
 		// Candidato
 		const { data: candidateRespData } = await jornadasAPI.put(
 			// ESTA ONDA NO TIENE PUT :C
-			"jornada/electoral/candidato/" + candidatos[0].id,
+			"jornada/electoral/candidato/" + candidatoandSuplentes[0].idCandidato,
 			{
-				apellidoPCandidato: candidatos[0].apellidoPCandidato,
-				apellidoMCandidato: candidatos[0].apellidoMCandidato,
-				nombreCandidato: candidatos[0].nombreCandidato,
-				fotoCandidato: candidatos[0].fotografia,
-				seudonimoCandidato: candidatos[0].seudonimoCandidato,
-				fechaNacimiento: candidatos[0].fechaNacimientoCandidato,
-				genero: candidatos[0].generoCandidato,
-				estrutucturaBoletaModel: {
-					idBoleta: idBoleta,
-				},
+				apellidoPCandidato: candidatoandSuplentes[0].apellidoPCandidato,
+				apellidoMCandidato: candidatoandSuplentes[0].apellidoMCandidato,
+				nombreCandidato: candidatoandSuplentes[0].nombreCandidato,
+				fotoCandidato: candidatoandSuplentes[0].fotografia,
+				seudonimoCandidato: candidatoandSuplentes[0].seudonimoCandidato,
+				fechaNacimiento: candidatoandSuplentes[0].fechaNacimientoCandidato,
+				genero: candidatoandSuplentes[0].generoCandidato,
 			}
 		);
 		console.log("Data de respuesta", candidateRespData);
@@ -318,37 +297,34 @@ export const updateBoletaData = async (
 		// Suplente
 		const { data: suplenteRespData } = await jornadasAPI.put(
 			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/suplente/DIRUAL120721
-			"jornada/electoral/suplente/" + suplentes[0].id,
+			"jornada/electoral/suplente/" + candidatoandSuplentes[0].idSuplente,
 			{
-				apellidoPSuplente: suplentes[0].apellidoPSuplente,
-				apellidoMSuplente: suplentes[0].apellidoMSuplente,
-				nombreSuplente: suplentes[0].nombreSuplente,
-				fotoSuplente: suplentes[0].fotografiaSuplente,
-				seudonimoSuplente: suplentes[0].seudonimoSuplente,
-				fechaNacimiento: suplentes[0].fechaNacimientoSuplente,
-				genero: suplentes[0].generoSuplente,
-				estrutucturaBoletaModel: {
-					idBoleta: idBoleta,
-				},
+				apellidoPSuplente: candidatoandSuplentes[0].apellidoPSuplente,
+				apellidoMSuplente: candidatoandSuplentes[0].apellidoMSuplente,
+				nombreSuplente: candidatoandSuplentes[0].nombreSuplente,
+				fotoSuplente: candidatoandSuplentes[0].fotografiaSuplente,
+				seudonimoSuplente: candidatoandSuplentes[0].seudonimoSuplente,
+				fechaNacimiento: candidatoandSuplentes[0].fechaNacimientoSuplente,
+				genero: candidatoandSuplentes[0].generoSuplente,
 			}
 		);
 		console.log("Data de respuesta", suplenteRespData);
 
 		// Partido
-		const { data: partidoRespData } = await jornadasAPI.put(
-			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/partido/416841
-			"jornada/electoral/partido/" + partidos[0].id,
-			{
-				nombre: partidos[0].nombre,
-				siglas: partidos[0].siglas,
-				emblema: partidos[0].emblema,
-				logo: partidos[0].fotografia,
-				estrutucturaBoletaModel: {
-					idBoleta: idBoleta,
-				},
-			}
-		);
-		console.log("Data de respuesta", partidoRespData);
+		// const { data: partidoRespData } = await jornadasAPI.put(
+		// 	// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/partido/416841
+		// 	"jornada/electoral/partido/" + partidos[0].id,
+		// 	{
+		// 		nombre: partidos[0].nombre,
+		// 		siglas: partidos[0].siglas,
+		// 		emblema: partidos[0].emblema,
+		// 		logo: partidos[0].fotografia,
+		// 		estrutucturaBoletaModel: {
+		// 			idBoleta: idBoleta,
+		// 		},
+		// 	}
+		// );
+		// console.log("Data de respuesta", partidoRespData);
 
 		return { ok: true };
 	} catch (error) {

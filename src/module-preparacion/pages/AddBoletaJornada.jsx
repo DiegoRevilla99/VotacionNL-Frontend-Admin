@@ -11,15 +11,14 @@ import { FielTextCustom } from "../components/FielTextCustom";
 import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
 import { ModalRegisterCS } from "../components/ModalRegisterCS";
 
-import { onCreateBoleta } from "../../store/module-preparacion/jornada/ThunksJornada";
+import { onCreateBoleta, onUpdateBoletaData } from "../../store/module-preparacion/jornada/ThunksJornada";
 // import { DataGridRowGrouping } from "../../ui/components/DataGridRowGrouping";
 import { AddCandidatoMod } from "../components/AddCandidatoMod";
 import { ModalEliminarCandidato } from "../components/ModalEliminarCandidato";
 import { ModalEliminarPartido } from "../components/ModalEliminarPartido";
 import { useJornadaStore } from "../hooks/useJornadaStore";
 
-import { AddAsociacion } from "../components/configuracion-boleta/AddAsociacion";
-import { Agrupa } from "../components/configuracion-boleta/Agrupa";
+import { AgrupaPartido } from "../components/configuracion-boleta/AgrupaPartido";
 import { useAsociaciones } from "../hooks/config-boleta/useAsociaciones";
 
 const useStyles = makeStyles({
@@ -107,16 +106,13 @@ export const AddBoletaJornada = () => {
 	// const { status, questions, consultaSelected } = useConsultaCiudadanaStore();
 	const { 
 		status,
-		candidatos,
-        candidatosSelected,
-        suplentes,
-        suplentesSelected,
         partidos,
         partidoSelected,
 		candidatoandSuplentes,
 		candidatoandSuplenteSelected,
-		
+		updateCandidatoAndSuplente,
 		jornadaSelected,
+		candidatosAMostrar,
 	} = useJornadaStore();
 
 	const dispatch = useDispatch();
@@ -168,9 +164,35 @@ export const AddBoletaJornada = () => {
 	    // toastOffOperation();
 		setStatusRegisterModal(true);
 	};
-
+	let candidatosConPartidos = [];
+	// const candidatosAMostrar = [];
 	const handleOpenMatchModal = () => {
-	// toastOffOperation();
+		console.log("partidos en la boleta", partidos);
+
+		
+		// partidos.map((partido) => {
+		// 	console.log("partido",partido.candidatosPartido);
+		// 	partido.candidatosPartido.map((candidate) => {
+		// 		candidatosConPartidos.push(candidate);
+		// 		console.log("candidato",candidate);
+
+		// 	}
+		// 	)}
+		// 	)
+
+		// 	// candidatosAMostrar = [];
+		// 	console.log("candidatos a mostrar UNO",candidatosAMostrar)
+		// 	candidatoandSuplentes.map((candi) => {
+		// 		candidatosConPartidos.map((candidate)=>
+		// 		{
+		// 			if(candi.id !== candidate.id){
+		// 				debugger
+		// 				candidatosAMostrar.push(candi);
+		// 			}
+		// 		})
+		// 		})
+			// console.log("candidatos a mostrar",candidatosAMostrar)
+
 	setStatusMatchModal(true);
 	};
 
@@ -193,13 +215,13 @@ export const AddBoletaJornada = () => {
 		navigate("/preparacion/jornada/"+ params.id);
 	};
 
-	const onSubmit = (values) => {
-		dispatch(
-			onCreateBoleta( values, params.id, candidatoandSuplentes, ()=>{
-				navigate("/preparacion/jornada/"+ params.id);
-			})
-		);
-	};
+	// const onSubmit = (values) => {
+	// 	dispatch(
+	// 		onCreateBoleta( values, params.id, candidatoandSuplentes, ()=>{
+	// 			navigate("/preparacion/jornada/"+ params.id);
+	// 		})
+	// 	);
+	// };
 	// const onSubmit = (values) => {
 	// 	dispatch(
 	// 		onCreateBoleta( values, params.id, candidatoandSuplentes, partidos, ()=>{
@@ -208,30 +230,32 @@ export const AddBoletaJornada = () => {
 	// 	);
 	// };
 
-	// const onSubmit = (values) => {
-	// 	if(Object.values(jornadaNoFormalSelected.boletaNoFormalSelected).length === 0){
-	// 		if(candidatos.length > 0)
-	// 			dispatch(
-	// 				onCreateBoleta( values, params.id, candidatos, asociaciones, ()=>{
-	// 					navigate("/preparacion/jornada/noFormal/"+params.id);
-	// 				})
-	// 			) 
-	// 	}else{
-	// 		dispatch(
-	// 			onUpdateBoletaData( 
-	// 				values, 
-	// 				params.id, 
-	// 				candidatos, 
-	// 				asociaciones, 
-	// 				params.idBoleta,
-	// 				()=>{
-	// 					navigate("/preparacion/jornada/noFormal/"+params.id);
-	// 				}
-	// 			)
-	// 		);
-	// 	}
-	// };
-
+	const onSubmit = (values) => {
+		if(Object.values(jornadaSelected.boletaSelected).length === 0){
+			if(candidatoandSuplentes.length > 0)
+				dispatch(
+					onCreateBoleta( values, params.id, candidatoandSuplentes, partidos, ()=>{
+						navigate("/preparacion/jornada/"+params.id);
+					})
+					// onCreateBoleta( values, params.id, candidatoandSuplentes, asociaciones, ()=>{
+					// 	navigate("/preparacion/jornada/"+params.id);
+					// })
+				) 
+		}else{
+			dispatch(
+				onUpdateBoletaData( 
+					values, 
+					params.id, 
+					candidatoandSuplentes, 
+					partidos, 
+					params.idBoleta,
+					()=>{
+						navigate("/preparacion/jornada/"+params.id);
+					}
+				)
+			);
+		}
+	};
 	return (
 		<>
           {isLoading ? (
@@ -395,8 +419,8 @@ export const AddBoletaJornada = () => {
 							handleOpenDeleteCandidatoModal={handleOpenDeleteCandidatoModal}
 							status={status}
 						/> 
-						<>
-						<Box
+						<> 
+						 <Box
 							pl={3}
 							width="100%"
 							mt={5}
@@ -447,15 +471,9 @@ export const AddBoletaJornada = () => {
 								<CircularProgress color="primary" />
 							  </Stack>
 							) : (
-							  <Agrupa info={{ asociaciones: asociaciones }} tipo={2}/>
+							  <AgrupaPartido/>
 							)}
 							</Box>
-
-							<AddAsociacion
-								isOpen={modalAsociacion}
-								abrirCerrarModal={abrirCerrarModalAsociacion}
-								idBoleta={params.id}
-							/>
 						  </>
 						{/* <AddPartidosMod  
 							handleOpenModal={handleOpenMatchModal}
@@ -542,7 +560,7 @@ export const AddBoletaJornada = () => {
 				</Box>
 			{/* MODAL PARA REGISTRAR LOS PARTIDOS */}
 			<ModalBoletaPartido statusMatchModal={statusMatchModal} handleToggleModal={handleCloseMatchModal} />
-			{/* MODAL PARA REGISTRAR A LOS CANDIDATOS Y SUPLENTES */}
+			{/* MODAL PARA REGISTRAR A LOS candidatoandSuplentes Y SUPLENTES */}
 			<ModalRegisterCS statusRegisterModal={statusRegisterModal} handleToggleModal={handleCloseRegisterModal} />
 
 			{/* MODAL PARA CONFIRMAR LA ELIMINACIÓN */}

@@ -12,10 +12,6 @@ export const useJornadaStore = () => {
 		status,
 		errorMessage,
 		successMesage,
-		candidatos,
-		candidatosSelected,
-		suplentes,
-		suplentesSelected,
 		partidos,
 		partidoSelected,
 		candidatoandSuplentes,
@@ -23,6 +19,7 @@ export const useJornadaStore = () => {
 		jornadasData,
 		jornadaVotosData,
 		jornadaSelected,
+		candidatosAMostrar,
 	} = useSelector((state) => state.jornada);
 
 	const checkingOperation = () => {
@@ -154,6 +151,7 @@ export const useJornadaStore = () => {
 		emblemParty,
 		fotografiaParty,
 		statusParty,
+		candidatosPartido,
 		) => {
 		dispatch(
 			onAddPartido({
@@ -164,12 +162,14 @@ export const useJornadaStore = () => {
 				emblemParty,
 				fotografiaParty,
 				statusParty,
+				candidatosPartido,
 			})
 		);
 	};
 
 	const addCandidatoAndSuplente = (
 		id,
+		statusParty,
 		apellidoPCandidato,
 		apellidoMCandidato,
 		nombreCandidato,
@@ -190,6 +190,7 @@ export const useJornadaStore = () => {
 		dispatch(
 			onAddCandidatoAndSuplente({
 				id,
+				statusParty,
 				apellidoPCandidato,
 				apellidoMCandidato,
 				nombreCandidato,
@@ -210,70 +211,32 @@ export const useJornadaStore = () => {
 		);
 	};
 
-	// const updateCandidato = (
-	// 	id,
-	// 	apellidoPCandidate,
-	// 	apellidoMCandidate,
-	// 	nameCandidate,
-	// 	fotografiaCandidate,
-	// 	seudonimoCandidate,
-	// 	fechaNacimientoCandidate,
-	// 	generoCandidate
-	// ) => {
-	// 	dispatch(
-	// 		onUpdateCandidato({
-	// 			id,
-	// 			apellidoPCandidate,
-	// 			apellidoMCandidate,
-	// 			nameCandidate,
-	// 			fotografiaCandidate,
-	// 			seudonimoCandidate,
-	// 			fechaNacimientoCandidate,
-	// 			generoCandidate,
-	// 		})
-	// 	);
-	// };
-
-	// const updateSuplente = (
-	// 	id,
-	// 	apellidoPSubstitute,
-	// 	apellidoMSubstitute,
-	// 	nameSubstitute,
-	// 	fotografiaSubstitute,
-	// 	seudonimoSubstitute,
-	// 	fechaNacimientoSubstitute,
-	// 	generoSubstitute
-	// ) => {
-	// 	dispatch(
-	// 		onUpdateSuplente({
-	// 			id,
-	// 			apellidoPSubstitute,
-	// 			apellidoMSubstitute,
-	// 			nameSubstitute,
-	// 			fotografiaSubstitute,
-	// 			seudonimoSubstitute,
-	// 			fechaNacimientoSubstitute,
-	// 			generoSubstitute,
-	// 		})
-	// 	);
-	// };
-
-	const updatePartido = (id, clavePartido, nameParty, siglasParty, emblemParty, fotografiaParty,statusParty ) => {
+	const updatePartido = (
+		id, 
+		clavePartido, 
+		nameParty, 
+		siglasParty, 
+		emblemParty, 
+		fotografiaParty,
+		statusParty,
+		candidatosPartido ) => {
 		dispatch(
 			onUpdatePartido({
-				id,
-				clavePartidot,
-				namePartyt,
-				siglasPartyt,
-				emblemPartyt,
-				fotografiaPartyt,
+				id, 
+				clavePartido, 
+				nameParty, 
+				siglasParty, 
+				emblemParty, 
+				fotografiaParty,
 				statusParty,
+				candidatosPartido
 			})
 		);
 	};
 
 	const updateCandidatoAndSuplente = (
 		id,
+		statusParty,
 		apellidoPCandidate,
 		apellidoMCandidate,
 		nameCandidate,
@@ -294,6 +257,7 @@ export const useJornadaStore = () => {
 		dispatch(
 			onUpdateCandidatoAndSuplente({
 				id,
+				statusParty,
 				apellidoPCandidate,
 				apellidoMCandidate,
 				nameCandidate,
@@ -336,10 +300,10 @@ export const useJornadaStore = () => {
 		status,
 		errorMessage,
 		successMesage,
-		candidatos,
-		candidatosSelected,
-		suplentes,
-		suplentesSelected,
+		// candidatos,
+		// candidatosSelected,
+		// suplentes,
+		// suplentesSelected,
 		partidos,
 		partidoSelected,
 		candidatoandSuplentes,
@@ -351,22 +315,18 @@ export const useJornadaStore = () => {
 		errorOperation,
 		offOperation,
 		addJornada,
-		// addCandidato,
-		// addSuplente,
+
 		addPartido,
 		addCandidatoAndSuplente,
-		// updateCandidato,
-		// updateSuplente,
+
 		updatePartido,
 		updateCandidatoAndSuplente,
 		updateBoleta,
-		editCandidato,
-		editSuplente,
+		candidatosAMostrar,
 		editPartido,
 		editCandidatoAndSuplente,
 		deletePartido,
-		deleteCandidato,
-		deleteSuplente,
+
 		deleteCandidatoAndSuplente,
 		fillJornadasData,
 		setBoletasSelectedNull,

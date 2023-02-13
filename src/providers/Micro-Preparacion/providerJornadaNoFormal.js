@@ -119,19 +119,6 @@ export const getBoletaData = async (idBoleta) => {
 		  });
 		  console.log("candidato: ", formatCandidato);
 
-		//   const formatAsociacion = data2.candidatoModels.map(candidato => {
-		// 	return {
-		// 	  id: "",
-		// 	  curp: candidato.claveCandidato,
-		// 	  apellidoPCandidato: candidato.apellidoPCandidato,
-		// 	  apellidoMCandidato: candidato.apellidoMCandidato,
-		// 	  nombreCandidato: candidato.nombreCandidato,
-		// 	  fotografiaCandidato: candidato.fotoCandidato,
-		// 	  seudonimoCandidato: candidato.seudonimoCandidato,
-		// 	  fechaNacimientoCandidato: candidato.fechaNacimiento,
-		// 	  generoCandidato: candidato.genero
-		// 	};
-		//   });
 		return { ok: true, data: format, dataCandidato: formatCandidato};
 		// return { ok: true, data: format, dataCandidato: formatCandidato, dataAsociacion: formatAsociacion };
 	} catch (error) {
@@ -243,22 +230,23 @@ export const updateBoletaData = async (data, idJornadaElectoral, candidatos, aso
 		// console.log("Data candidato", candidatos[0].id);
 		// console.log("Data candidato", candidatos[0]);
 		// Candidato
-		// const candidatoDatos = {
-		// 	// claveCandidato: candidatos[0].curp,
-		// 	// apellidoPCandidato: candidatos[0].apellidoPCandidato,
-		// 	// apellidoMCandidato: candidatos[0].apellidoMCandidato,
-		// 	// nombreCandidato: candidatos[0].nombreCandidato,
-		// 	// fotoCandidato: candidatos[0].fotografiaCandidato,
-		// 	// seudonimoCandidato: candidatos[0].seudonimoCandidato,
-		// 	// fechaNacimiento: candidatos[0].fechaNacimientoCandidato,
-		// 	// // fechaNacimiento: "2019-07-04T20:38:38.604+00:00",
-		// 	// genero: candidatos[0].generoCandidato,
-		// }
-		// const { data: candidateRespData } = await jornadasNoFormalesAPI.put(
-		// 	// https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/candidato/DIRUAL
-		// 	"jornada/no_formal/candidato/" + candidatos[0].id,
-		// 	candidatoDatos
-		// );
+		const candidatoDatos = {
+			claveCandidato: candidatos[0].curp,
+			apellidoPCandidato: candidatos[0].apellidoPCandidato,
+			apellidoMCandidato: candidatos[0].apellidoMCandidato,
+			nombreCandidato: candidatos[0].nombreCandidato,
+			fotoCandidato: candidatos[0].fotografiaCandidato,
+			seudonimoCandidato: candidatos[0].seudonimoCandidato,
+			fechaNacimiento: candidatos[0].fechaNacimientoCandidato,
+			// fechaNacimiento: "2019-07-04T20:38:38.604+00:00",
+			genero: candidatos[0].generoCandidato,
+		}
+		
+		const { data: candidateRespData } = await jornadasNoFormalesAPI.put(
+			// https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/candidato/DIRUAL
+			"jornada/no_formal/candidato/" + candidatos[0].claveCandidato,
+			candidatoDatos
+		);
 		// console.log("Data candidato de respuesta", candidateRespData);
 
 		// Asociaciones

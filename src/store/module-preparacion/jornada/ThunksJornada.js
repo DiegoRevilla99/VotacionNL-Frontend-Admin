@@ -134,21 +134,21 @@ export const onCreateBoleta = (
 	data,
 	idJornada,
 	candidatoandSuplentes,
-	// partidos,
+	partidos,
 	navigate = () => {}
 ) => {
 	return async (dispatch) => {
 		console.log("DATA THUNKS",data);
 		console.log("idJornada THUNKS",idJornada);
 		console.log("candidatoandSuplentes THUNKS",candidatoandSuplentes);
-		// console.log("partidos THUNKS",partidos);
+		console.log("partidos THUNKS",partidos);
 		dispatch(onCheckingOperation());
 		dispatch(onToastCheckingOperation("Guardando boleta..."));
 		const { ok, idEstructuraBoleta } = await createBoleta(
 			data,
 			idJornada,
 			candidatoandSuplentes,
-			// partidos
+			partidos
 		); // PROVIDER
 		if (ok) {
 			dispatch(onSuccessOperation());
@@ -183,12 +183,17 @@ export const onCreateBoleta = (
 export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
 	return async (dispatch) => {
 		dispatch(onCheckingOperation());
-		const { ok, data, dataCandidato } = await getBoletaData(idBoleta); // PROVIDER
+		const { ok, data, dataCandidato, dataSuplente } = await getBoletaData(idBoleta); // PROVIDER
+        console.log("DATA PROVIDER",data);
+		console.log("dataCandidato PROVIDER",dataCandidato);
+		console.log("dataSuplente PROVIDER",dataSuplente);
+
 		// const { ok, data, dataPartido, dataCandidato, dataSuplente } = await getBoletaData(idBoleta); // PROVIDER
 		if (ok) {
 			dispatch(onSuccessOperation());
 			dispatch(onEditBoleta({ idBoleta, ...data })); // SLICE
-			// dispatch(onAddPartido(dataPartido)); // SLICE
+			dispatch(onAddPartido(dataPartido)); // SLICE
+			dispatch(onAddCandidatoAndSuplente(dataCandidato, dataSuplente)); // SLICE
 			// dispatch(onAddCandidato(dataCandidato));// SLICE
 			// dispatch(onAddSuplente(dataSuplente));// SLICE
 			navigate();
@@ -202,21 +207,22 @@ export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
 export const onUpdateBoletaData = (
 	values,
 	idJornada,
+	candidatoandSuplentes, 
 	idBoleta,
-	candidatos,
-	suplentes,
-	partidos,
+	// partidos,
 	navigate = () => {}
 ) => {
 	return async (dispatch) => {
+		console.log("VALUES THUNKS",values);
+		console.log("idJornada THUNKS",idJornada);
+		console.log("candidatoandSuplentes THUNKS",candidatoandSuplentes);
+		console.log("idBoleta THUNKS",idBoleta);
 		dispatch(onCheckingOperation());
 		const { ok } = await updateBoletaData(
 			values,
-			candidatos,
-			suplentes,
-			partidos,
+			idJornada,
+			candidatoandSuplentes, 
 			idBoleta,
-			idJornada
 		); // PROVIDER
 		if (ok) {
 			dispatch(onSuccessOperation());

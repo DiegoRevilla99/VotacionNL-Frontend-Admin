@@ -14,9 +14,7 @@ import { ModalAsociacionGenerico } from "../components/ModalAsociacionGenerico";
 import { ModalBoletaCandidatoGenerico } from "../components/ModalBoletaCandidatoGenerico";
 import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 
-import { AddAsociacion } from "../components/configuracion-boleta/AddAsociacion";
-import { Agrupa } from "../components/configuracion-boleta/Agrupa";
-import { useAsociaciones } from "../hooks/config-boleta/useAsociaciones";
+import { AgrupaAsociacion } from "../components/configuracion-boleta/AgrupaAsociacion";
 
 
 const useStyles = makeStyles({
@@ -106,11 +104,11 @@ export const AddBoletaJornadaGenerica = () => {
 	const navigate = useNavigate();
 	const params = useParams();
 	
-	const { asociaciones, isLoadingAsociaciones } = useAsociaciones(params.id);
+	// const { asociaciones, isLoadingAsociaciones } = useAsociaciones(params.id);
 	const { 
 		status,
 		candidatos,
-		// asociaciones,
+		asociaciones,
         candidatosSelected,
 		jornadaNoFormalSelected,
 	} = useJornadaNoFormalStore();
@@ -448,25 +446,11 @@ export const AddBoletaJornadaGenerica = () => {
 							  }}
 							>
 							</Box>
-							{isLoadingAsociaciones ? (
-							  <Stack
-								justifyContent="center"
-								sx={{ color: "grey.500" }}
-								spacing={2}
-								direction="row"
-							  >
-								<CircularProgress color="primary" />
-							  </Stack>
-							) : (
-							  <Agrupa info={{ asociaciones: asociaciones }} tipo={2}></Agrupa>
-							)}
+							
+							  <AgrupaAsociacion info={{ asociaciones: asociaciones }}></AgrupaAsociacion>
+							
 							</Box>
 
-							<AddAsociacion
-								isOpen={modalAsociacion}
-								abrirCerrarModal={abrirCerrarModalAsociacion}
-								idBoleta={params.id}
-							/>
 						  </>
 						}
 					</Grid>
