@@ -58,6 +58,175 @@ const useStyles = makeStyles({
   },
 });
 
+const isFirstVocal=(name,vocalC)=>{
+  const tam=name.length;
+  let bandera=false;
+  let vocal="";
+  for (let i = 1; i < tam; i++) {
+    const letra=name.charAt(i);
+    const voacles="aAáÁeEéÉiIíÍoOóÓuUúÚ"
+    if(!bandera){
+      if(voacles.includes(letra)){
+        bandera=true;
+        vocal=letra;
+      }
+    }
+  }
+
+  if(bandera && vocal.toUpperCase()===vocalC){
+    return true
+  }else{
+    return false
+  }
+  
+}
+
+const isSecondCons=(name,consonanteC)=>{
+  // console.log("Curp:",consonanteC)
+  const tam=name.length;
+  const vowels = 'aeiou';
+  let bandera=false;
+  let consonante="";
+  let consonantRegex = new RegExp(`(?![${vowels}])[a-z]`, 'gi');
+  // let conta=0;
+  for (let ic = 1; ic < tam; ic++) {
+    
+    const letra=name.charAt(ic);
+      if(!bandera && consonantRegex.test(letra)){
+        // conta=conta+1;
+        // if(conta===2){
+          bandera=true;
+          consonante=letra;
+        // }
+        
+      }
+  }
+
+  // console.log(bandera ? "bander: true":"bandera:false")
+  // console.log("consonante:",consonante)
+  if(bandera && consonante.toUpperCase()===consonanteC){
+    return true
+  }else{
+    return false
+  }
+  
+}
+
+const isSecondApPCons=(name,consonanteC)=>{
+  // console.log("isSecondApPCons")
+  // console.log("-----------------APELLIDO:",name)
+  // console.log("Curp:",consonanteC)
+  const tam=name.length;
+  const vowels = 'aeiouAEIOU';
+  const consonantess = 'BCDFGHJKLMNPQRSTVWXYZ';
+  let bandera=false;
+  let consonante="";
+  let consonantRegex = new RegExp(`(?![${vowels}])[a-z]`);
+  
+  for (let ic = 1; ic < tam; ic++) {
+      
+      const letra=name.charAt(ic);
+      // console.log("letra en turno:",letra)
+      if(consonantess.includes(letra.toUpperCase())){
+        // console.log("entreeee:",letra)
+        if(!bandera){    
+          // console.log("cond2:")
+          consonante=letra;
+          bandera=true;
+        }
+      };
+
+      
+  }
+  
+  // console.log(bandera ? "bander: true":"bandera:false")
+  // console.log("consonante:",consonante.toUpperCase())
+  // console.log("consonante:",consonanteC)
+  if(bandera && consonante.toUpperCase()===consonanteC){
+    return true
+  }else{
+    return false
+  }
+  
+}
+
+const isSecondAMCons=(name,consonanteC)=>{
+  // console.log("isSecondApPCons")
+  // console.log("-----------------APELLIDO:",name)
+  // console.log("Curp:",consonanteC)
+  const tam=name.length;
+  const vowels = 'aeiouAEIOU';
+  const consonantess = 'BCDFGHJKLMNPQRSTVWXYZ';
+  let bandera=false;
+  let consonante="";
+  let consonantRegex = new RegExp(`(?![${vowels}])[a-z]`);
+  
+  for (let ic = 1; ic < tam; ic++) {
+      
+      const letra=name.charAt(ic);
+      // console.log("letra en turno:",letra)
+      if(consonantess.includes(letra.toUpperCase())){
+        // console.log("entreeee:",letra)
+        if(!bandera){    
+          // console.log("cond2:")
+          consonante=letra;
+          bandera=true;
+        }
+      };
+
+      
+  }
+  
+  // console.log(bandera ? "bander: true":"bandera:false")
+  // console.log("consonante:",consonante.toUpperCase())
+  // console.log("consonante:",consonanteC)
+  if(bandera && consonante.toUpperCase()===consonanteC){
+    return true
+  }else{
+    return false
+  }
+}
+
+const valiMariaJose=(name)=>{
+  const nombress=name.trim().split(" ")
+  if(nombress.length>1){
+    if(nombress[0]==="JOSÉ"|nombress[0]==="JOSE"|nombress[0]==="MARIA"|nombress[0]==="MARÍA"){
+      return true
+    }
+  }
+  return false
+}
+
+const errorNombreInitFuntion=(name,val1)=>{
+
+  if(valiMariaJose(name)){
+    const nombress=name.trim().split(" ")
+    const name2=nombress[1]
+    console.log(name2)
+    if(name2.charAt(0)!==val1) return true
+  }else{
+    if(name.toUpperCase().charAt(0)!==val1) return true
+  }
+  return false
+}
+
+const errorNombreCFuntion=(name,val2)=>{
+  if(valiMariaJose(name.toUpperCase())){
+    const nombress=name.trim().split(" ")
+    const name2=nombress[1]
+    if(!isSecondCons(name2.toUpperCase(),val2)){
+      return true
+    }
+    
+  }else{
+    if(!isSecondCons(name.toUpperCase(),val2)){
+      return true
+    }
+   
+  }
+  return false
+}
+
 let validationCurp =
   /^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$/;
 
@@ -69,18 +238,62 @@ const validando = (values, props) => {
     errors.curp = "Esta curp no es valida";
   }
 
-  if(validationCurp.test(values.curp.toUpperCase())&& values.nombreVotante.trim().length>0){
-    if(values.nombreVotante.toUpperCase().charAt(0)!==values.curp.charAt(3)) errors.nombreVotante = "La inical debe ser '"+values.curp.charAt(3)+"'";
+  
+  /* if(validationCurp.test(values.curp.toUpperCase())&& values.nombreVotante.trim().length>0){
+      if(values.nombreVotante.toUpperCase().charAt(0)!==values.curp.charAt(3)) errors.nombreVotante = "La inical debe ser '"+values.curp.charAt(3)+"'";
   }
-  if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoPVotante.trim().length>1){
-    if(values.apellidoPVotante.toUpperCase().charAt(1)!==values.curp.charAt(1)) errors.apellidoPVotante = "La segunda letra debe ser '"+values.curp.charAt(1)+"'";
+  
+  if(validationCurp.test(values.curp.toUpperCase())&& values.nombreVotante.trim().length>0){
+      if(!isSecondCons(values.nombreVotante,values.curp.charAt(15))){
+        errors.nombreVotante = "La segunda consonante debe ser '"+values.curp.charAt(15)+"'";
+      }
+  } */
+
+  
+
+if(validationCurp.test(values.curp.toUpperCase())&& values.nombreVotante.trim().length>0){
+    if(errorNombreCFuntion(values.nombreVotante.trim().toUpperCase(),values.curp.charAt(15))){
+      errors.nombreVotante = "La segunda consonante debe ser '"+values.curp.charAt(15)+"'";
+    }
+}
+  
+if(validationCurp.test(values.curp.toUpperCase())&& values.nombreVotante.trim().length>0){
+  if(errorNombreInitFuntion(values.nombreVotante.trim().toUpperCase(),values.curp.charAt(3))) errors.nombreVotante = "La inical debe ser '"+values.curp.charAt(3)+"'";
+}
+  
+
+
+
+
+  
+
+  if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoPVotante.trim().length>0){
+    if(!isSecondApPCons(values.apellidoPVotante,values.curp.charAt(13))){
+      errors.apellidoPVotante = "La segunda consonante debe ser '"+values.curp.charAt(13)+"'";
+    }
+  }
+
+  if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoPVotante.trim().length>0){
+    if(!isFirstVocal(values.apellidoPVotante,values.curp.charAt(1))){
+      errors.apellidoPVotante = "La siguiente vocal debe ser '"+values.curp.charAt(1)+"'";
+    }
   }
 
   if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoPVotante.trim().length>0){
     if(values.apellidoPVotante.toUpperCase().charAt(0)!==values.curp.charAt(0)) errors.apellidoPVotante = "La inical debe ser '"+values.curp.charAt(0)+"'";
   }
+  
+
+
 
   
+
+  
+  if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoMVotante.trim().length>0){
+    if(!isSecondAMCons(values.apellidoMVotante,values.curp.charAt(14))){
+      errors.apellidoMVotante = "La segunda consonante debe ser '"+values.curp.charAt(14)+"'";
+    }
+  }
 
   if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoMVotante.trim().length>0){
     if(values.apellidoMVotante.toUpperCase().charAt(0)!==values.curp.charAt(2)) errors.apellidoMVotante = "La inicial debe ser '"+values.curp.charAt(2)+"'";
@@ -293,7 +506,7 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
       }}
     >
       {({ touched, errors, handleBlur, handleChange, values }) => (
-        <Form autoComplete="off" className={styles.fomi}>
+        <Form  autoComplete="off" className={styles.fomi}>
           <Box
             sx={{
               height: "100%",

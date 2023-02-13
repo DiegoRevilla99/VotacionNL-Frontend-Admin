@@ -30,6 +30,7 @@ import {
   getVotantesbyJornada,
   putVotante,
 } from "../../store/module-empadronamiento/votantes/thunksVotantes";
+import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles({
   textField: {
@@ -81,6 +82,7 @@ export const ModalEditVotante = ({
   },
 }) => {
   const styles = useStyles();
+  const { id } = useParams();
   const dispatch = useDispatch();
   const [data, setData] = useState({});
   const [activeStep, setActiveStep] = React.useState(0);
@@ -166,7 +168,7 @@ export const ModalEditVotante = ({
 
   const AddVotanteNext = () => {
     console.log("actualizando info");
-    dispatch(getVotantesbyJornada());
+    dispatch(getVotantesbyJornada(id));
     abrirCerrarModal();
 
     setData({});

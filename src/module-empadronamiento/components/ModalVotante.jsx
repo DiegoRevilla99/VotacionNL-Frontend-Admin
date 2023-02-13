@@ -26,8 +26,10 @@ import { FormDireccion } from "./FormDireccion";
 import { FormContacto } from "./FormContacto";
 import {
   getVotantesbyJornada,
+  postJornadaVotante,
   postVotante,
 } from "../../store/module-empadronamiento/votantes/thunksVotantes";
+import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles({
   textField: {
@@ -77,6 +79,7 @@ export const ModalVotante = ({
   votante = null,
 }) => {
   const styles = useStyles();
+  const { id } = useParams();
   const dispatch = useDispatch();
   const [data, setData] = useState({});
   const [activeStep, setActiveStep] = React.useState(0);
@@ -105,7 +108,13 @@ export const ModalVotante = ({
     handleNext();
   };
 
-  const finalizar = (valores) => {
+  const addVotante=async(datos)=>{
+    console.log("***Entre a addVotante*****")
+    dispatch(postVotante(datos));
+
+  }
+
+  const finalizar = async(valores) => {
     console.log("Finalizando");
     console.log(valores);
     const contac = valores.contacto;
@@ -114,7 +123,16 @@ export const ModalVotante = ({
       ...data,
       votanteModel: { ...data.votanteModel, ...contac },
     };
-    dispatch(postVotante(datos, AddVotanteNext));
+    const dataRelation={
+      idJornada:id,
+      votanteModel:{
+        curp: datos.votanteModel.curp,
+        
+      }
+    }
+    await addVotante(datos)
+    console.log("_________________________________")
+    await AddVotanteNext(dataRelation)
   };
 
   const handleNext = () => {
@@ -156,8 +174,14 @@ export const ModalVotante = ({
     abrirCerrarModal();
   };
 
-  const AddVotanteNext = () => {
-    dispatch(getVotantesbyJornada());
+  const AddVotanteNext = async(data) => {
+    console.log("*****asociandoo votante jornad:**** ",data)
+    dispatch(postJornadaVotante(data,AddVotanteNextFinal))
+  };
+
+  const AddVotanteNextFinal = (data) => {
+    console.log("proceso terminado")
+    dispatch(getVotantesbyJornada(id));
     abrirCerrarModal();
     setActiveStep(0);
     setData({});

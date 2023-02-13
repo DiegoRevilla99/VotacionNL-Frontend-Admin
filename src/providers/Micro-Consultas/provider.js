@@ -90,7 +90,7 @@ export const saveConfig = async (id, data) => {
 			inicioRecepVoto: data.inicioRecepcionVotos,
 			inicioAssignPass: data.inicioAsignacionContrasenia,
 			finDisponibilidad: data.finDisponibilidad,
-			finEmpadronamiento: data.inicioEmpadronamiento,
+			finEmpadronamiento: data.finEmpadronamiento,
 			finRecepVoto: data.finRecepcionVotos,
 			finAssignPass: data.finAsignacionContrasenia,
 			idJornada: id,

@@ -65,15 +65,15 @@ export const Representante = ({ boletaInfo }) => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const [cnr, setCnr] = useState(false);
-  const [vn, setVn] = useState(false);
+  const [cnr, setCnr] = useState(boletaInfo.mostrarCandidaturasNoReg);
+  const [vn, setVn] = useState(boletaInfo.mostrarVotoNulo);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (boletaInfo.mostrarCandidaturasNoReg != undefined)
       setCnr(boletaInfo.mostrarCandidaturasNoReg);
     if (boletaInfo.mostrarVotoNulo != undefined)
       setVn(boletaInfo.mostrarVotoNulo);
-  }, [boletaInfo]);
+  }, [boletaInfo]); */
 
   // const abrirCerrarModalCoalicion = () => {
   //   setModalCoalicion(!modalCoalicion);
@@ -90,10 +90,15 @@ export const Representante = ({ boletaInfo }) => {
   const onGuardar=()=>{
     console.log("guardando config")
     const datasend={
-      mostrarCandidaturasNoReg: cnr,
+    mostrarCandidaturasNoReg: cnr,
     mostrarVotoNulo:vn
   }
-    dispatch(putCandRegNF(id,datasend))
+    dispatch(putCandRegNF(id,datasend,error))
+  }
+
+  const error=()=>{
+    setCnr(boletaInfo.mostrarCandidaturasNoReg);
+    setVn(boletaInfo.mostrarVotoNulo);
   }
 
   return (
@@ -125,11 +130,11 @@ export const Representante = ({ boletaInfo }) => {
             }}
           >
             <FormControlLabel
-              control={<Switch checked={cnr} onChange={handleChangeCand} />}
+              control={<Switch checked={cnr?cnr:false} onChange={handleChangeCand} />}
               label="Opción o candidatura no registrada"
             />
             <FormControlLabel
-              control={<Switch checked={vn} onChange={handleChangeVoto} />}
+              control={<Switch checked={vn?vn:false} onChange={handleChangeVoto} />}
               label="Mostrar voto nulo"
             />
           </FormGroup>

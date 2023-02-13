@@ -7,6 +7,7 @@ import { AddBoletaJornadaGenerica } from "../pages/AddBoletaJornadaGenerica";
 import { AddPapeleta } from "../pages/AddPapeleta";
 import { ConfiguracionConsulta } from "../pages/ConfiguracionConsulta";
 import { ConfiguracionJornada } from "../pages/ConfiguracionJornada";
+import { ConfiguracionJornadaNF } from "../pages/ConfiguracionJornadaNF";
 import { ConfiguracionJornadaP } from "../pages/ConfiguracionJornadaP";
 import { CrudComite } from "../pages/CrudComite";
 import { CrudConsulta } from "../pages/CrudConsulta";
@@ -52,7 +53,7 @@ export const PreparacionRoutes = () => {
 
 
 				{/* CONFIGURACION NO FORMAL */}
-				<Route path="jornadaNoFormal/config/:id" element={<ConfiguracionJornadaP />} />
+				<Route path="jornadaNoFormal/config/:id" element={<ConfiguracionJornadaNF />} />
 				<Route path="jornadaNoFormal/configboleta/:id" element={<ConfigBoletaMultiple />} />
 
 				{/* <Route 	path="registroJornadaGenerica" element={<RegistroJornadaElectoralGenerica />}/>

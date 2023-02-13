@@ -2,10 +2,10 @@ import { envioLinkAPI } from "../../../module-empadronamiento/helpers/FakeAPI";
 import { getStatusEmp } from "../../../module-empadronamiento/helpers/getStatusEmp";
 import { transformDate } from "../../../module-empadronamiento/helpers/transformDate";
 import { getJornadasNoFormalesProvider } from "../../../providers/Micro-NoFormales/providerNoFormales";
-import { sendEmailProvider } from "../../../providers/Micro-TokeEmail/provider";
-import { getVotanteDireccionProvider, getVotantesPorJornadaProvider, postCSVProvider, postVotanteProvider, putVotanteProvider } from "../../../providers/Micro-Votante/providerVotante";
+import { sendEmailMasivoProvider, sendEmailProvider } from "../../../providers/Micro-TokeEmail/provider";
+import { getVotanteDireccionProvider, getVotantesPorJornadaProvider, postCSVProvider, postVotanteJornadaProvider, postVotanteProvider, putVotanteProvider } from "../../../providers/Micro-Votante/providerVotante";
 import { onToastCheckingOperation, onToastErrorOperation, onToastSuccessOperation } from "../../ui/uiSlice";
-import { onCheckingOperation, onErrorOperation, onSuccessOperation, setVotantes, setVotanteSelected, startLoadingVotantes } from "./empVotantesSlice";
+import { endLoadingVotantes, onCheckingOperation, onErrorOperation, onSuccessOperation, setVotantes, setVotanteSelected, startLoadingVotantes } from "./empVotantesSlice";
 
 export const uploadCSV = (file, funcion = () => { }) => {
 
@@ -33,14 +33,36 @@ export const uploadCSV = (file, funcion = () => { }) => {
 }
 
 
-export const postVotante = (info, funcion = () => { }) => {
+export const postVotante = (info) => {
+    return async (dispatch, getState) => {
+
+        // dispatch(onToastCheckingOperation("Subiendo votante..."));
+        // dispatch(onCheckingOperation());
+
+
+        const { ok, data, errorMessage } = await postVotanteProvider(info);
+        if (ok) {
+            // dispatch(onSuccessOperation());
+            // dispatch(onToastSuccessOperation({ successMessage: "El votante se han subido con éxito" }));
+            // funcion();
+
+        } else {
+            // dispatch(onErrorOperation());
+            // dispatch(onToastErrorOperation({ errorMessage: "No se pudo subir el votante" }));
+        }
+
+    }
+}
+
+export const postJornadaVotante = (info, funcion = () => { }) => {
+    console.log("postJornadaVotante: ",info)
     return async (dispatch, getState) => {
 
         dispatch(onToastCheckingOperation("Subiendo votante..."));
         dispatch(onCheckingOperation());
 
 
-        const { ok, data, errorMessage } = await postVotanteProvider(info);
+        const { ok, data, errorMessage } = await postVotanteJornadaProvider(info);
         if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onToastSuccessOperation({ successMessage: "El votante se han subido con éxito" }));
@@ -95,11 +117,19 @@ export const getVotantesbyJornada = (idJornada = "") => {
 
         dispatch(startLoadingVotantes());
         const { ok, data, errorMessage } = await getVotantesPorJornadaProvider(idJornada);
-        if (ok) {
-            dispatch(setVotantes({ votantes: data }));
-        } else {
-            console.log("ocurrio un error")
+        try {
+            if (ok) {
+                if(data.votantes){
+                    dispatch(setVotantes({ votantes: data.votantes}));
+                }
+            } else {
+                console.log("ocurrio un error")
+            dispatch(setVotantes({ votantes: []}))
+            }
+        } catch (error) {
+            dispatch(setVotantes({ votantes: []}))
         }
+        
     }
 }
 
@@ -107,13 +137,13 @@ export const getVotantesbyJornada = (idJornada = "") => {
 
 //CAMBIAR LA FAKEAPI POR PROVIDER
 
-export const envioLink = (idJornada = "", funcion = () => { }) => {
+export const envioLink = (datan, funcion = () => { }) => {
     return async (dispatch, getState) => {
         dispatch(onToastCheckingOperation("Eviando enlaces..."));
         dispatch(onCheckingOperation());
 
 
-        const { ok, data, errorMessage } = await envioLinkAPI(idJornada);
+        const { ok, data, errorMessage } = await sendEmailMasivoProvider(datan);
         if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onToastSuccessOperation({ successMessage: "Se han enviado con exito" }));

@@ -85,7 +85,7 @@ export const ConfiguracionJornadaP = () => {
 
 		dispatch(
 			postConfiguracion(id,data, () => {
-				// navigate("/preparacion/registroJornadaFormal");
+				navigate("/preparacion/registroJornadaFormal");
 			})
 		);
 	};
@@ -162,7 +162,7 @@ export const ConfiguracionJornadaP = () => {
 
 					<Formik 
 						initialValues={
-							(!configJornada.configVotoModel)
+							(!configJornada?.configVotoModel)
 								? {
 										inicioDisponibilidad: "",
 										finDisponibilidad: "",

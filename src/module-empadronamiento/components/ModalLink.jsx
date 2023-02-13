@@ -76,17 +76,20 @@ export const ModalLink = ({
   enviar = () => {
     alert("Presionaste agregar votante");
   },
+  votantesData=[],
   tipo = "todos",
 }) => {
   const { id } = useParams();
   const styles = useStyles();
   const dispatch = useDispatch();
   const [data, setData] = useState({});
+  const [dataNueva, setDataNueva] = useState({});
 
   const { status } = useSelector((state) => state.empVotantesSlice);
 
   const finalizar = () => {
-    dispatch(envioLink(id, AddVotanteNext));
+
+    dispatch(envioLink(dataNueva, AddVotanteNext));
   };
 
   const cerrarM = () => {
@@ -97,7 +100,19 @@ export const ModalLink = ({
     abrirCerrarModal();
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const dataSend=votantesData.map((voter)=>{
+      const votanteemail={
+        email: voter.correoVotante,
+        userName: voter.curp,
+        subject: "ESTABLECIMIENTO DE CONTRASEÑA - PROCESO ELECTORAL"
+    }
+    return votanteemail;
+    })
+
+    setDataNueva({emails:dataSend})
+    console.log({emails:dataSend});
+  }, [votantesData]);
 
   useEffect(() => {}, [isOpen]);
 

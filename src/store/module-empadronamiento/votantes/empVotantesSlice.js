@@ -16,6 +16,9 @@ export const empVotantesSlice = createSlice({
         startLoadingVotantes: (state, /* action */) => {
             state.isLoadingVotantes = true;
         },
+        endLoadingVotantes: (state, /* action */) => {
+            state.isLoadingVotantes = false;
+        },
 
         setVotantes: (state, action) => {
             state.isLoadingVotantes = false;
@@ -46,4 +49,4 @@ export const empVotantesSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { setVotanteSelected, startLoadingFormales, setJornadasFormales, startLoadingVotantes, setVotantes, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation } = empVotantesSlice.actions;
+export const { endLoadingVotantes,setVotanteSelected, startLoadingFormales, setJornadasFormales, startLoadingVotantes, setVotantes, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation } = empVotantesSlice.actions;

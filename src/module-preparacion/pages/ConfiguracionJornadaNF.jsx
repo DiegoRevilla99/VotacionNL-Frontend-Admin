@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { onSaveConfig } from "../../store/module-preparacion/consulta-ciudadana/thunks";
 import dayjs from "dayjs";
 import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
-import { getConfigJornada, getJornadatoConfig, postConfiguracion, putConfiguracion } from "../../store/module-preparacion/configuracion-jornada/thunksConfigJornada";
+import { getConfigJornada, getConfigJornadaNF, getJornadatoConfig, getJornadatoConfigNF, postConfiguracion, postConfiguracionNF, putConfiguracion } from "../../store/module-preparacion/configuracion-jornada/thunksConfigJornada";
 import { ErrorField } from "../components/ErrorField";
 
 const validationSchema = object({
@@ -30,8 +30,8 @@ const validationSchema = object({
 	finEmpadronamiento: date().required("Este campo es requerido"),
 	inicioRecepcionVotos: date().required("Este campo es requerido"),
 	finRecepcionVotos: date().required("Este campo es requerido"),
-	inicioAsignacionContrasenia: date().required("Este campo es requerido"),
-	finAsignacionContrasenia: date().required("Este campo es requerido"),
+	inicioAssignPass: date().required("Este campo es requerido"),
+	finAssignPass: date().required("Este campo es requerido"),
 	tiempoDuracionRespuesta: date().required("Este campo es requerido"),
 	tiempoExtra: date().required("Este campo es requerido"),
 });
@@ -47,20 +47,19 @@ export const ConfiguracionJornadaNF = () => {
 	};
 
 	useEffect(() => {
-	  console.log("entre a useEffect ")
-	  dispatch(getConfigJornada(id));
-	  dispatch(getJornadatoConfig(id));
+	  console.log("ConfigNF ")
+	  dispatch(getConfigJornadaNF(id));
+	  dispatch(getJornadatoConfigNF(id));
 	}, [])
+
+	useEffect(() => {
+		console.log("Jornada: ",jornada)
+		
+	  }, [jornada])
 	
 
 	const onSubmit = (values) => {
 		const data = {
-			jornadaModel:{
-				nombreJornada:jornada.nombreJornada,
-				usuarioCreacion:jornada.usuarioCreacion,
-				entidad:jornada.entidad,
-				tipoJornada:jornada.tipoJornada 
-			},
 			configuracionModel: {
 				inicioDisponibilidad: new Date(values.inicioDisponibilidad).toISOString(),
 				finDisponibilidad: new Date(values.finDisponibilidad).toISOString(),
@@ -68,10 +67,10 @@ export const ConfiguracionJornadaNF = () => {
 				finEmpadronamiento: new Date(values.finEmpadronamiento).toISOString(),
 				inicioRecepcionVotos: new Date(values.inicioRecepcionVotos).toISOString(),
 				finRecepcionVotos: new Date(values.finRecepcionVotos).toISOString(),
-				inicioAsignacionContrasenia: new Date(values.inicioAsignacionContrasenia).toISOString(),
-				finAsignacionContrasenia: new Date(values.finAsignacionContrasenia).toISOString(),
+				inicioAssignPass: new Date(values.inicioAssignPass).toISOString(),
+				finAssignPass: new Date(values.finAssignPass).toISOString(),
 			},
-			configVotoModel: {
+			configuracionVotoModel: {
 				tiempoDuracionVoto: new Date(values.tiempoDuracionRespuesta)
 				.toTimeString()
 				.substring(0, 8),
@@ -84,8 +83,8 @@ export const ConfiguracionJornadaNF = () => {
 		console.log(data)
 
 		dispatch(
-			postConfiguracion(id,data, () => {
-				// navigate("/preparacion/registroJornadaFormal");
+			postConfiguracionNF(id,data, () => {
+				window.location.reload(true);
 			})
 		);
 	};
@@ -106,8 +105,8 @@ export const ConfiguracionJornadaNF = () => {
 			errors.finRecepcionVotos = "La fecha de inicial no puede ser menor o igual que la final";			
 		}
 
-		if(values.inicioAsignacionContrasenia>=values.finAsignacionContrasenia){
-			errors.finAsignacionContrasenia = "La fecha de inicial no puede ser menor o igual que la final";			
+		if(values.inicioAssignPass>=values.finAssignPass){
+			errors.finAssignPass = "La fecha de inicial no puede ser menor o igual que la final";			
 		}
 
 		return errors;
@@ -157,12 +156,12 @@ export const ConfiguracionJornadaNF = () => {
 				>
 					<Typography sx={{mt:"1rem", mb:"1rem"}} variant="h6" textAlign="center" color="initial">
 						
-						{jornada.nombreJornada}
+						{jornada.nombreEleccion}
 					</Typography>
 
 					<Formik 
 						initialValues={
-							(!configJornada.configVotoModel)
+							(!configJornada?.configuracionVotoModel)
 								? {
 										inicioDisponibilidad: "",
 										finDisponibilidad: "",
@@ -170,8 +169,8 @@ export const ConfiguracionJornadaNF = () => {
 										finEmpadronamiento: "",
 										inicioRecepcionVotos: "",
 										finRecepcionVotos: "",
-										inicioAsignacionContrasenia: "",
-										finAsignacionContrasenia: "",
+										inicioAssignPass: "",
+										finAssignPass: "",
 										tiempoDuracionRespuesta: "",
 										tiempoExtra: "",
 										habilitarVerificacion: false,
@@ -190,10 +189,10 @@ export const ConfiguracionJornadaNF = () => {
 										),
 										inicioRecepcionVotos: dayjs(configJornada.inicioRecepVoto),
 										finRecepcionVotos: dayjs(configJornada.finRecepVoto),
-										inicioAsignacionContrasenia: dayjs(
+										inicioAssignPass: dayjs(
 											configJornada.configuracionModel?.inicioAssignPass
 										),
-										finAsignacionContrasenia: dayjs(
+										finAssignPass: dayjs(
 											configJornada.configuracionModel?.finAssignPass
 										),
 										tiempoDuracionRespuesta: dayjs(
@@ -202,8 +201,8 @@ export const ConfiguracionJornadaNF = () => {
 												0,
 												0,
 												0,
-												configJornada.configVotoModel?.tiempoDuracionVoto?.substring(0, 2),
-												configJornada.configVotoModel?.tiempoDuracionVoto?.substring(3, 5)
+												configJornada.configuracionVotoModel?.tiempoDuracionVoto?.substring(0, 2),
+												configJornada.configuracionVotoModel?.tiempoDuracionVoto?.substring(3, 5)
 											)
 										),
 										tiempoExtra: new Date(
@@ -211,10 +210,10 @@ export const ConfiguracionJornadaNF = () => {
 											0,
 											0,
 											0,
-											configJornada.configVotoModel?.tiempoExtraVoto?.substring(0, 2),
-											configJornada.configVotoModel?.tiempoExtraVoto?.substring(3, 5)
+											configJornada.configuracionVotoModel?.tiempoExtraVoto?.substring(0, 2),
+											configJornada.configuracionVotoModel?.tiempoExtraVoto?.substring(3, 5)
 										),
-										habilitarVerificacion: configJornada.configVotoModel?.dispVerificacion,
+										habilitarVerificacion: configJornada.configuracionVotoModel?.dispVerificacion,
 										isDisabled: true,
 								  }
 						}
@@ -337,12 +336,12 @@ export const ConfiguracionJornadaNF = () => {
 											label={
 												"INICIO DE ASIGNACIÓN DE CONTRASEÑAS"
 											}
-											name={"inicioAsignacionContrasenia"}
-											value={values.inicioAsignacionContrasenia}
+											name={"inicioAssignPass"}
+											value={values.inicioAssignPass}
 											setFieldValue={setFieldValue}
 											handleChange={handleChange}
-											error={errors.inicioAsignacionContrasenia}
-											touched={touched.inicioAsignacionContrasenia}
+											error={errors.inicioAssignPass}
+											touched={touched.inicioAssignPass}
 											isDisabled={values.isDisabled}
 										/>
 									</Grid>
@@ -351,13 +350,13 @@ export const ConfiguracionJornadaNF = () => {
 											label={
 												"FINALIZACIÓN DE ASIGNACIÓN DE CONTRASEÑAS"
 											}
-											name={"finAsignacionContrasenia"}
-											value={values.finAsignacionContrasenia}
+											name={"finAssignPass"}
+											value={values.finAssignPass}
 											setFieldValue={setFieldValue}
 											handleChange={handleChange}
-											error={errors.finAsignacionContrasenia}
-											touched={touched.finAsignacionContrasenia}
-											minDate={values.inicioAsignacionContrasenia}
+											error={errors.finAssignPass}
+											touched={touched.finAssignPass}
+											minDate={values.inicioAssignPass}
 											isDisabled={values.isDisabled}
 										/>
 									</Grid>

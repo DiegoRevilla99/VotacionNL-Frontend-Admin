@@ -22,7 +22,7 @@ export const getBoletaProvider = async (idBoleta) => {
 export const putCandVotoNFProvider = async (idBoleta,datasend) => {
     // const { data } = await getBoletaAPI(idBoleta);
     console.log("data:",datasend)
-    return jornadaNoFormalAPI.put(`no_formal/modalidad/${idBoleta}/config_candnoreg_votonull`,datasend).then((response) => {
+    return jornadaNoFormalAPI.put(`jornada/no_formal/boleta/${idBoleta}/modalidad/config_candnoreg_votonull`,datasend).then((response) => {
         console.log("CandReg: ",response)
         return { ok: true, data: response.data, errorMessage: "" };
     }).catch((error) => {
@@ -35,7 +35,7 @@ export const putCandVotoNFProvider = async (idBoleta,datasend) => {
 export const putMaxMinNFProvider = async (idBoleta,datasend) => {
     // const { data } = await getBoletaAPI(idBoleta);
     console.log("data:",datasend)
-    return jornadaNoFormalAPI.put(`no_formal/modalidadvotacion/${idBoleta}/config_min_max`,datasend).then((response) => {
+    return jornadaNoFormalAPI.put(`jornada/no_formal/boleta/${idBoleta}/modalidadvotacion/config_min_max`,datasend).then((response) => {
         console.log("MAxMin:",response)
         return { ok: true, data: response.data, errorMessage: "" };
     }).catch((error) => {
