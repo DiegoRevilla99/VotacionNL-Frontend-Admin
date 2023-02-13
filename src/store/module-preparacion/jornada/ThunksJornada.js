@@ -1,36 +1,20 @@
-import {
-	getJornadas,
-	getJornadasFormales,
-	createJornada,
-	deleteJornada,
-	getBoletasJornada,
-	getBoletaData,
-	createBoleta,
-	updateBoletaData,
-	deleteBoleta,
-	getJornadaVotos,
-} from "../../../providers/Micro-Preparacion/providerJornada";
+import { createBoletaFormal, createJornada, deleteBoleta, deleteJornada, getBoletaData, getBoletasJornada, getJornadas, getJornadasFormales, getJornadaVotos, updateBoletaData } from "../../../providers/Micro-Preparacion/providerJornada";
 import {
 	onToastCheckingOperation,
 	onToastErrorOperation,
-	onToastSuccessOperation,
+	onToastSuccessOperation
 } from "../../ui/uiSlice";
 
 import {
 	onAddBoleta,
-	onAddJornadas,
-	onAddPartido,
-	onCheckingOperation,
+	onAddJornadas, onCheckingOperation,
 	onDeleteBoletaData,
 	onDeleteJornadaData,
 	onEditBoleta,
 	onErrorOperation,
-	onFillBoletas,
-	onFillJornadasData,
-	onSetBoletasSelectedNull,
-	onSetJornadaSelected,
-	onSetJornadasVotosData,
-	onSuccessOperation,
+	onFillBoletas, onFillJornadasData,
+	onSetBoletasSelectedNull, onSetCandidatoAndSuplenteSelectedNull, onSetJornadaSelected,
+	onSetJornadasVotosData, onSetPartidoSelectedNull, onSuccessOperation
 } from "./SliceJornada";
 
 export const onGetAlljornadas = () => {
@@ -107,14 +91,14 @@ export const onGetBoletas = (idJornada, navigate = () => {}) => {
 	return async (dispatch) => {
 		dispatch(onCheckingOperation());
 		const { ok, data } = await getBoletasJornada(idJornada); // PROVIDER
-
+		console.log("info de la peticion",data);
 		if (ok) {
 			dispatch(onSuccessOperation());
 			dispatch(onSetBoletasSelectedNull());
 			// dispatch(onSetCandidatoSelectedNull());
 			// dispatch(onSetSuplenteSelectedNull());
-			// dispatch(onSetPartidoSelectedNull());
-			// dispatch(onSetCandidatoAndSuplenteSelectedNull());//New
+			dispatch(onSetPartidoSelectedNull());
+			dispatch(onSetCandidatoAndSuplenteSelectedNull());//New
 			dispatch(onFillBoletas(data)); // SLICE
 		} else {
 			dispatch(onErrorOperation());
@@ -148,19 +132,28 @@ export const onCreateBoleta = (
 	navigate = () => {}
 ) => {
 	return async (dispatch) => {
+		console.log("DATA THUNKS",data);
+		console.log("idJornada THUNKS",idJornada);
+		console.log("candidatoandSuplentes THUNKS",candidatoandSuplentes);
+		console.log("partidos THUNKS",partidos);
 		dispatch(onCheckingOperation());
 		dispatch(onToastCheckingOperation("Guardando boleta..."));
-
-		const { ok, idBoleta } = await createBoleta(
+		const { ok, idEstructuraBoleta } = await createBoletaFormal(
 			data,
 			idJornada,
 			candidatoandSuplentes,
 			partidos
 		); // PROVIDER
+		// const { ok, idEstructuraBoleta } = await createBoleta(
+		// 	data,
+		// 	idJornada,
+		// 	candidatoandSuplentes,
+		// 	partidos
+		// ); // PROVIDER
 		if (ok) {
 			dispatch(onSuccessOperation());
 			dispatch(onToastSuccessOperation({ successMessage: "Boleta creada con éxito" }));
-			dispatch(onAddBoleta({ idBoleta, encabezado: data.encabezadoJornada })); // SLICE
+			dispatch(onAddBoleta({ idEstructuraBoleta, encabezado: data.nombreCandidatura})); // SLICE
 			navigate();
 		} else {
 			dispatch(onErrorOperation());
@@ -169,34 +162,21 @@ export const onCreateBoleta = (
 	};
 };
 
-// export const onCreateBoleta = (data, idJornada, candidatos, suplentes, partidos, navigate = () => {}) => {
-//     return async (dispatch) => {
-//         dispatch(onCheckingOperation());
-//         dispatch(onToastCheckingOperation("Guardando boleta..."));
-
-//         const {ok, idBoleta } = await createBoleta(data, idJornada, candidatos, suplentes, partidos);// PROVIDER
-//         if (ok) {
-//             dispatch(onSuccessOperation());
-//             dispatch(onToastSuccessOperation({ successMessage: "Boleta creada con éxito" }));
-//             dispatch(onAddBoleta({idBoleta, encabezado: data.encabezadoJornada}));// SLICE
-//             navigate();
-//         } else {
-//             dispatch(onErrorOperation());
-//             dispatch(onToastErrorOperation({ errorMessage: "No se pudo crear la boleta" }));
-//         }
-//     }
-// };
 
 export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
 	return async (dispatch) => {
 		dispatch(onCheckingOperation());
-		const { ok, data, dataPartido, dataCandidato, dataSuplente } = await getBoletaData(
-			idBoleta
-		); // PROVIDER
+		const { ok, data, dataCandidato, dataSuplente } = await getBoletaData(idBoleta); // PROVIDER
+        console.log("DATA PROVIDER",data);
+		console.log("dataCandidato PROVIDER",dataCandidato);
+		console.log("dataSuplente PROVIDER",dataSuplente);
+
+		// const { ok, data, dataPartido, dataCandidato, dataSuplente } = await getBoletaData(idBoleta); // PROVIDER
 		if (ok) {
 			dispatch(onSuccessOperation());
 			dispatch(onEditBoleta({ idBoleta, ...data })); // SLICE
 			dispatch(onAddPartido(dataPartido)); // SLICE
+			dispatch(onAddCandidatoAndSuplente(dataCandidato, dataSuplente)); // SLICE
 			// dispatch(onAddCandidato(dataCandidato));// SLICE
 			// dispatch(onAddSuplente(dataSuplente));// SLICE
 			navigate();
@@ -210,21 +190,23 @@ export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
 export const onUpdateBoletaData = (
 	values,
 	idJornada,
-	idBoleta,
-	candidatos,
-	suplentes,
+	candidatoandSuplentes, 
 	partidos,
+	idBoleta,
 	navigate = () => {}
 ) => {
 	return async (dispatch) => {
+		console.log("VALUES THUNKS",values);
+		console.log("idJornada THUNKS",idJornada);
+		console.log("candidatoandSuplentes THUNKS",candidatoandSuplentes);
+		console.log("idBoleta THUNKS",idBoleta);
 		dispatch(onCheckingOperation());
 		const { ok } = await updateBoletaData(
 			values,
-			candidatos,
-			suplentes,
+			idJornada,
+			candidatoandSuplentes, 
 			partidos,
 			idBoleta,
-			idJornada
 		); // PROVIDER
 		if (ok) {
 			dispatch(onSuccessOperation());

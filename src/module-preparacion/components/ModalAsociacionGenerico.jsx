@@ -1,12 +1,14 @@
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { Box, Button, Grid, Modal, TextField, Typography } from "@mui/material";
+import { Box, Button, Checkbox, FormControlLabel, Grid, Modal, TextField, Typography } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import { Form, Formik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { object } from "yup";
+import { useUiStore } from "../../hooks/useUiStore";
 import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
+// import { CandidatoCheck } from './configuracion-boleta/CandidatoCheck';
 const style = {
 	position: "absolute",
 	top: "50%",
@@ -35,16 +37,30 @@ const validationSchema = object({
 export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleCloseRegisterAsociacionModal }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const { status, asociaciones, addAsociacion, setAsociacionesSelectedNull } = useJornadaNoFormalStore();
+	const { toastSuccesOperation } = useUiStore();
+	const { status, candidatos, asociaciones,asociacionesSelected, updateAsociacion, addAsociacion, setAsociacionesSelectedNull } = useJornadaNoFormalStore();
 	const onSubmit = (values) => {
 		setLogo({ name: "Sin Archivo seleccionado" });
 		console.log(values);
-		addAsociacion(
-			asociaciones.length,
-			values.nombreAsociacion,
-			values.emblema,
-			values.logo,
-		);
+		if (Object.values(asociacionesSelected).length === 0) {
+			addAsociacion(
+				asociaciones.length,
+				values.nombreAsociacion,
+				values.emblema,
+				values.logo,
+				values.candidatosAsociacion,
+			);
+			toastSuccesOperation("Datos registrados con éxito");
+		} else {
+			updateAsociacion(
+				asociacionesSelected.length,
+				values.nombreAsociacion,
+				values.emblema,
+				values.logo,
+				values.candidatosAsociacion,
+			)
+			toastSuccesOperation("Datos actualizados con éxito");
+		}
 		setAsociacionesSelectedNull();
 		handleCloseRegisterAsociacionModal();
 	};
@@ -65,6 +81,22 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 		 }
 		 return errors;
 	   };
+
+
+	// const [candidatosS, setCandidatosS] = useState(
+	// 	asociaciones ? asociaciones.candidatos : []
+	// );
+	// const onSelectCandidato = (candidato) => {
+	// 	console.log("cnadidato: " + candidato);
+	// 	let candi = null;
+	// 	candi = candidatosS.find((c) => c === candidato);
+	// 	if (candi) {
+	// 		setCandidatosS(candidatosS.filter((c) => c !== candidato));
+	// 	} else {
+	// 		setCandidatosS([...candidatosS, candidato]);
+	// 	}
+	// };
+	  
 	return (
 		<Modal
 			open={statusRegisterAsociacionModal}
@@ -75,26 +107,70 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 			<Box sx={style}>
 				<Box sx={{ overflowY: "auto", height: "100%" }}>
 					<Typography id="modal-modal-title" variant="h5" color="initial" align="center">
-						REGISTRO DE CANDIDATOS
+						REGISTRO DE ASOCIACIONES
 					</Typography>
 					<Box m={"2rem"}>
 						<Formik
-							initialValues={{
+							initialValues={
+								Object.values(asociacionesSelected).length === 0 ?
+								{
 								nombreAsociacion: "",
 								emblema: "",
 								logo: "",
-                                // "nombreAsociacion": "VERDE",
-                                // "emblema": "PLANILLA C",
-                                // "logo": "GRIS.PNG"
-							}}
+								candidatosAsociacion: [],
+								} :{
+									nombreAsociacion: asociacionesSelected.nombreAsociacion,
+									emblema: asociacionesSelected.emblema,
+									logo: asociacionesSelected.logo,
+									candidatosAsociacion: asociacionesSelected.candidatosAsociacion,
+								}
+							}
 							validate = {validando}
 							validationSchema={validationSchema}
 							onSubmit={(values, {resetForm}) => {
 								onSubmit(values);
 								resetForm();
 							}}
-						>
-							{({ values, handleSubmit, handleChange, errors, touched, handleBlur, setFieldValue }) => (
+							>
+							{({
+							values,
+							handleSubmit,
+							handleChange,
+							errors,
+							touched,
+							handleBlur,
+							setFieldValue,
+							}) => {
+
+								const [candidatosDisponibles, setCandidatosDisponibles] = useState(candidatos);
+
+								useEffect(() => {
+								  setCandidatosDisponibles(
+									candidatos.filter(candidato => !values.candidatosAsociacion.includes(candidato.id))
+								  );
+								}, [values.candidatosAsociacion]);
+								  
+
+
+								const candidatosNoAsociados = [];
+
+								candidatosDisponibles.map(candidato => {
+								  let candidatoEncontrado = false;
+								  
+								  asociaciones.map(asociacion => {
+									asociacion.candidatosAsociacion.map(candidatoAsociacion => {
+									  if (candidato.id === candidatoAsociacion.id) {
+										candidatoEncontrado = true;
+									  }
+									});
+								  });
+								
+								  if (!candidatoEncontrado) {
+									candidatosNoAsociados.push(candidato);
+								  }
+								});
+								
+							return (
 								<Form onSubmit={handleSubmit}>
 									<Typography variant="h7">
 										NOMBRE DE LA ASOCIACIÓN <span style={{ color: "red" }}>*</span>
@@ -172,11 +248,97 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 										</Box>
 										)}
 
+										{/* Esto es del recuadrod el componente de lso candidatos */}
+										<Box
+										id="candidato"
+										name="candidato"
+										sx={{
+										boxShadow: 1,
+										width: "100%",
+										height: { xl: "400px", lg: "350px" },
+										mt: 2,
+										p: 3,
+										border: "1px solid rgba(0,0,0,0.4)",
+										borderRadius: "15px",
+										// background: "#F1F1F1",
+										}}
+									>
+										<Typography variant="h7" mt={"1rem"}>
+										SELECCIONE LOS CANDIDATOS CORRESPONDIENTES A ESTA ASOCIACIÓN  <span style={{ color: "red" }}>*</span>
+									</Typography>
+										<Box
+										sx={{
+											display: "flex",
+											width: "100%",
+											height: "100%",
+											overflowY: "scroll",
+											flexDirection: "row",
+											flexWrap: "wrap",
+											p: 1,
+											mb: 1,
+										}}
+										>
 
+											{candidatosNoAsociados.map(candidato => (
+											<Box
+												sx={{
+												boxShadow: values.candidatosAsociacion.findIndex(c => c.id === candidato.id) !== -1 ? 3 : 0,
+												display: "flex",
+												justifyContent: "space-around",
+												alignItems: "center",
+												width: "300px",
+												height: "80px",
+												m: 1,
+												border: "1px solid rgba(0,0,0,0.2)",
+												borderRadius: "8px",
+												background: values.candidatosAsociacion.findIndex(c => c.id === candidato.id) !== -1 ? "#E7C0F9" : "#FFF",
+												transition: "boxShadow,background 0.4s ease-in-out",
+												}}
+											>
+												<Box
+												sx={{
+													borderRadius: "15px",
+													width: "50px",
+													height: "50px",
+													background: "#000",
+													ml: 1,
+												}}
+												></Box>
+												<Box sx={{ p: 2 }}>
+												<Typography sx={{ fontSize: "15px", fontWeight: "bold" }}>
+													{candidato.nombreCandidato}
+												</Typography>
+												</Box>
+												<FormControlLabel
+												control={
+													<Checkbox
+													checked={values.candidatosAsociacion.findIndex(c => c.id === candidato.id) !== -1}
+													onChange={() => {
+														if (values.candidatosAsociacion.findIndex(c => c.id === candidato.id) !== -1) {
+														setFieldValue(
+															"candidatosAsociacion",
+															values.candidatosAsociacion.filter(c => c.id !== candidato.id)
+														);
+														} else {
+														setFieldValue(
+															"candidatosAsociacion",
+															[...values.candidatosAsociacion, candidato]
+														);
+														}
+													}}
+													/>
+												}
+												/>
+											</Box>
+											))}
+										</Box>
+										{touched.candidatos && candidatosS.length === 0 && (
+										<ErrorField>{errors.candidatos}</ErrorField>
+										)}
+									</Box>
+									<br />
 
-
-
-
+									{/* Esto es del los botones */}
 									<Grid
 										container
 										direction="row"
@@ -231,7 +393,7 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 									</Grid>
 								</Grid>
 								</Form>
-							)}
+							)}}
 						</Formik>
 					</Box>
 				</Box>

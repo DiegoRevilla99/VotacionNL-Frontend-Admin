@@ -1,86 +1,125 @@
-import { Box, Button, Divider, Grid, Typography } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
+import { Box, Button, CircularProgress, Divider, Grid, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { Stack } from "@mui/system";
 import { Formik } from 'formik';
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { number, object, string } from "yup";
+import { object } from "yup";
 import { useUiStore } from "../../hooks/useUiStore";
-import { AddPartidosMod } from "../components/AddPartidosMod";
 import { FielTextCustom } from "../components/FielTextCustom";
-import { ModalAsociacionCP } from "../components/ModalAsociacionCP";
 import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
 import { ModalRegisterCS } from "../components/ModalRegisterCS";
 
-import { onCreateBoleta } from "../../store/module-preparacion/jornada/ThunksJornada";
-import { DataGridRowGrouping } from "../../ui/components/DataGridRowGrouping";
+import { onCreateBoleta, onUpdateBoletaData } from "../../store/module-preparacion/jornada/ThunksJornada";
+// import { DataGridRowGrouping } from "../../ui/components/DataGridRowGrouping";
 import { AddCandidatoMod } from "../components/AddCandidatoMod";
 import { ModalEliminarCandidato } from "../components/ModalEliminarCandidato";
 import { ModalEliminarPartido } from "../components/ModalEliminarPartido";
 import { useJornadaStore } from "../hooks/useJornadaStore";
 
+import { AgrupaPartido } from "../components/configuracion-boleta/AgrupaPartido";
+import { useAsociaciones } from "../hooks/config-boleta/useAsociaciones";
+
+const useStyles = makeStyles({
+	hr: {
+	  height: "3px",
+	  color: "rgb(210, 210, 210)",
+	  background: "rgb(210, 210, 210)",
+	  width: "100%",
+	  boxShadow: 3,
+	},
+	boton: {
+	  boxShadow: 1,
+	  color: "white",
+	  height: 42,
+	},
+  });
+
+  const styleButton = {
+	borderRadius: 50,
+  };
+  
+  const botones = {
+	display: "flex",
+	justifyContent: "end",
+	alignContent: "space-around",
+	width: "95%",
+	height: "50px",
+	pt: 2,
+  };
+  
+  const boxOpciones = {
+	display: "flex",
+	flexDirection: "column",
+	width: "100%",
+	alignItems: "center",
+	mt: 1,
+	mb: 5,
+  };
 
 const validationSchema = object({
-	encabezado: string("").required(
-		"Por favor, ingresa un encabezado"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	nombreCandidatura: string("").required(
-		"Por favor, ingresa un nombre de Candidatura"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// encabezado: string("").required(
+	// 	"Por favor, ingresa un encabezado"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// nombreCandidatura: string("").required(
+	// 	"Por favor, ingresa un nombre de Candidatura"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
 	// modalidadVotacion: string(""),
-	entidadFederativa: string("").required(
-		"Por favor, ingresa una entidad Federativa"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	municipio: string("").required(
-		"Por favor, ingresa un municipio"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	distritoElectoralLocal: number("").required(
-		"Por favor, ingresa un distrito Electoral Local"
-		).max("26").positive("Solo números positivos, por favor.").integer(""),
-	distritoElectoral: number("").required(
-		"Por favor, ingresa un distrito Electoral"
-		).max("3000").positive("Solo números positivos, por favor.").integer(""),
-	tipoCasilla: string("").required(
-		"Por favor, ingresa un tipo de Casilla"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	primerFirmante: string("").required(
-		"Por favor, ingresa el nombre del Primer Firmante"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	cargoPrimerFirmante: string("").required(
-		"Por favor, ingresa un segundo Firmante"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	segundoFirmante: string("").required(
-		"Por favor, ingresa el nombre de Segundo Firmante"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	cargoSegundoFirmante: string("").required(
-		"Por favor, ingresa el cargo de Segundo Firmante"
-		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// entidadFederativa: string("").required(
+	// 	"Por favor, ingresa una entidad Federativa"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// municipio: string("").required(
+	// 	"Por favor, ingresa un municipio"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// distritoElectoralLocal: number("").required(
+	// 	"Por favor, ingresa un distrito Electoral Local"
+	// 	).max("26").positive("Solo números positivos, por favor.").integer(""),
+	// distritoElectoral: number("").required(
+	// 	"Por favor, ingresa un distrito Electoral"
+	// 	).max("3000").positive("Solo números positivos, por favor.").integer(""),
+	// tipoCasilla: string("").required(
+	// 	"Por favor, ingresa un tipo de Casilla"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// primerFirmante: string("").required(
+	// 	"Por favor, ingresa el nombre del Primer Firmante"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// cargoPrimerFirmante: string("").required(
+	// 	"Por favor, ingresa un segundo Firmante"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// segundoFirmante: string("").required(
+	// 	"Por favor, ingresa el nombre de Segundo Firmante"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	// cargoSegundoFirmante: string("").required(
+	// 	"Por favor, ingresa el cargo de Segundo Firmante"
+	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
 });
 
 export const AddBoletaJornada = () => {
-
+	const styles = useStyles();
+	const [modalAsociacion, setModalAsociacion] = useState(false);
+	const abrirCerrarModalAsociacion = () => {
+		setModalAsociacion(!modalAsociacion);
+	};
 	const [isSubmited, setIsSubmited] = useState(false);
 	const { toastOffOperation } = useUiStore();
 	// const { status, questions, consultaSelected } = useConsultaCiudadanaStore();
 	const { 
 		status,
-		candidatos,
-        candidatosSelected,
-        suplentes,
-        suplentesSelected,
         partidos,
         partidoSelected,
-        candidatoAndSuplente,
-        candidatoandSuplenteSelected,
-		
+		candidatoandSuplentes,
+		candidatoandSuplenteSelected,
+		updateCandidatoAndSuplente,
 		jornadaSelected,
+		candidatosAMostrar,
 	} = useJornadaStore();
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const params = useParams();
-
+	const { asociaciones, isLoadingAsociaciones } = useAsociaciones(params.id);
+	
 	const values = Object.values(jornadaSelected.boletaSelected).length === 0 ? {
 
 		nombreCandidatura: "",
@@ -93,7 +132,7 @@ export const AddBoletaJornada = () => {
 	} : {
 
 		nombreCandidatura: jornadaSelected.boletaSelected.nombreCandidatura,
-		modalidadVotacion: jornadaSelected.boletaSelected.modalidadVotacion,
+		// modalidadVotacion: jornadaSelected.boletaSelected.modalidadVotacion,
 		municipio: jornadaSelected.boletaSelected.municipio,
 		distritoElectoral: jornadaSelected.boletaSelected.distritoElectoral,
 		primerFirmante: jornadaSelected.boletaSelected.primerFirmante,
@@ -125,9 +164,35 @@ export const AddBoletaJornada = () => {
 	    // toastOffOperation();
 		setStatusRegisterModal(true);
 	};
-
+	let candidatosConPartidos = [];
+	// const candidatosAMostrar = [];
 	const handleOpenMatchModal = () => {
-	// toastOffOperation();
+		console.log("partidos en la boleta", partidos);
+
+		
+		// partidos.map((partido) => {
+		// 	console.log("partido",partido.candidatosPartido);
+		// 	partido.candidatosPartido.map((candidate) => {
+		// 		candidatosConPartidos.push(candidate);
+		// 		console.log("candidato",candidate);
+
+		// 	}
+		// 	)}
+		// 	)
+
+		// 	// candidatosAMostrar = [];
+		// 	console.log("candidatos a mostrar UNO",candidatosAMostrar)
+		// 	candidatoandSuplentes.map((candi) => {
+		// 		candidatosConPartidos.map((candidate)=>
+		// 		{
+		// 			if(candi.id !== candidate.id){
+		// 				debugger
+		// 				candidatosAMostrar.push(candi);
+		// 			}
+		// 		})
+		// 		})
+			// console.log("candidatos a mostrar",candidatosAMostrar)
+
 	setStatusMatchModal(true);
 	};
 
@@ -150,17 +215,30 @@ export const AddBoletaJornada = () => {
 		navigate("/preparacion/jornada/"+ params.id);
 	};
 
+
 	const onSubmit = (values) => {
-		// dispatch(
-			onCreateBoleta(values, params.id, candidatoAndSuplente, partidos);
-		// console.log("PARTIDOOOOOS: ", partidos);
-		// console.log("CANDIDATOS: ", candidatoAndSuplente);
-		// console.log("VALORRRRRRRRRRRRRRRRR: ", values);
+		if(Object.values(jornadaSelected.boletaSelected).length === 0){
+			if(candidatoandSuplentes.length > 0)
+				dispatch(
+					onCreateBoleta( values, params.id, candidatoandSuplentes, partidos, ()=>{
+						navigate("/preparacion/jornada/"+params.id);
+					})
+				) 
+		}else{
+			dispatch(
+				onUpdateBoletaData( 
+					values, 
+					params.id, 
+					candidatoandSuplentes, 
+					partidos, 
+					params.idBoleta,
+					()=>{
+						navigate("/preparacion/jornada/"+params.id);
+					}
+				)
+			);
+		}
 	};
-
-
-	
-
 	return (
 		<>
           {isLoading ? (
@@ -324,38 +402,62 @@ export const AddBoletaJornada = () => {
 							handleOpenDeleteCandidatoModal={handleOpenDeleteCandidatoModal}
 							status={status}
 						/> 
-						<AddPartidosMod 
-							handleOpenModal={handleOpenMatchModal}
-							handleOpenDeletePartidoModal={handleOpenDeletePartidoModal}
-							status={status}
-						/> 
-						<Grid item xs={12} md={6} lg={4}>
-							<Button
-								onClick={handleOpenAsociacionModal}
-								variant="contained"
-								size="large"
-								
-								disabled={status === "checking"}
-								sx={{
-									width: "100%",
-									height: "100%",
-									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
-									transition: "all 0.5s ease",
-									backgroundColor: "#511079",
-									fontSize: { xl: "14px", lg: "14px", sm: "15px", xs: "15px" },
-									borderRadius: "25px 25px 25px 25px",
-									"&:hover": {
-										backgroundColor: "#7E328B !important",
-										transform: "translate(-5px, -5px)",
-										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
-									},
-								}}
+						<> 
+						 <Box
+							pl={3}
+							width="100%"
+							mt={5}
+						>
+							
+							<Grid item xs={12} md={6} lg={4}>
+								<Button
+									
+									// onClick={abrirCerrarModalAsociacion}
+									onClick={handleOpenMatchModal}
+									variant="contained"
+									size="large"
+									disabled={status === "checking"}
+									sx={{
+										boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+										transition: "all 0.5s ease",
+										backgroundColor: "#511079",
+										width: "100%",
+										borderRadius: "25px 25px 25px 25px",
+										"&:hover": {
+											backgroundColor: "#7E328B !important",
+											transform: "translate(-5px, -5px)",
+											boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+										},
+									}}
+								>
+									AGREGAR PARTIDO
+								</Button>
+							</Grid>
+							<Box
+							  sx={{
+								display: "flex",
+								width: "100%",
+								alignItems: "center",
+								justifyContent: "center",
+								mt: 3,
+								mb: 2,
+							  }}
 							>
-								Afiliar participantes a partido
-							</Button>
-						</Grid>
-
-						<DataGridRowGrouping/>
+							</Box>
+							{isLoadingAsociaciones ? (
+							  <Stack
+								justifyContent="center"
+								sx={{ color: "grey.500" }}
+								spacing={2}
+								direction="row"
+							  >
+								<CircularProgress color="primary" />
+							  </Stack>
+							) : (
+							  <AgrupaPartido/>
+							)}
+							</Box>
+						  </>
 
 					</Grid>
 					<Grid mt={"1rem"} container direction="row" justifyContent="flex-end" spacing={2}>
@@ -409,11 +511,8 @@ export const AddBoletaJornada = () => {
 				</Box>
 			{/* MODAL PARA REGISTRAR LOS PARTIDOS */}
 			<ModalBoletaPartido statusMatchModal={statusMatchModal} handleToggleModal={handleCloseMatchModal} />
-			{/* MODAL PARA REGISTRAR A LOS CANDIDATOS Y SUPLENTES */}
+			{/* MODAL PARA REGISTRAR A LOS candidatoandSuplentes Y SUPLENTES */}
 			<ModalRegisterCS statusRegisterModal={statusRegisterModal} handleToggleModal={handleCloseRegisterModal} />
-			{/* MODAL PARA REGISTRAR ASOCIAR CANDIDATOS Y PARTIDOS */}
-			<ModalAsociacionCP statusAsociacionModal={statusAsociacionModal} handleToggleModal={handleCloseAsociacionModal} />
-
 			{/* MODAL PARA CONFIRMAR LA ELIMINACIÓN */}
 			<ModalEliminarPartido statusDeletePartidoModal={statusDeletePartidoModal} handleToggleModal={handleCloseDeletePartidoModal} />
 			<ModalEliminarCandidato statusDeleteCandidatoModal={statusDeleteCandidatoModal} handleToggleModal={handleCloseDeleteCandidatoModal} />

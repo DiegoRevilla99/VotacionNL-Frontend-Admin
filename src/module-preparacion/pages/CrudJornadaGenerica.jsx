@@ -1,3 +1,4 @@
+import BallotIcon from "@mui/icons-material/Ballot";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from '@mui/icons-material/Edit';
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -19,6 +20,37 @@ import { GeneralTable } from "../components/GeneralTable";
 import { ModalEliminarBoleta } from "../components/ModalEliminarBoleta";
 import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 
+
+// ----------- Bradcrumbs ----------
+// import { experimentalStyled as styled } from '@mui/material/styles';
+import AllInboxIcon from '@mui/icons-material/AllInbox';
+import HomeIcon from '@mui/icons-material/Home';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Chip from '@mui/material/Chip';
+import { emphasize, styled } from '@mui/material/styles';
+const StyledBreadcrumb = styled(Chip)(({ theme }) => {
+    const backgroundColor =
+      theme.palette.mode === 'light'
+        ? theme.palette.grey[300]
+        : theme.palette.grey[800];
+    return {
+      backgroundColor,
+      height: theme.spacing(3),
+      color: theme.palette.text.primary,
+	  fontSize: "1.1rem", // Agrega esta línea
+      fontWeight: theme.typography.fontWeightRegular,
+      '&:hover, &:focus': {
+        backgroundColor: emphasize(backgroundColor, 0.06),
+      },
+      '&:active': {
+        boxShadow: theme.shadows[1],
+        backgroundColor: emphasize(backgroundColor, 0.12),
+      },
+    };
+  }); // TypeScript only: need a type cast here because https://github.com/Microsoft/TypeScript/issues/26591
+// ----------- Bradcrumbs ----------
+
+
 export const CrudJornadaGenerica = () => {
   const navigate = useNavigate();
 
@@ -34,12 +66,12 @@ export const CrudJornadaGenerica = () => {
     // field: Debe de ir la variable que se va a mostrar en la tabla
     {
       field: "encabezadoBoleta",
-      headerName: "Título de la boleta no formal",
+      headerName: "TÍTULO DE LA BOLETA",
       flex: 10,
     },
     {
       field: "configuracion",
-      headerName: "Configuración",
+      headerName: "CONFIGURACIÓN",
       flex: 5,
       sortable: false,
       disableColumnMenu: true,
@@ -79,27 +111,19 @@ export const CrudJornadaGenerica = () => {
   };
   // MÉTODO PARA EDITAR UN REGISTRO
   const handleEdit = (id) => {
+    // console.log("Presionaste editar, el ID es",id);
     dispatch(
       onGetBoletaData(id, () => {
         navigate(
-          "/preparacion/jornada/noFormal" + params.id + "/boletanf/" + id
+          "/preparacion/jornada/noFormal/" + params.id +
+          "/boletanf/" + id
         );
       })
     );
   };
   // USEEFFECT QUE PUEDES USAR PARA HACER UN GET DE LAS JORNADAS AL RENDERIZAR LA PAGINA
   useEffect(() => {
-    // if (jornadaNoFormalSelected.boletasNoFormales.listBoletas.length === 0) dispatch(onGetBoletasNoFormales(params.id));
-      // if (jornadaNoFormalSelected || jornadaNoFormalSelected.boletasNoFormales || jornadaNoFormalSelected.boletasNoFormales.listBoletas || jornadaNoFormalSelected.boletasNoFormales.listBoletas.length === 0) {
-      //     dispatch(onGetBoletasNoFormales(params.id));
-      // }
-      // if (jornadaNoFormalSelected || jornadaNoFormalSelected.boletasNoFormales || jornadaNoFormalSelected.boletasNoFormales.listBoletas || jornadaNoFormalSelected.boletasNoFormales.listBoletas.length === 0) {
-      //     dispatch(onFillBoletas(params.id));
-      // }
       dispatch(onGetBoletasNoFormales(params.id));
-      // console.log("jornadaNoFormalSelected",  jornadaNoFormalSelected);
-      // console.log("listboletas",  jornadaNoFormalSelected.boletasNoFormales.listBoletas);
-      // console.log("longitud",  jornadaNoFormalSelected.boletasNoFormales.listBoletas.length);
   }, []);
   // MÉTODO PARA IR A LA PAGINA DE CONFIGURACIÓN DEL REGISTRO
   const handleConfig = (id) => {
@@ -125,7 +149,7 @@ export const CrudJornadaGenerica = () => {
 		setModalDeleteStatus(true);
 	};
   
-
+	// console.log("haber que guardo aqui", jornadaNoFormalSelected.boletasNoFormales.listBoletas.idEstructuraBoleta);
   if (status === "checking")
     return (
       <Box sx={{ width: "100%" }}>
@@ -143,6 +167,29 @@ export const CrudJornadaGenerica = () => {
         }}
       >
         <Grid item xs={12} sx={{ display: "flex", flexDirection: "column" }}>
+        <Box align="center" display="flex" justifyContent="center" mt={2.5} mb={1}>
+						<Breadcrumbs aria-label="breadcrumb">
+							<StyledBreadcrumb
+								component="a"
+								href="/preparacion/inicio"
+								label="INICIO"
+								icon={<HomeIcon fontSize="medium" />}
+								/>
+							<StyledBreadcrumb 
+								component="a"
+								href="/preparacion/registroJornadaNoFormal"
+								icon={<AllInboxIcon fontSize="medium" />}
+								label="JORNADAS" 
+							/>
+							<StyledBreadcrumb 
+								component="a"
+								// href="/verificacion/visualizacion/boleta"
+								icon={<BallotIcon fontSize="medium" />}
+								// label="BOLETAS" 
+								label= "BOLETAS"
+							/>
+						</Breadcrumbs>
+					</Box>
           <Box sx={{ m: "0.5rem", ml: "2rem" }}>
             <Typography variant="h6" align="left" color="initial">
               {jornadaNoFormalSelected.title}
@@ -178,7 +225,7 @@ export const CrudJornadaGenerica = () => {
                     },
                   }}
                 >
-                  Registrar Boleta No Formal
+                  REGISTRAR BOLETA
                 </Button>
               </Grid>
             </Grid>
@@ -196,8 +243,8 @@ export const CrudJornadaGenerica = () => {
                 pt: "1rem",
               }}
             >
-              <Typography variant="h5" color="initial" mb="0.5rem">
-                Boletas no formales
+              <Typography variant="h5" color="initial" mb="0.5rem" align="center">
+                BOLETAS
               </Typography>
               <Divider />
               <Box
@@ -213,9 +260,10 @@ export const CrudJornadaGenerica = () => {
 								  tiene otro nombre, cambien el atributo idName al nombre que quieran */}
                 <GeneralTable
                   data={jornadaNoFormalSelected.boletasNoFormales.listBoletas} // DATA DE LOS REGISTROS
+                  // data={jornadaNoFormalSelected.boletasNoFormales} // DATA DE LOS REGISTROS
                   columns={columns}
                   idName={"idEstructuraBoleta"}// NOMBRE DEL ID DE CADA REGISTRO
-                  getRowId={(row) => row.idEstructuraBoleta}
+                  // getRowId={(row) => row.idEstructuraBoleta}
                 />
                 
               </Box>

@@ -3,7 +3,7 @@ import {
     onAddAsociacion,
     onAddCandidato, onAddJornadasNoFormales, onCheckingOperation, onDeleteAsociacion, onDeleteCandidato, onEditAsociacion, onEditBoleta, onEditCandidato, onErrorOperation, onFillJornadasNoFormalesData, onOffOperation,
     onSetAsociacionSelectedNull,
-    onSetCandidatoNull, onSetCandidatoSelectedNull, onSetPartidoSelectedNull, onSuccessOperation, onUpdateCandidato
+    onSetCandidatoNull, onSetCandidatoSelectedNull, onSetPartidoSelectedNull, onSuccessOperation, onUpdateAsociacion, onUpdateCandidato
 } from "../../store/module-preparacion/jornada/SliceJornadaNoFormal";
 
 export const useJornadaNoFormalStore = () => {
@@ -14,7 +14,7 @@ export const useJornadaNoFormalStore = () => {
 		errorMessage,
 		successMesage,
 		candidatos,
-        candidatosSelected,
+        candidatoSelected,
         asociaciones,
         asociacionesSelected,
         jornadasNoFormalesData,
@@ -72,7 +72,7 @@ export const useJornadaNoFormalStore = () => {
     // Add
     const addCandidato = (
         id,
-        curp,
+        claveCandidato,
         apellidoPCandidato,
         apellidoMCandidato,
         nombreCandidato,
@@ -84,7 +84,7 @@ export const useJornadaNoFormalStore = () => {
         dispatch(
             onAddCandidato({
                 id,
-                curp,
+                claveCandidato,
                 apellidoPCandidato,
                 apellidoMCandidato,
                 nombreCandidato,
@@ -101,6 +101,7 @@ export const useJornadaNoFormalStore = () => {
         nombreAsociacion,
         emblema,
         logo,
+        candidatosAsociacion,
     ) => {
         dispatch(
             onAddAsociacion({
@@ -108,6 +109,7 @@ export const useJornadaNoFormalStore = () => {
                 nombreAsociacion,
                 emblema,
                 logo,
+                candidatosAsociacion,
             })
         );
     };
@@ -115,6 +117,7 @@ export const useJornadaNoFormalStore = () => {
     
     const updateCandidato = (
         id,
+        claveCandidato,
         apellidoPCandidate,
         apellidoMCandidate,
         nameCandidate,
@@ -125,6 +128,7 @@ export const useJornadaNoFormalStore = () => {
     ) => {
         dispatch( onUpdateCandidato({
             id,
+            claveCandidato,
             apellidoPCandidate,
             apellidoMCandidate,
             nameCandidate,
@@ -134,7 +138,21 @@ export const useJornadaNoFormalStore = () => {
             generoCandidate,
         }));
     };
-
+    const updateAsociacion = (
+        id,
+        nameAsociacion,
+        emblema,
+        picture,
+        candidatosAsociacion,
+    ) => {
+        dispatch( onUpdateAsociacion({
+            id,
+            nameAsociacion,
+            emblema,
+            picture,
+            candidatosAsociacion,
+        }));
+    };
    
     // JORNADAS NO FORMALES
 
@@ -157,7 +175,7 @@ export const useJornadaNoFormalStore = () => {
 		errorMessage,
 		successMesage,
 		candidatos,
-        candidatosSelected,
+        candidatoSelected,
         asociaciones,
         asociacionesSelected,
 		jornadasNoFormalesData,
@@ -176,7 +194,7 @@ export const useJornadaNoFormalStore = () => {
         fillJornadasNoFormalesData,
         setBoletasSelectedNull,
         setCandidatosSelectedNull,
-
+        updateAsociacion,
         setAsociacionesSelectedNull,
         addAsociacion,
 	};

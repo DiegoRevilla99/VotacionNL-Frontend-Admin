@@ -1,11 +1,9 @@
-import { DataGrid } from "@mui/x-data-grid";
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Box, IconButton } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useDispatch } from "react-redux";
+import EditIcon from "@mui/icons-material/Edit";
+import { Box, IconButton, Tooltip } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
+import React from "react";
 import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
-import { Tooltip } from '@mui/material';
 
 export const DataGridTablePartido = ({ handleOpenModal, handleOpenDeletePartidoModal }) => {
 	const { partidos, deletePartido, editPartido} = useJornadaStore();
@@ -21,11 +19,12 @@ export const DataGridTablePartido = ({ handleOpenModal, handleOpenDeletePartidoM
 	};
 
 	const columns = [
-		{ field: "id", headerName: "Clave", width: 70 },
-		{ field: "nombrePartido", headerName: "Nombre", width: 200 },
-		{ field: "siglasPartido", headerName: "Siglas", width: 80 },
-		{ field: "emblemaPartido", headerName: "emblema", width: 90 },
-		{ field: "fotografiaPartido", headerName: "logo", width: 70 },
+		{ field: "id", headerName: "ID", width: 70 },
+		{ field: "clavePartido", headerName: "Clave", width: 100 },
+		{ field: "nameParty", headerName: "Nombre", width: 300 },
+		{ field: "siglasParty", headerName: "Siglas", width: 90 },
+		{ field: "emblemParty", headerName: "Emblema", width: 290 },
+		// { field: "fotografiaPartido", headerName: "logo", width: 70 },
 		{
 			field: "actions",
 			headerName: "Acciones",

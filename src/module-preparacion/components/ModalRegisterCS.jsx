@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { object } from "yup";
+import { useUiStore } from "../../hooks/useUiStore";
 import { useJornadaStore } from "../hooks/useJornadaStore";
 import { DatePickerMod } from "./DatePickerMod";
 import { DatePickerModSuplente } from "./DatePickerModSuplente";
@@ -29,7 +30,7 @@ const style = {
 	left: "50%",
 	transform: "translate(-50%, -50%)",
 	width: { xl: "50rem", lg: "50rem", sm: "40rem", xs: "30rem" },
-	height: { xl: "30rem", lg: "30rem", md:"28rem",  sm: "35rem", xs: "40rem" },
+	// height: { xl: "30rem", lg: "30rem", md:"28rem",  sm: "35rem", xs: "40rem" },
 	bgcolor: "background.paper",
 	border: '2px solid #fff',
 	borderRadius: "2rem",
@@ -51,7 +52,7 @@ const validationSchema = object({
 	// seudonimoCandidato: string(
 	// 	"Por favor, ingresa el seudónimo del candidato/a"
 	// 	).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
-	// 	fechaNacimientoCandidato: date().required(
+	// 	fechaNacimientoCandidatos: date().required(
 	// 	"Por favor, ingresa la fecha de nacimiento del candidato/a"
 	// 	).max(new Date(), "No puedes ingresar una fecha futura"),
 	// 	generoCandidato: string("").required("Por favor, selecciona el género"),
@@ -69,13 +70,14 @@ const validationSchema = object({
 	// seudonimoSuplente: string(
 	// 	"Por favor, ingresa el seudónimo del Suplente"
 	// 	).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
-	// 	fechaNacimientoSuplente: date().required(
+	// 	fechaNacimientoSuplentes: date().required(
 	// 	"Por favor, ingresa la fecha de nacimiento del Suplente"
 	// 	).max(new Date(), "No puedes ingresar una fecha futura"),
 	// 	generoSuplente: string("").required("Por favor, selecciona el género"),
 });
 export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 	const dispatch = useDispatch();
+	const { toastSuccesOperation } = useUiStore();
 	const params = useParams();
 	const {
 		status,
@@ -83,31 +85,61 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
         candidatoandSuplenteSelected,
 		addCandidatoAndSuplente,
 		setCandidatoAndSuplenteSelectedNull,
+		updateCandidatoAndSuplente,
 	} = useJornadaStore();
 
 	const onSubmit = (values) => {
 		setFotografia({ name: "Sin Archivo seleccionado" });
 		setFotografiaSuplente({ name: "Sin Archivo seleccionado" });
-		console.log("AQUI ANDAMOS EN EL ONSUBMIT",values);
-		addCandidatoAndSuplente(
-			candidatoandSuplentes.length,
-			values.apellidoPCandidato,
-			values.apellidoMCandidato,
-			values.nombreCandidato,
-			values.fotografiaCandidato,
-			values.seudonimoCandidato,
-			values.fechaNacimientoCandidato,
-			values.generoCandidato,
-			values.claveElectoralCandidato,
-			values.claveElectoralSuplente,
-			values.apellidoPSuplente,
-			values.apellidoMSuplente,
-			values.nombreSuplente,
-			values.fotografiaSuplente,
-			values.seudonimoSuplente,
-			values.fechaNacimientoSuplente,
-			values.generoSuplente
-		);
+		if (Object.values(candidatoandSuplenteSelected).length === 0) {
+			const fechaNacimientoCandidato = values.fechaNacimientoCandidatos.toISOString();
+			const fechaNacimientoSuplente = values.fechaNacimientoSuplentes.toISOString();
+			addCandidatoAndSuplente(
+				candidatoandSuplentes.length,
+				values.apellidoPCandidato,
+				values.apellidoMCandidato,
+				values.nombreCandidato,
+				values.fotografiaCandidato,
+				values.seudonimoCandidato,
+				// values.fechaNacimientoCandidatos,
+				fechaNacimientoCandidato,
+				values.generoCandidato,
+				values.claveElectoralCandidato,
+				values.claveElectoralSuplente,
+				values.apellidoPSuplente,
+				values.apellidoMSuplente,
+				values.nombreSuplente,
+				values.fotografiaSuplente,
+				values.seudonimoSuplente,
+				// values.fechaNacimientoSuplentes,
+				fechaNacimientoSuplente,
+				values.generoSuplente
+			);
+			toastSuccesOperation("Datos registrados con éxito");
+		} else {
+			updateCandidatoAndSuplente(
+				candidatoandSuplenteSelected.length,
+				values.apellidoPCandidato,
+				values.apellidoMCandidato,
+				values.nombreCandidato,
+				values.fotografiaCandidato,
+				values.seudonimoCandidato,
+				values.fechaNacimientoCandidatos,
+				// fechaNacimientoCandidato,
+				values.generoCandidato,
+				values.claveElectoralCandidato,
+				values.claveElectoralSuplente,
+				values.apellidoPSuplente,
+				values.apellidoMSuplente,
+				values.nombreSuplente,
+				values.fotografiaSuplente,
+				values.seudonimoSuplente,
+				values.fechaNacimientoSuplentes,
+				// fechaNacimientoSuplente,
+				values.generoSuplente
+			);
+			toastSuccesOperation("Datos actualizados con éxito");
+		}
 		setCandidatoAndSuplenteSelectedNull();
 		setActiveStep(0);
 		handleToggleModal();
@@ -167,26 +199,46 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 
 						<Formik
 							initialValues={
-                                        {
-								// CANDIDATO
-								claveElectoralCandidato: "",
-								apellidoPCandidato: "",
-								apellidoMCandidato: "", 
-								nombreCandidato: "", 
-								fotografiaCandidato: "",
-								seudonimoCandidato: "",//Text
-								fechaNacimientoCandidato: "",//Date
-								generoCandidato: "",//Text
-								// SUPLENTE
-								claveElectoralSuplente: "",
-								apellidoPSuplente: "",
-								apellidoMSuplente: "", 
-								nombreSuplente: "", 
-								fotografiaSuplente: "",
-								seudonimoSuplente: "",//Text
-								fechaNacimientoSuplente: "",//Date
-								generoSuplente: "",//Text
-									  }
+								Object.values(candidatoandSuplenteSelected).length === 0
+                                ? 	{
+									// CANDIDATO
+									claveElectoralCandidato: "",
+									apellidoPCandidato: "",
+									apellidoMCandidato: "", 
+									nombreCandidato: "", 
+									fotografiaCandidato: "candidato.jpg",
+									seudonimoCandidato: "",//Text
+									fechaNacimientoCandidatos: "",//Date
+									generoCandidato: "",//Text
+									// SUPLENTE
+									claveElectoralSuplente: "",
+									apellidoPSuplente: "",
+									apellidoMSuplente: "", 
+									nombreSuplente: "", 
+									fotografiaSuplente: "suplente.jpg",
+									seudonimoSuplente: "",//Text
+									fechaNacimientoSuplentes: "",//Date
+									generoSuplente: "",//Text
+								} : {
+									// CANDIDATO
+									claveElectoralCandidato: candidatoandSuplenteSelected["claveElectoralCandidato"],
+									apellidoPCandidato:candidatoandSuplenteSelected["apellidoPCandidato"],
+									apellidoMCandidato: candidatoandSuplenteSelected["apellidoMCandidato"],
+									nombreCandidato: candidatoandSuplenteSelected["nombreCandidato"],
+									fotografiaCandidato:candidatoandSuplenteSelected["fotografiaCandidato"],
+									seudonimoCandidato: candidatoandSuplenteSelected["seudonimoCandidato"],
+									fechaNacimientoCandidatos: candidatoandSuplenteSelected["fechaNacimientoCandidato"],
+									generoCandidato: candidatoandSuplenteSelected["generoCandidato"],
+									// SUPLENTE
+									claveElectoralSuplente:candidatoandSuplenteSelected["claveElectoralSuplente"],
+									apellidoPSuplente:candidatoandSuplenteSelected["apellidoPSuplente"],
+									apellidoMSuplente: candidatoandSuplenteSelected["apellidoMSuplente"],
+									nombreSuplente: candidatoandSuplenteSelected["nombreSuplente"],
+									fotografiaSuplente:candidatoandSuplenteSelected["fotografiaSuplente"],
+									seudonimoSuplente: candidatoandSuplenteSelected["seudonimoSuplente"],
+									fechaNacimientoSuplentes: candidatoandSuplenteSelected["fechaNacimientoSuplente"],
+									generoSuplente: candidatoandSuplenteSelected["generoSuplente"],
+								}
 							}
 							validationSchema={validationSchema}
 							validate = {validando}
@@ -205,7 +257,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 										const labelProps = {};
 										return (
 
-											<Step	Step key={label} {...stepProps}>
+											<Step key={label} {...stepProps}>
 												<StepLabel {...labelProps}>{label}</StepLabel>
 											</Step>
 										);
@@ -237,7 +289,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 
 										</Box>
 										<Box ml={2} sx={{fontSize: "12px", color: "#791010" }}>
-										{errors.fechaNacimientoCandidato? "Verifica la fecha de nacimiento del candidato" : ""}
+										{errors.fechaNacimientoCandidatos? "Verifica la fecha de nacimiento del candidato" : ""}
 
 										</Box>
 										<Box ml={2} sx={{fontSize: "12px", color: "#791010" }}>
@@ -263,7 +315,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 										{errors.seudonimoSuplente? "Verifica el seudonimo del suplente" : ""}
 										</Box>
 										<Box ml={2} sx={{fontSize: "12px", color: "#791010" }}>
-										{errors.fechaNacimientoSuplente? "Verifica la fecha de nacimiento del suplente" : ""}
+										{errors.fechaNacimientoSuplentes? "Verifica la fecha de nacimiento del suplente" : ""}
 										</Box>
 										<Box ml={2} sx={{fontSize: "12px", color: "#791010" }}>
 										{errors.generoSuplente? "Verifica el genero del suplente" : ""}
@@ -435,12 +487,12 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 													>				
 														<DatePickerMod
 															label=""
-															name={"fechaNacimientoCandidato"}
-															value={values.fechaNacimientoCandidato}
+															name={"fechaNacimientoCandidatos"}
+															value={values.fechaNacimientoCandidatos}
 															setFieldValue={setFieldValue}
 															handleChange={handleChange}
-															error={errors.fechaNacimientoCandidato}
-															touched={touched.fechaNacimientoCandidato}
+															error={errors.fechaNacimientoCandidatos}
+															touched={touched.fechaNacimientoCandidatos}
 															
 														/>
 													</Grid>  
@@ -601,12 +653,12 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 													>				
 														<DatePickerModSuplente
 															label=""
-															name={"fechaNacimientoSuplente"}
-															value={values.fechaNacimientoSuplente}
+															name={"fechaNacimientoSuplentes"}
+															value={values.fechaNacimientoSuplentes}
 															setFieldValue={setFieldValue}
 															handleChange={handleChange}
-															error={errors.fechaNacimientoSuplente}
-															touched={touched.fechaNacimientoSuplente}
+															error={errors.fechaNacimientoSuplentes}
+															touched={touched.fechaNacimientoSuplentes}
 															
 														/>
 													</Grid>  
