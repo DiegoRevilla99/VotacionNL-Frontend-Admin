@@ -91,7 +91,7 @@ export const CrudJornada = () => {
               startIcon={<SettingsIcon />}
               onClick={() => handleConfig(params.id)}
             >
-              Configuración
+              Coaliciones
             </Button>
             <IconButton
               sx={{ color: "#511079" }}
