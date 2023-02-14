@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React from "react";
 // import { useJornadaStore } from "../../../../../../../store/module-jornada/jornadaStore";
@@ -44,7 +44,7 @@ export const AgrupaPartido = ({}) => {
   return (
     <>
 
-      {/* {partidos.length > 0 ? ( */}
+      {partidos.length > 0 ? (
           <Box
             sx={{
               width: "100%",
@@ -82,12 +82,12 @@ export const AgrupaPartido = ({}) => {
               </Box>
             </Box>
           </Box>
-        {/* // ) : (
-        //   <Typography style={{ textAlign: "center", fontWeight: "bold", fontSize: 18, color: "#ff0000" }}>
-        //     No existen partidos ahora mismo. Por favor, agregue uno para mostrarlo aquí.
-        //   </Typography>
+        ) : (
+          <Typography style={{ textAlign: "center", fontWeight: "bold", fontSize: 18, color: "#ff0000" }}>
+            No existen partidos ahora mismo. Por favor, agregue uno para mostrarlo aquí.
+          </Typography>
 
-        // )} */}
+        )} 
     </>
   );
 };

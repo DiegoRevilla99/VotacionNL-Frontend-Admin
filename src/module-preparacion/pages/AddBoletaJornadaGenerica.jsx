@@ -1,5 +1,4 @@
 import { Box, Button, CircularProgress, Divider, Grid, MenuItem, TextField, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { Stack } from "@mui/system";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -17,42 +16,6 @@ import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 import { AgrupaAsociacion } from "../components/configuracion-boleta/AgrupaAsociacion";
 
 
-const useStyles = makeStyles({
-	hr: {
-	  height: "3px",
-	  color: "rgb(210, 210, 210)",
-	  background: "rgb(210, 210, 210)",
-	  width: "100%",
-	  boxShadow: 3,
-	},
-	boton: {
-	  boxShadow: 1,
-	  color: "white",
-	  height: 42,
-	},
-  });
-
-  const styleButton = {
-	borderRadius: 50,
-  };
-  
-  const botones = {
-	display: "flex",
-	justifyContent: "end",
-	alignContent: "space-around",
-	width: "95%",
-	height: "50px",
-	pt: 2,
-  };
-  
-  const boxOpciones = {
-	display: "flex",
-	flexDirection: "column",
-	width: "100%",
-	alignItems: "center",
-	mt: 1,
-	mb: 5,
-  };
 const modalidadNoFormal = [ {
     value: 1,
     label: 'REPRESENTANTE',
@@ -93,8 +56,6 @@ const validationSchema = object({
 });
 
 export const AddBoletaJornadaGenerica = () => {
-	const styles = useStyles();
-
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();

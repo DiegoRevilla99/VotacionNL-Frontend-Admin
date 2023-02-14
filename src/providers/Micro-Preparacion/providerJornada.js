@@ -152,7 +152,7 @@ export const getBoletaData = async (idTicket) => {
 };
 
 
-export const createBoletaFormal = async (data, idJornadaElectoral, partidos) => {
+export const createBoletaFormal = async (data, idJornadaElectoral, candidatoandSuplentes, partidos) => {
 
 	try {
 		console.log("DATA PROVIDER", data); // si esta
@@ -179,6 +179,7 @@ export const createBoletaFormal = async (data, idJornadaElectoral, partidos) => 
 			},
 			partidos: []
 		}
+		console.log("boletaInformacion", boletaInformacion);
 		partidos.forEach(partido => {
 			const boletaPartido = {
 			  partidoModel: {
@@ -213,7 +214,7 @@ export const createBoletaFormal = async (data, idJornadaElectoral, partidos) => 
 			boletaInformacion.partidos.push(boletaPartido);
 		  });
 		  
-
+		  
 		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/boletapartidos
 		const respuesta = await jornadasAPI.post("jornada/electoral/boletapartidos", 
 			boletaInformacion
