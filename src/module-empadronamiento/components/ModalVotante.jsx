@@ -86,7 +86,9 @@ export const ModalVotante = ({
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const [errorSend, setErrorSend] = useState("");
-  
+  const { votanteFound } = useSelector(
+    (state) => state.empVotantesSlice
+  );
   
   const isStepOptional = (step) => {
     return step === 5;
@@ -145,6 +147,9 @@ export const ModalVotante = ({
     
   };
 
+  
+
+
   const handleNext = () => {
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
@@ -194,15 +199,20 @@ export const ModalVotante = ({
     dispatch(getVotantesbyJornada(id));
     abrirCerrarModal();
     setActiveStep(0);
-    setData({});
+    // setData({});
   };
 
   useEffect(() => {}, []);
   
 
+const limpiar=()=>{
+  setData({})
+}
+
   useEffect(() => {
     setErrorSend("")
     dispatch(setVotanteFound({votanteFound:{find:""}}))
+    setData({})
     setActiveStep(0)
   }, [isOpen]);
 
@@ -245,12 +255,13 @@ export const ModalVotante = ({
         height="100%"
         sx={{ display: activeStep == 0 ? "flex" : "none" }}
       >
-        <FormInfo data={data} onNext={completarPaso}></FormInfo>
+        <FormInfo limpiar={limpiar} data={data} onNext={completarPaso}></FormInfo>
       </Box>
 
       <Box width="100%" sx={{ display: activeStep == 1 ? "flex" : "none" }}>
         <FormDireccion
           data={data}
+          limpiar={limpiar}
           onBack={handleBack}
           onNext={completarPaso}
         ></FormDireccion>
@@ -259,7 +270,8 @@ export const ModalVotante = ({
       <Box width="100%" sx={{ display: activeStep == 2 ? "flex" : "none" }}>
         <FormContacto
          errorsSend={errorSend}
-          // data={data}
+          data={data}
+          limpiar={limpiar}
           onBack={handleBack}
           onNext={finalizar}
         ></FormContacto>

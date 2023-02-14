@@ -95,10 +95,10 @@ export const FormContacto = ({
     useEffect(() => {
       // setFieldValue("calle", votanteFound?votanteFound.calle:"");
       if(!data.votanteModel){
-      setFieldValue("correoVotante", votanteFound?votanteFound.correoVotante:"");
-      setFieldValue("telefonoVotante", votanteFound?votanteFound.telefonoVotante:"");
-      setFieldValue("correoVotante2", votanteFound?votanteFound.correoVotante:"");
-      setFieldValue("telefonoVotante2", votanteFound?votanteFound.telefonoVotante:"");
+      setFieldValue("correoVotante", votanteFound.find==="si"?votanteFound.correoVotante:"");
+      setFieldValue("telefonoVotante", votanteFound.find==="si"?votanteFound.telefonoVotante:"");
+      setFieldValue("correoVotante2", votanteFound.find==="si"?votanteFound.correoVotante:"");
+      setFieldValue("telefonoVotante2", votanteFound.find==="si"?votanteFound.telefonoVotante:"");
       }
       
       
@@ -136,7 +136,7 @@ export const FormContacto = ({
       }}
     >
       {({ touched, errors, handleBlur, handleChange, values }) => (
-        <Form   className={styles.fomi}>
+        <Form  autoComplete="off" className={styles.fomi}>
           <Box sx={{ width: "100%" }}>
             <SearchV/>
             <br />
@@ -149,7 +149,7 @@ export const FormContacto = ({
             <Typography>NÚMERO TELÉFONICO</Typography>
             <TextField
               required
-              disabled={(!data.votanteModel)&(!votanteFound||votanteFound?.find==="si")}
+              disabled={votanteFound.find==="si"||votanteFound.find===""}
               label=""
               variant="filled"
               name="telefonoVotante"
@@ -158,7 +158,7 @@ export const FormContacto = ({
               value={values.telefonoVotante}
       //         onCut={handleChangeD}
       // onCopy={handleChangeD}
-      //onPaste={handleChangeD}
+      onPaste={handleChangeD}
               onChange={(e) => {
                 e.target.value = e.target.value.trim();
                 handleChange(e);
@@ -175,7 +175,7 @@ export const FormContacto = ({
             <br />
             <Typography>CONFIRMACIÓN NÚMERO TELÉFONICO</Typography>
             <TextField
-            disabled={(!data.votanteModel)&(!votanteFound||votanteFound?.find==="si")}
+            disabled={votanteFound.find==="si"||votanteFound.find===""}
               required
               label=""
               variant="filled"
@@ -187,7 +187,7 @@ export const FormContacto = ({
                 e.target.value = e.target.value.trim();
                 handleChange(e);
               }}
-              //onPaste={handleChangeD}
+              onPaste={handleChangeD}
               onBlur={handleBlur}
             ></TextField>
             <br />
@@ -202,7 +202,7 @@ export const FormContacto = ({
             <Typography>CORREO ELECTRÓNICO</Typography>
             <TextField
               required
-              disabled={(!data.votanteModel)&(!votanteFound||votanteFound?.find==="si")}
+              disabled={votanteFound.find==="si"||votanteFound.find===""}
               label=""
               variant="filled"
               name="correoVotante"
@@ -214,7 +214,7 @@ export const FormContacto = ({
                 handleChange(e);
               }}
               onBlur={handleBlur}
-              //onPaste={handleChangeD}
+              onPaste={handleChangeD}
             ></TextField>
             <br />
             <ErrorMessage
@@ -225,7 +225,7 @@ export const FormContacto = ({
             <Typography>CONFIRMACIÓN CORREO ELECTRÓNICO</Typography>
             <TextField
               required
-              disabled={(!data.votanteModel)&(!votanteFound||votanteFound?.find==="si")}
+              disabled={votanteFound.find==="si"||votanteFound.find===""}
               label=""
               variant="filled"
               name="correoVotante2"
@@ -237,7 +237,7 @@ export const FormContacto = ({
                 handleChange(e);
               }}
               onBlur={handleBlur}
-              //onPaste={handleChangeD}
+              onPaste={handleChangeD}
             ></TextField>
             <br />
             <ErrorMessage

@@ -89,11 +89,13 @@ export const FormDireccion = ({
   
     useEffect(() => {
       // setFieldValue("calle", votanteFound?votanteFound.calle:"");
+      if(!data.votanteModel){
       setFieldValue("calle", votanteFound.find==="si"?votanteFound.calle:"");
       setFieldValue("colonia", votanteFound.find==="si"?votanteFound.colonia:"");
       setFieldValue("numero", votanteFound.find==="si"?votanteFound.numero:"");
       setFieldValue("cp", votanteFound.find==="si"?votanteFound.cp:"");
       setFieldValue("municipio", votanteFound.find==="si"?votanteFound.municipio:"");
+      }
       
     }, [votanteFound]);
   

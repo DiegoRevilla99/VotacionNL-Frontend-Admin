@@ -261,13 +261,13 @@ const validando = (values, props) => {
   
 
 if(validationCurp.test(values.curp.toUpperCase())&& values.nombreVotante.trim().length>0){
-    if(errorNombreCFuntion(values.nombreVotante.trim().toUpperCase(),values.curp.charAt(15))){
-      errors.nombreVotante = "La segunda consonante debe ser '"+values.curp.charAt(15)+"'";
+    if(errorNombreCFuntion(values.nombreVotante.trim().toUpperCase(),values.curp.toUpperCase().charAt(15))){
+      errors.nombreVotante = "La segunda consonante debe ser '"+values.curp.toUpperCase().charAt(15)+"'";
     }
 }
   
 if(validationCurp.test(values.curp.toUpperCase())&& values.nombreVotante.trim().length>0){
-  if(errorNombreInitFuntion(values.nombreVotante.trim().toUpperCase(),values.curp.charAt(3))) errors.nombreVotante = "La inical debe ser '"+values.curp.charAt(3)+"'";
+  if(errorNombreInitFuntion(values.nombreVotante.trim().toUpperCase(),values.curp.toUpperCase().charAt(3))) errors.nombreVotante = "La inical debe ser '"+values.curp.charAt(3)+"'";
 }
   
 
@@ -277,13 +277,13 @@ if(validationCurp.test(values.curp.toUpperCase())&& values.nombreVotante.trim().
   
 
   if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoPVotante.trim().length>0){
-    if(!isSecondApPCons(values.apellidoPVotante,values.curp.charAt(13))){
+    if(!isSecondApPCons(values.apellidoPVotante,values.curp.toUpperCase().charAt(13))){
       errors.apellidoPVotante = "La segunda consonante debe ser '"+values.curp.charAt(13)+"'";
     }
   }
 
   if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoPVotante.trim().length>0){
-    if(!isFirstVocal(values.apellidoPVotante,values.curp.charAt(1))){
+    if(!isFirstVocal(values.apellidoPVotante,values.curp.toUpperCase().charAt(1))){
       errors.apellidoPVotante = "La siguiente vocal debe ser '"+values.curp.charAt(1)+"'";
     }
   }
@@ -299,7 +299,7 @@ if(validationCurp.test(values.curp.toUpperCase())&& values.nombreVotante.trim().
 
   
   if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoMVotante.trim().length>0){
-    if(!isSecondAMCons(values.apellidoMVotante,values.curp.charAt(14))){
+    if(!isSecondAMCons(values.apellidoMVotante,values.curp.toUpperCase().charAt(14))){
       errors.apellidoMVotante = "La segunda consonante debe ser '"+values.curp.charAt(14)+"'";
     }
   }
@@ -470,7 +470,7 @@ const GeneroField = () => {
 
 
 
-export const FormInfo = ({ data = {}, onNext = () => {} }) => {
+export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
   const fecha = new Date();
   const styles = useStyles();
   const dispatch = useDispatch();
@@ -507,11 +507,13 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
     } = useFormikContext();
   
     useEffect(() => {
+      if(!data.votanteModel){
       
       setFieldValue("nombreVotante", votanteFound.find==="si"?votanteFound.nombreVotante:"");
       setFieldValue("apellidoMVotante", votanteFound.find==="si"?votanteFound.apellidoMVotante:"");
       setFieldValue("apellidoPVotante",votanteFound.find==="si"?votanteFound.apellidoPVotante:"");
-      setFieldValue("fechaNacimiento", votanteFound.find==="si"?new Date(votanteFound.fechaNacimiento).toISOString():"");
+    }
+      // setFieldValue("fechaNacimiento", votanteFound.find==="si"?new Date(votanteFound.fechaNacimiento).toISOString():"");
       //setFieldValue("genero", votanteFound?votanteFound.genero:"");
       
       
@@ -538,9 +540,10 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
   }, []);
 
   const onBuscar=async(curp)=>{
-    setLoading(true)
+    
     console.log("ente;",curp)
     if(validationCurp.test(curp)){
+      setLoading(true)
     const respu=await getAllVotantes();
     const vot=respu.find((v)=>{
       if(v.curp===curp)return v
@@ -549,8 +552,10 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
       setIsFound("Este votante nunca ha sido registrado, favor de rellenar a mano")
       dispatch(setVotanteFound({votanteFound:{find:"no"}}))
       setLoading(false)
+      limpiar()
     }
     else{ 
+      limpiar()
       const direc=await getDireccionVotante(vot.curp);
       console.log("direct: ",direc)
       dispatch(setVotanteFound({votanteFound:{...vot,...direc.data.direccionModel,find:"si"}}))
@@ -594,7 +599,7 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
     >
       {({ touched, errors, handleBlur, handleChange, values }) => (
         //autoComplete="off"
-        <Form   className={styles.fomi}>
+        <Form  autoComplete="off" className={styles.fomi}>
           <Box
             sx={{
               height: "100%",
@@ -631,7 +636,7 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
                     e.target.value = e.target.value.trim();
                     handleChange(e);
                   }}
-                  //onPaste={handleChangeD}
+                  onPaste={handleChangeD}
                   onBlur={handleBlur}
                 ></TextField>
               </Box>
@@ -682,7 +687,7 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
               value={values.nombreVotante.toUpperCase()}
               onChange={handleChange}
               onBlur={handleBlur}
-              //onPaste={handleChangeD}
+              onPaste={handleChangeD}
             ></TextField>
             <ErrorMessage
               name="nombreVotante"
@@ -702,7 +707,7 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
               value={values.apellidoPVotante.toUpperCase()}
               onChange={handleChange}
               onBlur={handleBlur}
-              //onPaste={handleChangeD}
+              onPaste={handleChangeD}
             ></TextField>
             <ErrorMessage
               name="apellidoPVotante"
@@ -724,7 +729,7 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
               value={values.apellidoMVotante.toUpperCase()}
               onChange={handleChange}
               onBlur={handleBlur}
-              //onPaste={handleChangeD}
+              onPaste={handleChangeD}
             ></TextField>
             <ErrorMessage
               name="apellidoMVotante"
