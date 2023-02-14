@@ -1,7 +1,8 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { ErrorMessage, Form, Formik } from "formik";
-import React from "react";
+import { ErrorMessage, Form, Formik, useFormikContext } from "formik";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import * as yup from "yup";
 import { ErrorField } from "../../module-preparacion/components/ErrorField";
 
@@ -68,15 +69,47 @@ const validando = (values, props) => {
 // autoComplete="off"
 
 export const FormContacto = ({
+  errorsSend="",
   data = {},
   onBack = () => {},
   onNext = () => {},
   backbtn = true,
 }) => {
   const styles = useStyles();
+  const { votanteFound } = useSelector(
+    (state) => state.empVotantesSlice
+  );
   const handleChangeD = (e) => {
     e.preventDefault();
   };
+
+  const SearchV = () => {
+    const {
+      values: {
+       
+      },
+      
+      setFieldValue,
+    } = useFormikContext();
+  
+    useEffect(() => {
+      // setFieldValue("calle", votanteFound?votanteFound.calle:"");
+      if(!data.votanteModel){
+      setFieldValue("correoVotante", votanteFound?votanteFound.correoVotante:"");
+      setFieldValue("telefonoVotante", votanteFound?votanteFound.telefonoVotante:"");
+      setFieldValue("correoVotante2", votanteFound?votanteFound.correoVotante:"");
+      setFieldValue("telefonoVotante2", votanteFound?votanteFound.telefonoVotante:"");
+      }
+      
+      
+    }, [votanteFound]);
+  
+    return (
+      <>
+      </>
+    );
+  };
+
   return (
     <Formik
       initialValues={{
@@ -103,8 +136,9 @@ export const FormContacto = ({
       }}
     >
       {({ touched, errors, handleBlur, handleChange, values }) => (
-        <Form autoComplete="off"  className={styles.fomi}>
+        <Form   className={styles.fomi}>
           <Box sx={{ width: "100%" }}>
+            <SearchV/>
             <br />
             <div aling="left">
               <Typography textAlign="center" sx={{ fontWeight: "bold", mb: 3 }}>
@@ -115,6 +149,7 @@ export const FormContacto = ({
             <Typography>NÚMERO TELÉFONICO</Typography>
             <TextField
               required
+              disabled={(!data.votanteModel)&(!votanteFound||votanteFound?.find==="si")}
               label=""
               variant="filled"
               name="telefonoVotante"
@@ -123,7 +158,7 @@ export const FormContacto = ({
               value={values.telefonoVotante}
       //         onCut={handleChangeD}
       // onCopy={handleChangeD}
-      onPaste={handleChangeD}
+      //onPaste={handleChangeD}
               onChange={(e) => {
                 e.target.value = e.target.value.trim();
                 handleChange(e);
@@ -140,6 +175,7 @@ export const FormContacto = ({
             <br />
             <Typography>CONFIRMACIÓN NÚMERO TELÉFONICO</Typography>
             <TextField
+            disabled={(!data.votanteModel)&(!votanteFound||votanteFound?.find==="si")}
               required
               label=""
               variant="filled"
@@ -151,7 +187,7 @@ export const FormContacto = ({
                 e.target.value = e.target.value.trim();
                 handleChange(e);
               }}
-              onPaste={handleChangeD}
+              //onPaste={handleChangeD}
               onBlur={handleBlur}
             ></TextField>
             <br />
@@ -166,6 +202,7 @@ export const FormContacto = ({
             <Typography>CORREO ELECTRÓNICO</Typography>
             <TextField
               required
+              disabled={(!data.votanteModel)&(!votanteFound||votanteFound?.find==="si")}
               label=""
               variant="filled"
               name="correoVotante"
@@ -177,7 +214,7 @@ export const FormContacto = ({
                 handleChange(e);
               }}
               onBlur={handleBlur}
-              onPaste={handleChangeD}
+              //onPaste={handleChangeD}
             ></TextField>
             <br />
             <ErrorMessage
@@ -188,6 +225,7 @@ export const FormContacto = ({
             <Typography>CONFIRMACIÓN CORREO ELECTRÓNICO</Typography>
             <TextField
               required
+              disabled={(!data.votanteModel)&(!votanteFound||votanteFound?.find==="si")}
               label=""
               variant="filled"
               name="correoVotante2"
@@ -199,7 +237,7 @@ export const FormContacto = ({
                 handleChange(e);
               }}
               onBlur={handleBlur}
-              onPaste={handleChangeD}
+              //onPaste={handleChangeD}
             ></TextField>
             <br />
             <ErrorMessage
@@ -209,6 +247,7 @@ export const FormContacto = ({
           </Box>
 
           <br />
+          <ErrorField>{errorsSend}</ErrorField>
           <br />
           <br />
           <Box

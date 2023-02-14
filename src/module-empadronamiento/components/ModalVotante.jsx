@@ -30,6 +30,7 @@ import {
   postVotante,
 } from "../../store/module-empadronamiento/votantes/thunksVotantes";
 import { useParams } from "react-router-dom";
+import { setVotanteFound } from "../../store/module-empadronamiento/votantes/empVotantesSlice";
 
 const useStyles = makeStyles({
   textField: {
@@ -84,7 +85,9 @@ export const ModalVotante = ({
   const [data, setData] = useState({});
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
-
+  const [errorSend, setErrorSend] = useState("");
+  
+  
   const isStepOptional = (step) => {
     return step === 5;
   };
@@ -110,7 +113,8 @@ export const ModalVotante = ({
 
   const addVotante=async(datos)=>{
     console.log("***Entre a addVotante*****")
-    dispatch(postVotante(datos));
+    console.log(datos)
+    return dispatch(postVotante(datos));
 
   }
 
@@ -130,9 +134,15 @@ export const ModalVotante = ({
         
       }
     }
-    await addVotante(datos)
-    console.log("_________________________________")
-    await AddVotanteNext(dataRelation)
+    const resp=await addVotante(datos)
+    console.log("_________________________________",resp)
+    console.log("Erros Post:",resp)
+    if(resp.mensaje!=="El correo proporcionado ya fue registrado"&& resp.mensaje!=="El teléfono proporcionado ya fue registrado"){
+      await AddVotanteNext(dataRelation)
+    }else{
+      setErrorSend(resp.mensaje)
+    }
+    
   };
 
   const handleNext = () => {
@@ -147,7 +157,7 @@ export const ModalVotante = ({
   };
 
   const handleBack = () => {
-    console.log("en atras");
+    
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -188,12 +198,18 @@ export const ModalVotante = ({
   };
 
   useEffect(() => {}, []);
+  
 
-  useEffect(() => {}, [isOpen]);
+  useEffect(() => {
+    setErrorSend("")
+    dispatch(setVotanteFound({votanteFound:{find:""}}))
+    setActiveStep(0)
+  }, [isOpen]);
 
   const body = (
     <Box sx={modalResponsive}>
       <Box className={styles.fomi}>
+
         <Stepper
           sx={{
             width: "100%",
@@ -242,7 +258,8 @@ export const ModalVotante = ({
 
       <Box width="100%" sx={{ display: activeStep == 2 ? "flex" : "none" }}>
         <FormContacto
-          data={data}
+         errorsSend={errorSend}
+          // data={data}
           onBack={handleBack}
           onNext={finalizar}
         ></FormContacto>

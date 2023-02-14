@@ -1,8 +1,6 @@
 import {
-  Alert,
   Box,
   Button,
-  CircularProgress,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -28,13 +26,6 @@ import es from "date-fns/locale/es";
 import { format, formatDistance, formatRelative, subDays } from "date-fns";
 import { DateField } from "./DateField";
 import NavigateNextSharpIcon from "@mui/icons-material/NavigateNextSharp";
-import { useDispatch, useSelector } from "react-redux";
-import { setVotanteFound } from "../../store/module-empadronamiento/votantes/empVotantesSlice";
-import { useState } from "react";
-import { getVotanteDireccion, getVotantes } from "../../store/module-empadronamiento/votantes/thunksVotantes";
-import { getVotanteDireccionProvider } from "../../providers/Micro-Votante/providerVotante";
-import { TroubleshootTwoTone } from "@mui/icons-material";
-import { Stack } from "@mui/system";
 
 let schema = yup.object().shape({
   curp: yup.string().required("CURP del votante es necesario"),
@@ -247,349 +238,31 @@ const validando = (values, props) => {
     errors.curp = "Esta curp no es valida";
   }
 
-  
-  /* if(validationCurp.test(values.curp.toUpperCase())&& values.nombreVotante.trim().length>0){
-      if(values.nombreVotante.toUpperCase().charAt(0)!==values.curp.charAt(3)) errors.nombreVotante = "La inical debe ser '"+values.curp.charAt(3)+"'";
-  }
-  
-  if(validationCurp.test(values.curp.toUpperCase())&& values.nombreVotante.trim().length>0){
-      if(!isSecondCons(values.nombreVotante,values.curp.charAt(15))){
-        errors.nombreVotante = "La segunda consonante debe ser '"+values.curp.charAt(15)+"'";
-      }
-  } */
-
-  
-
-if(validationCurp.test(values.curp.toUpperCase())&& values.nombreVotante.trim().length>0){
-    if(errorNombreCFuntion(values.nombreVotante.trim().toUpperCase(),values.curp.charAt(15))){
-      errors.nombreVotante = "La segunda consonante debe ser '"+values.curp.charAt(15)+"'";
-    }
-}
-  
-if(validationCurp.test(values.curp.toUpperCase())&& values.nombreVotante.trim().length>0){
-  if(errorNombreInitFuntion(values.nombreVotante.trim().toUpperCase(),values.curp.charAt(3))) errors.nombreVotante = "La inical debe ser '"+values.curp.charAt(3)+"'";
-}
-  
-
-
-
-
-  
-
-  if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoPVotante.trim().length>0){
-    if(!isSecondApPCons(values.apellidoPVotante,values.curp.charAt(13))){
-      errors.apellidoPVotante = "La segunda consonante debe ser '"+values.curp.charAt(13)+"'";
-    }
-  }
-
-  if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoPVotante.trim().length>0){
-    if(!isFirstVocal(values.apellidoPVotante,values.curp.charAt(1))){
-      errors.apellidoPVotante = "La siguiente vocal debe ser '"+values.curp.charAt(1)+"'";
-    }
-  }
-
-  if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoPVotante.trim().length>0){
-    if(values.apellidoPVotante.toUpperCase().charAt(0)!==values.curp.charAt(0)) errors.apellidoPVotante = "La inical debe ser '"+values.curp.charAt(0)+"'";
-  }
-  
-
-
-
-  
-
-  
-  if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoMVotante.trim().length>0){
-    if(!isSecondAMCons(values.apellidoMVotante,values.curp.charAt(14))){
-      errors.apellidoMVotante = "La segunda consonante debe ser '"+values.curp.charAt(14)+"'";
-    }
-  }
-
-  if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoMVotante.trim().length>0){
-    if(values.apellidoMVotante.toUpperCase().charAt(0)!==values.curp.charAt(2)) errors.apellidoMVotante = "La inicial debe ser '"+values.curp.charAt(2)+"'";
-  }
-
-
   return errors;
 };
 
-const getDateBirth = (curp = "") => {
-  const fechaActual = new Date();
-  if (validationCurp.test(curp.toUpperCase())) {
-    let anio = parseInt(curp.substring(4, 6), 10);
-    let mes = parseInt(curp.substring(6, 8), 10);
-    let dia = parseInt(curp.substring(8, 10), 10);
 
-    const anioActual = fechaActual.getFullYear() - 2005;
-    console.log(anioActual);
-    if (anio > anioActual) {
-      anio = anio + 1900;
-    } else {
-      anio = anio + 2000;
-    }
-    const fechaN = new Date(anio, mes - 1, dia);
-    return fechaN;
-  }
-  return false;
-};
-
-const getGender = (curp = "") => {
-  if (validationCurp.test(curp.toUpperCase())) {
-    let genero = curp.substring(10, 11);
-    console.log(genero);
-    return genero;
-  }
-  return false;
-};
-
-const FechaNacimientoField = ({ name }) => {
-  const {
-    values: {
-      curp,
-      nombreVotante,
-      apellidoMVotante,
-      apellidoPVotante,
-      fechaNacimiento,
-    },
-    genero,
-    touched,
-    setFieldValue,
-  } = useFormikContext();
-
-  const [field, meta] = useField({ name });
-
-  useEffect(() => {
-    // set the value of textC, based on textA and textB
-    if (curp) {
-      const fecha = getDateBirth(curp);
-      setFieldValue(name, fecha);
-    }
-  }, [curp, touched.curp, setFieldValue, name]);
-
-  return (
-    <>
-      <Typography>FECHA NACIMIENTO</Typography>
-      <DateField
-        name="fechaNacimiento"
-        value={fechaNacimiento}
-        // onChange={handleChange}
-        disabled={true}
-      ></DateField>
-      {!!meta.touched && !!meta.error && <div>{meta.error}</div>}
-    </>
-  );
-};
-
-
-
-const NombreField = ({ name }) => {
-  const {
-    values: {
-      curp,
-      nombreVotante,
-      apellidoMVotante,
-      apellidoPVotante,
-      fechaNacimiento,
-    },
-    genero,
-    touched,
-    setFieldValue,
-  } = useFormikContext();
-
-  const [field, meta] = useField({ name });
-
-  useEffect(() => {
-    // set the value of textC, based on textA and textB
-    if (curp) {
-      const fecha = getDateBirth(curp);
-      setFieldValue(name, fecha);
-    }
-  }, [curp, touched.curp, setFieldValue, name]);
-
-  return (
-    <>
-      <Typography>FECHA NACIMIENTO</Typography>
-      <DateField
-        name="fechaNacimiento"
-        value={fechaNacimiento}
-        // onChange={handleChange}
-        disabled={true}
-      ></DateField>
-      {!!meta.touched && !!meta.error && <div>{meta.error}</div>}
-    </>
-  );
-};
-
-const GeneroField = () => {
-  const {
-    values: {
-      curp,
-      nombreVotante,
-      apellidoMVotante,
-      apellidoPVotante,
-      fechaNacimiento,
-      genero,
-    },
-    touched,
-    setFieldValue,
-  } = useFormikContext();
-
-  const [field, meta] = useField({ name: "genero" });
-
-  useEffect(() => {
-    // set the value of textC, based on textA and textB
-    let genero = getGender(curp);
-    if (genero) {
-      if (genero.toUpperCase() === "M") genero = "MUJER";
-      if (genero.toUpperCase() === "H") genero = "HOMBRE";
-      setFieldValue("genero", genero);
-    } else {
-      setFieldValue("genero", "");
-    }
-  }, [curp, touched.curp, setFieldValue, "genero"]);
-
-  return (
-    <>
-      <FormControl>
-        <RadioGroup
-          aria-labelledby="demo-controlled-radio-buttons-group"
-          name="genero"
-          value={genero}
-          disabled
-          // onChange={handleChange}
-          // onBlur={handleBlur}
-          sx={{ display: "flex", flexDirection: "row" }}
-        >
-          <FormControlLabel value="HOMBRE" control={<Radio />} label="Hombre" />
-          <FormControlLabel value="MUJER" control={<Radio />} label="Mujer" />
-        </RadioGroup>
-      </FormControl>
-      {!!meta.touched && !!meta.error && <div>{meta.error}</div>}
-    </>
-  );
-};
-
-
-
-export const FormInfo = ({ data = {}, onNext = () => {} }) => {
+export const FormInfo = ({ onBuscar = () => {} }) => {
   const fecha = new Date();
   const styles = useStyles();
-  const dispatch = useDispatch();
-  const [isFound, setIsFound] = useState("")
-  const [loading, setLoading] = useState(false)
-  const { votanteFound } = useSelector(
-    (state) => state.empVotantesSlice
-  );
-
-  useEffect(() => {
-    console.log(votanteFound)
-  }, [votanteFound])
-
-  const getAllVotantes=async()=>{
-    return dispatch(getVotantes())
-  }
-
-  const getDireccionVotante=async(id)=>{
-    return getVotanteDireccionProvider(id)
-  }
-
-  const SearchV = ({ curp2 }) => {
-    const {
-      values: {
-        curp,
-        nombreVotante,
-        apellidoMVotante,
-        apellidoPVotante,
-        fechaNacimiento,
-      },
-      genero,
-      touched,
-      setFieldValue,
-    } = useFormikContext();
-  
-    useEffect(() => {
-      
-      setFieldValue("nombreVotante", votanteFound.find==="si"?votanteFound.nombreVotante:"");
-      setFieldValue("apellidoMVotante", votanteFound.find==="si"?votanteFound.apellidoMVotante:"");
-      setFieldValue("apellidoPVotante",votanteFound.find==="si"?votanteFound.apellidoPVotante:"");
-      setFieldValue("fechaNacimiento", votanteFound.find==="si"?new Date(votanteFound.fechaNacimiento).toISOString():"");
-      //setFieldValue("genero", votanteFound?votanteFound.genero:"");
-      
-      
-    }, [votanteFound]);
-  
-    return (
-      <>
-      </>
-    );
-  };
-
-
-  const [value, setValue] = React.useState(dayjs("2014-08-18T21:11:54"));
-
-  const handleChangeDate = (newValue) => {
-    setValue(newValue);
-  };
   const handleChangeD = (e) => {
     e.preventDefault();
   };
 
   useEffect(() => {
-    console.log(data);
-  }, []);
-
-  const onBuscar=async(curp)=>{
-    setLoading(true)
-    console.log("ente;",curp)
-    if(validationCurp.test(curp)){
-    const respu=await getAllVotantes();
-    const vot=respu.find((v)=>{
-      if(v.curp===curp)return v
-    })
-    if(vot===undefined){
-      setIsFound("Este votante nunca ha sido registrado, favor de rellenar a mano")
-      dispatch(setVotanteFound({votanteFound:{find:"no"}}))
-      setLoading(false)
-    }
-    else{ 
-      const direc=await getDireccionVotante(vot.curp);
-      console.log("direct: ",direc)
-      dispatch(setVotanteFound({votanteFound:{...vot,...direc.data.direccionModel,find:"si"}}))
-      setIsFound("")
-      setLoading(false)
-    }
-  }
     
-  }
+  }, []);
 
   return (
     <Formik
       initialValues={{
-        curp: data.votanteModel?.curp ? data.votanteModel.curp : "",
-        nombreVotante: data.votanteModel?.nombreVotante
-          ? data.votanteModel.nombreVotante
-          : "",
-        apellidoMVotante: data.votanteModel?.apellidoMVotante
-          ? data.votanteModel.apellidoMVotante
-          : "",
-        apellidoPVotante: data.votanteModel?.apellidoPVotante
-          ? data.votanteModel.apellidoPVotante
-          : "",
-        fechaNacimiento: data.votanteModel?.fechaNacimiento
-          ? new Date(data.votanteModel.fechaNacimiento).toISOString()
-          : "",
-        genero: data.votanteModel?.genero ? data.votanteModel.genero : "",
+        curp:  "",
+        
       }}
       validate={validando}
       validationSchema={schema}
       onSubmit={(valores) => {
-        const info = { ...valores };
-        info.fechaNacimiento = new Date(valores.fechaNacimiento).toISOString();
-        info.nombreVotante = info.nombreVotante.trim().toUpperCase();
-        info.apellidoMVotante = info.apellidoMVotante.trim().toUpperCase();
-        info.apellidoPVotante = info.apellidoPVotante.trim().toUpperCase();
-        info.validacion = false;
-
-        onNext({ votanteModel: info });
+        onBuscar({ votanteModel: info });
       }}
     >
       {({ touched, errors, handleBlur, handleChange, values }) => (
@@ -603,13 +276,7 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
               flexDirection: "column",
             }}
           >
-            <br />
-            <br />
-            <div aling="left">
-              <Typography textAlign="center" sx={{ fontWeight: "bold", mb: 3 }}>
-                INFORMACIÓN DEL VOTANTE
-              </Typography>
-            </div>
+            
             <Box
               width="100%"
               height="50px"
@@ -617,7 +284,7 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
               alignItems="center"
               justifyContent="space-between"
             >
-              <Box width="90%">
+              <Box width="100%">
                 <Typography>CURP</Typography>
                 <TextField
                   required
@@ -636,43 +303,18 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
                 ></TextField>
               </Box>
 
-               <Button sx={{ height:"50px", mt: 3,ml:2 }} onClick={()=>onBuscar(values.curp.toUpperCase())} variant="contained">
-                Buscar votante
-              </Button>
-              {
-                loading &&
-                    <Stack
-              justifyContent="center"
-              sx={{ color: "grey.500" }}
-              spacing={2}
-              direction="row"
-            >
-              <CircularProgress color="primary" />
-        </Stack>
-              }
-              
-              <SearchV  curp2={votanteFound?.curp}/>
+              {/*  <Button sx={{ mt: 3 }} type="submit" variant="contained">
+                Siguiente
+              </Button> */}
             </Box>
-            
             <br />
             <ErrorMessage
               name="curp"
               component={() => <ErrorField>{errors.curp}</ErrorField>}
             />
-            { 
-              isFound==="Este votante nunca ha sido registrado, favor de rellenar a mano" &&
-              <Alert severity="warning">{isFound}</Alert>
-            }
-            {
-              votanteFound?.find==="si" &&
-              <Alert severity="success">Se encontró el votante</Alert>
-              
-            }
-            
-              <br />
+            <br />
             <Typography>NOMBRE DEL VOTANTE</Typography>
             <TextField
-             disabled={votanteFound.find==="si"||votanteFound.find===""}
               required
               label=""
               variant="filled"
@@ -693,7 +335,6 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
             <Typography>PRIMER APELLIDO</Typography>
             <TextField
               required
-              disabled={votanteFound.find==="si"||votanteFound.find===""}
               label=""
               variant="filled"
               name="apellidoPVotante"
@@ -714,7 +355,6 @@ export const FormInfo = ({ data = {}, onNext = () => {} }) => {
             <br />
             <Typography>SEGUNDO APELLIDO</Typography>
             <TextField
-            disabled={votanteFound.find==="si"||votanteFound.find===""}
               required
               label=""
               variant="filled"

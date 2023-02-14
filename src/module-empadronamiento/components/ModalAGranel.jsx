@@ -20,6 +20,7 @@ import { Formik, Form, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getVotantesbyJornada,
+  postJornadaVotanteGranel,
   uploadCSV,
 } from "../../store/module-empadronamiento/votantes/thunksVotantes";
 import { useParams } from "react-router-dom";
@@ -86,11 +87,25 @@ export const ModalAGranel = ({
     abrirCerrarModal();
   };
 
-  const uploadFile = () => {
+  const asociarVotantes=(data)=>{
+      const datainfo=data.map((votante)=>{
+          return {curp:votante.curp}
+      })
+      const dataform={
+        idJornada:id,
+        votantes:datainfo
+      }
+      console.log("nueva data",dataform)
+      dispatch(postJornadaVotanteGranel(dataform,cerrarCargar))
+  }
+
+  const uploadFile = async() => {
     console.log("dando click");
     const f = new FormData();
     f.append("file", archivo);
-    dispatch(uploadCSV(f, cerrarCargar));
+    const resp=await dispatch(uploadCSV(f));
+    // console.log("Data desde el modal: ",resp.data)
+    asociarVotantes(resp.data)
   };
 
   useEffect(() => {

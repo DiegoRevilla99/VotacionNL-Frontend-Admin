@@ -7,12 +7,14 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { width } from "@mui/system";
-import { ErrorMessage, Form, Formik } from "formik";
+import { ErrorMessage, Form, Formik, useFormikContext } from "formik";
 import React from "react";
 import * as yup from "yup";
 import { ErrorField } from "../../module-preparacion/components/ErrorField";
 import { estadosList } from "../helpers/getEstados";
 import NavigateNextSharpIcon from "@mui/icons-material/NavigateNextSharp";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 let schema = yup.object().shape({
   estado: yup.string().required("estado es necesario"),
@@ -72,6 +74,34 @@ export const FormDireccion = ({
   const handleChangeD = (e) => {
     e.preventDefault();
   };
+  const { votanteFound } = useSelector(
+    (state) => state.empVotantesSlice
+  );
+
+  const SearchV = () => {
+    const {
+      values: {
+       
+      },
+      
+      setFieldValue,
+    } = useFormikContext();
+  
+    useEffect(() => {
+      // setFieldValue("calle", votanteFound?votanteFound.calle:"");
+      setFieldValue("calle", votanteFound.find==="si"?votanteFound.calle:"");
+      setFieldValue("colonia", votanteFound.find==="si"?votanteFound.colonia:"");
+      setFieldValue("numero", votanteFound.find==="si"?votanteFound.numero:"");
+      setFieldValue("cp", votanteFound.find==="si"?votanteFound.cp:"");
+      setFieldValue("municipio", votanteFound.find==="si"?votanteFound.municipio:"");
+      
+    }, [votanteFound]);
+  
+    return (
+      <>
+      </>
+    );
+  };
   return (
     <Formik
       initialValues={{
@@ -106,6 +136,7 @@ export const FormDireccion = ({
                 DIRECCIÓN DEL VOTANTE
               </Typography>
             </div>
+            <SearchV/>
             <Typography>ESTADO</Typography>
             <TextField
               disabled
@@ -121,6 +152,7 @@ export const FormDireccion = ({
             <br />
             <Typography>MUNICIPIO</Typography>
             <TextField
+            disabled={!votanteFound||votanteFound?.find==="si"}
               required
               label=""
               variant="filled"
@@ -157,6 +189,7 @@ export const FormDireccion = ({
             <Typography>COLONIA</Typography>
             <TextField
               required
+              disabled={!votanteFound||votanteFound?.find==="si"}
               label=""
               variant="filled"
               name="colonia"
@@ -178,6 +211,7 @@ export const FormDireccion = ({
             <Typography>CÓDIGO POSTAL</Typography>
             <TextField
               required
+              disabled={!votanteFound||votanteFound?.find==="si"}
               label=""
               variant="filled"
               name="cp"
@@ -198,6 +232,7 @@ export const FormDireccion = ({
             <Typography>CALLE</Typography>
             <TextField
               required
+              disabled={!votanteFound||votanteFound?.find==="si"}
               label=""
               variant="filled"
               name="calle"
@@ -214,6 +249,7 @@ export const FormDireccion = ({
             <Typography>NÚMERO</Typography>
             <TextField
               required
+              disabled={!votanteFound||votanteFound?.find==="si"}
               label=""
               variant="filled"
               name="numero"
