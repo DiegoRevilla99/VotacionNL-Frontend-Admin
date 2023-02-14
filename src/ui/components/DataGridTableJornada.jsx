@@ -1,6 +1,6 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { Box, IconButton, Tooltip } from "@mui/material";
+import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
 import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
@@ -59,6 +59,8 @@ export const DataGridTableJornada = ({ handleOpenModal, handleOpenDeleteCandidat
 	];
 
 	return (
+		<>
+		{candidatoandSuplentes.length > 0 ? (
 		<div style={{ height: "100%", width: "100%" }}>
 			<DataGrid
                 rows={candidatoandSuplentes}
@@ -77,5 +79,12 @@ export const DataGridTableJornada = ({ handleOpenModal, handleOpenDeleteCandidat
 				}}
 			/>
 		</div>
+		) : (
+			<Typography style={{ textAlign: "center", fontWeight: "bold", fontSize: 18, color: "#ff0000" }}>
+			  No existen candidatos ahora mismo. Por favor, agregue uno para mostrarlo aquí.
+			</Typography>
+  
+		  )} 
+		  </>
 	);
 };

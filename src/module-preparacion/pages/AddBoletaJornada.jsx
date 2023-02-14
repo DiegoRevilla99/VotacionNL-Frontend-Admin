@@ -1,12 +1,11 @@
 import { Box, Button, CircularProgress, Divider, Grid, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { Stack } from "@mui/system";
 import { Formik } from 'formik';
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { object } from "yup";
-import { useUiStore } from "../../hooks/useUiStore";
+import { number, object, string } from "yup";
+// import { useUiStore } from "../../hooks/useUiStore";
 import { FielTextCustom } from "../components/FielTextCustom";
 import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
 import { ModalRegisterCS } from "../components/ModalRegisterCS";
@@ -19,91 +18,34 @@ import { ModalEliminarPartido } from "../components/ModalEliminarPartido";
 import { useJornadaStore } from "../hooks/useJornadaStore";
 
 import { AgrupaPartido } from "../components/configuracion-boleta/AgrupaPartido";
-import { useAsociaciones } from "../hooks/config-boleta/useAsociaciones";
-
-const useStyles = makeStyles({
-	hr: {
-	  height: "3px",
-	  color: "rgb(210, 210, 210)",
-	  background: "rgb(210, 210, 210)",
-	  width: "100%",
-	  boxShadow: 3,
-	},
-	boton: {
-	  boxShadow: 1,
-	  color: "white",
-	  height: 42,
-	},
-  });
-
-  const styleButton = {
-	borderRadius: 50,
-  };
-  
-  const botones = {
-	display: "flex",
-	justifyContent: "end",
-	alignContent: "space-around",
-	width: "95%",
-	height: "50px",
-	pt: 2,
-  };
-  
-  const boxOpciones = {
-	display: "flex",
-	flexDirection: "column",
-	width: "100%",
-	alignItems: "center",
-	mt: 1,
-	mb: 5,
-  };
 
 const validationSchema = object({
-	// encabezado: string("").required(
-	// 	"Por favor, ingresa un encabezado"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// nombreCandidatura: string("").required(
-	// 	"Por favor, ingresa un nombre de Candidatura"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// modalidadVotacion: string(""),
-	// entidadFederativa: string("").required(
-	// 	"Por favor, ingresa una entidad Federativa"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// municipio: string("").required(
-	// 	"Por favor, ingresa un municipio"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// distritoElectoralLocal: number("").required(
-	// 	"Por favor, ingresa un distrito Electoral Local"
-	// 	).max("26").positive("Solo números positivos, por favor.").integer(""),
-	// distritoElectoral: number("").required(
-	// 	"Por favor, ingresa un distrito Electoral"
-	// 	).max("3000").positive("Solo números positivos, por favor.").integer(""),
-	// tipoCasilla: string("").required(
-	// 	"Por favor, ingresa un tipo de Casilla"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// primerFirmante: string("").required(
-	// 	"Por favor, ingresa el nombre del Primer Firmante"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// cargoPrimerFirmante: string("").required(
-	// 	"Por favor, ingresa un segundo Firmante"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// segundoFirmante: string("").required(
-	// 	"Por favor, ingresa el nombre de Segundo Firmante"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// cargoSegundoFirmante: string("").required(
-	// 	"Por favor, ingresa el cargo de Segundo Firmante"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+
+	nombreCandidatura: string("").required(
+		"Por favor, ingresa un nombre de Candidatura"
+		),
+
+	municipio: string("").required(
+		"Por favor, ingresa un municipio"
+		),
+	distritoElectoral: number("").required(
+		"Por favor, ingresa un distrito Electoral"
+		).max("3000").positive("Solo números positivos, por favor.").integer(""),
+	primerFirmante: string("").required(
+		"Por favor, ingresa el nombre del Primer Firmante"
+		),
+	cargoPrimerFirmante: string("").required(
+		"Por favor, ingresa un segundo Firmante"
+		),
+	segundoFirmante: string("").required(
+		"Por favor, ingresa el nombre de Segundo Firmante"
+		),
+	cargoSegundoFirmante: string("").required(
+		"Por favor, ingresa el cargo de Segundo Firmante"
+		),
 });
 
 export const AddBoletaJornada = () => {
-	const styles = useStyles();
-	const [modalAsociacion, setModalAsociacion] = useState(false);
-	const abrirCerrarModalAsociacion = () => {
-		setModalAsociacion(!modalAsociacion);
-	};
-	const [isSubmited, setIsSubmited] = useState(false);
-	const { toastOffOperation } = useUiStore();
-	// const { status, questions, consultaSelected } = useConsultaCiudadanaStore();
 	const { 
 		status,
         partidos,
@@ -118,7 +60,6 @@ export const AddBoletaJornada = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const params = useParams();
-	const { asociaciones, isLoadingAsociaciones } = useAsociaciones(params.id);
 	
 	const values = Object.values(jornadaSelected.boletaSelected).length === 0 ? {
 
@@ -142,57 +83,29 @@ export const AddBoletaJornada = () => {
 	
 	};
 
-
-	const [, forceUpdate] = React.useState();
 	const [isLoading, setIsLoading] = useState(false);
 
 	const [statusMatchModal, setStatusMatchModal] = useState(false);
 	const [statusDeletePartidoModal, setStatusDeletePartidoModal] = useState(false);
 	const [statusDeleteCandidatoModal, setStatusDeleteCandidatoModal] = useState(false);
 	const [statusRegisterModal, setStatusRegisterModal] = useState(false);
-	const [statusAsociacionModal, setStatusAsociacionModal] = useState(false);
+
 
 	const handleCloseMatchModal = () => setStatusMatchModal(false);
 
 	const handleCloseDeletePartidoModal = () => setStatusDeletePartidoModal(false);
 	const handleCloseDeleteCandidatoModal = () => setStatusDeleteCandidatoModal(false);
 	const handleCloseRegisterModal = () => setStatusRegisterModal(false);
-	const handleCloseAsociacionModal = () => setStatusAsociacionModal(false);
+
 
 
 	const handleOpenRegisterModal = () => {
 	    // toastOffOperation();
 		setStatusRegisterModal(true);
 	};
-	let candidatosConPartidos = [];
-	// const candidatosAMostrar = [];
+
 	const handleOpenMatchModal = () => {
-		console.log("partidos en la boleta", partidos);
-
-		
-		// partidos.map((partido) => {
-		// 	console.log("partido",partido.candidatosPartido);
-		// 	partido.candidatosPartido.map((candidate) => {
-		// 		candidatosConPartidos.push(candidate);
-		// 		console.log("candidato",candidate);
-
-		// 	}
-		// 	)}
-		// 	)
-
-		// 	// candidatosAMostrar = [];
-		// 	console.log("candidatos a mostrar UNO",candidatosAMostrar)
-		// 	candidatoandSuplentes.map((candi) => {
-		// 		candidatosConPartidos.map((candidate)=>
-		// 		{
-		// 			if(candi.id !== candidate.id){
-		// 				debugger
-		// 				candidatosAMostrar.push(candi);
-		// 			}
-		// 		})
-		// 		})
-			// console.log("candidatos a mostrar",candidatosAMostrar)
-
+		// console.log("partidos en la boleta", partidos);
 	setStatusMatchModal(true);
 	};
 
@@ -206,17 +119,13 @@ export const AddBoletaJornada = () => {
 		setStatusDeleteCandidatoModal(true);
 	};
 
-	const handleOpenAsociacionModal = () => {
-		// toastOffOperation();
-		setStatusAsociacionModal(true);
-	};
-
 	const onCancel = () => {
 		navigate("/preparacion/jornada/"+ params.id);
 	};
 
 
 	const onSubmit = (values) => {
+		console.log("partidoooooooooooooooos",partidos);
 		if(Object.values(jornadaSelected.boletaSelected).length === 0){
 			if(candidatoandSuplentes.length > 0)
 				dispatch(
@@ -433,29 +342,22 @@ export const AddBoletaJornada = () => {
 									AGREGAR PARTIDO
 								</Button>
 							</Grid>
-							<Box
-							  sx={{
-								display: "flex",
-								width: "100%",
-								alignItems: "center",
-								justifyContent: "center",
-								mt: 3,
-								mb: 2,
-							  }}
-							>
-							</Box>
-							{isLoadingAsociaciones ? (
-							  <Stack
-								justifyContent="center"
-								sx={{ color: "grey.500" }}
-								spacing={2}
-								direction="row"
-							  >
-								<CircularProgress color="primary" />
-							  </Stack>
-							) : (
-							  <AgrupaPartido/>
-							)}
+							{
+								
+							}
+								<Box
+								sx={{
+									display: "flex",
+									width: "100%",
+									alignItems: "center",
+									justifyContent: "center",
+									mt: 3,
+									// mb: 2,
+								}}
+								>
+									<AgrupaPartido/>
+								</Box>
+
 							</Box>
 						  </>
 

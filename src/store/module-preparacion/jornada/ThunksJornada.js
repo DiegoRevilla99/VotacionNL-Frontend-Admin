@@ -132,10 +132,11 @@ export const onCreateBoleta = (
 	navigate = () => {}
 ) => {
 	return async (dispatch) => {
-		console.log("DATA THUNKS",data);
-		console.log("idJornada THUNKS",idJornada);
-		console.log("candidatoandSuplentes THUNKS",candidatoandSuplentes);
-		console.log("partidos THUNKS",partidos);
+		console.log("dataaaaaa",data);
+		console.log("idJornada",idJornada);
+		console.log("partidos",partidos);
+		// console.log("dataaaaaa",data);
+
 		dispatch(onCheckingOperation());
 		dispatch(onToastCheckingOperation("Guardando boleta..."));
 		const { ok, idEstructuraBoleta } = await createBoletaFormal(
@@ -144,12 +145,7 @@ export const onCreateBoleta = (
 			candidatoandSuplentes,
 			partidos
 		); // PROVIDER
-		// const { ok, idEstructuraBoleta } = await createBoleta(
-		// 	data,
-		// 	idJornada,
-		// 	candidatoandSuplentes,
-		// 	partidos
-		// ); // PROVIDER
+
 		if (ok) {
 			dispatch(onSuccessOperation());
 			dispatch(onToastSuccessOperation({ successMessage: "Boleta creada con éxito" }));

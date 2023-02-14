@@ -14,7 +14,7 @@ import { Formik } from 'formik';
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { object } from "yup";
+import { array, object, string } from "yup";
 import { useUiStore } from "../../hooks/useUiStore";
 import { useJornadaStore } from "../hooks/useJornadaStore";
 
@@ -35,13 +35,19 @@ const style = {
 //Validaciones
 
 const validationSchema = object({
-	// nameParty: string("").required(
-	// 	"Por favor, ingresa el nombre del partido"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// siglasParty: string("").required(
-	// 	"Por favor, ingresa las siglasParty del partido"
-	// 	).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
-
+	nameParty: string("").required(
+		"Por favor, ingresa el nombre del partido"
+		),
+	siglasParty: string("").required(
+		"Por favor, ingresa las siglas del partido"
+		),
+	emblemParty: string("").required(
+		"Por favor, ingresa el emblema del partido"
+		),
+	clavePartido: string("").required(
+		"Por favor, ingresa la clave del partido"
+		),
+	candidatosPartido: array().min(1, "Es necesario que el partido cuente con un candidato"),
 });
 export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 	const { toastSuccesOperation } = useUiStore();
@@ -89,7 +95,6 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 		toastSuccesOperation("Datos actualizados con éxito");
 		}
 		setPartidoSelectedNull();
-		// setCandidatosPartido({});
 		handleToggleModal();
 	};
 
@@ -108,7 +113,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 	   const errors = {};
 
 	   if (fotografiaParty.name === "Sin Archivo seleccionado") {
-		 errors.fotografiaParty = "Se necesita una fotografiaParty";
+		 errors.fotografiaParty = "Se necesita un logo distintivo del partido";
 	   }
 	   return errors;
 	 };
@@ -221,7 +226,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						error = {touched.clavePartido && errors.clavePartido}
 						helperText={touched.clavePartido && errors.clavePartido}
 						onChange={handleChange}
-						// onBlur={handleBlur}
+						onBlur={handleBlur}
 					/>
 					<Typography variant= {{ xl: "2rem", lg: "1.5rem", sm: "1rem", xs: "0.8rem" }}>
 						NOMBRE DEL PARTIDO <span style={{ color: "red" }}>*</span>
@@ -237,7 +242,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						error = {touched.nameParty && errors.nameParty}
 						helperText={touched.nameParty && errors.nameParty}
 						onChange={handleChange}
-						// onBlur={handleBlur}
+						onBlur={handleBlur}
 					/>				
 					<Typography variant="h7" mt={"1rem"}>
 						SIGLAS DEL PARTIDO <span style={{ color: "red" }}>*</span>
@@ -253,7 +258,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						error = {touched.siglasParty && errors.siglasParty}
 						helperText={touched.siglasParty && errors.siglasParty}
 						onChange={handleChange}
-						// onBlur={handleBlur}
+						onBlur={handleBlur}
 					/>
 					<Typography variant="h7" mt={"1rem"}>
 					EMBLEMA DEL PARTIDO <span style={{ color: "red" }}>*</span>
@@ -269,7 +274,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						error = {touched.emblemParty && errors.emblemParty}
 						helperText={touched.emblemParty && errors.emblemParty}
 						onChange={handleChange}
-						// onBlur={handleBlur}
+						onBlur={handleBlur}
 					/>
 					<Typography variant="h7" mt={"1rem"}>
 						INSERTAR FOTOGRAFÍA DEL PARTIDO <span style={{ color: "red" }}>*</span>
@@ -339,7 +344,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 							boxShadow: 1,
 							width: "100%",
 							height: { xl: "400px", lg: "350px" },
-							marginTop: 5,
+							// marginTop: 5,
 							padding: 3,
 							border: "1px solid rgba(0, 0, 0, 0.4)",
 							borderRadius: "15px",
@@ -426,9 +431,16 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 								</Box>
 								))}
 							</Box>
-							{touched.candidatos && candidatosS.length === 0 && (
-							<ErrorField>{errors.candidatos}</ErrorField>
-							)}
+							{touched.candidatosPartido &&
+								 (
+										<Box ml={2} 
+											sx={{
+											fontSize: "12px",
+												color: "#791010" }}
+											>
+											{errors.candidatosPartido}
+										</Box>
+								)}
 						</Box>
 						<br />
 					{/* AQUI TERMINA LO DE CANDIDATOS */}

@@ -15,6 +15,7 @@ import { useParams } from "react-router-dom";
 import { date, object, string } from "yup";
 import { useUiStore } from "../../hooks/useUiStore";
 import { useJornadaStore } from "../hooks/useJornadaStore";
+import { DatePickerModSuplente } from "./DatePickerModSuplente";
 import { RadioButtMod } from "./RadioButtMod";
 import { RadioButtModSuplente } from "./RadioButtModSuplente";
 // import * as React from 'react';
@@ -22,7 +23,6 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
 import { DateFieldFechaNacimiento } from '../../module-empadronamiento/components/DateFieldFechaNacimiento';
-import { DateFieldFechaNacimientoSuplente } from '../../module-empadronamiento/components/DateFieldFechaNacimientoSuplente';
 const steps = ['Registrar al candidato', 'Registrar al suplente'];
 const style = {
 	position: "absolute",
@@ -218,25 +218,20 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 
 	const onSubmit = (values) => {
 		const info = { ...values };
-
-
-		info.fechaNacimientoCandidatos = new Date(values.fechaNacimientoCandidatos);
+		// info.fechaNacimientoCandidatos = new Date(values.fechaNacimientoCandidatos).toISOString();
+		const fecha = new Date(values.fechaNacimientoCandidatos);
+		const dia = fecha.getDate().toString().padStart(2, '0');
+		const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+		const anio = fecha.getFullYear().toString();
+		const fechaConFormato = `${dia}/${mes}/${anio}`;
+		info.fechaNacimientoCandidatos = fechaConFormato;
         info.nombreCandidato = info.nombreCandidato.trim().toUpperCase();
         info.apellidoMCandidato = info.apellidoMCandidato.trim().toUpperCase();
         info.apellidoPCandidato = info.apellidoPCandidato.trim().toUpperCase();
 		info.seudonimoCandidato = info.seudonimoCandidato.trim().toUpperCase();
 		info.generoCandidato = info.generoCandidato.trim().toUpperCase();
 		info.claveElectoralCandidato = info.claveElectoralCandidato.trim().toUpperCase();
-
-		// suplentes
-		info.fechaNacimientoSuplentes = new Date(values.fechaNacimientoSuplentes);
-        info.nombreSuplente = info.nombreSuplente.trim().toUpperCase();
-        info.apellidoPSuplente = info.apellidoPSuplente.trim().toUpperCase();
-        info.apellidoMSuplente = info.apellidoMSuplente.trim().toUpperCase();
-		info.seudonimoSuplente = info.seudonimoSuplente.trim().toUpperCase();
-		info.generoSuplente = info.generoSuplente.trim().toUpperCase();
-		info.claveElectoralSuplente = info.claveElectoralSuplente.trim().toUpperCase();
-		
+		console.log(info.fechaNacimientoCandidatos);
 		setFotografia({ name: "Sin Archivo seleccionado" });
 		setFotografiaSuplente({ name: "Sin Archivo seleccionado" });
 		if (Object.values(candidatoandSuplenteSelected).length === 0) {
@@ -247,17 +242,19 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 				info.nombreCandidato,
 				values.fotografiaCandidato,
 				info.seudonimoCandidato,
+				// values.fechaNacimientoCandidatos,
 				info.fechaNacimientoCandidatos,
 				info.generoCandidato,
 				info.claveElectoralCandidato,
-				info.claveElectoralSuplente,
-				info.apellidoPSuplente,
-				info.apellidoMSuplente,
-				info.nombreSuplente,
+				values.claveElectoralSuplente,
+				values.apellidoPSuplente,
+				values.apellidoMSuplente,
+				values.nombreSuplente,
 				values.fotografiaSuplente,
-				info.seudonimoSuplente,
-				info.fechaNacimientoSuplentes,
-				info.generoSuplente
+				values.seudonimoSuplente,
+				// values.fechaNacimientoSuplentes,
+				values.fechaNacimientoSuplente,
+				values.generoSuplente
 			);
 			toastSuccesOperation("Datos registrados con éxito");
 		} else {
@@ -268,17 +265,19 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 				info.nombreCandidato,
 				values.fotografiaCandidato,
 				info.seudonimoCandidato,
+				// values.fechaNacimientoCandidatos,
 				info.fechaNacimientoCandidatos,
 				info.generoCandidato,
 				info.claveElectoralCandidato,
-				info.claveElectoralSuplente,
-				info.apellidoPSuplente,
-				info.apellidoMSuplente,
-				info.nombreSuplente,
+				values.claveElectoralSuplente,
+				values.apellidoPSuplente,
+				values.apellidoMSuplente,
+				values.nombreSuplente,
 				values.fotografiaSuplente,
-				info.seudonimoSuplente,
-				info.fechaNacimientoSuplentes,
-				info.generoSuplente
+				values.seudonimoSuplente,
+				values.fechaNacimientoSuplentes,
+				// fechaNacimientoSuplente,
+				values.generoSuplente
 			);
 			toastSuccesOperation("Datos actualizados con éxito");
 		}
@@ -354,142 +353,50 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		return false;
 	  };
 	  
-	  // ** suplente
-
-	  const FechaNacimientoFieldSuplente = ({ name }) => {
-		const {
-		  values: {
-			claveElectoralSuplente,
-			fechaNacimientoSuplentes,
-		  },
-		  touched,
-		  setFieldValue,
-		} = useFormikContext();
-	  
-		const [field, meta] = useField({ name });
-	  
-		useEffect(() => {
-		  // set the value of textC, based on textA and textB
-		  if (claveElectoralSuplente) {
-			const fecha = getDateBirthSuplente(claveElectoralSuplente);
-			setFieldValue(name, fecha);
-			// console.log("fechaaaaaaaaaaaaaa",name);
-		  }
-		}, [claveElectoralSuplente, touched.claveElectoralSuplente, setFieldValue, name]);
-		
-		return (
-		  <>
-			<Typography>FECHA DE NACIMIENTO</Typography>
-			
-			<DateFieldFechaNacimientoSuplente
-			  name="fechaNacimientoSuplentes"
-			  value={fechaNacimientoSuplentes}
-			  // onChange={handleChange}
-			  disabled={true}
-			/>
-			{!!meta.touched && !!meta.error && <div>{meta.error}</div>}
-		  </>
-		);
-	  };
-	  
-	  const getDateBirthSuplente = (claveElectoralSuplente = "") => {
-		const fechaActual = new Date();
-		if (validationCurp.test(claveElectoralSuplente.toUpperCase())) {
-		  let anio = parseInt(claveElectoralSuplente.substring(4, 6), 10);
-		  let mes = parseInt(claveElectoralSuplente.substring(6, 8), 10);
-		  let dia = parseInt(claveElectoralSuplente.substring(8, 10), 10);
-	  
-		  const anioActual = fechaActual.getFullYear() - 2005;
-		  console.log(anioActual);
-		  if (anio > anioActual) {
-			anio = anio + 1900;
-		  } else {
-			anio = anio + 2000;
-		  }
-		  const fechaN = new Date(anio, mes - 1, dia);
-		  return fechaN;
-		}
-		return false;
-	  };
-
-	  // ****************************************************************
-	  
 	  const validando = (values, props) => {
 		const errors = {};
 
 		if (!validationCurp.test(values.claveElectoralCandidato.toUpperCase())) {
 		  errors.claveElectoralCandidato = "Esta clave Electoral no es valida";
 		}
+
+	  
 	  if(validationCurp.test(values.claveElectoralCandidato.toUpperCase())&& values.nombreCandidato.trim().length>0){
 		  if(errorNombreCFuntion(values.nombreCandidato.trim().toUpperCase(),values.claveElectoralCandidato.charAt(15))){
 			errors.nombreCandidato = "La segunda consonante debe ser '"+values.claveElectoralCandidato.charAt(15)+"'";
 		  }
 	  }
+		
 	  if(validationCurp.test(values.claveElectoralCandidato.toUpperCase())&& values.nombreCandidato.trim().length>0){
 		if(errorNombreInitFuntion(values.nombreCandidato.trim().toUpperCase(),values.claveElectoralCandidato.charAt(3))) errors.nombreCandidato = "La inical debe ser '"+values.claveElectoralCandidato.charAt(3)+"'";
 	  }
+
 		if(validationCurp.test(values.claveElectoralCandidato.toUpperCase())&& values.apellidoPCandidato.trim().length>0){
 		  if(!isSecondApPCons(values.apellidoPCandidato,values.claveElectoralCandidato.charAt(13))){
 			errors.apellidoPCandidato = "La segunda consonante debe ser '"+values.claveElectoralCandidato.charAt(13)+"'";
 		  }
 		}
+	  
 		if(validationCurp.test(values.claveElectoralCandidato.toUpperCase())&& values.apellidoPCandidato.trim().length>0){
 		  if(!isFirstVocal(values.apellidoPCandidato,values.claveElectoralCandidato.charAt(1))){
 			// errors.apellidoPCandidato = "La siguiente vocal debe ser '"+values.claveElectoralCandidato.charAt(1)+"'";
 		  }
 		}
+	  
 		if(validationCurp.test(values.claveElectoralCandidato.toUpperCase())&& values.apellidoPCandidato.trim().length>0){
 		  if(values.apellidoPCandidato.toUpperCase().charAt(0)!==values.claveElectoralCandidato.charAt(0)) errors.apellidoPCandidato = "La inical debe ser '"+values.claveElectoralCandidato.charAt(0)+"'";
 		}
+
 		if(validationCurp.test(values.claveElectoralCandidato.toUpperCase())&& values.apellidoMCandidato.trim().length>0){
 		  if(!isSecondAMCons(values.apellidoMCandidato,values.claveElectoralCandidato.charAt(14))){
 			errors.apellidoMCandidato = "La segunda consonante debe ser '"+values.claveElectoralCandidato.charAt(14)+"'";
 		  }
 		}
+	  
 		if(validationCurp.test(values.claveElectoralCandidato.toUpperCase())&& values.apellidoMCandidato.trim().length>0){
 		  if(values.apellidoMCandidato.toUpperCase().charAt(0)!==values.claveElectoralCandidato.charAt(2)) errors.apellidoMCandidato = "La inicial debe ser '"+values.claveElectoralCandidato.charAt(2)+"'";
 		}
-		// ** SUPLENTE
-
-		if (!validationCurp.test(values.claveElectoralSuplente.toUpperCase())) {
-			errors.claveElectoralSuplente = "Esta clave Electoral no es valida";
-		  }
-		if(validationCurp.test(values.claveElectoralSuplente.toUpperCase())&& values.nombreSuplente.trim().length>0){
-			if(errorNombreCFuntion(values.nombreSuplente.trim().toUpperCase(),values.claveElectoralSuplente.charAt(15))){
-			  errors.nombreSuplente = "La segunda consonante debe ser '"+values.claveElectoralSuplente.charAt(15)+"'";
-			}
-		}
-		  
-		if(validationCurp.test(values.claveElectoralSuplente.toUpperCase())&& values.nombreSuplente.trim().length>0){
-		  if(errorNombreInitFuntion(values.nombreSuplente.trim().toUpperCase(),values.claveElectoralSuplente.charAt(3))) errors.nombreSuplente = "La inical debe ser '"+values.claveElectoralSuplente.charAt(3)+"'";
-		}
-
-		  if(validationCurp.test(values.claveElectoralSuplente.toUpperCase())&& values.apellidoPSuplente.trim().length>0){
-			if(!isSecondApPCons(values.apellidoPSuplente,values.claveElectoralSuplente.charAt(13))){
-			  errors.apellidoPSuplente = "La segunda consonante debe ser '"+values.claveElectoralSuplente.charAt(13)+"'";
-			}
-		  }
 		
-		  if(validationCurp.test(values.claveElectoralSuplente.toUpperCase())&& values.apellidoPSuplente.trim().length>0){
-			if(!isFirstVocal(values.apellidoPSuplente,values.claveElectoralSuplente.charAt(1))){
-			//   errors.apellidoPSuplente = "La siguiente vocal debe ser '"+values.claveElectoralSuplente.charAt(1)+"'";
-			}
-		  }
-		
-		  if(validationCurp.test(values.claveElectoralSuplente.toUpperCase())&& values.apellidoPSuplente.trim().length>0){
-			if(values.apellidoPSuplente.toUpperCase().charAt(0)!==values.claveElectoralSuplente.charAt(0)) errors.apellidoPSuplente = "La inical debe ser '"+values.claveElectoralSuplente.charAt(0)+"'";
-		  }
-
-		  if(validationCurp.test(values.claveElectoralSuplente.toUpperCase())&& values.apellidoMSuplente.trim().length>0){
-			if(!isSecondAMCons(values.apellidoMSuplente,values.claveElectoralSuplente.charAt(14))){
-			  errors.apellidoMSuplente = "La segunda consonante debe ser '"+values.claveElectoralSuplente.charAt(14)+"'";
-			}
-		  }
-		
-		  if(validationCurp.test(values.claveElectoralSuplente.toUpperCase())&& values.apellidoMSuplente.trim().length>0){
-			if(values.apellidoMSuplente.toUpperCase().charAt(0)!==values.claveElectoralSuplente.charAt(2)) errors.apellidoMSuplente = "La inicial debe ser '"+values.claveElectoralSuplente.charAt(2)+"'";
-		  }
-
 		if (fotografiaCandidato.name === "Sin Archivo seleccionado") {
 			errors.fotografiaCandidato = "Se necesita una fotografiaCandidato";
 		  }
@@ -812,6 +719,16 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														</Typography> */}
 													<Grid
 													>				
+														{/* <DatePickerMod
+															label=""
+															name={"fechaNacimientoCandidatos"}
+															value={values.fechaNacimientoCandidatos}
+															setFieldValue={setFieldValue}
+															handleChange={handleChange}
+															error={errors.fechaNacimientoCandidatos}
+															touched={touched.fechaNacimientoCandidatos}
+															
+														/> */}
 
 															<FechaNacimientoField name="fechaNacimientoCandidatos" />
 
@@ -966,10 +883,21 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 													onChange={handleChange}
 													onBlur={handleBlur}
 												/>
-
+													<Typography variant="h7" mt={"2rem"}>
+													FECHA DE NACIMIENTO<span style={{ color: "red" }}>*</span>
+														</Typography>
 													<Grid
 													>				
-														<FechaNacimientoFieldSuplente name="fechaNacimientoSuplentes" />
+														<DatePickerModSuplente
+															label=""
+															name={"fechaNacimientoSuplentes"}
+															value={values.fechaNacimientoSuplentes}
+															setFieldValue={setFieldValue}
+															handleChange={handleChange}
+															error={errors.fechaNacimientoSuplentes}
+															touched={touched.fechaNacimientoSuplentes}
+															
+														/>
 													</Grid>  
 													
 													
