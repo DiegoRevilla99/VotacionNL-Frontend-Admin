@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React from "react";
 import { AsociacionTabla } from "./AsociacionTabla";
@@ -34,7 +34,7 @@ export const AgrupaAsociacion = ({ info = {} }) => {
 
   return (
     <>
-     
+     {asociaciones.length > 0 ? (
         <Box
           sx={{
             width: "100%",
@@ -76,9 +76,11 @@ export const AgrupaAsociacion = ({ info = {} }) => {
             </Box>
           </Box>
         </Box>
-      {/* ) : (
-        <Box>No hay asociaciones</Box>
-      )} */}
+      ) : (
+        <Typography style={{ textAlign: "center", fontWeight: "bold", fontSize: 18, color: "#ff0000" }}>
+        No existen asociaciones ahora mismo. Por favor, agregue uno para mostrarlo aquí.
+      </Typography>
+      )}
     </>
   );
 };

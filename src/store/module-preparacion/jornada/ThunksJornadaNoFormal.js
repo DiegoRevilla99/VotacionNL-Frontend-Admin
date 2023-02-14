@@ -1,5 +1,5 @@
 import {
-    createBoleta, createJornada, deleteBoleta, deleteJornada, getBoletaData, getBoletasJornadaNoFormal, getCandidatoBoletaNoFormal, getJornadasNoFormales, updateBoletaData
+    createBoleta, createBoletaAsociaciones, createJornada, deleteBoleta, deleteJornada, getBoletaData, getBoletasJornadaNoFormal, getCandidatoBoletaNoFormal, getJornadasNoFormales, updateBoletaData
 } from "../../../providers/Micro-Preparacion/providerJornadaNoFormal";
 import {
     onToastCheckingOperation,
@@ -96,7 +96,31 @@ export const onGetCandidatosNoFormales = (idBoleta, navigate = () => {} ) => {
     }
 };
 
-export const onCreateBoleta = (data, idJornada, candidatos, asociaciones, navigate = () => {}) => {
+export const onCreateBoleta = (data, idJornada, candidatos, navigate = () => {}) => {
+    return async (dispatch) => {
+        console.log("data THUNKS: ", data);
+		console.log("idJornadaElectoral THUNKS: ", idJornada);
+		console.log("candidatos THUNKS: ", candidatos);
+        dispatch(onCheckingOperation());
+        dispatch(onToastCheckingOperation("Guardando boleta..."));
+        const {ok, idEstructuraBoleta } = await createBoleta(data, idJornada, candidatos);// PROVIDER
+        console.log("IDBOLETA THUNKS: ", idEstructuraBoleta);
+		// console.log("idJornadaElectoral THUNKS: ", idJornadaElectoral);
+		// console.log("candidatos THUNKS: ", candidatos);
+		// console.log("asociaciones THUNKS: ", asociaciones);
+        // dispatch(onSetjornadaNoFormalSelected({id, title, boletasNoFormales: []}));
+        if (ok) {
+            dispatch(onSuccessOperation());
+            dispatch(onToastSuccessOperation({ successMessage: "Boleta creada con éxito" }));
+            dispatch(onAddBoleta({idEstructuraBoleta, encabezado: data.encabezado}));// SLICE
+            navigate();
+        } else {
+            dispatch(onErrorOperation());
+            dispatch(onToastErrorOperation({ errorMessage: "No se pudo crear la boleta" }));
+        }
+    }
+};
+export const onCreateBoletaAsociaciones = (data, idJornada, candidatos, asociaciones, navigate = () => {}) => {
     return async (dispatch) => {
         console.log("data THUNKS: ", data);
 		console.log("idJornadaElectoral THUNKS: ", idJornada);
@@ -104,7 +128,7 @@ export const onCreateBoleta = (data, idJornada, candidatos, asociaciones, naviga
 		console.log("asociaciones THUNKS: ", asociaciones);
         dispatch(onCheckingOperation());
         dispatch(onToastCheckingOperation("Guardando boleta..."));
-        const {ok, idEstructuraBoleta } = await createBoleta(data, idJornada, candidatos, asociaciones);// PROVIDER
+        const {ok, idEstructuraBoleta } = await createBoletaAsociaciones(data, idJornada, candidatos, asociaciones);// PROVIDER
         console.log("IDBOLETA THUNKS: ", idEstructuraBoleta);
 		// console.log("idJornadaElectoral THUNKS: ", idJornadaElectoral);
 		// console.log("candidatos THUNKS: ", candidatos);
