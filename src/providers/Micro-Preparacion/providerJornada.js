@@ -85,7 +85,10 @@ export const getBoletaData = async (idTicket) => {
 		);
 
 		// console.log("DATA BOLETA", data.data);
-		console.log("DATA candidatos y suplentes por boleta", data1.data);
+		// console.log("DATA candidatos y suplentes por boleta", data1.data);
+		console.log("DATA candidatos  por boleta", data1.data.candidatoModel);
+
+		
 		// console.log("DATA  partidos por boleta", data2.data);
 		// // console.log("clave del partido", data2.data[0].clavePartido);
 		// console.log("DATA candidatos por partido", data3);

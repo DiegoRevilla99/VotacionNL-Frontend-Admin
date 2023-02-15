@@ -2,7 +2,7 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { Box, Button, Checkbox, FormControlLabel, Grid, Modal, TextField, Typography } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import { Form, Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { object } from "yup";
@@ -15,6 +15,7 @@ const style = {
 	left: "50%",
 	transform: "translate(-50%, -50%)",
 	width: "70%",
+	height: { xl: "85%", lg: "85%", md:"100%",  sm: "100%", xs: "100%" },
 	bgcolor: "background.paper",
 	borderRadius: "2rem",
 	boxShadow: 3,
@@ -144,31 +145,31 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 
 								const [candidatosDisponibles, setCandidatosDisponibles] = useState(candidatos);
 
-								useEffect(() => {
-								  setCandidatosDisponibles(
-									candidatos.filter(candidato => !values.candidatosAsociacion.includes(candidato.id))
-								  );
-								}, [values.candidatosAsociacion]);
+								// useEffect(() => {
+								//   setCandidatosDisponibles(
+								// 	candidatos.filter(candidato => !values.candidatosAsociacion.includes(candidato.id))
+								//   );
+								// }, [values.candidatosAsociacion]);
 								  
 
 
-								const candidatosNoAsociados = [];
+								// const candidatosNoAsociados = [];
 
-								candidatosDisponibles.map(candidato => {
-								  let candidatoEncontrado = false;
+								// candidatosDisponibles.map(candidato => {
+								//   let candidatoEncontrado = false;
 								  
-								  asociaciones.map(asociacion => {
-									asociacion.candidatosAsociacion.map(candidatoAsociacion => {
-									  if (candidato.id === candidatoAsociacion.id) {
-										candidatoEncontrado = true;
-									  }
-									});
-								  });
+								//   asociaciones.map(asociacion => {
+								// 	asociacion.candidatosAsociacion.map(candidatoAsociacion => {
+								// 	  if (candidato.id === candidatoAsociacion.id) {
+								// 		candidatoEncontrado = true;
+								// 	  }
+								// 	});
+								//   });
 								
-								  if (!candidatoEncontrado) {
-									candidatosNoAsociados.push(candidato);
-								  }
-								});
+								//   if (!candidatoEncontrado) {
+								// 	candidatosNoAsociados.push(candidato);
+								//   }
+								// });
 								
 							return (
 								<Form onSubmit={handleSubmit}>
@@ -279,7 +280,7 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 										}}
 										>
 
-											{candidatosNoAsociados.map(candidato => (
+											{candidatosDisponibles.map(candidato => (
 											<Box
 												sx={{
 												boxShadow: values.candidatosAsociacion.findIndex(c => c.id === candidato.id) !== -1 ? 3 : 0,
