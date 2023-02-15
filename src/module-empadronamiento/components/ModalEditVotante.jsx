@@ -31,6 +31,7 @@ import {
   putVotante,
 } from "../../store/module-empadronamiento/votantes/thunksVotantes";
 import { useParams } from "react-router-dom";
+import { FormContacto2 } from "./FormContacto2";
 
 const useStyles = makeStyles({
   textField: {
@@ -233,12 +234,12 @@ export const ModalEditVotante = ({
 
       <Box width="100%">
         {votanteSelected && (
-          <FormContacto
+          <FormContacto2
             backbtn={false}
             data={{ votanteModel: votanteSelected }}
             onBack={handleBack}
             onNext={finalizar}
-          ></FormContacto>
+          ></FormContacto2>
         )}
       </Box>
 
