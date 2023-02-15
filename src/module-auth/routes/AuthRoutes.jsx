@@ -5,10 +5,10 @@ import { Login } from "../pages/Login";
 import { Recuperacion } from "../pages/Recuperacion";
 import { Registro } from "../pages/Registro";
 
-export const AuthRoutes = ({ logged }) => {
+export const AuthRoutes = () => {
 	console.log("ME EJECUTO AUTH");
 	return (
-		<PublicRoute logged={logged}>
+		<PublicRoute>
 			<Routes>
 				<Route path="login" element={<Login />} />
 				<Route path="registro" element={<Registro />} />

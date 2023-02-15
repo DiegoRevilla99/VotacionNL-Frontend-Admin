@@ -3,20 +3,22 @@ import { Box } from "@mui/system";
 import { Formik } from "formik";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { object, string } from "yup";
 import { onLoginWithEmailAndPassword } from "../../store/auth/authThunks";
 
 const validationSchema = object({
-	correo: string("Ingresa tu correo").email().required("Este campo es requerido"),
+	// correo: string("Ingresa tu correo").email().required("Este campo es requerido"),
+	curp: string("Ingresa tu correo").required("Este campo es requerido"),
 	contrasenia: string("Ingresa tu contraseña").required("Este campo es requerido"),
 });
 
 export const Login = () => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const onSubmit = (values) => {
 		dispatch(
-			onLoginWithEmailAndPassword(values.correo, values.contrasenia, () => {
+			onLoginWithEmailAndPassword(values.curp, values.contrasenia, () => {
 				navigate("/preparacion/inicio");
 			})
 		);
@@ -106,7 +108,7 @@ export const Login = () => {
 								</Typography>
 
 								<Formik
-									initialValues={{ correo: "", contrasenia: "" }}
+									initialValues={{ correo: "", contrasenia: "", curp: "" }}
 									validationSchema={validationSchema}
 									onSubmit={(values) => {
 										console.log("FORMULARIO ENVIADO", values);
@@ -116,16 +118,16 @@ export const Login = () => {
 									{({ handleChange, values, errors, touched, handleSubmit }) => (
 										<form onSubmit={handleSubmit}>
 											<TextField
-												name="correo"
+												name="curp"
 												fullWidth
 												size="small"
-												id="correo"
-												label="Correo electrónico"
+												id="curp"
+												label="CURP"
 												variant="standard"
 												onChange={handleChange}
-												value={values.correo}
-												error={touched.correo && Boolean(errors.correo)}
-												helperText={touched.correo && errors.correo}
+												value={values.curp}
+												error={touched.curp && Boolean(errors.curp)}
+												helperText={touched.curp && errors.curp}
 												sx={{ marginBottom: "2rem" }}
 											/>
 											<TextField

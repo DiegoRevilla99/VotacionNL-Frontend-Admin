@@ -14,7 +14,6 @@ export const getConsultasCiudadanas = async () => {
 };
 
 export const getConsultasCiudadanasConfig = async () => {
-
 	try {
 		const { data } = await consultasAPI.get("jornada/consulta/informacion");
 
@@ -26,7 +25,6 @@ export const getConsultasCiudadanasConfig = async () => {
 };
 
 export const getConsultaConfigbyID = async (idJornada) => {
-
 	try {
 		const { data } = await consultasAPI.get(`jornada/consulta/${idJornada}/informacion`);
 

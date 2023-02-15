@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { useCheckAuth } from "../hooks/useCheckAuth";
 import { AuthRoutes } from "../module-auth/routes/AuthRoutes";
 // import { VisualizadorDePDF } from "../module-jornada/pages/VisualizadorDePDF";
 
@@ -10,17 +11,25 @@ import { PrivateRoute } from "./PrivateRoute";
 export const AppRouter = () => {
 	// const { status: userStatus } = useSelector((state) => state.auth);
 	// const logged = userStatus === "logged" ? true : false;
-	const logged = true;
+
+	const { status } = useCheckAuth();
+
+	console.log("STATUS LOGIN", status);
+
+	const location = useLocation();
+	// console.log(location);
+	sessionStorage.setItem("Location", location.pathname);
+	const logged = false;
 	return (
 		<Routes>
 			{/* LOGIN Y REGISTRO */}
 
-			<Route path="/auth/*" element={<AuthRoutes logged={logged} />}></Route>
+			<Route path="/auth/*" element={<AuthRoutes />}></Route>
 
 			<Route
 				path="/*"
 				element={
-					<PrivateRoute logged={logged}>
+					<PrivateRoute>
 						<AdminRoutes />
 					</PrivateRoute>
 				}

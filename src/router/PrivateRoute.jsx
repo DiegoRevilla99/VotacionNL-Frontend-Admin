@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import { useLocation } from "react-router";
 
 export const PrivateRoute = ({ children }) => {
-	const logged = true;
+	const logged = false;
 	const { pathname, search } = useLocation();
 	const lastpath = pathname + search;
 	localStorage.setItem("lastpath", lastpath);
