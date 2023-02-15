@@ -11,7 +11,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton';
 import Switch from '@mui/material/Switch';
 import { Formik } from 'formik';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { array, object, string } from "yup";
@@ -173,29 +173,29 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 
 				const [candidatosDisponibles, setCandidatosDisponibles] = useState(candidatoandSuplentes);
 
-				useEffect(() => {
-					setCandidatosDisponibles(
-						candidatoandSuplentes.filter(candidato => !values.candidatosPartido.includes(candidato.id))
-					);
-				}, [values.candidatosPartido]);
+				// useEffect(() => {
+				// 	setCandidatosDisponibles(
+				// 		candidatoandSuplentes.filter(candidato => !values.candidatosPartido.includes(candidato.id))
+				// 	);
+				// }, [values.candidatosPartido]);
 					
-				const candidatosNoAsociados = [];
+				// const candidatosNoAsociados = [];
 
-				candidatosDisponibles.map(candidato => {
-					let candidatoEncontrado = false;
+				// candidatosDisponibles.map(candidato => {
+				// 	let candidatoEncontrado = false;
 					
-					partidos.map(partido => {
-					partido.candidatosPartido.map(candidatoPartido => {
-						if (candidato.id === candidatoPartido.id) {
-						candidatoEncontrado = true;
-						}
-					});
-					});
+				// 	partidos.map(partido => {
+				// 	partido.candidatosPartido.map(candidatoPartido => {
+				// 		if (candidato.id === candidatoPartido.id) {
+				// 		candidatoEncontrado = true;
+				// 		}
+				// 	});
+				// 	});
 				
-					if (!candidatoEncontrado) {
-					candidatosNoAsociados.push(candidato);
-					}
-				});
+				// 	if (!candidatoEncontrado) {
+				// 	candidatosNoAsociados.push(candidato);
+				// 	}
+				// });
 				
 			return (
 
