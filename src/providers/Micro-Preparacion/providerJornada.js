@@ -69,6 +69,7 @@ export const getBoletaData = async (idTicket) => {
 		const { data } = await jornadasAPI.get("jornada/electoral/estructuraboleta/" + idTicket);
 		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/5
 		// **Fetch de candidatos y suplentes por boleta
+		console.log("idTicket", idTicket);
 		const { data: data1 } = await jornadasAPI.get(
 			"jornada/electoral/estructuraboleta/"+idTicket+"/candidatoSuplente"
 			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/5/candidatoSuplente
@@ -83,9 +84,9 @@ export const getBoletaData = async (idTicket) => {
 			"jornada/electoral/candidatoPartido/" + data2.data[0].clavePartido
 			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/candidatoPartido/PRI-01
 		);
-
+		
 		// console.log("DATA BOLETA", data.data);
-		// console.log("DATA candidatos y suplentes por boleta", data1.data);
+		console.log("DATA candidatos y suplentes por boleta", data1.data);
 		// console.log("DATA candidatos  por boleta", data1.data);
 		// console.log("DATA  partidos por boleta", data2.data);
 		// // console.log("clave del partido", data2.data[0].clavePartido);
