@@ -19,7 +19,7 @@ export const AppRouter = () => {
 	const location = useLocation();
 	// console.log(location);
 	sessionStorage.setItem("Location", location.pathname);
-	const logged = false;
+	const logged = true;
 	return (
 		<Routes>
 			{/* LOGIN Y REGISTRO */}
