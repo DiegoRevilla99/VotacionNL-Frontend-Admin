@@ -6,8 +6,8 @@ import { FielTextCustom } from "../components/FielTextCustom";
 // import { ModalEliminarPC } from "../components/ModalEliminarPC";
 import { Formik } from 'formik';
 import { useNavigate, useParams } from "react-router-dom";
-import { object } from "yup";
-import { onCreateBoleta, onUpdateBoletaData } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
+import { object, string } from "yup";
+import { onCreateBoleta, onCreateBoletaAsociaciones, onUpdateBoletaData } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
 import { AddCandidatoGenericoMod } from "../components/AddCandidatoGenericoMod";
 import { ModalAsociacionGenerico } from "../components/ModalAsociacionGenerico";
 import { ModalBoletaCandidatoGenerico } from "../components/ModalBoletaCandidatoGenerico";
@@ -29,30 +29,32 @@ const modalidadNoFormal = [ {
     label: 'PLANILLA',
   },
 ];
+
+// 8 ES DE PLANILLA, 7 COMITE Y 6 REPRESENTANTE
 const validationSchema = object({
-	// encabezado: string("").required(
-	// 	"Por favor, ingresa un encabezado"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// modalidadVotacion: string("").required(
-	// 	"Por favor, elige una modalidad de votación"),
-	// entidadFederativa: string("").required(
-	// 	"Por favor, ingresa un municipio"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// municipio: string("").required(
-	// 	"Por favor, ingresa un municipio"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// primerFirmante: string("").required(
-	// 	"Por favor, ingresa el nombre del Primer Firmante"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// cargoPrimerFirmante: string("").required(
-	// 	"Por favor, ingresa un segundo Firmante"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// segundoFirmante: string("").required(
-	// 	"Por favor, ingresa el nombre de Segundo Firmante"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
-	// cargoSegundoFirmante: string("").required(
-	// 	"Por favor, ingresa el cargo de Segundo Firmante"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
+	encabezado: string("").required(
+		"Por favor, ingresa un encabezado"
+		),
+	modalidadVotacion: string("").required(
+		"Por favor, elige una modalidad de votación"),
+	entidadFederativa: string("").required(
+		"Por favor, ingresa un municipio"
+		),
+	municipio: string("").required(
+		"Por favor, ingresa un municipio"
+		),
+	primerFirmante: string("").required(
+		"Por favor, ingresa el nombre del Primer Firmante"
+		),
+	cargoPrimerFirmante: string("").required(
+		"Por favor, ingresa un segundo Firmante"
+		),
+	segundoFirmante: string("").required(
+		"Por favor, ingresa el nombre de Segundo Firmante"
+		),
+	cargoSegundoFirmante: string("").required(
+		"Por favor, ingresa el cargo de Segundo Firmante"
+		),
 });
 
 export const AddBoletaJornadaGenerica = () => {
@@ -67,6 +69,8 @@ export const AddBoletaJornadaGenerica = () => {
 		asociaciones,
         candidatosSelected,
 		jornadaNoFormalSelected,
+		setCandidatosSelectedNull,
+		setAsociacionesSelectedNull,
 	} = useJornadaNoFormalStore();
 
 	const datos = Object.values(jornadaNoFormalSelected.boletaNoFormalSelected).length === 0 
@@ -134,31 +138,72 @@ export const AddBoletaJornadaGenerica = () => {
 	};
 	const onCancel = () => {
 		navigate("/preparacion/jornada/noFormal/"+params.id);
+		setCandidatosSelectedNull();
+		setAsociacionesSelectedNull();
 	};
 
+	// const onSubmit = (values) => {
+	// 	if(Object.values(jornadaNoFormalSelected.boletaNoFormalSelected).length === 0){
+	// 		if(candidatos.length > 0)
+	// 			dispatch(
+	// 				onCreateBoletaAsociaciones( values, params.id, candidatos, asociaciones, ()=>{
+	// 					navigate("/preparacion/jornada/noFormal/"+params.id);
+	// 				})
+	// 			) 
+	// 	}else{
+	// 		dispatch(
+	// 			onUpdateBoletaData( 
+	// 				values, 
+	// 				params.id, 
+	// 				candidatos, 
+	// 				asociaciones, 
+	// 				params.idBoleta,
+	// 				()=>{
+	// 					navigate("/preparacion/jornada/noFormal/"+params.id);
+	// 				}
+	// 			)
+	// 		);
+	// 	}
+	// };
 	const onSubmit = (values) => {
-		if(Object.values(jornadaNoFormalSelected.boletaNoFormalSelected).length === 0){
-			if(candidatos.length > 0)
-				dispatch(
-					onCreateBoleta( values, params.id, candidatos, asociaciones, ()=>{
-						navigate("/preparacion/jornada/noFormal/"+params.id);
-					})
-				) 
-		}else{
-			dispatch(
-				onUpdateBoletaData( 
-					values, 
-					params.id, 
-					candidatos, 
-					asociaciones, 
-					params.idBoleta,
-					()=>{
-						navigate("/preparacion/jornada/noFormal/"+params.id);
-					}
-				)
-			);
+		console.log("values",values);
+		if (Object.values(jornadaNoFormalSelected.boletaNoFormalSelected).length === 0) {
+		  if (candidatos.length > 0) {
+			if (values.idModalidadVotacion === 3) { // Seleccionaron planilla
+				dispatch(onCreateBoletaAsociaciones(values, params.id, candidatos, () => {
+					navigate("/preparacion/jornada/noFormal/" + params.id);
+				  }));
+			} else { // Otras opciones distintas de planilla
+			  dispatch(onCreateBoleta(values, params.id, candidatos, () => {
+				navigate("/preparacion/jornada/noFormal/" + params.id);
+			  }));
+			}
+		  }
+		  setCandidatosSelectedNull();
+		  setAsociacionesSelectedNull();
+		} else {
+		  if (values.idModalidadVotacion === 3) { // Seleccionaron planilla
+			dispatch(onUpdateBoletaDataAsociacion(values, params.id, candidatos, asociaciones, params.idBoleta, () => {
+			  navigate("/preparacion/jornada/noFormal/" + params.id);
+			}
+			));
+		  } else { // Otras opciones distintas de planilla
+			dispatch(onUpdateBoletaData(
+			  values,
+			  params.id,
+			  candidatos,
+			//   asociaciones,
+			  params.idBoleta,
+			  () => {
+				navigate("/preparacion/jornada/noFormal/" + params.id);
+			  }
+			));
+		  }
+		  setCandidatosSelectedNull();
+		  setAsociacionesSelectedNull();
 		}
-	};
+	  };
+	  
 	// INICIO DEL RETURN
 
 	return (
@@ -229,7 +274,7 @@ export const AddBoletaJornadaGenerica = () => {
 							value={values.encabezado}
 							handleChange={handleChange}
 							error={errors.encabezado}
-							// touched={touched.encabezado}
+							touched={touched.encabezado}
 						/>
 							{/* {touched.encabezado && errors.encabezado && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.encabezado}</Typography>} */}
 						</Grid>
@@ -285,7 +330,7 @@ export const AddBoletaJornadaGenerica = () => {
 								value={values.entidadFederativa}
 								handleChange={handleChange}
 								error={errors.entidadFederativa}
-								// touched={touched.entidadFederativa}
+								touched={touched.entidadFederativa}
 							/>
 							{/* {touched.entidadFederativa && errors.entidadFederativa && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.entidadFederativa}</Typography>} */}
 						</Grid>
@@ -297,7 +342,7 @@ export const AddBoletaJornadaGenerica = () => {
 								value={values.municipio}
 								handleChange={handleChange}
 								error={errors.municipio}
-								// touched={touched.municipio}
+								touched={touched.municipio}
 							/>
 							{/* {touched.municipio && errors.municipio && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.municipio}</Typography>} */}
 						</Grid>
@@ -327,7 +372,7 @@ export const AddBoletaJornadaGenerica = () => {
 								value={values.cargoPrimerFirmante}
 								handleChange={handleChange}
 								error={errors.cargoPrimerFirmante}
-								// touched={touched.cargoPrimerFirmante}
+								touched={touched.cargoPrimerFirmante}
 							/>
 							{/* {touched.cargoPrimerFirmante && errors.cargoPrimerFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.cargoPrimerFirmante}</Typography>} */}
 						</Grid>
@@ -339,7 +384,7 @@ export const AddBoletaJornadaGenerica = () => {
 								value={values.segundoFirmante}
 								handleChange={handleChange}
 								error={errors.segundoFirmante}
-								// touched={touched.segundoFirmante}
+								touched={touched.segundoFirmante}
 							/>
 							{/* {touched.segundoFirmante && errors.segundoFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.segundoFirmante}</Typography>} */}
 						</Grid>
@@ -351,7 +396,7 @@ export const AddBoletaJornadaGenerica = () => {
 								value={values.cargoSegundoFirmante}
 								handleChange={handleChange}
 								error={errors.cargoSegundoFirmante}
-								// touched={touched.cargoSegundoFirmante}
+								touched={touched.cargoSegundoFirmante}
 							/>
 							{/* {touched.cargoSegundoFirmante && errors.cargoSegundoFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.cargoSegundoFirmante}</Typography>} */}
 						</Grid>

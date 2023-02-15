@@ -55,7 +55,8 @@ export const CrudJornadaGenerica = () => {
   const navigate = useNavigate();
 
   // ToDo:AQUI OBTENGAN LAS VARIABLES STATUS Y DATA DE SUS ESTADOS GLOBALES
-  const { jornadaNoFormalSelected , status } = useJornadaNoFormalStore();
+  const { jornadaNoFormalSelected , status, setCandidatosSelectedNull,
+    setAsociacionesSelectedNull } = useJornadaNoFormalStore();
   const params = useParams();
   const dispatch = useDispatch();
 
@@ -124,6 +125,8 @@ export const CrudJornadaGenerica = () => {
   // USEEFFECT QUE PUEDES USAR PARA HACER UN GET DE LAS JORNADAS AL RENDERIZAR LA PAGINA
   useEffect(() => {
       dispatch(onGetBoletasNoFormales(params.id));
+      setCandidatosSelectedNull();
+      setAsociacionesSelectedNull();
   }, []);
   // MÉTODO PARA IR A LA PAGINA DE CONFIGURACIÓN DEL REGISTRO
   const handleConfig = (id) => {
@@ -132,7 +135,9 @@ export const CrudJornadaGenerica = () => {
   };
 
   const handleAdd = () => {
-    // navigate("/preparacion/jornada/boleta/");
+    //AQUI VAN LOS NULLS
+    setCandidatosSelectedNull();
+    setAsociacionesSelectedNull();
     navigate(
       "/preparacion/jornada/noFormal/" +
         params.id +

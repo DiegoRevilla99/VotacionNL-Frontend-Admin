@@ -11,7 +11,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton';
 import Switch from '@mui/material/Switch';
 import { Formik } from 'formik';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { array, object, string } from "yup";
@@ -24,7 +24,7 @@ const style = {
 	left: "50%",
 	transform: "translate(-50%, -50%)",
 	width: { xl: "50rem", lg: "50rem", sm: "40rem", xs: "30rem" },
-	height: { xl: "85%", lg: "85%", md:"100%",  sm: "100%", xs: "100%" },
+	// height: { xl: "30rem", lg: "30rem", md:"28rem",  sm: "35rem", xs: "40rem" },
 	bgcolor: "background.paper",
 	border: '2px solid #fff',
 	borderRadius: "2rem",
@@ -173,29 +173,29 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 
 				const [candidatosDisponibles, setCandidatosDisponibles] = useState(candidatoandSuplentes);
 
-				// useEffect(() => {
-				// 	setCandidatosDisponibles(
-				// 		candidatoandSuplentes.filter(candidato => !values.candidatosPartido.includes(candidato.id))
-				// 	);
-				// }, [values.candidatosPartido]);
+				useEffect(() => {
+					setCandidatosDisponibles(
+						candidatoandSuplentes.filter(candidato => !values.candidatosPartido.includes(candidato.id))
+					);
+				}, [values.candidatosPartido]);
 					
-				// const candidatosNoAsociados = [];
+				const candidatosNoAsociados = [];
 
-				// candidatosDisponibles.map(candidato => {
-				// 	let candidatoEncontrado = false;
+				candidatosDisponibles.map(candidato => {
+					let candidatoEncontrado = false;
 					
-				// 	partidos.map(partido => {
-				// 	partido.candidatosPartido.map(candidatoPartido => {
-				// 		if (candidato.id === candidatoPartido.id) {
-				// 		candidatoEncontrado = true;
-				// 		}
-				// 	});
-				// 	});
+					partidos.map(partido => {
+					partido.candidatosPartido.map(candidatoPartido => {
+						if (candidato.id === candidatoPartido.id) {
+						candidatoEncontrado = true;
+						}
+					});
+					});
 				
-				// 	if (!candidatoEncontrado) {
-				// 	candidatosNoAsociados.push(candidato);
-				// 	}
-				// });
+					if (!candidatoEncontrado) {
+					candidatosNoAsociados.push(candidato);
+					}
+				});
 				
 			return (
 
@@ -368,7 +368,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 							}}
 							>
 
-								{candidatosDisponibles.map(candidato => (
+								{candidatosNoAsociados.map(candidato => (
 								<Box
 									sx={{
 									boxShadow: values.candidatosPartido.findIndex(c => c.id === candidato.id) !== -1 ? 3 : 0,

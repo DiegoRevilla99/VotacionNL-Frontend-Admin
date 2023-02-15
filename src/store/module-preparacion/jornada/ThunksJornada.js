@@ -6,15 +6,13 @@ import {
 } from "../../ui/uiSlice";
 
 import {
-	onAddBoleta,
-	onAddJornadas, onCheckingOperation,
+	onAddBoleta, onAddCandidatoAndSuplente, onAddJornadas, onAddPartido, onCheckingOperation,
 	onDeleteBoletaData,
 	onDeleteJornadaData,
-	onEditBoleta,
-	onErrorOperation,
+	onEditBoleta, onErrorOperation,
 	onFillBoletas, onFillJornadasData,
-	onSetBoletasSelectedNull, onSetCandidatoAndSuplenteSelectedNull, onSetJornadaSelected,
-	onSetJornadasVotosData, onSetPartidoSelectedNull, onSuccessOperation
+	onSetBoletasSelectedNull, onSetCandidatoAndSuplenteNull, onSetCandidatoAndSuplenteSelectedNull, onSetJornadaSelected,
+	onSetJornadasVotosData, onSetPartidoNull, onSetPartidoSelectedNull, onSuccessOperation
 } from "./SliceJornada";
 
 export const onGetAlljornadas = () => {
@@ -95,10 +93,10 @@ export const onGetBoletas = (idJornada, navigate = () => {}) => {
 		if (ok) {
 			dispatch(onSuccessOperation());
 			dispatch(onSetBoletasSelectedNull());
-			// dispatch(onSetCandidatoSelectedNull());
-			// dispatch(onSetSuplenteSelectedNull());
 			dispatch(onSetPartidoSelectedNull());
 			dispatch(onSetCandidatoAndSuplenteSelectedNull());//New
+			dispatch(onSetCandidatoAndSuplenteNull()); 
+			dispatch(onSetPartidoNull());
 			dispatch(onFillBoletas(data)); // SLICE
 		} else {
 			dispatch(onErrorOperation());
@@ -114,6 +112,7 @@ export const onGetBoletasParaJornada = (idJornada, title, navigate = () => {}) =
 		if (ok) {
 			dispatch(onSuccessOperation());
 			dispatch(onSetBoletasSelectedNull());
+			
 			dispatch(onSetJornadaSelected({ idJornada, title }));
 			dispatch(onFillBoletas(data));
 			navigate();
@@ -162,19 +161,16 @@ export const onCreateBoleta = (
 export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
 	return async (dispatch) => {
 		dispatch(onCheckingOperation());
-		const { ok, data, dataCandidato, dataSuplente } = await getBoletaData(idBoleta); // PROVIDER
+		const { ok, data, dataCandidatoSuplente, dataPartido } = await getBoletaData(idBoleta); // PROVIDER
         console.log("DATA PROVIDER",data);
-		console.log("dataCandidato PROVIDER",dataCandidato);
-		console.log("dataSuplente PROVIDER",dataSuplente);
+		console.log("candidatosuplente PROVIDER",dataCandidatoSuplente);
+		console.log("partido PROVIDER",dataPartido);
 
-		// const { ok, data, dataPartido, dataCandidato, dataSuplente } = await getBoletaData(idBoleta); // PROVIDER
 		if (ok) {
 			dispatch(onSuccessOperation());
-			dispatch(onEditBoleta({ idBoleta, ...data })); // SLICE
+			dispatch(onEditBoleta({ idBoleta, ...data })); // SLICE aqui si llega sin p2
 			dispatch(onAddPartido(dataPartido)); // SLICE
-			dispatch(onAddCandidatoAndSuplente(dataCandidato, dataSuplente)); // SLICE
-			// dispatch(onAddCandidato(dataCandidato));// SLICE
-			// dispatch(onAddSuplente(dataSuplente));// SLICE
+			dispatch(onAddCandidatoAndSuplente(dataCandidatoSuplente)); // SLICE
 			navigate();
 		} else {
 			dispatch(onErrorOperation());

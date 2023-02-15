@@ -30,7 +30,7 @@ const style = {
 	left: "50%",
 	transform: "translate(-50%, -50%)",
 	width: { xl: "50rem", lg: "50rem", sm: "40rem", xs: "30rem" },
-	// height: { xl: "30rem", lg: "30rem", md:"28rem",  sm: "35rem", xs: "40rem" },
+	height: { xl: "85%", lg: "85%", md:"100%",  sm: "100%", xs: "100%" },
 	bgcolor: "background.paper",
 	border: '2px solid #fff',
 	borderRadius: "2rem",
@@ -687,7 +687,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 											<>
 											<Box sx={{ mt: 4, mb: 1, ml: 2, mr: 2}}>
 											<Typography variant="h7" mt={"2rem"}>
-												CLAVE ELECTORAL DEL CANDIDATO <span style={{ color: "red" }}>*</span>
+												CURP DEL CANDIDATO <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<TextField
 														fullWidth
@@ -846,7 +846,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 											<>
 											<Box sx={{ mt: 4, mb: 1, ml: 2, mr: 2}}>
 											<Typography variant="h7" mt={"2rem"}>
-												CLAVE ELECTORAL DEL SUPLENTE <span style={{ color: "red" }}>*</span>
+												CURP DEL SUPLENTE <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<TextField
 														fullWidth
