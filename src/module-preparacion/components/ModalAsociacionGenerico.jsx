@@ -117,7 +117,7 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 								{
 								nombreAsociacion: "",
 								emblema: "",
-								logo: "",
+								logo: "logo.png",
 								candidatosAsociacion: [],
 								} :{
 									nombreAsociacion: asociacionesSelected.nombreAsociacion,

@@ -180,9 +180,9 @@ const validationSchema = object({
 	seudonimoCandidato: string(
 		"Por favor, ingresa el seudónimo del candidato/a"
 		).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
-		fechaNacimientoCandidatos: date().required(
-		"Por favor, ingresa la fecha de nacimiento del candidato/a"
-		),
+		fechaNacimientoCandidatos: date()
+			.required("Por favor, ingresa la fecha de nacimiento del candidato")
+			.max(new Date(new Date().setFullYear(new Date().getFullYear() - 18)), "Debes ser mayor de 18 años"),
 		generoCandidato: string("").required("Por favor, selecciona el género"),
 	// Datos del suplente
 
@@ -198,9 +198,9 @@ const validationSchema = object({
 	seudonimoSuplente: string(
 		"Por favor, ingresa el seudónimo del Suplente"
 		).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
-		fechaNacimientoSuplentes: date().required(
-		"Por favor, ingresa la fecha de nacimiento del Suplente"
-		),
+		fechaNacimientoSuplentes: date()
+		.required("Por favor, ingresa la fecha de nacimiento del Suplente")
+		.max(new Date(new Date().setFullYear(new Date().getFullYear() - 18)), "Debes ser mayor de 18 años"),
 		generoSuplente: string("").required("Por favor, selecciona el género"),
 });
 export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
@@ -329,7 +329,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 			  // onChange={handleChange}
 			  disabled={true}
 			/>
-			{!!meta.touched && !!meta.error && <div>{meta.error}</div>}
+			{/* {!!meta.touched && !!meta.error && <div>{meta.error}</div>} */}
 		  </>
 		);
 	  };
@@ -387,7 +387,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 			  // onChange={handleChange}
 			  disabled={true}
 			/>
-			{!!meta.touched && !!meta.error && <div>{meta.error}</div>}
+			{/* {!!meta.touched && !!meta.error && <div>{meta.error}</div>} */}
 		  </>
 		);
 	  };
@@ -814,7 +814,15 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 													>				
 
 															<FechaNacimientoField name="fechaNacimientoCandidatos" />
-
+															{touched.fechaNacimientoCandidatos && (
+															<Box ml={2}
+																sx={{
+																fontSize: "12px",
+																	color: "#791010" }}
+																>
+																{errors.fechaNacimientoCandidatos}
+															</Box>
+														)}
 													</Grid>  
 													
 													
@@ -970,6 +978,15 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 													<Grid
 													>				
 														<FechaNacimientoFieldSuplente name="fechaNacimientoSuplentes" />
+														{touched.fechaNacimientoSuplentes && (
+															<Box ml={2}
+																sx={{
+																fontSize: "12px",
+																	color: "#791010" }}
+																>
+																{errors.fechaNacimientoSuplentes}
+															</Box>
+														)}
 													</Grid>  
 													
 													

@@ -355,7 +355,7 @@ const FechaNacimientoField = ({ name }) => {
 									apellidoMCandidato: "",
 									nombreCandidato: "",
 									seudonimoCandidato: "",//Text
-									fotografiaCandidato: "",
+									fotografiaCandidato: "fotografiaCandidato.jpg",
 									fechaNacimientoCandidatos: "",//Date
 									generoCandidato: "",//Text
 								}

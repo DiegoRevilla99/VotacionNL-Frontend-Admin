@@ -157,6 +157,7 @@ export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
             dispatch(onSuccessOperation());
             dispatch(onEditBoleta({idBoleta, ...data}));// SLICE
             dispatch(onAddCandidato(dataCandidato));// SLICE
+            // dispatch(onSetCandidatoSelectedNull());
             navigate();
         } else {
             dispatch(onErrorOperation());
@@ -165,6 +166,24 @@ export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
     }
 };
 
+// export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
+//     return async (dispatch) => {
+//         dispatch(onCheckingOperation());
+//         console.log("IDBOLETA THUNKS: ", idBoleta);
+//         const {ok, data, dataCandidato } = await getBoletaData(idBoleta);// PROVIDER
+//         console.log("CANDIDATOS EN EL THUNKS",dataCandidato);
+//         console.log("boleta EN EL THUNKS",data);
+//         if (ok) {
+//             dispatch(onSuccessOperation());
+//             dispatch(onEditBoleta({idBoleta, ...data}));// SLICE
+//             dispatch(onAddCandidato(dataCandidato));// SLICE
+//             navigate();
+//         } else {
+//             dispatch(onErrorOperation());
+//             // dispatch(onToastErrorOperation({ errorMessage: errorMessage || "No se pudo obtener la boleta" }));
+//         }
+//     }
+// };
 
 export const onUpdateBoletaData = (
     values, 
