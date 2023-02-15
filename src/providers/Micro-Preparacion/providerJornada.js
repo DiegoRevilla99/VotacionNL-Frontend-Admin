@@ -68,62 +68,82 @@ export const getBoletaData = async (idTicket) => {
 		// **FETCH
 		const { data } = await jornadasAPI.get("jornada/electoral/estructuraboleta/" + idTicket);
 		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/5
-		// **Fetch de candidatos
+		// **Fetch de candidatos y suplentes por boleta
 		const { data: data1 } = await jornadasAPI.get(
-			"jornada/electoral/estructuraboleta/" + idTicket+ "/candidatoSuplente"
-			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/candidato/PEHEFE020722
-			//https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/5/candidatoSuplente
+			"jornada/electoral/estructuraboleta/"+idTicket+"/candidatoSuplente"
+			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/5/candidatoSuplente
 		);
-		// **Fetch de suplentes
-		// const { data: data2 } = await jornadasAPI.get(
-		// 	"jornada/electoral/suplente/" + idTicket
-		// 	// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/suplente/DIRUAL120721
-		// );
-		// **Fetch de partidos
-		// const { data: data3 } = await jornadasAPI.get(
-		// 	"jornada/electoral/estructuraboleta/" + idTicket + "/partidos"
-		// 	//https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/5/partidos
-		// 	// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/partido/0
-		// );
+		// **Fetch de partidos por boleta
+		const { data: data2 } = await jornadasAPI.get(
+			"jornada/electoral/estructuraboleta/" + idTicket + "/partidos"
+			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/5/partidos
+		);
+		// **Fetch de candidatos por partido
+		const { data: data3 } = await jornadasAPI.get(
+			"jornada/electoral/candidatoPartido/" + data2.data[0].clavePartido
+			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/candidatoPartido/PRI-01
+		);
 
-		// console.log("DATA BOLETA", data);
-		console.log("DATA CANDIDATO", data1);
-		// console.log("DATA SUPLENTE", data2);
-		// console.log("DATA PARTIDO", data3);
-
-		const formatCandidato = {
-			// MY FORMAT || API FORMAT
-			id: "",
-			claveElectoral: data1.data.claveElectoralCandidato,
-			apellidoPCandidato: data1.data.apellidoPCandidato,
-			apellidoMCandidato: data1.data.apellidoMCandidato,
-			nombreCandidato: data1.data.nombreCandidato,
-			fotografia: data1.data.fotoCandidato,
-			seudonimoCandidato: data1.data.seudonimoCandidato,
-			fechaNacimientoCandidato: data1.data.fechaNacimiento,
-			generoCandidato: data1.data.genero,
-		};
-
-		const formatSuplente = {
-			// MY FORMAT || API FORMAT
-			id: "",
-			claveElectoral: data2.data.claveElectoralSuplente,
-			apellidoPSuplente: data2.data.apellidoPSuplente,
-			apellidoMSuplente: data2.data.apellidoMSuplente,
-			nombreSuplente: data2.data.nombreSuplente,
-			fotografiaSuplente: data2.data.fotoSuplente,
-			seudonimoSuplente: data2.data.seudonimoSuplente,
-			fechaNacimientoSuplente: data2.data.fechaNacimiento,
-			generoSuplente: data2.data.genero,
-		};
-		// const formatPartido = {
-		// 	// MY FORMAT || API FORMAT
-		// 	id: data3.data.clavePartido,
-		// 	nombrePartido: data3.data.nombre,
-		// 	siglas: data3.data.siglas,
-		// 	emblema: data3.data.emblema,
-		// 	fotografiaPartido: data3.data.logo,
+		// console.log("DATA BOLETA", data.data);
+		console.log("DATA candidatos y suplentes por boleta", data1.data);
+		// console.log("DATA  partidos por boleta", data2.data);
+		// // console.log("clave del partido", data2.data[0].clavePartido);
+		// console.log("DATA candidatos por partido", data3);
+		
+		// const formatCandidato = {
 		// };
+		// console.log("formatCandidato", formatCandidato);
+		const formatCandidatoSuplente = {
+			// MY FORMAT || API FORMAT
+			candidatoModel:
+			{			
+				id: data1.data.candidatoModel.idCandidato,
+				claveElectoral: data1.data.candidatoModel.claveElectoralCandidato,
+				apellidoPCandidato: data1.data.candidatoModel.apellidoPCandidato,
+				apellidoMCandidato: data1.data.candidatoModel.apellidoMCandidato,
+				nombreCandidato: data1.data.candidatoModel.nombreCandidato,
+				fotografia: data1.data.candidatoModel.fotoCandidato,
+				seudonimoCandidato: data1.data.candidatoModel.seudonimoCandidato,
+				fechaNacimientoCandidato: data1.data.candidatoModel.fechaNacimiento,
+				generoCandidato: data1.data.candidatoModel.genero,
+			},
+			suplenteModel: {
+				id: data1.data.suplenteModel.idSuplente,
+				claveElectoral: data1.data.suplenteModel.claveElectoralSuplente,
+				apellidoPSuplente: data1.data.suplenteModel.apellidoPSuplente,
+				apellidoMSuplente: data1.data.suplenteModel.apellidoMSuplente,
+				nombreSuplente: data1.data.suplenteModel.nombreSuplente,
+				fotografiaSuplente: data1.data.suplenteModel.fotoSuplente,
+				seudonimoSuplente: data1.data.suplenteModel.seudonimoSuplente,
+				fechaNacimientoSuplente: data1.data.suplenteModel.fechaNacimiento,
+				generoSuplente: data1.data.suplenteModel.genero,
+			}
+		};
+		console.log("formatCandidatoSuplente", formatCandidatoSuplente);
+		const formatPartido = {
+			// MY FORMAT || API FORMAT
+			clavePartido: data2.data.clavePartido,
+			emblema: data2.data.emblemParty,
+			logo: data2.data.fotografiaParty,
+			nombre: data2.data.nameParty,
+			siglas: data2.data.siglasParty,
+			status: data2.data.statusPary,
+			candidatosPartido: [
+				{
+					// MY FORMAT || API FORMAT
+					id: data3.data.idCandidato,
+					claveElectoral: data3.data.claveElectoralCandidato,
+					apellidoPCandidato: data3.data.apellidoPCandidato,
+					apellidoMCandidato: data3.data.apellidoMCandidato,
+					nombreCandidato: data3.data.nombreCandidato,
+					fotografia: data3.data.fotoCandidato,
+					seudonimoCandidato: data3.data.seudonimoCandidato,
+					fechaNacimientoCandidato: data3.data.fechaNacimiento,
+					generoCandidato: data3.data.genero,
+				}
+			]
+		};
+
 		const format = {
 			// MY FORMAT || API FORMAT
 			// id: data.data.idEstructuraBoleta,
@@ -139,12 +159,15 @@ export const getBoletaData = async (idTicket) => {
 			// },
 		};
 
+		console.log("FORMAT", format);
+		console.log("FORMAT CANDIDATO SUPLENTE", formatCandidatoSuplente);
+		console.log("FORMAT PARTIDO", formatPartido);
+
 		return {
 			ok: true,
 			data: format,
-			dataCandidato: formatCandidato,
-			dataSuplente: formatSuplente,
-			// dataPartido: formatPartido,
+			dataCandidatoSuplente: formatCandidatoSuplente,
+			dataPartido: formatPartido,
 		};
 	} catch (error) {
 		return { ok: false, errorMessage: error.message };
@@ -155,11 +178,11 @@ export const getBoletaData = async (idTicket) => {
 export const createBoletaFormal = async (data, idJornadaElectoral, candidatoandSuplentes, partidos) => {
 
 	try {
-		console.log("DATA PROVIDER", data); // si esta
-		console.log("ID JORNADA ELECTORAL", idJornadaElectoral); // si esta
-		// console.log("CANDIDATO AND SUPLENTE", candidatoAndSuplente);
-		console.log("PARTIDOS", partidos); // si esta
-		console.log("candidato del partido", partidos.candidatosPartido);
+		// console.log("DATA PROVIDER", data); // si esta
+		// console.log("ID JORNADA ELECTORAL", idJornadaElectoral); // si esta
+		// // console.log("CANDIDATO AND SUPLENTE", candidatoAndSuplente);
+		// console.log("PARTIDOS", partidos); // si esta
+		// console.log("candidato del partido", partidos.candidatosPartido);
 		// Boletas
 		const boletaInformacion = {
 			estructuraBoletaModel: {

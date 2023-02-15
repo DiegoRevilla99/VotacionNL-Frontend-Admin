@@ -379,7 +379,7 @@ const FechaNacimientoField = ({ name }) => {
 							{({ values, handleSubmit, handleChange, errors, touched, handleBlur, setFieldValue }) => (
 								<Form onSubmit={handleSubmit}>
 									<Typography variant="h7">
-										CLAVE ELECTORAL DEL CANDIDATO <span style={{ color: "red" }}>*</span>
+										CURP DEL CANDIDATO <span style={{ color: "red" }}>*</span>
 									</Typography>
 									<TextField
 										name="claveCandidato"
