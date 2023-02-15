@@ -86,56 +86,50 @@ export const getBoletaData = async (idTicket) => {
 
 		// console.log("DATA BOLETA", data.data);
 		// console.log("DATA candidatos y suplentes por boleta", data1.data);
-		console.log("DATA candidatos  por boleta", data1.data.candidatoModel);
-
-		
+		// console.log("DATA candidatos  por boleta", data1.data);
 		// console.log("DATA  partidos por boleta", data2.data);
 		// // console.log("clave del partido", data2.data[0].clavePartido);
 		// console.log("DATA candidatos por partido", data3);
-		
-		// const formatCandidato = {
-		// };
-		// console.log("formatCandidato", formatCandidato);
+
+		const [objeto] = data1.data;
+
 		const formatCandidatoSuplente = {
-			// MY FORMAT || API FORMAT
-			candidatoModel:
-			{			
-				id: data1.data.candidatoModel.idCandidato,
-				claveElectoral: data1.data.candidatoModel.claveElectoralCandidato,
-				apellidoPCandidato: data1.data.candidatoModel.apellidoPCandidato,
-				apellidoMCandidato: data1.data.candidatoModel.apellidoMCandidato,
-				nombreCandidato: data1.data.candidatoModel.nombreCandidato,
-				fotografia: data1.data.candidatoModel.fotoCandidato,
-				seudonimoCandidato: data1.data.candidatoModel.seudonimoCandidato,
-				fechaNacimientoCandidato: data1.data.candidatoModel.fechaNacimiento,
-				generoCandidato: data1.data.candidatoModel.genero,
+			candidatoModel: {
+				id: objeto.candidatoModel.idCandidato,
+				claveElectoralCandidato: objeto.candidatoModel.claveElectoral,
+				apellidoPCandidato: objeto.candidatoModel.apellidoPCandidato,
+				apellidoMCandidato: objeto.candidatoModel.apellidoMCandidato,
+				nombreCandidato: objeto.candidatoModel.nombreCandidato,
+				fotografia: objeto.candidatoModel.fotoCandidato,
+				seudonimoCandidato: objeto.candidatoModel.seudonimoCandidato,
+				fechaNacimientoCandidato: objeto.candidatoModel.fechaNacimiento,
+				generoCandidato: objeto.candidatoModel.genero,
 			},
 			suplenteModel: {
-				id: data1.data.suplenteModel.idSuplente,
-				claveElectoral: data1.data.suplenteModel.claveElectoralSuplente,
-				apellidoPSuplente: data1.data.suplenteModel.apellidoPSuplente,
-				apellidoMSuplente: data1.data.suplenteModel.apellidoMSuplente,
-				nombreSuplente: data1.data.suplenteModel.nombreSuplente,
-				fotografiaSuplente: data1.data.suplenteModel.fotoSuplente,
-				seudonimoSuplente: data1.data.suplenteModel.seudonimoSuplente,
-				fechaNacimientoSuplente: data1.data.suplenteModel.fechaNacimiento,
-				generoSuplente: data1.data.suplenteModel.genero,
-			}
+				id: objeto.suplenteModel.idSuplente,
+				claveElectoralSuplente: objeto.suplenteModel.claveElectoral,
+				apellidoPSuplente: objeto.suplenteModel.apellidoPSuplente,
+				apellidoMSuplente: objeto.suplenteModel.apellidoMSuplente,
+				nombreSuplente: objeto.suplenteModel.nombreSuplente,
+				fotografiaSuplente: objeto.suplenteModel.fotoSuplente,
+				seudonimoSuplente: objeto.suplenteModel.seudonimoSuplente,
+				fechaNacimientoSuplente: objeto.suplenteModel.fechaNacimiento,
+				generoSuplente: objeto.suplenteModel.genero,
+			},
 		};
-		console.log("formatCandidatoSuplente", formatCandidatoSuplente);
-		const formatPartido = {
-			// MY FORMAT || API FORMAT
-			clavePartido: data2.data.clavePartido,
-			emblema: data2.data.emblemParty,
-			logo: data2.data.fotografiaParty,
-			nombre: data2.data.nameParty,
-			siglas: data2.data.siglasParty,
-			status: data2.data.statusPary,
+
+		const formatPartidos = data2.data.map(partido => ({
+			clavePartido: partido.clavePartido,
+			emblemParty: partido.emblema,
+			fotografiaParty: partido.logo,
+			nameParty: partido.nombre,
+			siglasParty: partido.siglas,
+			statusPary: partido.status,
 			candidatosPartido: [
 				{
 					// MY FORMAT || API FORMAT
 					id: data3.data.idCandidato,
-					claveElectoral: data3.data.claveElectoralCandidato,
+					claveElectoralCandidato: data3.data.claveElectoral,
 					apellidoPCandidato: data3.data.apellidoPCandidato,
 					apellidoMCandidato: data3.data.apellidoMCandidato,
 					nombreCandidato: data3.data.nombreCandidato,
@@ -145,8 +139,8 @@ export const getBoletaData = async (idTicket) => {
 					generoCandidato: data3.data.genero,
 				}
 			]
-		};
-
+		  }));
+		  
 		const format = {
 			// MY FORMAT || API FORMAT
 			// id: data.data.idEstructuraBoleta,
@@ -162,15 +156,15 @@ export const getBoletaData = async (idTicket) => {
 			// },
 		};
 
-		console.log("FORMAT", format);
-		console.log("FORMAT CANDIDATO SUPLENTE", formatCandidatoSuplente);
-		console.log("FORMAT PARTIDO", formatPartido);
+		// console.log("FORMAT", format);
+		// console.log("FORMAT CANDIDATO SUPLENTE", formatCandidatoSuplente);
+		// console.log("FORMAT PARTIDO", formatPartidos);
 
 		return {
 			ok: true,
 			data: format,
 			dataCandidatoSuplente: formatCandidatoSuplente,
-			dataPartido: formatPartido,
+			dataPartido: formatPartidos,
 		};
 	} catch (error) {
 		return { ok: false, errorMessage: error.message };

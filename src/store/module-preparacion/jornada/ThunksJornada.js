@@ -162,13 +162,13 @@ export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
 	return async (dispatch) => {
 		dispatch(onCheckingOperation());
 		const { ok, data, dataCandidatoSuplente, dataPartido } = await getBoletaData(idBoleta); // PROVIDER
-        // console.log("DATA PROVIDER",data);
-		// console.log("candidatosuplente PROVIDER",dataCandidatoSuplente);
-		// console.log("partido PROVIDER",dataPartido);
-		// onbugger;
+        console.log("DATA PROVIDER",data);
+		console.log("candidatosuplente PROVIDER",dataCandidatoSuplente);
+		console.log("partido PROVIDER",dataPartido);
+
 		if (ok) {
 			dispatch(onSuccessOperation());
-			dispatch(onEditBoleta({ idBoleta, ...data })); // SLICE
+			dispatch(onEditBoleta({ idBoleta, ...data })); // SLICE aqui si llega sin p2
 			dispatch(onAddPartido(dataPartido)); // SLICE
 			dispatch(onAddCandidatoAndSuplente(dataCandidatoSuplente)); // SLICE
 			navigate();
