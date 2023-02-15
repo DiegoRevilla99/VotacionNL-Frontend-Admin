@@ -97,6 +97,8 @@ export const SliceJornada = createSlice({
 		// },
 		
 		onAddCandidatoAndSuplente: (state, { payload }) => {
+
+			if(payload.suplenteModel) {
 			const { candidatoModel, suplenteModel } = payload;
 		  
 			state.candidatoandSuplentes.push({
@@ -120,33 +122,57 @@ export const SliceJornada = createSlice({
 			});
 		  
 			console.log("CANDIDATOS CON SUPLENTES en SLICE", state.candidatoandSuplentes[0]);
+		} else {
+			console.log("payload SLICE", payload);
+			state.candidatoandSuplentes.push({
+				id: payload?.id,
+				apellidoPCandidato: payload?.apellidoPCandidato,
+				apellidoMCandidato: payload?.apellidoMCandidato,
+				nombreCandidato: payload?.nombreCandidato,
+				fotografiaCandidato: payload?.fotografiaCandidato,
+				seudonimoCandidato: payload?.seudonimoCandidato,
+				fechaNacimientoCandidato: payload?.fechaNacimientoCandidato,
+				generoCandidato: payload?.generoCandidato,
+				// idSuplente: payload?.idSuplente,
+				claveElectoralCandidato: payload?.claveElectoralCandidato,
+				claveElectoralSuplente: payload?.claveElectoralSuplente,
+				apellidoPSuplente: payload?.apellidoPSuplente,
+				apellidoMSuplente: payload?.apellidoMSuplente,
+				nombreSuplente: payload?.nombreSuplente,
+				fotografiaSuplente: payload?.fotografiaSuplente,
+				seudonimoSuplente: payload?.seudonimoSuplente,
+				fechaNacimientoSuplente: payload?.fechaNacimientoSuplente,
+				generoSuplente: payload?.generoSuplente,
+			});
+			console.log("CANDIDATOS CON SUPLENTES en SLICE", state.candidatoandSuplentes[0]);
+		}
 		  },
 		  
 		  
 		// Este cambio se tuvo que hacer para que jale lo del back
 		// onAddCandidatoAndSuplente: (state, { payload }) => {
-		// 	console.log("payload SLICE", payload);
-		// 	state.candidatoandSuplentes.push({
-		// 		id: payload?.id,
-		// 		apellidoPCandidato: payload?.apellidoPCandidato,
-		// 		apellidoMCandidato: payload?.apellidoMCandidato,
-		// 		nombreCandidato: payload?.nombreCandidato,
-		// 		fotografiaCandidato: payload?.fotografiaCandidato,
-		// 		seudonimoCandidato: payload?.seudonimoCandidato,
-		// 		fechaNacimientoCandidato: payload?.fechaNacimientoCandidato,
-		// 		generoCandidato: payload?.generoCandidato,
-		// 		// idSuplente: payload?.idSuplente,
-		// 		claveElectoralCandidato: payload?.claveElectoralCandidato,
-		// 		claveElectoralSuplente: payload?.claveElectoralSuplente,
-		// 		apellidoPSuplente: payload?.apellidoPSuplente,
-		// 		apellidoMSuplente: payload?.apellidoMSuplente,
-		// 		nombreSuplente: payload?.nombreSuplente,
-		// 		fotografiaSuplente: payload?.fotografiaSuplente,
-		// 		seudonimoSuplente: payload?.seudonimoSuplente,
-		// 		fechaNacimientoSuplente: payload?.fechaNacimientoSuplente,
-		// 		generoSuplente: payload?.generoSuplente,
-		// 	});
-		// 	console.log("CANDIDATOS CON SUPLENTES en SLICE", state.candidatoandSuplentes[0]);
+			// console.log("payload SLICE", payload);
+			// state.candidatoandSuplentes.push({
+			// 	id: payload?.id,
+			// 	apellidoPCandidato: payload?.apellidoPCandidato,
+			// 	apellidoMCandidato: payload?.apellidoMCandidato,
+			// 	nombreCandidato: payload?.nombreCandidato,
+			// 	fotografiaCandidato: payload?.fotografiaCandidato,
+			// 	seudonimoCandidato: payload?.seudonimoCandidato,
+			// 	fechaNacimientoCandidato: payload?.fechaNacimientoCandidato,
+			// 	generoCandidato: payload?.generoCandidato,
+			// 	// idSuplente: payload?.idSuplente,
+			// 	claveElectoralCandidato: payload?.claveElectoralCandidato,
+			// 	claveElectoralSuplente: payload?.claveElectoralSuplente,
+			// 	apellidoPSuplente: payload?.apellidoPSuplente,
+			// 	apellidoMSuplente: payload?.apellidoMSuplente,
+			// 	nombreSuplente: payload?.nombreSuplente,
+			// 	fotografiaSuplente: payload?.fotografiaSuplente,
+			// 	seudonimoSuplente: payload?.seudonimoSuplente,
+			// 	fechaNacimientoSuplente: payload?.fechaNacimientoSuplente,
+			// 	generoSuplente: payload?.generoSuplente,
+			// });
+			// console.log("CANDIDATOS CON SUPLENTES en SLICE", state.candidatoandSuplentes[0]);
 		// },
 		
 		onDeleteCandidato: (state, { payload }) => {
