@@ -125,6 +125,7 @@ export const JornadasFormales = () => {
             <Button
               disabled={row.status === "noiniciada"}
               variant="outlined"
+              sx={{width:"120px"}}
               onClick={(e) => goTo(row.idJornada)}
               startIcon={<BallotIcon />}
             >
@@ -177,6 +178,8 @@ export const JornadasFormales = () => {
             boxShadow: 1,
             borderRadius: "20px",
             mt: 2,
+            p:1,
+            pl:3,
             width: "95%",
             height: "calc(100% - 100px)",
           }}

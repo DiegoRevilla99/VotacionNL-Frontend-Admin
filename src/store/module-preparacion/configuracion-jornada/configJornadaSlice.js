@@ -3,9 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 export const configJornadaSlice = createSlice({
     name: 'configJornada',
     initialState: {
-        configJornada: null,
+        configJornada: {},
+        jornada: {},
         errorJornada: null,
+        errorJornadaSelected: null,
         isLoadingConfigJornada: false,
+        isLoadingJornada: false,
         status: "off",
         errorMessage: "",
         successMessage: "",
@@ -25,6 +28,23 @@ export const configJornadaSlice = createSlice({
         setErrorJornada: (state, action) => {
             state.isLoadingJornada = false;
             state.errorJornada = action.payload.errorJornada;
+        },
+
+        //jornadaseleccionada
+        startLoadingJornada: (state, /* action */) => {
+            state.isLoadingJornada = true;
+        },
+        endLoadingJornada: (state, /* action */) => {
+            state.isLoadingJornada = false;
+        },
+        setJornada: (state, action) => {
+            state.isLoadingJornada = false;
+            state.jornada = action.payload.jornada;
+            state.errorJornadaSelected = null;
+        },
+        setErrorJornadaSelected: (state, action) => {
+            state.isLoadingJornada = false;
+            state.errorJornadaSelected = action.payload.errorJornadaSelected;
         },
 
         //Transacciones 
@@ -47,4 +67,4 @@ export const configJornadaSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { setErrorJornada, startLoadingConfigJornada, endLoadingConfigJornada, setConfigJornada, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation } = configJornadaSlice.actions;
+export const { setErrorJornadaSelected, startLoadingJornada, endLoadingJornada, setJornada,setErrorJornada, startLoadingConfigJornada, endLoadingConfigJornada, setConfigJornada, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation } = configJornadaSlice.actions;

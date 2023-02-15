@@ -1,7 +1,8 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { ErrorMessage, Form, Formik } from "formik";
-import React from "react";
+import { ErrorMessage, Form, Formik, useFormikContext } from "formik";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import * as yup from "yup";
 import { ErrorField } from "../../module-preparacion/components/ErrorField";
 
@@ -12,10 +13,18 @@ let schema = yup.object().shape({
     .string()
     .email("Deber ser un correo")
     .required("Correo es necesario"),
+    correoVotante2: yup
+    .string()
+    .email("Deber ser un correo")
+    .required("Confirmación es necesaria"),
   telefonoVotante: yup
     .string()
     .matches(phoneRegExp, "No es un número de telefónico")
     .required("El telefono es necesario"),
+    telefonoVotante2: yup
+    .string()
+    .matches(phoneRegExp, "No es un número de telefónico")
+    .required("Confirmación es necesaria"),
 });
 
 const useStyles = makeStyles({
@@ -38,6 +47,13 @@ const useStyles = makeStyles({
 
 const validando = (values, props) => {
   const errors = {};
+ if (values.correoVotante !== values.correoVotante2) {
+    errors.correoVotante2 = "Los correos son diferentes";
+  } 
+
+  if (values.telefonoVotante !== values.telefonoVotante2) {
+    errors.telefonoVotante2 = "Los números son diferentes";
+  } 
   /* if (logo.name === "Sin Archivo seleccionado") {
       errors.logo = "Se necesita un emblema";
     }
@@ -49,20 +65,64 @@ const validando = (values, props) => {
   return errors;
 };
 
-export const FormContacto = ({
+
+// autoComplete="off"
+
+export const FormContacto2 = ({
+  errorsSend="",
   data = {},
   onBack = () => {},
   onNext = () => {},
   backbtn = true,
 }) => {
   const styles = useStyles();
+  const { votanteFound } = useSelector(
+    (state) => state.empVotantesSlice
+  );
+  const handleChangeD = (e) => {
+    e.preventDefault();
+  };
+
+  const SearchV = () => {
+    const {
+      values: {
+       
+      },
+      
+      setFieldValue,
+    } = useFormikContext();
+  
+    useEffect(() => {
+      // setFieldValue("calle", votanteFound?votanteFound.calle:"");
+      if(!data.votanteModel){
+      setFieldValue("correoVotante", votanteFound.find==="si"?votanteFound.correoVotante:"");
+      setFieldValue("telefonoVotante", votanteFound.find==="si"?votanteFound.telefonoVotante:"");
+      setFieldValue("correoVotante2", votanteFound.find==="si"?votanteFound.correoVotante:"");
+      setFieldValue("telefonoVotante2", votanteFound.find==="si"?votanteFound.telefonoVotante:"");
+      }
+      
+      
+    }, [votanteFound]);
+  
+    return (
+      <>
+      </>
+    );
+  };
+
   return (
     <Formik
       initialValues={{
         correoVotante: data.votanteModel?.correoVotante
           ? data.votanteModel.correoVotante
           : "",
+          correoVotante2: data.votanteModel?.correoVotante
+          ? data.votanteModel.correoVotante
+          : "",
         telefonoVotante: data.votanteModel?.telefonoVotante
+          ? data.votanteModel.telefonoVotante
+          : "",
+          telefonoVotante2: data.votanteModel?.telefonoVotante
           ? data.votanteModel.telefonoVotante
           : "",
       }}
@@ -76,8 +136,9 @@ export const FormContacto = ({
       }}
     >
       {({ touched, errors, handleBlur, handleChange, values }) => (
-        <Form className={styles.fomi}>
+        <Form  autoComplete="off" className={styles.fomi}>
           <Box sx={{ width: "100%" }}>
+            <SearchV/>
             <br />
             <div aling="left">
               <Typography textAlign="center" sx={{ fontWeight: "bold", mb: 3 }}>
@@ -88,12 +149,16 @@ export const FormContacto = ({
             <Typography>NÚMERO TELÉFONICO</Typography>
             <TextField
               required
+              
               label=""
               variant="filled"
               name="telefonoVotante"
               id="telefonoVotante"
               className={styles.textField}
               value={values.telefonoVotante}
+      //         onCut={handleChangeD}
+      // onCopy={handleChangeD}
+      onPaste={handleChangeD}
               onChange={(e) => {
                 e.target.value = e.target.value.trim();
                 handleChange(e);
@@ -108,9 +173,36 @@ export const FormContacto = ({
               )}
             />
             <br />
+            <Typography>CONFIRMACIÓN NÚMERO TELÉFONICO</Typography>
+            <TextField
+            
+              required
+              label=""
+              variant="filled"
+              name="telefonoVotante2"
+              id="telefonoVotante2"
+              className={styles.textField}
+              value={values.telefonoVotante2}
+              onChange={(e) => {
+                e.target.value = e.target.value.trim();
+                handleChange(e);
+              }}
+              onPaste={handleChangeD}
+              onBlur={handleBlur}
+            ></TextField>
+            <br />
+            <ErrorMessage
+              name="telefonoVotante2"
+              component={() => (
+                <ErrorField>{errors.telefonoVotante2}</ErrorField>
+              )}
+            />
+            <br />
+            <br />
             <Typography>CORREO ELECTRÓNICO</Typography>
             <TextField
               required
+             
               label=""
               variant="filled"
               name="correoVotante"
@@ -122,15 +214,40 @@ export const FormContacto = ({
                 handleChange(e);
               }}
               onBlur={handleBlur}
+              onPaste={handleChangeD}
             ></TextField>
             <br />
             <ErrorMessage
               name="correoVotante"
               component={() => <ErrorField>{errors.correoVotante}</ErrorField>}
             />
+            <br />
+            <Typography>CONFIRMACIÓN CORREO ELECTRÓNICO</Typography>
+            <TextField
+              required
+              
+              label=""
+              variant="filled"
+              name="correoVotante2"
+              id="correoVotante2"
+              className={styles.textField}
+              value={values.correoVotante2}
+              onChange={(e) => {
+                e.target.value = e.target.value.trim();
+                handleChange(e);
+              }}
+              onBlur={handleBlur}
+              onPaste={handleChangeD}
+            ></TextField>
+            <br />
+            <ErrorMessage
+              name="correoVotante2"
+              component={() => <ErrorField>{errors.correoVotante2}</ErrorField>}
+            />
           </Box>
 
           <br />
+          <ErrorField>{errorsSend}</ErrorField>
           <br />
           <br />
           <Box

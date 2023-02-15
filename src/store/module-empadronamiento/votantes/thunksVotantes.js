@@ -2,45 +2,73 @@ import { envioLinkAPI } from "../../../module-empadronamiento/helpers/FakeAPI";
 import { getStatusEmp } from "../../../module-empadronamiento/helpers/getStatusEmp";
 import { transformDate } from "../../../module-empadronamiento/helpers/transformDate";
 import { getJornadasNoFormalesProvider } from "../../../providers/Micro-NoFormales/providerNoFormales";
-import { sendEmailProvider } from "../../../providers/Micro-TokeEmail/provider";
-import { getVotanteDireccionProvider, getVotantesPorJornadaProvider, postCSVProvider, postVotanteProvider, putVotanteProvider } from "../../../providers/Micro-Votante/providerVotante";
+import { sendEmailMasivoProvider, sendEmailProvider } from "../../../providers/Micro-TokeEmail/provider";
+import { getVotanteDireccionProvider, getVotantesPorJornadaProvider, getVotantesProvider, postCSVProvider, postVotanteJornadaGranelProvider, postVotanteJornadaProvider, postVotanteProvider, putVotanteProvider } from "../../../providers/Micro-Votante/providerVotante";
 import { onToastCheckingOperation, onToastErrorOperation, onToastSuccessOperation } from "../../ui/uiSlice";
-import { onCheckingOperation, onErrorOperation, onSuccessOperation, setVotantes, setVotanteSelected, startLoadingVotantes } from "./empVotantesSlice";
+import { endLoadingVotantes, onCheckingOperation, onErrorOperation, onSuccessOperation, setErrorPost, setVotantes, setVotanteSelected, startLoadingVotantes } from "./empVotantesSlice";
 
 export const uploadCSV = (file, funcion = () => { }) => {
 
     return async (dispatch, getState) => {
 
-        dispatch(onToastCheckingOperation("Subiendo votantes..."));
-        dispatch(onCheckingOperation());
+        // dispatch(onToastCheckingOperation("Subiendo votantes..."));
+        // dispatch(onCheckingOperation());
 
 
         const { ok, data, errorMessage } = await postCSVProvider(file);
         if (ok) {
-            dispatch(onSuccessOperation());
-            dispatch(onToastSuccessOperation({ successMessage: "Los votantes se han subido con éxito" }));
+            // dispatch(onSuccessOperation());
+            // dispatch(onToastSuccessOperation({ successMessage: "Los votantes se han subido con éxito" }));
             setTimeout(() => {
                 funcion();
             }, 800);
 
 
         } else {
-            dispatch(onErrorOperation());
-            dispatch(onToastErrorOperation({ errorMessage: "No se pudo subir el archivo" }));
+            // dispatch(onErrorOperation());
+            // dispatch(onToastErrorOperation({ errorMessage: "No se pudo subir el archivo" }));
         }
+
+        return { ok, data, errorMessage };
 
     }
 }
 
 
-export const postVotante = (info, funcion = () => { }) => {
+export const postVotante = (info) => {
+    return async (dispatch, getState) => {
+
+        // dispatch(onToastCheckingOperation("Subiendo votante..."));
+        // dispatch(onCheckingOperation());
+
+
+        const { mensaje,ok, data, errorMessage } = await postVotanteProvider(info);
+        
+        dispatch(setErrorPost({errorPost:mensaje}));
+        
+        if (ok) {
+            // dispatch(onSuccessOperation());
+            // dispatch(onToastSuccessOperation({ successMessage: "El votante se han subido con éxito" }));
+            // funcion();
+
+        } else {
+            dispatch(onErrorOperation());
+            dispatch(onToastErrorOperation({ errorMessage: "No se pudo subir el votante" }));
+        }
+
+        return { mensaje,ok, data, errorMessage }
+    }
+}
+
+export const postJornadaVotante = (info, funcion = () => { }) => {
+    console.log("postJornadaVotante: ",info)
     return async (dispatch, getState) => {
 
         dispatch(onToastCheckingOperation("Subiendo votante..."));
         dispatch(onCheckingOperation());
 
 
-        const { ok, data, errorMessage } = await postVotanteProvider(info);
+        const { ok, data, errorMessage } = await postVotanteJornadaProvider(info);
         if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onToastSuccessOperation({ successMessage: "El votante se han subido con éxito" }));
@@ -54,6 +82,33 @@ export const postVotante = (info, funcion = () => { }) => {
         } else {
             dispatch(onErrorOperation());
             dispatch(onToastErrorOperation({ errorMessage: "No se pudo subir el votante" }));
+        }
+
+    }
+}
+
+export const postJornadaVotanteGranel = (info, funcion = () => { }) => {
+    console.log("postJornadaVotanteGranel: ",info)
+    return async (dispatch, getState) => {
+
+        dispatch(onToastCheckingOperation("Subiendo votante..."));
+        dispatch(onCheckingOperation());
+
+
+        const { ok, data, errorMessage } = await postVotanteJornadaGranelProvider(info);
+        if (ok) {
+            dispatch(onSuccessOperation());
+            dispatch(onToastSuccessOperation({ successMessage: "Los votantes se han subido con éxito" }));
+
+            getVotantesbyJornada();
+            setTimeout(() => {
+                funcion();
+            }, 800);
+
+
+        } else {
+            dispatch(onErrorOperation());
+            dispatch(onToastErrorOperation({ errorMessage: "No se pudo subir" }));
         }
 
     }
@@ -95,25 +150,48 @@ export const getVotantesbyJornada = (idJornada = "") => {
 
         dispatch(startLoadingVotantes());
         const { ok, data, errorMessage } = await getVotantesPorJornadaProvider(idJornada);
-        if (ok) {
-            dispatch(setVotantes({ votantes: data }));
-        } else {
-            console.log("ocurrio un error")
+        try {
+            if (ok) {
+                if(data.votantes){
+                    dispatch(setVotantes({ votantes: data.votantes}));
+                }
+            } else {
+                console.log("ocurrio un error")
+            dispatch(setVotantes({ votantes: []}))
+            }
+        } catch (error) {
+            dispatch(setVotantes({ votantes: []}))
         }
+        
     }
 }
+
+export const getVotantes = () => {
+
+    return async (dispatch, getState) => {
+        const { ok, data, errorMessage } = await getVotantesProvider();
+        console.log("All votantes:",data)
+        if(!ok){
+            return false;
+        }
+        
+        return data;
+    }
+        
+}
+
 
 
 
 //CAMBIAR LA FAKEAPI POR PROVIDER
 
-export const envioLink = (idJornada = "", funcion = () => { }) => {
+export const envioLink = (datan, funcion = () => { }) => {
     return async (dispatch, getState) => {
         dispatch(onToastCheckingOperation("Eviando enlaces..."));
         dispatch(onCheckingOperation());
 
 
-        const { ok, data, errorMessage } = await envioLinkAPI(idJornada);
+        const { ok, data, errorMessage } = await sendEmailMasivoProvider(datan);
         if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onToastSuccessOperation({ successMessage: "Se han enviado con exito" }));
@@ -164,8 +242,10 @@ export const getVotanteDireccion = (idVotante) => {
         let newData = { ...data.votanteModel, ...data.direccionModel }
         if (ok) {
             dispatch(setVotanteSelected({ votanteSelected: newData }));
+            return data
         } else {
             dispatch(setVotanteSelected({ votanteSelected: null }));
+            return false
         }
     }
 }

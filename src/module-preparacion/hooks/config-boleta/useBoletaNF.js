@@ -20,7 +20,7 @@ export const useBoletaNF = (id) => {
             encabezadoBoleta,
             mostrarCandidaturasNoReg,
             mostrarVotoNulo,
-            modalidad:"PLANILLA",
+            modalidad,
             minOpciones,
             maxOpciones
         }

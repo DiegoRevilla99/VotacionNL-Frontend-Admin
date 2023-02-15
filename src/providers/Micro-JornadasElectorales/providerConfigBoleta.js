@@ -98,48 +98,49 @@ export const postCoalicionProvider = async (idboleta,idcandidato,data) => {
 
 }
 
-export const putCoalicionProvider = async (id,data) => {
-
+export const putCoalicionProvider = async (idBoleta,idCandidato,id,data) => {
+    console.log("data:",data)
+    console.log("id: ",id)
     //ENDPOINT REAL
 
-    /* return JornadaApi.put(`coalicion/${id}`, data).then((response) => {
+    return JornadaApi.put(`coalicionpartidos/${idBoleta}/${idCandidato}/coalicion/${id}`, data).then((response) => {
         console.log(response)
         return { ok: true, data: response.data, errorMessage: "" };
     }).catch((error) => {
         return { ok: false, data: "", errorMessage: error.message };
-    }); */
+    });
 
 
     //ENDPOINT FAKE
-    return putCoalicionAPI().then((response) => {
+    /* return putCoalicionAPI().then((response) => {
 
         return { ok: true, data: response, errorMessage: "" };
     }).catch((error) => {
         return { ok: false, data: "", errorMessage: error.message };
-    });
+    }); */
 
 }
 
 
-export const deleteCoalicionProvider = async (data) => {
-
+export const deleteCoalicionProvider = async (id) => {
+    console.log("id de coali",id)
     //ENDPOINT REAL
 
-    /* return CoalicionApi.delete("").then((response) => {
+    return JornadaApi.delete("coalicion/"+id).then((response) => {
         console.log(response)
         return { ok: true, data: response.data, errorMessage: "" };
     }).catch((error) => {
         return { ok: false, data: "", errorMessage: error.message };
-    }); */
+    });
 
 
     //ENDPOINT FAKE
-    return deleteCoalicionAPI().then((response) => {
+   /*  return deleteCoalicionAPI().then((response) => {
         return { ok: true, data: response, errorMessage: "" };
     }).catch((error) => {
         return { ok: false, data: "", errorMessage: error.message };
     });
-
+ */
 }
 
 

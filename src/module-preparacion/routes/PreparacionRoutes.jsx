@@ -7,6 +7,8 @@ import { AddBoletaJornadaGenerica } from "../pages/AddBoletaJornadaGenerica";
 import { AddPapeleta } from "../pages/AddPapeleta";
 import { ConfiguracionConsulta } from "../pages/ConfiguracionConsulta";
 import { ConfiguracionJornada } from "../pages/ConfiguracionJornada";
+import { ConfiguracionJornadaNF } from "../pages/ConfiguracionJornadaNF";
+import { ConfiguracionJornadaP } from "../pages/ConfiguracionJornadaP";
 import { CrudComite } from "../pages/CrudComite";
 import { CrudConsulta } from "../pages/CrudConsulta";
 import { CrudJornada } from "../pages/CrudJornada";
@@ -51,7 +53,7 @@ export const PreparacionRoutes = () => {
 
 
 				{/* CONFIGURACION NO FORMAL */}
-				<Route path="jornadaNoFormal/config/:id" element={<ConfiguracionJornada />} />
+				<Route path="jornadaNoFormal/config/:id" element={<ConfiguracionJornadaNF />} />
 				<Route path="jornadaNoFormal/configboleta/:id" element={<ConfigBoletaMultiple />} />
 
 				{/* <Route 	path="registroJornadaGenerica" element={<RegistroJornadaElectoralGenerica />}/>
@@ -60,18 +62,18 @@ export const PreparacionRoutes = () => {
 
 				<Route path="jornada/configboleta" element={<ConfigBoletaMultiple />} />
 				<Route path="consulta/config/:idConsulta" element={<ConfiguracionConsulta />} />
-
+				
 
 
 				{/* CONFIGURACION FORMAL */}
-				<Route path="jornada/config/:id" element={<ConfiguracionJornada />} />
+				<Route path="jornada/config/:id" element={<ConfiguracionJornadaP />} />
 				<Route path="jornada/configboleta/:id" element={<ConfigBoleta />} />
 
 
 
 				{/* CONFIGURACION  NO FORMAL */}
-				<Route path="jornadaNoFormal/config" element={<ConfiguracionJornada />} />
-				<Route path="jornadaNoFormal/configboleta/:id" element={<ConfigBoletaMultiple />} />
+				{/* <Route path="jornadaNoFormal/config" element={<ConfiguracionJornada />} /> */}
+				{/* <Route path="jornadaNoFormal/configboleta/:id" element={<ConfigBoletaMultiple />} /> */}
 
 				<Route path="jornada/configboleta" element={<ConfigBoletaMultiple />} />
 				<Route path="consulta/config/:idConsulta" element={<ConfiguracionConsulta />} />

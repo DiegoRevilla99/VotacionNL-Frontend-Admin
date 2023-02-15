@@ -6,11 +6,15 @@ import {
   Switch,
   TextField,
 } from "@mui/material";
-import { Form, Formik } from "formik";
+import { ErrorMessage, Form, Formik } from "formik";
 import * as yup from "yup";
 import { makeStyles } from "@mui/styles";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { putCandVotoNFProvider } from "../../../providers/Micro-NoFormales/providerBoletas";
+import { putCandRegNF, putMaxMinNF } from "../../../store/module-preparacion/configuracion-boletaNF/thunksConfigBoletaNF";
+import { useParams } from "react-router-dom";
+import { ErrorField } from "../ErrorField";
 
 let schema = yup.object().shape({
   max: yup
@@ -41,9 +45,10 @@ export const SeleccionesForm = ({
   maxC,
   cnr,
   vn,
-  onGuardar = () => {},
 }) => {
   const styles = useStyles();
+  const dispatch = useDispatch();
+  const { id } = useParams();
   const [cnrS, setCnrS] = useState(cnr);
   const [vnS, setVnS] = useState(vn);
 
@@ -58,13 +63,30 @@ export const SeleccionesForm = ({
   };
 
   const guardarSubmit = (valores) => {
-    const data = {
-      candidaturaNoRegistrada: cnrS,
-      mostrarVotoNulo: vnS,
-      ...valores,
+    const candRg = {
+      mostrarCandidaturasNoReg: cnrS,
+      mostrarVotoNulo:vnS
+    }
+
+    const maxMin = { 
+      minOpciones: valores.min,
+      maxOpciones: valores.max,
     };
 
-    onGuardar(data);
+    dispatch(putCandRegNF(id,candRg));
+    dispatch(putMaxMinNF(id,maxMin));
+
+    
+  };
+
+  const validando = (values, props) => {
+    // console.log(values.curp);
+    const errors = {};
+    if (values.max<values.min) {
+      errors.max = "El max. de selecciones no puede ser menor al minimo de selecciones";
+    }
+  
+    return errors;
   };
 
   return (
@@ -86,7 +108,9 @@ export const SeleccionesForm = ({
         }}
         // validate={validando}
         validationSchema={schema}
-        onSubmit={guardarSubmit}
+        validate={validando}
+        onSubmit={(values)=>guardarSubmit(values)}
+
       >
         {({ touched, errors, handleBlur, handleChange, values }) => (
           <Form className={styles.fomi}>
@@ -179,6 +203,11 @@ export const SeleccionesForm = ({
                   />
                 </FormGroup>
               </Box>
+              <br />
+            {/* <ErrorMessage
+              name="max"
+              component={() => <ErrorField>{errors.max}</ErrorField>}
+            /> */}
               <Box
                 sx={{
                   display: "flex",

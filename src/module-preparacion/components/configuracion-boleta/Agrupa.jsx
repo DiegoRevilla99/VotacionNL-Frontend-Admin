@@ -25,7 +25,7 @@ const styleButton = {
 // 2=ASOCIACION    1=COALICION
 
 export const Agrupa =
-  ({ tipo = 1, info = {} }) => {
+  ({ tipo = 1, info = {}, actualizar }) => {
   const { coaliciones = [], asociaciones = [] } = info;
   const tipoAgrupacion = tipo == 1 ? "COALICIÓN" : "ASOCIACIÓN";
 
@@ -71,7 +71,7 @@ export const Agrupa =
                 }}
               >
                 {coaliciones.map((coalicion, i) => (
-                  <Coalicion key={i} info={coalicion}></Coalicion>
+                  <Coalicion actualizar={actualizar} key={i} info={coalicion}></Coalicion>
                 ))}
               </Box>
             </Box>

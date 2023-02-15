@@ -1,7 +1,8 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { ErrorMessage, Form, Formik } from "formik";
-import React from "react";
+import { ErrorMessage, Form, Formik, useFormikContext } from "formik";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import * as yup from "yup";
 import { ErrorField } from "../../module-preparacion/components/ErrorField";
 
@@ -65,17 +66,50 @@ const validando = (values, props) => {
 };
 
 
+// autoComplete="off"
 
 export const FormContacto = ({
+  errorsSend="",
   data = {},
   onBack = () => {},
   onNext = () => {},
   backbtn = true,
 }) => {
   const styles = useStyles();
+  const { votanteFound } = useSelector(
+    (state) => state.empVotantesSlice
+  );
   const handleChangeD = (e) => {
     e.preventDefault();
   };
+
+  const SearchV = () => {
+    const {
+      values: {
+       
+      },
+      
+      setFieldValue,
+    } = useFormikContext();
+  
+    useEffect(() => {
+      // setFieldValue("calle", votanteFound?votanteFound.calle:"");
+      if(!data.votanteModel){
+      setFieldValue("correoVotante", votanteFound.find==="si"?votanteFound.correoVotante:"");
+      setFieldValue("telefonoVotante", votanteFound.find==="si"?votanteFound.telefonoVotante:"");
+      setFieldValue("correoVotante2", votanteFound.find==="si"?votanteFound.correoVotante:"");
+      setFieldValue("telefonoVotante2", votanteFound.find==="si"?votanteFound.telefonoVotante:"");
+      }
+      
+      
+    }, [votanteFound]);
+  
+    return (
+      <>
+      </>
+    );
+  };
+
   return (
     <Formik
       initialValues={{
@@ -102,8 +136,9 @@ export const FormContacto = ({
       }}
     >
       {({ touched, errors, handleBlur, handleChange, values }) => (
-        <Form className={styles.fomi}>
+        <Form  autoComplete="off" className={styles.fomi}>
           <Box sx={{ width: "100%" }}>
+            <SearchV/>
             <br />
             <div aling="left">
               <Typography textAlign="center" sx={{ fontWeight: "bold", mb: 3 }}>
@@ -114,6 +149,7 @@ export const FormContacto = ({
             <Typography>NÚMERO TELÉFONICO</Typography>
             <TextField
               required
+              disabled={votanteFound.find==="si"||votanteFound.find===""}
               label=""
               variant="filled"
               name="telefonoVotante"
@@ -139,6 +175,7 @@ export const FormContacto = ({
             <br />
             <Typography>CONFIRMACIÓN NÚMERO TELÉFONICO</Typography>
             <TextField
+            disabled={votanteFound.find==="si"||votanteFound.find===""}
               required
               label=""
               variant="filled"
@@ -165,6 +202,7 @@ export const FormContacto = ({
             <Typography>CORREO ELECTRÓNICO</Typography>
             <TextField
               required
+              disabled={votanteFound.find==="si"||votanteFound.find===""}
               label=""
               variant="filled"
               name="correoVotante"
@@ -187,6 +225,7 @@ export const FormContacto = ({
             <Typography>CONFIRMACIÓN CORREO ELECTRÓNICO</Typography>
             <TextField
               required
+              disabled={votanteFound.find==="si"||votanteFound.find===""}
               label=""
               variant="filled"
               name="correoVotante2"
@@ -208,6 +247,7 @@ export const FormContacto = ({
           </Box>
 
           <br />
+          <ErrorField>{errorsSend}</ErrorField>
           <br />
           <br />
           <Box

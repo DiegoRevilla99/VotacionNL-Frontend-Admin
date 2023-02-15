@@ -1,31 +1,31 @@
-import { Box, Button, Divider, Grid, MenuItem, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Divider, Grid, MenuItem, TextField, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { FielTextCustom } from "../components/FielTextCustom";
-
 // import { ModalEliminarPC } from "../components/ModalEliminarPC";
-import CircularProgress from "@mui/material/CircularProgress";
 import { Formik } from 'formik';
 import { useNavigate, useParams } from "react-router-dom";
 import { object } from "yup";
-import { onCreateBoleta } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
-import { AddAsociacionMod } from "../components/AddAsociacionMod";
+import { onCreateBoleta, onUpdateBoletaData } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
 import { AddCandidatoGenericoMod } from "../components/AddCandidatoGenericoMod";
 import { ModalAsociacionGenerico } from "../components/ModalAsociacionGenerico";
 import { ModalBoletaCandidatoGenerico } from "../components/ModalBoletaCandidatoGenerico";
 import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 
+import { AgrupaAsociacion } from "../components/configuracion-boleta/AgrupaAsociacion";
+
+
 const modalidadNoFormal = [ {
-    value: '1',
+    value: 1,
     label: 'REPRESENTANTE',
   },
   {
-    value: '2',
+    value: 2,
     label: 'COMITÉ',
   },
   {
-    value: '3',
+    value: 3,
     label: 'PLANILLA',
   },
 ];
@@ -60,7 +60,7 @@ export const AddBoletaJornadaGenerica = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const params = useParams();
-
+	
 	const { 
 		status,
 		candidatos,
@@ -69,7 +69,8 @@ export const AddBoletaJornadaGenerica = () => {
 		jornadaNoFormalSelected,
 	} = useJornadaNoFormalStore();
 
-	const [datos, setDatos] = useState({
+	const datos = Object.values(jornadaNoFormalSelected.boletaNoFormalSelected).length === 0 
+	? {
 		encabezado: "",	//Text
 		modalidadVotacion: "",//Text
 		entidadFederativa: "",//Text
@@ -78,7 +79,31 @@ export const AddBoletaJornadaGenerica = () => {
 		cargoPrimerFirmante: "",//Text
 		segundoFirmante: "",//Text
 		cargoSegundoFirmante: "",//Text
-	});
+	}:{
+		encabezado: jornadaNoFormalSelected.boletaNoFormalSelected.encabezado,	//Text
+		modalidadVotacion: jornadaNoFormalSelected.boletaNoFormalSelected.modalidadVotacionModel.modalidadVotacion,//Text
+		entidadFederativa: jornadaNoFormalSelected.boletaNoFormalSelected.entidadFederativa,//Text
+		municipio: jornadaNoFormalSelected.boletaNoFormalSelected.municipio,//Text
+		primerFirmante: jornadaNoFormalSelected.boletaNoFormalSelected.primerFirmante,//Text
+		cargoPrimerFirmante: jornadaNoFormalSelected.boletaNoFormalSelected.cargoPrimerFirmante,//Text
+		segundoFirmante: jornadaNoFormalSelected.boletaNoFormalSelected.segundoFirmante,//Text
+		cargoSegundoFirmante: jornadaNoFormalSelected.boletaNoFormalSelected.cargoSegundoFirmante,//Text
+	}
+
+	const [candidatosS, setCandidatosS] = useState(
+		asociaciones ? asociaciones.candidatos : []
+	);
+	const onSelectCandidato = (candidato) => {
+		console.log("cnadidato: " + candidato);
+		let candi = null;
+		candi = candidatosS.find((c) => c === candidato);
+		if (candi) {
+			setCandidatosS(candidatosS.filter((c) => c !== candidato));
+		} else {
+			setCandidatosS([...candidatosS, candidato]);
+		}
+	};
+
 	const [, forceUpdate] = React.useState();
 	const [statusDeleteCandidatoModal, setStatusDeleteCandidatoModal] = useState(false);
 	const handleCloseDeleteCandidatoModal = () => setStatusDeleteCandidatoModal(false);
@@ -111,14 +136,29 @@ export const AddBoletaJornadaGenerica = () => {
 		navigate("/preparacion/jornada/noFormal/"+params.id);
 	};
 
-	  const onSubmit = (values) => {
-		// navigate("/preparacion/jornada");
-		dispatch(
-			onCreateBoleta( values, params.id, candidatos, asociaciones, ()=>{
-				navigate("/preparacion/jornada/noFormal/"+params.id);
-			})
-		)
-	  };
+	const onSubmit = (values) => {
+		if(Object.values(jornadaNoFormalSelected.boletaNoFormalSelected).length === 0){
+			if(candidatos.length > 0)
+				dispatch(
+					onCreateBoleta( values, params.id, candidatos, asociaciones, ()=>{
+						navigate("/preparacion/jornada/noFormal/"+params.id);
+					})
+				) 
+		}else{
+			dispatch(
+				onUpdateBoletaData( 
+					values, 
+					params.id, 
+					candidatos, 
+					asociaciones, 
+					params.idBoleta,
+					()=>{
+						navigate("/preparacion/jornada/noFormal/"+params.id);
+					}
+				)
+			);
+		}
+	};
 	// INICIO DEL RETURN
 
 	return (
@@ -189,7 +229,7 @@ export const AddBoletaJornadaGenerica = () => {
 							value={values.encabezado}
 							handleChange={handleChange}
 							error={errors.encabezado}
-							touched={touched.encabezado}
+							// touched={touched.encabezado}
 						/>
 							{/* {touched.encabezado && errors.encabezado && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.encabezado}</Typography>} */}
 						</Grid>
@@ -198,12 +238,13 @@ export const AddBoletaJornadaGenerica = () => {
 							<TextField
 								id="filled-select-currency"
 								name="modalidadVotacion"
+								size="small"
 								select
 								disabled={status === "checking"}
 								label="MODALIDAD DE VOTACIÓN"
 								defaultValue="REPRESENTANTE"
 								variant="filled"
-								touched={touched.modalidadVotacion}
+								// touched={touched.modalidadVotacion}
 								error={touched && touched.modalidadVotacion && Boolean(errors.modalidadVotacion)}
 								helperText={touched && touched.modalidadVotacion && errors.modalidadVotacion}
 								sx={{ width: {
@@ -213,7 +254,9 @@ export const AddBoletaJornadaGenerica = () => {
 									lg: "50%",
 									xl: "50%",
 								} }}
+								// value={values.modalidadVotacion}
 								value={values.modalidadVotacion}
+									// CORREGIR ESTA PARTE
 								onChange={(event) => {
 									setValues({
 									...values,
@@ -242,7 +285,7 @@ export const AddBoletaJornadaGenerica = () => {
 								value={values.entidadFederativa}
 								handleChange={handleChange}
 								error={errors.entidadFederativa}
-								touched={touched.entidadFederativa}
+								// touched={touched.entidadFederativa}
 							/>
 							{/* {touched.entidadFederativa && errors.entidadFederativa && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.entidadFederativa}</Typography>} */}
 						</Grid>
@@ -254,7 +297,7 @@ export const AddBoletaJornadaGenerica = () => {
 								value={values.municipio}
 								handleChange={handleChange}
 								error={errors.municipio}
-								touched={touched.municipio}
+								// touched={touched.municipio}
 							/>
 							{/* {touched.municipio && errors.municipio && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.municipio}</Typography>} */}
 						</Grid>
@@ -284,7 +327,7 @@ export const AddBoletaJornadaGenerica = () => {
 								value={values.cargoPrimerFirmante}
 								handleChange={handleChange}
 								error={errors.cargoPrimerFirmante}
-								touched={touched.cargoPrimerFirmante}
+								// touched={touched.cargoPrimerFirmante}
 							/>
 							{/* {touched.cargoPrimerFirmante && errors.cargoPrimerFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.cargoPrimerFirmante}</Typography>} */}
 						</Grid>
@@ -296,7 +339,7 @@ export const AddBoletaJornadaGenerica = () => {
 								value={values.segundoFirmante}
 								handleChange={handleChange}
 								error={errors.segundoFirmante}
-								touched={touched.segundoFirmante}
+								// touched={touched.segundoFirmante}
 							/>
 							{/* {touched.segundoFirmante && errors.segundoFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.segundoFirmante}</Typography>} */}
 						</Grid>
@@ -308,7 +351,7 @@ export const AddBoletaJornadaGenerica = () => {
 								value={values.cargoSegundoFirmante}
 								handleChange={handleChange}
 								error={errors.cargoSegundoFirmante}
-								touched={touched.cargoSegundoFirmante}
+								// touched={touched.cargoSegundoFirmante}
 							/>
 							{/* {touched.cargoSegundoFirmante && errors.cargoSegundoFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.cargoSegundoFirmante}</Typography>} */}
 						</Grid>
@@ -317,13 +360,55 @@ export const AddBoletaJornadaGenerica = () => {
 							handleOpenDeleteCandidatoModal={handleOpenDeleteCandidatoModal}
 							status={status}
 						/> 
-						{values.modalidadVotacion === '3' && 
-						<AddAsociacionMod
-							handleOpenModal={handleOpenRegisterAsociacionModal}
-							handleDeleteAsociacionModal={handleDeleteAsociacionModal}
-							status={status}
-						/> 
-							}
+						{values.modalidadVotacion === 3 && 
+						<>
+						<Box
+							pl={3}
+							width="100%"
+							mt={5}
+						>
+							<Grid item xs={12} md={6} lg={4}>
+								<Button
+									
+									// onClick={abrirCerrarModalAsociacion}
+									onClick={handleOpenRegisterAsociacionModal}
+									variant="contained"
+									size="large"
+									disabled={status === "checking"}
+									sx={{
+										boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+										transition: "all 0.5s ease",
+										backgroundColor: "#511079",
+										width: "100%",
+										borderRadius: "25px 25px 25px 25px",
+										"&:hover": {
+											backgroundColor: "#7E328B !important",
+											transform: "translate(-5px, -5px)",
+											boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+										},
+									}}
+								>
+									AGREGAR ASOCIACIÓN
+								</Button>
+							</Grid>
+							<Box
+							  sx={{
+								display: "flex",
+								width: "100%",
+								alignItems: "center",
+								justifyContent: "center",
+								mt: 3,
+								mb: 2,
+							  }}
+							>
+							</Box>
+							
+							  <AgrupaAsociacion info={{ asociaciones: asociaciones }}></AgrupaAsociacion>
+							
+							</Box>
+
+						  </>
+						}
 					</Grid>
 					<Grid mt={"1rem"} container direction="row" justifyContent="flex-end" spacing={2}>
 						<Grid item xs={12} md={6} lg={3}>

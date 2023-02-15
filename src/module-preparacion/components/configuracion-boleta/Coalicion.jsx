@@ -10,15 +10,17 @@ import "../../../styles/generalContainer.css";
 import { EditCoalicion } from "./EditCoalicion";
 import { useParams } from "react-router-dom";
 import { ModalConfirmation } from "./ModalConfirmation";
-import { deleteCoalicion } from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
+import { deleteCoalicion, getCoaliciones } from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
 import { useDispatch } from "react-redux";
+import { useCoaliciones } from "../../hooks/config-boleta/useCoaliciones";
 
 export const Coalicion = memo(
-  ({ color = "#511079", colorb = "#F8F8F8", info = {} }) => {
+  ({ color = "#511079", colorb = "#F8F8F8", info = {},actualizar }) => {
     const { id } = useParams();
     const dispatch = useDispatch();
 
     const { coalicionModel, partidos, candidatoModel } = info;
+    // const { update } = useCoaliciones(id);
     const [coalicionI, setCoalicionI] = useState(info);
     const [modalCoalicion, setModalCoalicion] = useState(false);
     const [confirmation, setConfirmation] = useState(false);
@@ -29,9 +31,15 @@ export const Coalicion = memo(
     const eliminarbtn = () => {
       abrirCerrarConfirmation();
     };
+    const eliminarafter = () => {
+      console.log("eliminar despues")
+      abrirCerrarConfirmation();
+      actualizar()
+    };
 
     const eliminarCoalicion = () => {
-      dispatch(deleteCoalicion(id, abrirCerrarConfirmation));
+      dispatch(deleteCoalicion(coalicionModel.claveCoalicion,eliminarafter));
+      
     };
 
     const abrirCerrarModalCoalicion = () => {
@@ -103,6 +111,7 @@ export const Coalicion = memo(
         </Box>
 
         <EditCoalicion
+        actualizar={actualizar}
           isOpen={modalCoalicion}
           abrirCerrarModal={abrirCerrarModalCoalicion}
           idBoleta={id}

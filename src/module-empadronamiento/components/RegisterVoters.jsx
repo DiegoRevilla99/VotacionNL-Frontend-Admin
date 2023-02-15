@@ -69,7 +69,7 @@ const registros = {
   height: "calc(100% - 110px)",
 };
 
-export const RegisterVoters = ({ status = "", isLoading, datos }) => {
+export const RegisterVoters = ({ status = "", isLoading, datos,isLoadingVotantes }) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.only("xs"));
   const dispatch = useDispatch();
@@ -81,7 +81,7 @@ export const RegisterVoters = ({ status = "", isLoading, datos }) => {
   const [modalInfoV, setModalInfoV] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [buscador, setBuscador] = useState("");
-  const [dataSearch, setDataSearch] = useState(datos);
+  const [dataSearch, setDataSearch] = useState();
 
   const abrirCerrarModalAddVotante = () => {
     setModalVotante(!modalVotante);
@@ -180,7 +180,7 @@ export const RegisterVoters = ({ status = "", isLoading, datos }) => {
     //   },
     // },
 
-    {
+    /* {
       field: "status",
       headerName: "ESTADO CORREO",
       flex: 3,
@@ -191,7 +191,7 @@ export const RegisterVoters = ({ status = "", isLoading, datos }) => {
         // return <Typography>Envio exitoso</Typography>;
         return <Typography>Envio fallido</Typography>;
       },
-    },
+    } */,
     {
       field: "Acciones",
       headerName: "ACCIONES",
@@ -237,11 +237,16 @@ export const RegisterVoters = ({ status = "", isLoading, datos }) => {
   ];
 
   useEffect(() => {
-    setDataSearch(datos);
+    const newDatos=datos.filter((dato)=>{
+      if(dato) return dato
+    })
+    setDataSearch(newDatos);
+    console.log("datos__:"+newDatos)
   }, [datos]);
 
   return (
     <>
+    
       <Box
         sx={{
           display: "flex",
@@ -396,7 +401,9 @@ export const RegisterVoters = ({ status = "", isLoading, datos }) => {
               id="nombreVotante"
             ></TextField>
           </Box>
+          {
 
+          }
           <GeneralTable
             loading={isLoading}
             data={dataSearch}
@@ -418,6 +425,7 @@ export const RegisterVoters = ({ status = "", isLoading, datos }) => {
         abrirCerrarModal={abrirCerrarModalGranel}
       ></ModalAGranel>
       <ModalLink
+      votantesData={datos}
         isOpen={modalEnlace}
         abrirCerrarModal={abrirCerrarModalEnlace}
       />

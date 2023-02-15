@@ -10,9 +10,12 @@ import {
     onToastSuccessOperation,
 } from "../../ui/uiSlice";
 
-import { getBoletaProvider } from "../../../providers/Micro-NoFormales/providerBoletas";
+import { getBoletaProvider, putCandVotoNFProvider, putMaxMinNFProvider } from "../../../providers/Micro-NoFormales/providerBoletas";
 import { endLoadingBoleta, onCheckingOperation, onErrorOperation, onSuccessOperation, setAsociaciones, setBoleta, setCandidatos, startLoadingAsociaciones, startLoadingBoleta, startLoadingCandidatos } from "./configBoletaNFSlice";
 import { getCandidatosProviderNF } from "../../../providers/Micro-NoFormales/providerCandidatos";
+import { getConfigEleccionNFProvider } from "../../../providers/Micro-NoFormales/providerConfiguracion";
+import { setConfigJornada } from "../configuracion-jornada/configJornadaSlice";
+
 
 
 
@@ -32,6 +35,59 @@ export const getBoletaNF = (idBoleta) => {
     }
 }
 
+//EDIT cand y voto nullo
+export const putMaxMinNF = (idBoleta,datasend,funcion=()=>{}) => {
+    console.log("entre MaxMinNF")
+    return async (dispatch, getState) => {
+        dispatch(onToastCheckingOperation("Editando..."));
+        dispatch(onCheckingOperation());
+        // dispatch(startLoadingBoleta());
+        const { ok, data, errorMessage } = await putMaxMinNFProvider(idBoleta,datasend);
+
+        if (ok) {
+            dispatch(onSuccessOperation());
+            dispatch(onToastSuccessOperation({ successMessage: "Se  actualizó" }));
+            funcion();
+        } else {
+            dispatch(onErrorOperation());
+            dispatch(onToastErrorOperation({ errorMessage: "No se actualizó" }));
+        }
+
+    }
+}
+
+export const putCandRegNF = (idBoleta,datasend,error=()=>{}) => {
+    console.log("putCandRegNF")
+    return async (dispatch, getState) => {
+        dispatch(onToastCheckingOperation("Editando..."));
+        dispatch(onCheckingOperation());
+        // dispatch(startLoadingBoleta());
+        const { ok, data, errorMessage } = await putCandVotoNFProvider(idBoleta,datasend);
+
+        if (ok) {
+            dispatch(onSuccessOperation());
+            dispatch(onToastSuccessOperation({ successMessage: "Se  actualizó" }));
+            
+        } else {
+            error();
+            dispatch(onErrorOperation());
+            dispatch(onToastErrorOperation({ errorMessage: "No se actualizó" }));
+        }
+
+    }
+}
+
+export const postAsociacion = (idBoleta,datasend,error=()=>{}) => {
+   
+}
+
+export const getAsociaciones = (idBoleta,datasend,error=()=>{}) => {
+   
+}
+
+export const putPlanilla = (idBoleta,datasend,error=()=>{}) => {
+   
+}
 
 
 export const getCandidatosNF = (idBoleta) => {
@@ -46,98 +102,18 @@ export const getCandidatosNF = (idBoleta) => {
 }
 
 
-/** 
-* TODO: Por REFACTORIZAR
-*/
-export const putComite = (data, funcion = () => { }) => {
 
+export const getConfigJornadaNF = (idJornada) => {
     return async (dispatch, getState) => {
-
-
-        dispatch(onToastCheckingOperation("Guardando configuración del comite..."));
-        dispatch(onCheckingOperation());
-        const response = await putComiteAPI(data);
-
-        if (response) {
-            dispatch(onSuccessOperation());
-            dispatch(onToastSuccessOperation({ successMessage: "Comite actualizado con exito con éxito" }));
-            funcion();
-
-        } else {
-            dispatch(onErrorOperation());
-            dispatch(onToastErrorOperation({ errorMessage: "El comite no se pudo actualizar" }));
+        dispatch(startLoadingConfigJornada());
+        const { ok,data,errorMessage}= await getConfigEleccionNFProvider(idJornada);
+        if(ok){
+            dispatch(setConfigJornada({ configJornada: data }));
         }
-
+        
     }
 }
 
 
 
-
-
-//---------ASOCIACIONES---------
-
-/** 
-* TODO: Separar el codigo con el provider  
-*/
-export const postAsociacion = (data, funcion) => {
-
-    return async (dispatch, getState) => {
-
-        dispatch(onToastCheckingOperation("Guardando Asociacion..."));
-        dispatch(onCheckingOperation());
-
-        const response = await postAsociacionAPI(data);
-
-
-
-        if (response) {
-            dispatch(onSuccessOperation());
-            dispatch(onToastSuccessOperation({ successMessage: "Asociacion guardada con éxito" }));
-            funcion();
-
-        } else {
-            dispatch(onErrorOperation());
-            dispatch(onToastErrorOperation({ errorMessage: "La Asociacion no se pudo guardar" }));
-        }
-    }
-}
-
-/** 
-* TODO: Separar el codigo con el provider  
-*/
-export const getAsociaciones = () => {
-
-    return async (dispatch, getState) => {
-        dispatch(startLoadingAsociaciones());
-        const asociaciones = await getAsociacionesAPI();
-        dispatch(setAsociaciones({ asociaciones: asociaciones }));
-    }
-}
-
-
-/** 
-* TODO: Por REFACTORIZAR
-*/
-export const putPlanilla = (data, funcion = () => { }) => {
-
-    return async (dispatch, getState) => {
-
-
-        dispatch(onToastCheckingOperation("Guardando configuración de planilla..."));
-        dispatch(onCheckingOperation());
-        const response = await putPlanillaAPI(data);
-
-        if (response) {
-            dispatch(onSuccessOperation());
-            dispatch(onToastSuccessOperation({ successMessage: "Planilla actualizada con exito con éxito" }));
-            funcion();
-
-        } else {
-            dispatch(onErrorOperation());
-            dispatch(onToastErrorOperation({ errorMessage: "La planilla no se pudo actualizar" }));
-        }
-
-    }
-} 
 

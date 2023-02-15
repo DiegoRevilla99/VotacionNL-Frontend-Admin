@@ -11,7 +11,7 @@ export const useCandidatos = (id) => {
 
 
     useEffect(() => {
-        console.log("useCandiatos")
+        // console.log("useCandiatos")
         dispatch(getCandidatos(id));
     }, []);
 

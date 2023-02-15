@@ -8,12 +8,18 @@ export const AddCoalicion = memo(({
   isOpen = false,
   abrirCerrarModal = () => {},
   idBoleta = null,
+  actualizar,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const enviar = (idboleta,idcandidato,data) => {
-    dispatch(postCoalición(idboleta,idcandidato,data, abrirCerrarModal));
+    dispatch(postCoalición(idboleta,idcandidato,data,aftersend));
   };
+
+  const aftersend=()=>{
+    actualizar()
+    abrirCerrarModal()
+  }
 
   useEffect(() => {
     console.log("desdeAdd")

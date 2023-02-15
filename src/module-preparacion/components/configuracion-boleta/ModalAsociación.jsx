@@ -114,6 +114,7 @@ export const ModalAsociacion = ({
     setCandidatosS({});
     setLogo({ name: "Sin Archivo seleccionado" });
   };
+  
   useEffect(() => {
     console.log("ME estoy renderizando en Modal Asociacion jornada");
     dispatch(getCandidatosNF(id));

@@ -10,11 +10,10 @@ import {
   Typography
 } from "@mui/material";
 import { Stack } from "@mui/system";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  onDeleteBoleta,
   onGetBoletaData,
   onGetBoletas
 } from "../../store/module-preparacion/jornada/ThunksJornada";
@@ -24,9 +23,42 @@ import { useJornadaStore } from "../hooks/useJornadaStore";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useParams } from "react-router-dom";
 
+// ----------- Bradcrumbs ----------
+// import { experimentalStyled as styled } from '@mui/material/styles';
+import AllInboxIcon from '@mui/icons-material/AllInbox';
+import HomeIcon from '@mui/icons-material/Home';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Chip from '@mui/material/Chip';
+import { emphasize, styled } from '@mui/material/styles';
+import { ModalEliminarBoletaFormal } from "../components/ModalEliminarBoletaFormal";
+const StyledBreadcrumb = styled(Chip)(({ theme }) => {
+    const backgroundColor =
+      theme.palette.mode === 'light'
+        ? theme.palette.grey[300]
+        : theme.palette.grey[800];
+    return {
+      backgroundColor,
+      height: theme.spacing(3),
+      color: theme.palette.text.primary,
+	  fontSize: "1.1rem", // Agrega esta línea
+      fontWeight: theme.typography.fontWeightRegular,
+      '&:hover, &:focus': {
+        backgroundColor: emphasize(backgroundColor, 0.06),
+      },
+      '&:active': {
+        boxShadow: theme.shadows[1],
+        backgroundColor: emphasize(backgroundColor, 0.12),
+      },
+    };
+  }); // TypeScript only: need a type cast here because https://github.com/Microsoft/TypeScript/issues/26591
+// ----------- Bradcrumbs ----------
+
+
 export const CrudJornada = () => {
   const navigate = useNavigate();
-
+	const [modalDeleteStatus, setModalDeleteStatus] = useState(false);
+  const [idBoleta, setIdBoleta] = useState(null);
+	const [encabezadoBoleta, setNombreBoleta] = useState(null);
   // ToDo:AQUI OBTENGAN LAS VARIABLES STATUS Y DATA DE SUS ESTADOS GLOBALES
   const { jornadaSelected, status } = useJornadaStore();
   const params = useParams();
@@ -35,11 +67,11 @@ export const CrudJornada = () => {
     // field: Debe de ir la variable que se va a mostrar en la tabla
     {
       field: "nombreEleccion",
-      headerName: "Título de la boleta formal",
+      headerName: "TÍTULO DE LA BOLETA",
       flex: 10,
     },
     {
-      field: "configuracion",
+      field: "CONFIGURACIÓN",
       headerName: "Configuración",
       flex: 5,
       sortable: false,
@@ -59,11 +91,11 @@ export const CrudJornada = () => {
               startIcon={<SettingsIcon />}
               onClick={() => handleConfig(params.id)}
             >
-              Configuración
+              Coaliciones
             </Button>
             <IconButton
               sx={{ color: "#511079" }}
-              onClick={() => handleDelete(params.id)}
+              onClick={() => handleDelete(params.id, params.row.nombreEleccion)}
             >
               <DeleteIcon />
             </IconButton>
@@ -79,12 +111,16 @@ export const CrudJornada = () => {
   }, []);
 
   // METODO PARA BORRAR UN REGISTRO
-  const handleDelete = (id) => {
-    dispatch(onDeleteBoleta(id));
+  const handleDelete = (id, title) => {
+    setIdBoleta(id);
+		setNombreBoleta(title);
+    openModalDelete();
+    // dispatch(onDeleteBoleta(id));
   };
 
   // MÉTODO PARA EDITAR UN REGISTRO
   const handleEdit = (id) => {
+    console.log("id boleta", id);
     dispatch(
       onGetBoletaData(id, () => {
         navigate("/preparacion/jornada/" + params.id + "/boleta/" + id);
@@ -107,7 +143,14 @@ export const CrudJornada = () => {
         jornadaSelected.boletas.length
     );
   };
+  const closeModalDelete = () => {
+		setModalDeleteStatus(false);
+	};
 
+	const openModalDelete = () => {
+		setModalDeleteStatus(true);
+	};
+  
   if (status === "checking")
     return (
       <Box sx={{ width: "100%" }}>
@@ -125,6 +168,31 @@ export const CrudJornada = () => {
         }}
       >
         <Grid item xs={12} sx={{ display: "flex", flexDirection: "column" }}>
+
+        <Box align="center" display="flex" justifyContent="center" mt={2.5} mb={1}>
+						<Breadcrumbs aria-label="breadcrumb">
+							<StyledBreadcrumb
+								component="a"
+								href="/preparacion/inicio"
+								label="INICIO"
+								icon={<HomeIcon fontSize="medium" />}
+								/>
+							<StyledBreadcrumb 
+								component="a"
+								href="/preparacion/registroJornadaFormal"
+								icon={<AllInboxIcon fontSize="medium" />}
+								label="JORNADAS" 
+							/>
+							<StyledBreadcrumb 
+								component="a"
+								// href="/verificacion/visualizacion/boleta"
+								icon={<BallotIcon fontSize="medium" />}
+								// label="BOLETAS" 
+								label= "BOLETAS"
+							/>
+						</Breadcrumbs>
+					</Box>
+          
           <Box sx={{ m: "0.5rem", ml: "2rem" }}>
             <Typography variant="h6" align="left" color="initial">
               {jornadaSelected.title}
@@ -159,7 +227,7 @@ export const CrudJornada = () => {
                     },
                   }}
                 >
-                  Registrar Boleta Formal
+                  REGISTRAR BOLETA
                 </Button>
               </Grid>
             </Grid>
@@ -177,8 +245,8 @@ export const CrudJornada = () => {
                 pt: "1rem",
               }}
             >
-              <Typography variant="h5" color="initial" mb="0.5rem">
-                Boletas Formales
+              <Typography variant="h5" color="initial" mb="0.5rem" align="center">
+                BOLETAS
               </Typography>
               <Divider />
               <Box
@@ -201,6 +269,13 @@ export const CrudJornada = () => {
             </Box>
           </Box>
         </Grid>
+        <ModalEliminarBoletaFormal 
+					modalDeleteStatus={modalDeleteStatus} 
+					closeModalDelete={closeModalDelete} 
+					idBoleta={idBoleta}
+					encabezadoBoleta={encabezadoBoleta}
+				/>	
       </Grid>
+      
     );
 };

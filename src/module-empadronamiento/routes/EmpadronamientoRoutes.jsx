@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { PrivateRoute } from "../../router/PrivateRoute";
@@ -12,7 +13,8 @@ import { JornadasNoFormales } from "../pages/no-formales/JornadasNoFormales";
 
 export const EmpadronamientoRoutes = () => {
   return (
-    <PrivateRoute>
+    
+  <PrivateRoute>
       <Routes>
         <Route path="/" element={<InicioPage></InicioPage>} />
         <Route path="formal" element={<JornadasFormales />} />
@@ -25,5 +27,7 @@ export const EmpadronamientoRoutes = () => {
         <Route path="/*" element={<Navigate to="/empadronamiento/" />} />
       </Routes>
     </PrivateRoute>
+    
+    
   );
 };

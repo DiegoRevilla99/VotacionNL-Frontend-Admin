@@ -63,15 +63,13 @@ export const EmpadronamientoC = () => {
           </Stack>
         ) : (
           <Box sx={{ pl: 2, pr: 2, mt: 0, width: "100%", height: "100%" }}>
-            {votantes ? (
+           
               <RegisterVoters
                 status={eleccion.status}
                 isLoading={isLoadingVotantes}
                 datos={votantes}
               ></RegisterVoters>
-            ) : (
-              <Typography>...</Typography>
-            )}
+            
           </Box>
         )}
       </Box>

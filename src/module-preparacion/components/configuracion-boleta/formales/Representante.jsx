@@ -22,6 +22,7 @@ import { AddCoalicion } from "../AddCoalicion";
 import { useCoaliciones } from "../../../hooks/config-boleta/useCoaliciones";
 import { useBoleta } from "../../../hooks/config-boleta/useBoleta";
 import { EditCoalicion } from "../EditCoalicion";
+import { getCandidatos, getCoaliciones } from "../../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
 
 const useStyles = makeStyles({
   hr: {
@@ -60,7 +61,9 @@ const boxOpciones = {
   mb: 5,
 };
 
-export const Representante = memo(({boletaInfo}) => {
+export const Representante = memo(({boletaInfo,updateCand}) => {
+  const dispatch = useDispatch();
+  
   const styles = useStyles();
   const { id } = useParams();
 
@@ -90,6 +93,14 @@ export const Representante = memo(({boletaInfo}) => {
   const handleChangeVoto = (event) => {
     setVn(event.target.checked);
   };
+
+  const actualizar=()=>{
+    console.log("actualizando las coaliciones ddd")
+    dispatch(getCoaliciones(id));
+    updateCand()
+    // dispatch(getCandidatos(id));
+    
+  }
 
   return (
     <>
@@ -137,7 +148,7 @@ export const Representante = memo(({boletaInfo}) => {
             Agregar coalición
           </Button>
           :
-          <Typography sx={{color:"#09AD29"}}>¡Todas las coaliciones estan listas!</Typography>
+          <Typography sx={{color:"#09AD29"}}>¡No se permiten más coaliciones!</Typography>
           }
           
         </Box>
@@ -152,7 +163,7 @@ export const Representante = memo(({boletaInfo}) => {
             <CircularProgress color="primary" />
           </Stack>
         ) : (
-          <Agrupa info={{ coaliciones: coaliciones }} tipo={1}></Agrupa>
+          <Agrupa actualizar={actualizar} info={{ coaliciones: coaliciones }} tipo={1}></Agrupa>
         )}
 
         <Box sx={botones}>
@@ -164,7 +175,7 @@ export const Representante = memo(({boletaInfo}) => {
               justifyContent: "start",
             }}
           >
-            <Button
+            {/* <Button
               type="submit"
               className={styles.boton}
               variant="contained"
@@ -176,12 +187,13 @@ export const Representante = memo(({boletaInfo}) => {
             >
               <ReplyAllIcon />
               Regresar
-            </Button>
+            </Button> */}
           </Box>
         </Box>
       </Stack>
 
       <AddCoalicion
+      actualizar={actualizar}
         isOpen={modalCoalicion}
         abrirCerrarModal={abrirCerrarModalCoalicion}
         idBoleta={id}

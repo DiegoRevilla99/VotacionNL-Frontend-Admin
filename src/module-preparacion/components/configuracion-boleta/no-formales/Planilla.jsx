@@ -109,10 +109,10 @@ export const Planilla = ({ boletaInfo, changeCandNoReg }) => {
           ></SeleccionesForm>
         </Box>
 
-        <hr className={styles.hr} />
-        <Typography sx={{ mt: 3, fontWeight: "bold" }}>ASOCIACIONES</Typography>
+        {/* <hr className={styles.hr} /> */}
+        {/* <Typography sx={{ mt: 3, fontWeight: "bold" }}>ASOCIACIONES</Typography> */}
 
-        <Box
+        {/* <Box
           sx={{
             display: "flex",
             width: "100%",
@@ -147,7 +147,7 @@ export const Planilla = ({ boletaInfo, changeCandNoReg }) => {
           </Stack>
         ) : (
           <Agrupa info={{ asociaciones: asociaciones }} tipo={2}></Agrupa>
-        )}
+        )} */}
 
         <Box sx={botones}>
           <Box

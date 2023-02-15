@@ -26,8 +26,11 @@ import { FormDireccion } from "./FormDireccion";
 import { FormContacto } from "./FormContacto";
 import {
   getVotantesbyJornada,
+  postJornadaVotante,
   postVotante,
 } from "../../store/module-empadronamiento/votantes/thunksVotantes";
+import { useParams } from "react-router-dom";
+import { setVotanteFound } from "../../store/module-empadronamiento/votantes/empVotantesSlice";
 
 const useStyles = makeStyles({
   textField: {
@@ -77,11 +80,16 @@ export const ModalVotante = ({
   votante = null,
 }) => {
   const styles = useStyles();
+  const { id } = useParams();
   const dispatch = useDispatch();
   const [data, setData] = useState({});
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
-
+  const [errorSend, setErrorSend] = useState("");
+  const { votanteFound } = useSelector(
+    (state) => state.empVotantesSlice
+  );
+  
   const isStepOptional = (step) => {
     return step === 5;
   };
@@ -105,7 +113,14 @@ export const ModalVotante = ({
     handleNext();
   };
 
-  const finalizar = (valores) => {
+  const addVotante=async(datos)=>{
+    console.log("***Entre a addVotante*****")
+    console.log(datos)
+    return dispatch(postVotante(datos));
+
+  }
+
+  const finalizar = async(valores) => {
     console.log("Finalizando");
     console.log(valores);
     const contac = valores.contacto;
@@ -114,8 +129,26 @@ export const ModalVotante = ({
       ...data,
       votanteModel: { ...data.votanteModel, ...contac },
     };
-    dispatch(postVotante(datos, AddVotanteNext));
+    const dataRelation={
+      idJornada:id,
+      votanteModel:{
+        curp: datos.votanteModel.curp,
+        
+      }
+    }
+    const resp=await addVotante(datos)
+    console.log("_________________________________",resp)
+    console.log("Erros Post:",resp)
+    if(resp.mensaje!=="El correo proporcionado ya fue registrado"&& resp.mensaje!=="El teléfono proporcionado ya fue registrado"){
+      await AddVotanteNext(dataRelation)
+    }else{
+      setErrorSend(resp.mensaje)
+    }
+    
   };
+
+  
+
 
   const handleNext = () => {
     let newSkipped = skipped;
@@ -129,7 +162,7 @@ export const ModalVotante = ({
   };
 
   const handleBack = () => {
-    console.log("en atras");
+    
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -156,20 +189,37 @@ export const ModalVotante = ({
     abrirCerrarModal();
   };
 
-  const AddVotanteNext = () => {
-    dispatch(getVotantesbyJornada());
+  const AddVotanteNext = async(data) => {
+    console.log("*****asociandoo votante jornad:**** ",data)
+    dispatch(postJornadaVotante(data,AddVotanteNextFinal))
+  };
+
+  const AddVotanteNextFinal = (data) => {
+    console.log("proceso terminado")
+    dispatch(getVotantesbyJornada(id));
     abrirCerrarModal();
     setActiveStep(0);
-    setData({});
+    // setData({});
   };
 
   useEffect(() => {}, []);
+  
 
-  useEffect(() => {}, [isOpen]);
+const limpiar=()=>{
+  setData({})
+}
+
+  useEffect(() => {
+    setErrorSend("")
+    dispatch(setVotanteFound({votanteFound:{find:""}}))
+    setData({})
+    setActiveStep(0)
+  }, [isOpen]);
 
   const body = (
     <Box sx={modalResponsive}>
       <Box className={styles.fomi}>
+
         <Stepper
           sx={{
             width: "100%",
@@ -205,12 +255,13 @@ export const ModalVotante = ({
         height="100%"
         sx={{ display: activeStep == 0 ? "flex" : "none" }}
       >
-        <FormInfo data={data} onNext={completarPaso}></FormInfo>
+        <FormInfo limpiar={limpiar} data={data} onNext={completarPaso}></FormInfo>
       </Box>
 
       <Box width="100%" sx={{ display: activeStep == 1 ? "flex" : "none" }}>
         <FormDireccion
           data={data}
+          limpiar={limpiar}
           onBack={handleBack}
           onNext={completarPaso}
         ></FormDireccion>
@@ -218,7 +269,9 @@ export const ModalVotante = ({
 
       <Box width="100%" sx={{ display: activeStep == 2 ? "flex" : "none" }}>
         <FormContacto
+         errorsSend={errorSend}
           data={data}
+          limpiar={limpiar}
           onBack={handleBack}
           onNext={finalizar}
         ></FormContacto>

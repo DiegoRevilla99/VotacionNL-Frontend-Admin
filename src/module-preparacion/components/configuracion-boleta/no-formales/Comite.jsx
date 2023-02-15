@@ -18,13 +18,8 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
-import { PlantillaHeader } from "../../../layout/PlantillaHeader";
-import { Agrupa } from "../Agrupa";
-import { AddCoalicion } from "../AddCoalicion";
-import { useCoaliciones } from "../../../hooks/config-boleta/useCoaliciones";
-import { useBoleta } from "../../../hooks/config-boleta/useBoleta";
 import { SeleccionesForm } from "../SeleccionesForm";
-import { putComite } from "../../../../store/module-preparacion/configuracion-boletaNF/thunksConfigBoletaNF";
+
 
 
 const useStyles = makeStyles({
@@ -66,7 +61,7 @@ const boxOpciones = {
 
 export const Comite = ({ boletaInfo }) => {
   const styles = useStyles();
-  const dispatch = useDispatch();
+  
   const { id } = useParams();
   const [cnr, setCnr] = useState(false);
   const [vn, setVn] = useState(false);
@@ -75,11 +70,7 @@ export const Comite = ({ boletaInfo }) => {
     setModalCoalicion(!modalCoalicion);
   };
 
-  const guardarOpciones = (data) => {
-    const newData = { idBoleta: id, modalida: data };
-    console.log(newData);
-    dispatch(putComite(newData));
-  };
+ 
 
   return (
     <>
@@ -106,7 +97,6 @@ export const Comite = ({ boletaInfo }) => {
             maxC={boletaInfo.maxOpciones}
             cnr={boletaInfo.mostrarCandidaturasNoReg}
             vn={boletaInfo.mostrarVotoNulo}
-            onGuardar={guardarOpciones}
           ></SeleccionesForm>
         </Box>
         <Box sx={botones}>

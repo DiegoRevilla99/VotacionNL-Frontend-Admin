@@ -19,15 +19,16 @@ export const InicioPage = () => {
   };
   return (
     <>
-      <div>
+    <Box sx={{mt:3}} width={"100%"}>
+    <div >
         <Box ml={3}>
-          <h3>EMPADRONAMIENTO</h3>
+          {/* <h3>EMPADRONAMIENTO</h3> */}
         </Box>
-        <hr />
+        
       </div>
 
       <div align="center">
-        <Box mt={3}>
+        <Box  width={"100%"} mt={5}>
           <Box
             p={6}
             sx={{
@@ -154,6 +155,8 @@ export const InicioPage = () => {
           </Box>
         </Box>
       </div>
+    </Box>
+      
     </>
   );
 };
