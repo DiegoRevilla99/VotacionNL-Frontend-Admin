@@ -89,7 +89,7 @@ export const onGetBoletas = (idJornada, navigate = () => {}) => {
 	return async (dispatch) => {
 		dispatch(onCheckingOperation());
 		const { ok, data } = await getBoletasJornada(idJornada); // PROVIDER
-		console.log("info de la peticion",data);
+		// console.log("info de la peticion",data);
 		if (ok) {
 			dispatch(onSuccessOperation());
 			dispatch(onSetBoletasSelectedNull());
@@ -128,14 +128,10 @@ export const onCreateBoleta = (
 	idJornada,
 	candidatoandSuplentes,
 	partidos,
+	onBoletaCreated,
 	navigate = () => {}
 ) => {
 	return async (dispatch) => {
-		console.log("dataaaaaa",data);
-		console.log("idJornada",idJornada);
-		console.log("partidos",partidos);
-		// console.log("dataaaaaa",data);
-
 		dispatch(onCheckingOperation());
 		dispatch(onToastCheckingOperation("Guardando boleta..."));
 		const { ok, idEstructuraBoleta } = await createBoletaFormal(
@@ -144,11 +140,12 @@ export const onCreateBoleta = (
 			candidatoandSuplentes,
 			partidos
 		); // PROVIDER
-
+		console.log("ide del back",idEstructuraBoleta);
 		if (ok) {
 			dispatch(onSuccessOperation());
 			dispatch(onToastSuccessOperation({ successMessage: "Boleta creada con éxito" }));
 			dispatch(onAddBoleta({ idEstructuraBoleta, encabezado: data.nombreCandidatura})); // SLICE
+			onBoletaCreated(idEstructuraBoleta); // ejecutar la función de devolución de llamada con el idEstructuraBoleta como argumento
 			navigate();
 		} else {
 			dispatch(onErrorOperation());

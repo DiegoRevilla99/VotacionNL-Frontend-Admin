@@ -67,32 +67,46 @@ export const SliceJornada = createSlice({
 			});
 		},
 		onAddPartido: (state, { payload }) => {
-			payload.forEach(partido => {
-			  state.partidos.push({
-				id: partido.id,
-				clavePartido: partido.clavePartido,
-				nameParty: partido.nameParty,
-				siglasParty: partido.siglasParty,
-				emblemParty: partido.emblemParty,
-				fotografiaParty: partido.fotografiaParty,
-				statusParty: partido.statusParty,
-				candidatosPartido: partido.candidatosPartido || [], // Agregar un arreglo vacío por defecto si no hay candidatos
+			if (Array.isArray(payload)) {
+			  payload.forEach(partido => {
+				state.partidos.push({
+				  id: partido.id,
+				  clavePartido: partido.clavePartido,
+				  nameParty: partido.nameParty,
+				  siglasParty: partido.siglasParty,
+				  emblemParty: partido.emblemParty,
+				  fotografiaParty: partido.fotografiaParty,
+				  statusParty: partido.statusParty,
+				  candidatosPartido: partido.candidatosPartido || [], // Agregar un arreglo vacío por defecto si no hay candidatos
+				});
 			  });
-			});
+			} else {
+			  state.partidos.push({
+				id: payload?.id,
+				clavePartido: payload?.clavePartido,
+				nameParty: payload?.nameParty,
+				siglasParty: payload?.siglasParty,
+				emblemParty: payload?.emblemParty,
+				fotografiaParty: payload?.fotografiaParty,
+				statusParty: payload?.statusParty,
+				candidatosPartido: payload?.candidatosPartido || [], // Agregar un arreglo vacío por defecto si no hay candidatos
+			  });
+			}
 		  },
+		  
 		// Este cambio se tuvo que hacer para que jale lo del back
 		// onAddPartido: (state, { payload }) => {
 			// 	console.log(" payload en SLICE", payload);
-		// 	state.partidos.push({
-		// 		id: payload?.id,
-		// 		clavePartido: payload?.clavePartido,
-		// 		nameParty: payload?.nameParty,
-		// 		siglasParty: payload?.siglasParty,
-		// 		emblemParty: payload?.emblemParty,
-		// 		fotografiaParty: payload?.fotografiaParty,
-		// 		statusParty: payload?.statusParty,
-		// 		candidatosPartido: payload?.candidatosPartido || [], // Agregar un arreglo vacío por defecto si no hay candidatos
-		// 	});
+			// state.partidos.push({
+			// 	id: payload?.id,
+			// 	clavePartido: payload?.clavePartido,
+			// 	nameParty: payload?.nameParty,
+			// 	siglasParty: payload?.siglasParty,
+			// 	emblemParty: payload?.emblemParty,
+			// 	fotografiaParty: payload?.fotografiaParty,
+			// 	statusParty: payload?.statusParty,
+			// 	candidatosPartido: payload?.candidatosPartido || [], // Agregar un arreglo vacío por defecto si no hay candidatos
+			// });
 		// 	console.log("state.partidos en SLICE", state.partidos[0]);
 		// },
 		

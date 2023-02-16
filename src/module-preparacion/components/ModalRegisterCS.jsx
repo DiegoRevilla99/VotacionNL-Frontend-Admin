@@ -182,10 +182,15 @@ const validationSchema = object({
 		).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
 		fechaNacimientoCandidatos: date()
 			.required("Por favor, ingresa la fecha de nacimiento del candidato")
-			.max(new Date(new Date().setFullYear(new Date().getFullYear() - 18)), "Debes ser mayor de 18 años"),
+			.max(new Date(new Date().setFullYear(new Date().getFullYear() - 21)), "Debes ser mayor de 21 años"),
 		generoCandidato: string("").required("Por favor, selecciona el género"),
+		claveElectoralCandidato: string("").required(
+			"Por favor, ingresa LA CURP del candidato/a"
+			).matches(/^[0-9a-zA-ZÀ-ÿ\s]{17,18}$/, "Solo se permiten letras y espacios, el máximo es 18 caracteres"),
 	// Datos del suplente
-
+	claveElectoralSuplente: string("").required(
+		"Por favor, ingresa LA CURP del candidato/a"
+		).matches(/^[0-9a-zA-ZÀ-ÿ\s]{17,18}$/, "Solo se permiten letras y espacios, el máximo es 18 caracteres"),
 	apellidoPSuplente: string("").required(
 		"Por favor, ingresa el apellido paterno del Suplente"
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
@@ -200,7 +205,7 @@ const validationSchema = object({
 		).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
 		fechaNacimientoSuplentes: date()
 		.required("Por favor, ingresa la fecha de nacimiento del Suplente")
-		.max(new Date(new Date().setFullYear(new Date().getFullYear() - 18)), "Debes ser mayor de 18 años"),
+		.max(new Date(new Date().setFullYear(new Date().getFullYear() - 21)), "Debes ser mayor de 21 años"), // el minimo para diputado
 		generoSuplente: string("").required("Por favor, selecciona el género"),
 });
 export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
@@ -418,7 +423,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		const errors = {};
 
 		if (!validationCurp.test(values.claveElectoralCandidato.toUpperCase())) {
-		  errors.claveElectoralCandidato = "Esta clave Electoral no es valida";
+		  errors.claveElectoralCandidato = "Esta CURP no es valida";
 		}
 	  if(validationCurp.test(values.claveElectoralCandidato.toUpperCase())&& values.nombreCandidato.trim().length>0){
 		  if(errorNombreCFuntion(values.nombreCandidato.trim().toUpperCase(),values.claveElectoralCandidato.charAt(15))){
@@ -452,7 +457,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		// ** SUPLENTE
 
 		if (!validationCurp.test(values.claveElectoralSuplente.toUpperCase())) {
-			errors.claveElectoralSuplente = "Esta clave Electoral no es valida";
+			errors.claveElectoralSuplente = "Esta CURP no es valida";
 		  }
 		if(validationCurp.test(values.claveElectoralSuplente.toUpperCase())&& values.nombreSuplente.trim().length>0){
 			if(errorNombreCFuntion(values.nombreSuplente.trim().toUpperCase(),values.claveElectoralSuplente.charAt(15))){
