@@ -130,15 +130,18 @@ export const AddBoletaJornada = () => {
 	
 	const onSubmit = (values) => {
 	  if(Object.values(jornadaSelected.boletaSelected).length === 0){
-		if(candidatoandSuplentes.length > 0)
+		if(candidatoandSuplentes.length > 0 && partidos.length > 0)
 		  dispatch(
 			onCreateBoleta( values, params.id, candidatoandSuplentes, partidos, (idEstructuraBoleta)=>{
 				setEstructuraBoletaId(idEstructuraBoleta);
 			})
 		  ) 
+		  if (estructuraBoletaId >= 0) 
+		{			
 			setTimeout(() => {
-			  setShowModal(true);
+		 	setShowModal(true);
 			}, 1000);
+		}
 	  }else{
 		dispatch(
 		  onUpdateBoletaData( 
