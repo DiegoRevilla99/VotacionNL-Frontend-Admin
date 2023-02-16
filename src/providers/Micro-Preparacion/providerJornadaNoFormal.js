@@ -188,20 +188,8 @@ export const createBoleta = async (data, idJornadaElectoral, candidatos) => {
 			"jornada/no_formal/"+data1.idEstructuraBoleta+"/registrar_candidato",
 			candidatoDatos
 		);
-	
-		// let asociacionDatos = {};
-		// if (asociaciones.length) {
-
-		// } else {
-		// 	asociacionDatos = {
-		// 		nombreAsociacion: "",
-		// 		emblema: "",
-		// 		logo: "",
-		// 	};
-		// }
-		// const asociacionData = await jornadasNoFormalesAPI.post("jornada/no_formal/asociacion",
-		// 	asociacionDatos
-		// );
+		console.log("candidatoData provider: ", candidatoData.data);
+		console.log("PUNTO DATA provider: ", candidatoData.data);
 
 
 		return { ok: true, idEstructuraBoleta: data1.idEstructuraBoleta };
@@ -219,7 +207,7 @@ export const createBoletaAsociaciones = async (data, idJornadaElectoral, candida
 		console.log("asociaciones PROVIDER: ", asociaciones);
 
 		
-		// KEVIN RECUERDA QUE HAY MODALIDADES, Y QUE LA 8 ES DE PLANILLA, 7 COMITE Y 6 REPRESENTANTE
+		// KEVIN RECUERDA QUE DEBES CORREGIR ESTA MADRE, PORQUE SI TE LLEGA TODO BIEN, PERO NO LO MANDAS BIEN. ENVÍAS TODOS LOS CANDIDATOS QUE EXISTEN Y NO LOS QUE PERTENECEN.
 		const boletaAsosiaciones = {
 			estructuraBoletaModel : {
 			  encabezadoBoleta: data.encabezado,
@@ -267,13 +255,15 @@ export const createBoletaAsociaciones = async (data, idJornadaElectoral, candida
 			boletaAsosiaciones.asociaciones.push(boletaAsociacion);
 		  });
 		  
-		//https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/boletaasociaciones
-		const asociacionData = await jornadasNoFormalesAPI.post("jornada/no_formal/boletaasociaciones",
+		  console.log("boletaAsosiaciones cuerpo", boletaAsosiaciones);
+		  //https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/boletaasociaciones
+		  const asociacionData = await jornadasNoFormalesAPI.post("jornada/no_formal/boletaasociaciones",
 			boletaAsosiaciones
+			);
+			console.log("asociacionData regreso de la peticion", asociacionData);
+			console.log("id de la boleta de la peticion", asociacionData.data.data.estructuraBoletaModel.idEstructuraBoleta);
 
-		);
-
-		return { ok: true, idEstructuraBoleta: asociacionData.idEstructuraBoleta };
+		return { ok: true, idEstructuraBoleta: asociacionData.data.data.estructuraBoletaModel.idEstructuraBoleta };
 	} catch (error) {
 		console.log("ERROR", error);
 		return { ok: false, errorMessage: error.message };

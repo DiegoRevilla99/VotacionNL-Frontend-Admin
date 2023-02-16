@@ -68,14 +68,6 @@ export const useJornadaNoFormalStore = () => {
         dispatch(onSetCandidatoNull());
     };
 
-    // info.claveCandidato,
-    // info.nombreCandidato,
-    // info.apellidoPCandidato,
-    // info.apellidoMCandidato,
-    // values.fotografiaCandidato,
-    // info.seudonimoCandidato,
-    // info.fechaNacimientoCandidatos,
-    // info.generoCandidato,
     // Add
     const addCandidato = (
         id,

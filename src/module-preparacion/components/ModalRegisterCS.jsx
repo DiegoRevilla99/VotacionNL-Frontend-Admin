@@ -322,6 +322,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		  if (claveElectoralCandidato) {
 			const fecha = getDateBirth(claveElectoralCandidato);
 			setFieldValue(name, fecha);
+			
 		  }
 		}, [claveElectoralCandidato, touched.claveElectoralCandidato, setFieldValue, name]);
 	  

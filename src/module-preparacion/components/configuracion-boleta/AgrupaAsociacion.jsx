@@ -23,7 +23,7 @@ const styleButton = {
 export const AgrupaAsociacion = ({ info = {} }) => {
   const { asociaciones = [] } = info;
 
-  console.log("esta es una asociacion",asociaciones);
+  // console.log("esta es una asociacion",asociaciones);
   const guardar = () => {
     navigate("/preparacion/comite");
   };

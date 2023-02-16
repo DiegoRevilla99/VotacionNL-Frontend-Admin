@@ -166,23 +166,24 @@ export const AddBoletaJornadaGenerica = () => {
 	// 	}
 	// };
 	const onSubmit = (values) => {
-		console.log("values",values);
+		console.log("valuesSSSSSSS",values);
+		console.log("valuesSSSSSSS",values.modalidadVotacion);
 		if (Object.values(jornadaNoFormalSelected.boletaNoFormalSelected).length === 0) {
-		  if (candidatos.length > 0) {
-			if (values.idModalidadVotacion === 3) { // Seleccionaron planilla
-				dispatch(onCreateBoletaAsociaciones(values, params.id, candidatos, () => {
-					navigate("/preparacion/jornada/noFormal/" + params.id);
-				  }));
-			} else { // Otras opciones distintas de planilla
-			  dispatch(onCreateBoleta(values, params.id, candidatos, () => {
-				navigate("/preparacion/jornada/noFormal/" + params.id);
-			  }));
-			}
-		  }
+			if (candidatos.length > 0 && asociaciones.length > 0 && values.modalidadVotacion === 3) {
+				console.log("values SELECCIONAMOS LA PLANITLLA",values.modalidadVotacion);
+				dispatch(onCreateBoletaAsociaciones(values, params.id, candidatos, asociaciones, () => {
+				  navigate("/preparacion/jornada/noFormal/" + params.id);
+				}));
+			  } else {
+				console.log("values SELECCIONAMOS ALGO DIFERENTE A LA PLANILLA",values.modalidadVotacion);
+				dispatch(onCreateBoleta(values, params.id, candidatos, () => {
+				  navigate("/preparacion/jornada/noFormal/" + params.id);
+				}));
+			  }			  
 		  setCandidatosSelectedNull();
 		  setAsociacionesSelectedNull();
 		} else {
-		  if (values.idModalidadVotacion === 3) { // Seleccionaron planilla
+		  if (values.modalidadVotacion === 3) { // Seleccionaron planilla
 			dispatch(onUpdateBoletaDataAsociacion(values, params.id, candidatos, asociaciones, params.idBoleta, () => {
 			  navigate("/preparacion/jornada/noFormal/" + params.id);
 			}
