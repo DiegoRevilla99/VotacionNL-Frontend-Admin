@@ -1,23 +1,17 @@
-import {
-  Box,
-  Breadcrumbs,
-  Button,
-  IconButton,
-  Typography,
-} from "@mui/material";
-import { Stack } from "@mui/system";
-import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { GeneralTable } from "../../../module-preparacion/components/GeneralTable";
 import BallotIcon from "@mui/icons-material/Ballot";
-import SettingsIcon from "@mui/icons-material/Settings";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { BreadCrumbsCustom } from "../../components/BreadCrumbsCustom";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
+import {
+  Box, Button
+} from "@mui/material";
+import { Stack } from "@mui/system";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { GeneralTable } from "../../../module-preparacion/components/GeneralTable";
 import { getJornadasFormales } from "../../../store/module-empadronamiento/formales/thunksFormales";
+import { BreadCrumbsCustom } from "../../components/BreadCrumbsCustom";
 import { Searcher } from "../../components/Searcher";
 
 export const JornadasFormales = () => {

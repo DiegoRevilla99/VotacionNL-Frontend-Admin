@@ -123,7 +123,7 @@ export const RegistroJornadaNoFormal = () => {
 					overflowY: "auto",
 				}}
 			>
-				<Grid item xs={12} sx={{ display: "flex", flexDirection: "column" }}>
+				<Grid item xs={12} sx={{ display: "flex", flexDirection: "column" }} mt={2}>
 					
 
 				<BreadCrumbsCustom
