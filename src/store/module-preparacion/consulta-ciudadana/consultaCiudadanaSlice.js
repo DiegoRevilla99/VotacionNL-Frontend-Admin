@@ -98,7 +98,7 @@ export const consultaCiudadanaSlice = createSlice({
 		onSetConsultaSelected: (state, { payload }) => {
 			console.log("PAYLOAD", payload);
 			state.consultaSelected.id = payload.id;
-			state.consultaSelected.title = payload.titulo;
+			state.consultaSelected.title = payload.title;
 			state.consultaSelected.ballots = payload?.ballots;
 		},
 		onSetConfigSelected: (state, { payload }) => {

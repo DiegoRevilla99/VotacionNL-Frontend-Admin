@@ -270,3 +270,20 @@ export const onGetConfig = (id) => {
 		}
 	};
 };
+
+export const onGetPapeletasParaJornada = (idJornada, title, navigate = () => {}) => {
+	return async (dispatch) => {
+		dispatch(onCheckingOperation());
+		const { ok, data } = await getPapeletas(idJornada);
+		if (ok) {
+			dispatch(onSuccessOperation());
+			dispatch(onSetBallotSelectedNull());
+			dispatch(onSetConsultaSelected({ id: idJornada, idJornada, title, ballots: [] }));
+			dispatch(onFillBallots(data));
+			navigate();
+		} else {
+			dispatch(onErrorOperation());
+			dispatch(onToastErrorOperation({ errorMessage: "No se pudo obtener las boletas" }));
+		}
+	};
+};

@@ -6,7 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { GeneralTable } from "../../module-preparacion/components/GeneralTable";
 import { useConsultaCiudadanaStore } from "../../module-preparacion/hooks/useConsultaCiudadanaStore";
 import { onSetConsultaSelected } from "../../store/module-preparacion/consulta-ciudadana/consultaCiudadanaSlice";
-import { onGetConsultasCiudadanas } from "../../store/module-preparacion/consulta-ciudadana/thunks";
+import {
+	onGetConsultasCiudadanas,
+	onGetPapeletasParaJornada,
+} from "../../store/module-preparacion/consulta-ciudadana/thunks";
 import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
 import { onGetjornadas } from "../../store/module-preparacion/jornada/ThunksJornada";
 
@@ -15,7 +18,7 @@ export const VerConsultasCiudadanas = () => {
 	const { consultasData, status } = useConsultaCiudadanaStore();
 	const dispatch = useDispatch();
 	const columns = [
-		{ field: "nombreJornada", headerName: "Título de la jornada formal", flex: 10 },
+		{ field: "nombreJornada", headerName: "Título de la consulta ciudadana", flex: 10 },
 		{
 			field: "acciones",
 			headerName: "Acciones",
@@ -45,6 +48,12 @@ export const VerConsultasCiudadanas = () => {
 	const handleWatch = (id, titulo) => {
 		// dispatch(onSetConsultaSelected({ id, titulo, ballots: [] }));
 		// navigate("/preparacion/consulta/" + id);
+
+		dispatch(
+			onGetPapeletasParaJornada(id, titulo, () =>
+				navigate("/jornada/reportesConsultasCiudadanas/reportes/" + id + "/reporteInicio/")
+			)
+		);
 	};
 
 	if (status === "checking")
@@ -66,7 +75,7 @@ export const VerConsultasCiudadanas = () => {
 				<Grid item xs={12} sx={{ display: "flex", flexDirection: "column" }}>
 					<Box sx={{ m: "0.5rem", ml: "2rem" }}>
 						<Typography variant="h6" align="left" color="initial">
-							JORNADAS POPULARES REGISTRADAS
+							CONSULTAS CIUDADANAS REGISTRADAS
 						</Typography>
 					</Box>
 					<Divider />
@@ -93,7 +102,7 @@ export const VerConsultasCiudadanas = () => {
 							}}
 						>
 							<Typography variant="h5" color="initial" mb="0.5rem">
-								Jornadas populares
+								Consultas ciudadanas
 							</Typography>
 							<Divider />
 							<Box
