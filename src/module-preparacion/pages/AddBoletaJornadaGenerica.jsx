@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { FielTextCustom } from "../components/FielTextCustom";
 // import { ModalEliminarPC } from "../components/ModalEliminarPC";
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import SettingsIcon from "@mui/icons-material/Settings";
 import { Formik } from 'formik';
 import { useNavigate, useParams } from "react-router-dom";
 import { object, string } from "yup";
@@ -165,20 +167,35 @@ export const AddBoletaJornadaGenerica = () => {
 	// 		);
 	// 	}
 	// };
+	const [showModal, setShowModal] = useState(false);
+	const [estructuraBoletaId, setEstructuraBoletaId] = useState(null);
 	const onSubmit = (values) => {
-		console.log("valuesSSSSSSS",values);
-		console.log("valuesSSSSSSS",values.modalidadVotacion);
+
 		if (Object.values(jornadaNoFormalSelected.boletaNoFormalSelected).length === 0) {
 			if (candidatos.length > 0 && asociaciones.length > 0 && values.modalidadVotacion === 3) {
-				console.log("values SELECCIONAMOS LA PLANITLLA",values.modalidadVotacion);
-				dispatch(onCreateBoletaAsociaciones(values, params.id, candidatos, asociaciones, () => {
-				  navigate("/preparacion/jornada/noFormal/" + params.id);
+
+				dispatch(onCreateBoletaAsociaciones(values, params.id, candidatos, asociaciones, (idEstructuraBoleta) => {
+				//   navigate("/preparacion/jornada/noFormal/" + params.id);
+				setEstructuraBoletaId(idEstructuraBoleta);
 				}));
+				if (estructuraBoletaId >= 0) 
+				{			
+					setTimeout(() => {
+					 setShowModal(true);
+					}, 1000);
+				}
 			  } else {
-				console.log("values SELECCIONAMOS ALGO DIFERENTE A LA PLANILLA",values.modalidadVotacion);
-				dispatch(onCreateBoleta(values, params.id, candidatos, () => {
-				  navigate("/preparacion/jornada/noFormal/" + params.id);
+
+				dispatch(onCreateBoleta(values, params.id, candidatos, (idEstructuraBoleta) => {
+				//   navigate("/preparacion/jornada/noFormal/" + params.id);
+				setEstructuraBoletaId(idEstructuraBoleta);
 				}));
+				if (estructuraBoletaId >= 0) 
+				{			
+					setTimeout(() => {
+					 setShowModal(true);
+					}, 1000);
+				}
 			  }			  
 		  setCandidatosSelectedNull();
 		  setAsociacionesSelectedNull();
@@ -205,6 +222,13 @@ export const AddBoletaJornadaGenerica = () => {
 		}
 	  };
 	  
+
+	const handleTerminar = () => {
+	  navigate("/preparacion/jornada/noFormal/"+params.id);
+	};
+	const handleConfigurar = () => {
+		navigate("/preparacion/jornadaNoFormal/configboleta/" + estructuraBoletaId);
+	};
 	// INICIO DEL RETURN
 
 	return (
@@ -449,7 +473,7 @@ export const AddBoletaJornadaGenerica = () => {
 							>
 							</Box>
 							
-							  <AgrupaAsociacion info={{ asociaciones: asociaciones }}></AgrupaAsociacion>
+							  <AgrupaAsociacion info={{ asociaciones: asociaciones }} handleOpenModal={handleOpenRegisterAsociacionModal}></AgrupaAsociacion>
 							
 							</Box>
 
@@ -517,6 +541,82 @@ export const AddBoletaJornadaGenerica = () => {
 		)}
 		</Formik>
 		)}
+		<div>
+		{/* Resto de la interfaz */}
+		{showModal && (
+			<div style={{ 
+			position: 'fixed', 
+			top: '50%', 
+			left: '50%', 
+			transform: 'translate(-50%, -50%)', 
+			background: 'rgba(0, 0, 0, 0.5)', 
+			width: '400px',
+			height: '400px',
+			// background: '#fff', 
+			zIndex: 9999, 
+			padding: '20px',
+			borderRadius: '10px',
+			textAlign: 'center'
+			}}>
+			<Typography id="modal-modal-title" variant= "h4"  color="white" align="center" mr={5} ml={5} mb={5}>
+                    ¿Deseas configurar la boleta o prefieres terminar y salir?
+				</Typography>
+				
+				<Grid
+					container
+					direction="row"
+					justifyContent="center"  // Cambio aquí
+					alignItems="center"
+					// spacing={5}
+				>
+							<Button
+								onClick={handleConfigurar}
+								variant="contained"
+								size="large"
+								endIcon={<SettingsIcon />}
+								sx={{
+									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+									transition: "all 0.5s ease",
+									backgroundColor: "#511079",
+									width: "80%",
+									borderRadius: "25px 25px 25px 25px",
+									"&:hover": {
+										backgroundColor: "#7E328B !important",
+										transform: "translate(-5px, -5px)",
+										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+									},
+								}}
+							>
+								Configurar boleta
+							</Button>
+
+
+							<Button
+								onClick={handleTerminar}
+								variant="contained"
+								size="large"
+								endIcon={<ExitToAppIcon />}
+								sx={{
+									margin: '10px 0 0 0',
+									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+									transition: "all 0.5s ease",
+									backgroundColor: "#791010",
+									width: "80%",
+									borderRadius: "25px 25px 25px 25px",
+									"&:hover": {
+										backgroundColor: "#8B3232 !important",
+										transform: "translate(-5px, -5px)",
+										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+									},
+								}}
+							>
+								Terminar y configurar después
+							</Button>
+
+					</Grid>
+			</div>
+		)}
+		</div>
 	</>
 		  
 	);

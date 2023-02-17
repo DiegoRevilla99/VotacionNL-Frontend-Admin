@@ -358,13 +358,14 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 									fechaNacimientoCandidatos: "",//Date
 									generoCandidato: "",//Text
 								}
+
 								: {
 									claveCandidato: candidatoSelected["claveCandidato"],
+									nombreCandidato: candidatoSelected["nombreCandidato"],
 									apellidoPCandidato: candidatoSelected["apellidoPCandidato"],
 									apellidoMCandidato: candidatoSelected["apellidoMCandidato"],
-									nombreCandidato: candidatoSelected["nombreCandidato"],
-									seudonimoCandidato: candidatoSelected["fotografiaCandidato"],
-									fotografiaCandidato: candidatoSelected["seudonimoCandidato"],
+									fotografiaCandidato: candidatoSelected["fotografiaCandidato"],
+									seudonimoCandidato: candidatoSelected["seudonimoCandidato"],
 									fechaNacimientoCandidatos: candidatoSelected["fechaNacimientoCandidato"],
 									generoCandidato: candidatoSelected["generoCandidato"],
 								}

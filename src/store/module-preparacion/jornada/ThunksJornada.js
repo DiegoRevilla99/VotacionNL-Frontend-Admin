@@ -140,7 +140,6 @@ export const onCreateBoleta = (
 			candidatoandSuplentes,
 			partidos
 		); // PROVIDER
-		console.log("ide del back",idEstructuraBoleta);
 		if (ok) {
 			dispatch(onSuccessOperation());
 			dispatch(onToastSuccessOperation({ successMessage: "Boleta creada con éxito" }));

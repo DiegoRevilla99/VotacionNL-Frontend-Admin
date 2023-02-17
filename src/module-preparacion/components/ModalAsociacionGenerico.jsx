@@ -32,8 +32,7 @@ const validationSchema = object({
 		emblema: string("").required(
 		"Por favor, ingresa el emblema de las asociación"
 		),
-		candidatosAsociacion: array().min(1, "Es necesario que la asociación cuente con un candidato"),
-
+		candidatosAsociacion: array().min(1, "Es necesario que la asociación cuente con un candidato al menos"),
 });
 
 export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleCloseRegisterAsociacionModal }) => {
@@ -55,7 +54,7 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 			toastSuccesOperation("Datos registrados con éxito");
 		} else {
 			updateAsociacion(
-				asociacionesSelected.length,
+				asociacionesSelected.id,
 				values.nombreAsociacion,
 				values.emblema,
 				values.logo,
@@ -334,20 +333,21 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 											</Box>
 											))}
 										</Box>
-											{touched.candidatosPartido &&
+
+										{/* {touched.candidatosPartido && candidatosS.length === 0 && (
+										<ErrorField>{errors.candidatosPartido}</ErrorField>
+										)} */}
+									</Box>
+									{touched.candidatosAsociacion &&
 												(
 													   <Box ml={2} 
 														   sx={{
 														   fontSize: "12px",
 															   color: "#791010" }}
 														   >
-														   {errors.candidatosPartido}
+														   {errors.candidatosAsociacion}
 													   </Box>
 											   )}
-										{/* {touched.candidatosPartido && candidatosS.length === 0 && (
-										<ErrorField>{errors.candidatosPartido}</ErrorField>
-										)} */}
-									</Box>
 									<br />
 
 									{/* Esto es del los botones */}

@@ -41,9 +41,9 @@ export const SliceJornadaNoFormal = createSlice({
                 state.candidatos.push({
                     id: payload?.id,
                     claveCandidato: payload?.claveCandidato,
+                    nombreCandidato: payload?.nombreCandidato,
                     apellidoPCandidato: payload?.apellidoPCandidato,
                     apellidoMCandidato: payload?.apellidoMCandidato,
-                    nombreCandidato: payload?.nombreCandidato,
                     fotografiaCandidato: payload?.fotografiaCandidato,
                     seudonimoCandidato: payload?.seudonimoCandidato,
                     fechaNacimientoCandidato: payload?.fechaNacimientoCandidato,
@@ -55,9 +55,9 @@ export const SliceJornadaNoFormal = createSlice({
                 state.candidatos.push({
                     id: candidato?.id,
                     claveCandidato: payload?.claveCandidato,
+                    nombreCandidato: candidato?.nombreCandidato,
                     apellidoPCandidato: candidato?.apellidoPCandidato,
                     apellidoMCandidato: candidato?.apellidoMCandidato,
-                    nombreCandidato: candidato?.nombreCandidato,
                     fotografiaCandidato: candidato?.fotografiaCandidato,
                     seudonimoCandidato: candidato?.seudonimoCandidato,
                     fechaNacimientoCandidato: candidato?.fechaNacimientoCandidato,
@@ -76,14 +76,15 @@ export const SliceJornadaNoFormal = createSlice({
         },
 
         onUpdateCandidato: (state, { payload }) => {
+            console.log("actualizando",payload);
             const candidato = state.candidatos.find(
                 (candidato) => candidato.id === state.candidatoSelected.id
             );
             candidato.id = payload?.id;
             candidato.claveCandidato = payload?.claveCandidato;
+            candidato.nombreCandidato = payload?.nameCandidate;
             candidato.apellidoPCandidato = payload?.apellidoPCandidate;
             candidato.apellidoMCandidato = payload?.apellidoMCandidate;
-            candidato.nombreCandidato = payload?.nameCandidate;
             candidato.fotografiaCandidato = payload?.fotografiaCandidate;
             candidato.seudonimoCandidato = payload?.seudonimoCandidate;
             candidato.fechaNacimientoCandidato = payload?.fechaNacimientoCandidate;
@@ -134,11 +135,11 @@ export const SliceJornadaNoFormal = createSlice({
         },
         onUpdateAsociacion : (state, { payload }) => {
             const asociacionFound = state.asociaciones.find((asociacion) => asociacion.id === state.asociacionesSelected.id);
-            asociacion.id = payload?.id;
-            asociacion.nombreAsociacion = payload?.nombreAsociacion;
-            asociacion.emblema = payload?.emblema;
-            asociacion.logo = payload?.logo;
-            asociacion.candidatosAsociacion = payload?.candidatosAsociacion;
+            asociacionFound.id = payload?.id;
+            asociacionFound.nombreAsociacion = payload?.nameAsociacion;
+            asociacionFound.emblema = payload?.emblema;
+            asociacionFound.logo = payload?.picture;
+            asociacionFound.candidatosAsociacion = payload?.candidatosAsociacion;
         },
         onSetAsociacionSelectedNull: (state, { payload }) => {
             state.asociacionesSelected = {};
