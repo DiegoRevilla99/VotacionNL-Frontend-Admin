@@ -6,9 +6,7 @@ import {
     onToastErrorOperation, onToastSuccessOperation
 } from "../../ui/uiSlice";
 
-import {
-    onAddBoleta, onAddCandidato, onAddJornadasNoFormales, onCheckingOperation, onDeleteBoletaData, onDeleteJornadaData, onEditBoleta, onErrorOperation, onFillBoletas, onFillCandidatosNoFormalesData, onFillJornadasNoFormalesData, onSetAsociacionSelectedNull, onSetBoletasSelectedNull, onSetCandidatoSelectedNull, onSetjornadaNoFormalSelected, onSuccessOperation
-} from "./SliceJornadaNoFormal";
+import { onAddAsociacion, onAddBoleta, onAddCandidato, onAddJornadasNoFormales, onCheckingOperation, onDeleteBoletaData, onDeleteJornadaData, onEditBoleta, onErrorOperation, onFillBoletas, onFillCandidatosNoFormalesData, onFillJornadasNoFormalesData, onSetAsociacionSelectedNull, onSetBoletasSelectedNull, onSetCandidatoSelectedNull, onSetjornadaNoFormalSelected, onSuccessOperation } from "./SliceJornadaNoFormal";
 
 // Jornadas No Formales
 
@@ -150,14 +148,15 @@ export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
     return async (dispatch) => {
         dispatch(onCheckingOperation());
         console.log("IDBOLETA THUNKS: ", idBoleta);
-        const {ok, data, dataCandidato } = await getBoletaData(idBoleta);// PROVIDER
+        const {ok, data, dataCandidato, dataAsociacion } = await getBoletaData(idBoleta);// PROVIDER
         console.log("CANDIDATOS EN EL THUNKS",dataCandidato);
         console.log("boleta EN EL THUNKS",data);
+        console.log("asociacion EN EL THUNKS",dataAsociacion);
         if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onEditBoleta({idBoleta, ...data}));// SLICE
             dispatch(onAddCandidato(dataCandidato));// SLICE
-            // dispatch(onSetCandidatoSelectedNull());
+            dispatch(onAddAsociacion(dataAsociacion));// SLICE
             navigate();
         } else {
             dispatch(onErrorOperation());
