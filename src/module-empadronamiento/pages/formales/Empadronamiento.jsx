@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useParams } from "react-router-dom";
 import { getEleccionFormal } from "../../../store/module-empadronamiento/formales/thunksFormales";
+import { setType } from "../../../store/module-empadronamiento/votantes/empVotantesSlice";
 import { getVotantesbyJornada } from "../../../store/module-empadronamiento/votantes/thunksVotantes";
 import { BreadCrumbsCustom } from "../../components/BreadCrumbsCustom";
 import { RegisterVoters } from "../../components/RegisterVoters";
@@ -23,6 +24,7 @@ export const Empadronamiento = () => {
   useEffect(() => {
     dispatch(getEleccionFormal(id));
     dispatch(getVotantesbyJornada(id));
+    dispatch(setType({type:"formales"}))
   }, []);
 
   return (

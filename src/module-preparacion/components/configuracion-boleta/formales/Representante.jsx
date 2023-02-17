@@ -112,12 +112,13 @@ export const Representante = memo(({boletaInfo,updateCand}) => {
         sx={{
           width: "100%",
           background: "#ffffff",
-          p: "2rem",
+          p: "1rem",
           borderRadius: "20px",
           boxShadow: 3,
+          mt:5
         }}
       >
-        <Typography sx={{ mb: 3, fontSize: "22px", fontWeight: "bold" }}>
+        <Typography sx={{ mb: 3, fontSize: {md:"22px",xs:"15px"}, fontWeight: "bold" }}>
           COALICIONES PARA {boletaInfo?.nombreEleccion}
         </Typography>
 
@@ -128,6 +129,7 @@ export const Representante = memo(({boletaInfo,updateCand}) => {
             alignItems: "center",
             justifyContent: "center",
             mb: 2,
+            
             mt: 2,
           }}
         >

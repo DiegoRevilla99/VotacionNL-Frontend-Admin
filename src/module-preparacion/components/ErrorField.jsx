@@ -7,9 +7,9 @@ export const ErrorField = memo(({ children }) => {
     <Box
       alignItems="center"
       justifyContent="center"
-      sx={{ fontWeight: "bold", color: "#791010" }}
+      sx={{ fontWeight: "bold", color: "#D80F0F" }}
     >
-      {children}*
+      {children}
     </Box>
   );
 });

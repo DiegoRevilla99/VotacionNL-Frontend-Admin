@@ -7,6 +7,7 @@ export const empVotantesSlice = createSlice({
         votanteFound: {find:""},
         votanteSelected: {},
         isLoadingVotantes: false,
+        type:"",
         errorPost: "",
         status: "off",
         errorMessage: "",
@@ -25,6 +26,9 @@ export const empVotantesSlice = createSlice({
         setVotantes: (state, action) => {
             state.isLoadingVotantes = false;
             state.votantes = action.payload.votantes;
+        },
+        setType: (state, action) => {
+            state.type = action.payload.type;
         },
         setVotanteFound: (state, action) => {
             state.votanteFound = action.payload.votanteFound;
@@ -59,4 +63,4 @@ export const empVotantesSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { setVotanteFound,setErrorPost,endLoadingVotantes,setVotanteSelected, startLoadingFormales, setJornadasFormales, startLoadingVotantes, setVotantes, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation } = empVotantesSlice.actions;
+export const { setType,setVotanteFound,setErrorPost,endLoadingVotantes,setVotanteSelected, startLoadingFormales, setJornadasFormales, startLoadingVotantes, setVotantes, onCheckingOperation, onSuccessOperation, onErrorOperation, onOffOperation } = empVotantesSlice.actions;

@@ -16,6 +16,7 @@ export const DateFieldWithTitle = React.memo(
     setFieldValue,
     minDate,
     isDisabled,
+    
   }) => {
     // console.log("MIN DATE: ", minDate);
 
@@ -34,13 +35,16 @@ export const DateFieldWithTitle = React.memo(
               value={value}
               onChange={(valueNew) => setFieldValue(name, valueNew, true)}
               label={label}
+              
               renderInput={(params) => (
                 <TextField
                   {...params}
                   name={name}
                   helperText={touched && error}
+                  
                   error={Boolean(touched && error)}
                   variant="standard"
+                  
                   fullWidth
                 />
               )}

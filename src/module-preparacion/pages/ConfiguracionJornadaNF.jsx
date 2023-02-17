@@ -97,6 +97,19 @@ export const ConfiguracionJornadaNF = () => {
 			
 		}
 
+		//Por corroborar uso
+		if(values.finDisponibilidad>=values.inicioEmpadronamiento){
+			errors.inicioEmpadronamiento = "El empadornamiento debe ser posterior a la fin de disponibilidad del sistema";			
+		}
+		if(values.finEmpadronamiento>=values.inicioAssignPass){
+			errors.inicioAssignPass = "La asignación de contraseñas debe ser posterior al empadronamiento";			
+		}
+		if(values.finAssignPass>=values.inicioRecepcionVotos){
+			errors.inicioRecepcionVotos = "La recepción de votos debe ser posterior a la asignacion de contraseñas";			
+		}
+
+		
+
 		if(values.inicioEmpadronamiento>=values.finEmpadronamiento){
 			errors.finEmpadronamiento = "La fecha de inicial no puede ser menor o igual que la final";			
 		}
@@ -302,35 +315,7 @@ export const ConfiguracionJornadaNF = () => {
 											isDisabled={values.isDisabled}
 										/>
 									</Grid>
-									<Grid item xs={12} md={6} mt="0.5rem">
-										<DateFieldWithTitle
-											label={
-												"INICIO DE RECEPCIÓN DE VOTACIÓN"
-											}
-											name={"inicioRecepcionVotos"}
-											value={values.inicioRecepcionVotos}
-											setFieldValue={setFieldValue}
-											handleChange={handleChange}
-											error={errors.inicioRecepcionVotos}
-											touched={touched.inicioRecepcionVotos}
-											isDisabled={values.isDisabled}
-										/>
-									</Grid>
-									<Grid item xs={12} md={6} mt="0.5rem">
-										<DateFieldWithTitle
-											label={
-												"FINALIZACIÓN DE RECEPCIÓN DE VOTACIÓN"
-											}
-											name={"finRecepcionVotos"}
-											value={values.finRecepcionVotos}
-											setFieldValue={setFieldValue}
-											handleChange={handleChange}
-											error={errors.finRecepcionVotos}
-											touched={touched.finRecepcionVotos}
-											minDate={values.inicioRecepcionVotos}
-											isDisabled={values.isDisabled}
-										/>
-									</Grid>
+
 									<Grid item xs={12} md={6} mt="0.5rem">
 										<DateFieldWithTitle
 											label={
@@ -360,6 +345,36 @@ export const ConfiguracionJornadaNF = () => {
 											isDisabled={values.isDisabled}
 										/>
 									</Grid>
+									<Grid item xs={12} md={6} mt="0.5rem">
+										<DateFieldWithTitle
+											label={
+												"INICIO DE RECEPCIÓN DE VOTACIÓN"
+											}
+											name={"inicioRecepcionVotos"}
+											value={values.inicioRecepcionVotos}
+											setFieldValue={setFieldValue}
+											handleChange={handleChange}
+											error={errors.inicioRecepcionVotos}
+											touched={touched.inicioRecepcionVotos}
+											isDisabled={values.isDisabled}
+										/>
+									</Grid>
+									<Grid item xs={12} md={6} mt="0.5rem">
+										<DateFieldWithTitle
+											label={
+												"FINALIZACIÓN DE RECEPCIÓN DE VOTACIÓN"
+											}
+											name={"finRecepcionVotos"}
+											value={values.finRecepcionVotos}
+											setFieldValue={setFieldValue}
+											handleChange={handleChange}
+											error={errors.finRecepcionVotos}
+											touched={touched.finRecepcionVotos}
+											minDate={values.inicioRecepcionVotos}
+											isDisabled={values.isDisabled}
+										/>
+									</Grid>
+									
 									<Grid item xs={6} md={3} mt="0.5rem">
 										<TimeFieldWithTitle
 											label={"DURACIÓN DEL VOTO"}

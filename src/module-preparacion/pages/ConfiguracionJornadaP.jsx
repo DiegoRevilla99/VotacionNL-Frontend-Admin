@@ -98,13 +98,32 @@ export const ConfiguracionJornadaP = () => {
 			
 		}
 
+
+		//Por corroborar uso
+		if(values.finDisponibilidad>=values.inicioEmpadronamiento){
+			errors.inicioEmpadronamiento = "El empadornamiento debe ser posterior a la fin de disponibilidad del sistema";			
+		}
+		if(values.finEmpadronamiento>=values.inicioAsignacionContrasenia){
+			errors.inicioAsignacionContrasenia = "La asignación de contraseñas debe ser posterior al empadronamiento";			
+		}
+		if(values.finAsignacionContrasenia>=values.inicioRecepcionVotos){
+			errors.inicioRecepcionVotos = "La recepción de votos debe ser posterior a la asignacion de contraseñas";			
+		}
+
+
+
+
 		if(values.inicioEmpadronamiento>=values.finEmpadronamiento){
 			errors.finEmpadronamiento = "La fecha de inicial no puede ser menor o igual que la final";			
 		}
 
+		
+
 		if(values.inicioRecepcionVotos>=values.finRecepcionVotos){
 			errors.finRecepcionVotos = "La fecha de inicial no puede ser menor o igual que la final";			
 		}
+
+		
 
 		if(values.inicioAsignacionContrasenia>=values.finAsignacionContrasenia){
 			errors.finAsignacionContrasenia = "La fecha de inicial no puede ser menor o igual que la final";			
@@ -232,6 +251,7 @@ export const ConfiguracionJornadaP = () => {
 							errors,
 							touched,
 							setFieldValue,
+							handleBlur
 						}) => (
 							<form onSubmit={handleSubmit}>
 								{values.isDisabled && (
@@ -267,6 +287,7 @@ export const ConfiguracionJornadaP = () => {
 											value={values.finDisponibilidad}
 											setFieldValue={setFieldValue}
 											handleChange={handleChange}
+											
 											error={errors.finDisponibilidad}
 											touched={touched.finDisponibilidad}
 											minDate={values.inicioDisponibilidad}
@@ -306,35 +327,6 @@ export const ConfiguracionJornadaP = () => {
 									<Grid item xs={12} md={6} mt="0.5rem">
 										<DateFieldWithTitle
 											label={
-												"INICIO DE RECEPCIÓN DE VOTACIÓN"
-											}
-											name={"inicioRecepcionVotos"}
-											value={values.inicioRecepcionVotos}
-											setFieldValue={setFieldValue}
-											handleChange={handleChange}
-											error={errors.inicioRecepcionVotos}
-											touched={touched.inicioRecepcionVotos}
-											isDisabled={values.isDisabled}
-										/>
-									</Grid>
-									<Grid item xs={12} md={6} mt="0.5rem">
-										<DateFieldWithTitle
-											label={
-												"FINALIZACIÓN DE RECEPCIÓN DE VOTACIÓN"
-											}
-											name={"finRecepcionVotos"}
-											value={values.finRecepcionVotos}
-											setFieldValue={setFieldValue}
-											handleChange={handleChange}
-											error={errors.finRecepcionVotos}
-											touched={touched.finRecepcionVotos}
-											minDate={values.inicioRecepcionVotos}
-											isDisabled={values.isDisabled}
-										/>
-									</Grid>
-									<Grid item xs={12} md={6} mt="0.5rem">
-										<DateFieldWithTitle
-											label={
 												"INICIO DE ASIGNACIÓN DE CONTRASEÑAS"
 											}
 											name={"inicioAsignacionContrasenia"}
@@ -361,6 +353,36 @@ export const ConfiguracionJornadaP = () => {
 											isDisabled={values.isDisabled}
 										/>
 									</Grid>
+									<Grid item xs={12} md={6} mt="0.5rem">
+										<DateFieldWithTitle
+											label={
+												"INICIO DE RECEPCIÓN DE VOTACIÓN"
+											}
+											name={"inicioRecepcionVotos"}
+											value={values.inicioRecepcionVotos}
+											setFieldValue={setFieldValue}
+											handleChange={handleChange}
+											error={errors.inicioRecepcionVotos}
+											touched={touched.inicioRecepcionVotos}
+											isDisabled={values.isDisabled}
+										/>
+									</Grid>
+									<Grid item xs={12} md={6} mt="0.5rem">
+										<DateFieldWithTitle
+											label={
+												"FINALIZACIÓN DE RECEPCIÓN DE VOTACIÓN"
+											}
+											name={"finRecepcionVotos"}
+											value={values.finRecepcionVotos}
+											setFieldValue={setFieldValue}
+											handleChange={handleChange}
+											error={errors.finRecepcionVotos}
+											touched={touched.finRecepcionVotos}
+											minDate={values.inicioRecepcionVotos}
+											isDisabled={values.isDisabled}
+										/>
+									</Grid>
+									
 									<Grid item xs={6} md={3} mt="0.5rem">
 										<TimeFieldWithTitle
 											label={"DURACIÓN DEL VOTO"}

@@ -240,11 +240,24 @@ let validationCurp =
   /^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$/;
 
 
-const validando = (values, props) => {
+const validando = (values,type) => {
   // console.log(values.curp);
+   
+
   const errors = {};
   if (!validationCurp.test(values.curp.toUpperCase())) {
     errors.curp = "Esta curp no es valida";
+  }
+
+  if(values.fechaNacimiento!==""){
+    if(type==="formales"){
+      const fecha=new Date(values.fechaNacimiento)
+      const edad=getAge(fecha);
+      console.log("edad",edad)
+      if(edad<18) errors.edad = "Esta persona no puede ser registrada a esta jornada ya que es menor de edad";
+      
+    }
+    
   }
 
   
@@ -341,6 +354,24 @@ const getGender = (curp = "") => {
   return false;
 };
 
+const getAge = (fecha) => {
+  const birth=new Date(fecha);
+  const current=new Date();
+  let anios=parseInt(current.getFullYear(), 10)-parseInt(birth.getFullYear(), 10);
+  const difmonths=parseInt(current.getMonth(), 10)-parseInt(birth.getMonth(), 10);
+  // console.log("dif",difmonths)
+  if(difmonths<0){
+    anios=anios-1
+  }else{
+    if(difmonths===0){
+      const difdays=parseInt(current.getDate(), 10)-parseInt(birth.getDate(), 10);
+      if(difdays<0) anios=anios-1
+    }
+  }
+  return anios
+
+};
+
 const FechaNacimientoField = ({ name }) => {
   const {
     values: {
@@ -359,7 +390,7 @@ const FechaNacimientoField = ({ name }) => {
 
   useEffect(() => {
     // set the value of textC, based on textA and textB
-    if (curp) {
+    if (validationCurp.test(curp)) {
       const fecha = getDateBirth(curp);
       setFieldValue(name, fecha);
     }
@@ -419,54 +450,7 @@ const NombreField = ({ name }) => {
   );
 };
 
-const GeneroField = () => {
-  const {
-    values: {
-      curp,
-      nombreVotante,
-      apellidoMVotante,
-      apellidoPVotante,
-      fechaNacimiento,
-      genero,
-    },
-    touched,
-    setFieldValue,
-  } = useFormikContext();
 
-  const [field, meta] = useField({ name: "genero" });
-
-  useEffect(() => {
-    // set the value of textC, based on textA and textB
-    let genero = getGender(curp);
-    if (genero) {
-      if (genero.toUpperCase() === "M") genero = "MUJER";
-      if (genero.toUpperCase() === "H") genero = "HOMBRE";
-      setFieldValue("genero", genero);
-    } else {
-      setFieldValue("genero", "");
-    }
-  }, [curp, touched.curp, setFieldValue, "genero"]);
-
-  return (
-    <>
-      <FormControl>
-        <RadioGroup
-          aria-labelledby="demo-controlled-radio-buttons-group"
-          name="genero"
-          value={genero}
-          disabled
-          // onChange={handleChange}
-          // onBlur={handleBlur}
-          sx={{ display: "flex", flexDirection: "row" }}
-        >
-          <FormControlLabel value="HOMBRE" control={<Radio />} label="Hombre" />
-          <FormControlLabel value="MUJER" control={<Radio />} label="Mujer" />
-        </RadioGroup>
-      </FormControl>
-      {!!meta.touched && !!meta.error && <div>{meta.error}</div>}
-    </>
-  );
-};
 
 
 
@@ -476,7 +460,7 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
   const dispatch = useDispatch();
   const [isFound, setIsFound] = useState("")
   const [loading, setLoading] = useState(false)
-  const { votanteFound } = useSelector(
+  const { votanteFound,type } = useSelector(
     (state) => state.empVotantesSlice
   );
 
@@ -490,6 +474,10 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
 
   const getDireccionVotante=async(id)=>{
     return getVotanteDireccionProvider(id)
+  }
+
+  const getType=()=>{
+    return type;
   }
 
   const SearchV = ({ curp2 }) => {
@@ -512,6 +500,7 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
       setFieldValue("nombreVotante", votanteFound.find==="si"?votanteFound.nombreVotante:"");
       setFieldValue("apellidoMVotante", votanteFound.find==="si"?votanteFound.apellidoMVotante:"");
       setFieldValue("apellidoPVotante",votanteFound.find==="si"?votanteFound.apellidoPVotante:"");
+      setFieldValue("genero",votanteFound.find==="si"?votanteFound.genero:"");
     }
       // setFieldValue("fechaNacimiento", votanteFound.find==="si"?new Date(votanteFound.fechaNacimiento).toISOString():"");
       //setFieldValue("genero", votanteFound?votanteFound.genero:"");
@@ -584,7 +573,7 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
           : "",
         genero: data.votanteModel?.genero ? data.votanteModel.genero : "",
       }}
-      validate={validando}
+      validate={(values)=>validando(values,type)}
       validationSchema={schema}
       onSubmit={(valores) => {
         const info = { ...valores };
@@ -614,16 +603,28 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
               <Typography textAlign="center" sx={{ fontWeight: "bold", mb: 3 }}>
                 INFORMACIÓN DEL VOTANTE
               </Typography>
+
             </div>
+            {
+                errors.edad &&
+                <Alert sx={{mb:3}} severity="error">{errors.edad}</Alert>
+              }
             <Box
               width="100%"
               height="50px"
               display="flex"
               alignItems="center"
               justifyContent="space-between"
+              
             >
+              
+              
               <Box width="90%">
-                <Typography>CURP</Typography>
+                <Box display={"flex"}>
+                  <Typography>CURP</Typography>
+                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
+                </Box>
+                
                 <TextField
                   required
                   label=""
@@ -641,7 +642,7 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
                 ></TextField>
               </Box>
 
-               <Button sx={{ height:"50px", mt: 3,ml:2 }} onClick={()=>onBuscar(values.curp.toUpperCase())} variant="contained">
+               <Button  disabled={errors.edad} sx={{ height:"50px", mt: 3,ml:2 }} onClick={()=>onBuscar(values.curp.toUpperCase())} variant="contained">
                 Buscar votante
               </Button>
               {
@@ -675,7 +676,11 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
             }
             
               <br />
-            <Typography>NOMBRE DEL VOTANTE</Typography>
+              <Box display={"flex"}>
+                  <Typography>NOMBRE DEL VOTANTE</Typography>
+                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
+              </Box>
+          
             <TextField
              disabled={votanteFound.find==="si"||votanteFound.find===""}
               required
@@ -695,7 +700,11 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
             />
             <br />
             <br />
+            
+            <Box display={"flex"}>
             <Typography>PRIMER APELLIDO</Typography>
+                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
+              </Box>
             <TextField
               required
               disabled={votanteFound.find==="si"||votanteFound.find===""}
@@ -717,7 +726,11 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
             />
             <br />
             <br />
+            <Box display={"flex"}>
             <Typography>SEGUNDO APELLIDO</Typography>
+                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
+              </Box>
+            
             <TextField
             disabled={votanteFound.find==="si"||votanteFound.find===""}
               required
@@ -769,8 +782,26 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
               <br />
 
               <Box>
-                <Typography sx={{ mb: 1 }}>GENERO</Typography>
-                <GeneroField />
+              <Box display={"flex"}>
+              <Typography sx={{ mb: 1 }}>GENERO</Typography>
+                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
+              </Box>
+                
+              <FormControl disabled={votanteFound.find==="si"||votanteFound.find===""}>
+                  <RadioGroup
+                    aria-labelledby="demo-controlled-radio-buttons-group"
+                    name="genero"
+                    value={values.genero}
+                   
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    sx={{ display: "flex", flexDirection: "row" }}
+                  >
+                    <FormControlLabel value="HOMBRE" control={<Radio />} label="HOMBRE" />
+                    <FormControlLabel value="MUJER" control={<Radio />} label="MUJER" />
+                    <FormControlLabel value="OTRO" control={<Radio />} label="OTRO" />
+                  </RadioGroup>
+                </FormControl>
                 <br />
 
                 <ErrorMessage
@@ -793,6 +824,7 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
                 endIcon={<NavigateNextSharpIcon />}
                 type="submit"
                 variant="contained"
+                disabled={errors.edad}
               >
                 Siguiente
               </Button>

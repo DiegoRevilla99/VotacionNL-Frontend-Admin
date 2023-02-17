@@ -14,25 +14,26 @@ export const BoxPartido = memo(
     return (
       <Box
         sx={{
-          boxShadow: 1,
+          boxShadow: 2,
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "center",
           alignItems: "center",
-          width: "250px",
-          height: "80px",
+          width: {md:"200px",xs:"100px"},
+          height: "auto",
           m: 1,
           border: "1px solid rgba(0,0,0,0.3)",
           borderRadius: "8px",
-          // background: "#F1F1F1",
+          background: "#323232",
+          color:"#fff"
         }}
       >
-        <img
+        {/* <img
           style={{ width: "100px", height: "100%", boxShadow: 1 }}
           alt="Logo"
           src={coalicionPhoto}
-        />
+        /> */}
         <Box sx={{ p: 2 }}>
-          <Typography sx={{ fontSize: "15px", fontWeight: "bold" }}>
+          <Typography textAlign={"center"} sx={{ fontSize: {md:"15px",xs:"10px"}, fontWeight: "bold" }}>
             {partido}
           </Typography>
         </Box>

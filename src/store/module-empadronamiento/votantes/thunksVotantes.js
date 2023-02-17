@@ -1,6 +1,7 @@
 import { envioLinkAPI } from "../../../module-empadronamiento/helpers/FakeAPI";
 import { getStatusEmp } from "../../../module-empadronamiento/helpers/getStatusEmp";
 import { transformDate } from "../../../module-empadronamiento/helpers/transformDate";
+import { uploadImagesProvider } from "../../../providers/Micro-Images/provider";
 import { getJornadasNoFormalesProvider } from "../../../providers/Micro-NoFormales/providerNoFormales";
 import { sendEmailMasivoProvider, sendEmailProvider } from "../../../providers/Micro-TokeEmail/provider";
 import { getVotanteDireccionProvider, getVotantesPorJornadaProvider, getVotantesProvider, postCSVProvider, postVotanteJornadaGranelProvider, postVotanteJornadaProvider, postVotanteProvider, putVotanteProvider } from "../../../providers/Micro-Votante/providerVotante";
@@ -114,6 +115,25 @@ export const postJornadaVotanteGranel = (info, funcion = () => { }) => {
     }
 }
 
+export const postImage = (info, funcion = () => { }) => {
+    console.log("Post image: ",info)
+    return async (dispatch, getState) => {
+        
+        const { ok, data, errorMessage } = await uploadImagesProvider(info);
+        if (ok) {
+           
+            setTimeout(() => {
+                funcion();
+            }, 800);
+            return data;
+
+        } else {
+           return false;
+        }
+
+    }
+}
+
 
 export const putVotante = (curp, info, funcion = () => { }) => {
 
@@ -147,16 +167,17 @@ export const putVotante = (curp, info, funcion = () => { }) => {
 export const getVotantesbyJornada = (idJornada = "") => {
 
     return async (dispatch, getState) => {
-
+        dispatch(setVotantes({ votantes: []}));
         dispatch(startLoadingVotantes());
         const { ok, data, errorMessage } = await getVotantesPorJornadaProvider(idJornada);
+        
         try {
             if (ok) {
                 if(data.votantes){
                     dispatch(setVotantes({ votantes: data.votantes}));
                 }
             } else {
-                console.log("ocurrio un error")
+                
             dispatch(setVotantes({ votantes: []}))
             }
         } catch (error) {
