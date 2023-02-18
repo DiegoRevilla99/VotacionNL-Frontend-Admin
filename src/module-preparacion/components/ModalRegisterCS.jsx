@@ -225,7 +225,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		const info = { ...values };
 
 
-		info.fechaNacimientoCandidatos = new Date(values.fechaNacimientoCandidatos);
+		info.fechaNacimientoCandidatos = new Date(values.fechaNacimientoCandidatos).toISOString();
         info.nombreCandidato = info.nombreCandidato.trim().toUpperCase();
         info.apellidoMCandidato = info.apellidoMCandidato.trim().toUpperCase();
         info.apellidoPCandidato = info.apellidoPCandidato.trim().toUpperCase();
@@ -234,7 +234,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		info.claveElectoralCandidato = info.claveElectoralCandidato.trim().toUpperCase();
 
 		// suplentes
-		info.fechaNacimientoSuplentes = new Date(values.fechaNacimientoSuplentes);
+		info.fechaNacimientoSuplentes = new Date(values.fechaNacimientoSuplentes).toISOString();
         info.nombreSuplente = info.nombreSuplente.trim().toUpperCase();
         info.apellidoPSuplente = info.apellidoPSuplente.trim().toUpperCase();
         info.apellidoMSuplente = info.apellidoMSuplente.trim().toUpperCase();
@@ -267,7 +267,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 			toastSuccesOperation("Datos registrados con éxito");
 		} else {
 			updateCandidatoAndSuplente(
-				candidatoandSuplenteSelected.length,
+				candidatoandSuplenteSelected.id,
 				info.apellidoPCandidato,
 				info.apellidoMCandidato,
 				info.nombreCandidato,
@@ -554,7 +554,6 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 									generoSuplente: "",//Text
 								} : {
 									// CANDIDATO
-									claveElectoralCandidato: candidatoandSuplenteSelected["claveElectoralCandidato"],
 									apellidoPCandidato:candidatoandSuplenteSelected["apellidoPCandidato"],
 									apellidoMCandidato: candidatoandSuplenteSelected["apellidoMCandidato"],
 									nombreCandidato: candidatoandSuplenteSelected["nombreCandidato"],
@@ -562,6 +561,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 									seudonimoCandidato: candidatoandSuplenteSelected["seudonimoCandidato"],
 									fechaNacimientoCandidatos: candidatoandSuplenteSelected["fechaNacimientoCandidato"],
 									generoCandidato: candidatoandSuplenteSelected["generoCandidato"],
+									claveElectoralCandidato: candidatoandSuplenteSelected["claveElectoralCandidato"],
 									// SUPLENTE
 									claveElectoralSuplente:candidatoandSuplenteSelected["claveElectoralSuplente"],
 									apellidoPSuplente:candidatoandSuplenteSelected["apellidoPSuplente"],

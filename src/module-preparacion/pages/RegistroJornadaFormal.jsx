@@ -138,7 +138,7 @@ export const RegistroJornadaFormal = () => {
         <BreadCrumbsCustom
           routes={[
             {
-              name: "INICIO",
+              name: "PREPARACIÓN",
               url: "/preparacion/inicio",
             },
           ]}

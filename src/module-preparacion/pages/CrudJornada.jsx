@@ -146,7 +146,7 @@ export const CrudJornada = () => {
         <BreadCrumbsCustom
           routes={[
             {
-              name: "INICIO",
+              name: "PREPARACIÓN",
               url: "/preparacion/inicio",
             },
             {

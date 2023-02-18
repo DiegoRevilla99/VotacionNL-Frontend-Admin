@@ -397,7 +397,7 @@ export const AddBoletaJornada = () => {
 									// mb: 2,
 								}}
 								>
-									<AgrupaPartido/>
+									<AgrupaPartido info={{ partidos: partidos}} handleOpenModal={handleOpenMatchModal}/>
 								</Box>
 
 							</Box>

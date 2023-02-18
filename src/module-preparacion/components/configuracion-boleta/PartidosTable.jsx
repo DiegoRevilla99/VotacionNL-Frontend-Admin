@@ -5,32 +5,27 @@ import { Box } from "@mui/system";
 import React, { memo } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { onDeletePartido, onEditPartido } from "../../../store/module-preparacion/jornada/SliceJornada";
 import "../../../styles/generalContainer.css";
 import { BoxCandidato } from "./BoxCandidato";
 
-import { onDeletePartido } from "../../../store/module-preparacion/jornada/SliceJornada";
-
-export const PartidosTable = memo(({info = {}}) => {
+export const PartidosTable = memo(({info = {}, handleOpenModal}) => {
 
     const params = useParams();
     const dispatch = useDispatch();
-
-    // En info recibo todos los datos de la boleta
+    console.log("INFOR EN TABLE",info);
     const { id, nameParty, candidatosPartido } = info;
 
-    // console.log("partidos info", info)
+
     const editar = () => {
-      // abrirCerrarModalAsociacion();
-      console.log("press btn Editar");
+      handleOpenModal();
+      dispatch(onEditPartido(id));
+      console.log("press btn Editar", id);
     };
     
-    // const abrirCerrarModalAsociacion = () => {
-      //   setModalAsociacion(!modalAsociacion);
-    // };
-  
     const eliminarbtn = () => {
-      console.log("press btn Eliminar");
-      onDeletePartido(id);
+      console.log("press btn Eliminar", id);
+      dispatch(onDeletePartido(id));
       // abrirCerrarConfirmation();
     };
   
@@ -85,16 +80,12 @@ export const PartidosTable = memo(({info = {}}) => {
                 flexWrap: "wrap",
               }}
             >
-              {Array.isArray(candidatosPartido) &&
-                candidatosPartido.map(({ id, nombreCandidato }) => (
-                  <BoxCandidato key={id} candidato={nombreCandidato} />
-                ))}
-              {/* {candidatosPartido.map(({ id, nombreCandidato }) => (
+              {candidatosPartido.map(({ id, nombreCandidato }) => (
                 <BoxCandidato
                   key={id}
                   candidato={nombreCandidato}
                 ></BoxCandidato>
-              ))} */}
+              ))}
             </Box>
           </fieldset>
         </Box>
