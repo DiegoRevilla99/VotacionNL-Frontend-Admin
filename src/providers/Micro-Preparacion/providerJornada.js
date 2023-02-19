@@ -23,6 +23,16 @@ export const getJornadasFormales = async () => {
 	}
 };
 
+export const getJornadasNoFormales = async () => {
+	try {
+		// https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/elecciones
+		const { data } = await jornadasNoFormalesAPI.get("jornada/no_formal/elecciones");
+		return { ok: true, data: data, errorMessage: "" };
+	} catch (error) {
+		return { ok: false, errorMessage: error.message };
+	}
+};
+
 export const createJornada = async (title, entidad) => {
 	// const id = "JEO-JUN23-GOB" + Math.floor(Math.random() * 10000);
 	try {
@@ -377,16 +387,74 @@ export const getJornadaRespuestasConsultas = async (idPapeleta, id) => {
 	try {
 		const { data } = await votoConsultaAPI.get(`votos/consulta/jornada/${id}/resultados`);
 
-		console.log("DATA PAPALETA", data);
+		console.log("DATA PAPALETA XXXX", data);
 
 		const papeleta = data.papeletas.find(
 			(papeleta) => papeleta.estructuraPapeleta.idPapeleta === idPapeleta
 		);
 
-		console.log(papeleta.pregunta.subtipo);
-
 		let dataChart = [];
-		if (papeleta.pregunta.subtipo === "personalizado1") {
+
+		if (papeleta.pregunta.subtipo === "2respuestas") {
+			dataChart = [
+				{
+					id: 0,
+					respuesta: "SI",
+					resultados: papeleta.resultados.opc1,
+				},
+				{
+					id: 1,
+					respuesta: "NO",
+					resultados: papeleta.resultados.opc2,
+				},
+			];
+		} else if (papeleta.pregunta.subtipo === "3respuestas") {
+			dataChart = [
+				{
+					id: 0,
+					respuesta: "EN DESACUERDO",
+					resultados: papeleta.resultados.opc1,
+				},
+				{
+					id: 1,
+					respuesta: "NEUTRAL",
+					resultados: papeleta.resultados.opc2,
+				},
+				{
+					id: 2,
+					respuesta: "DE ACUERDO",
+					resultados: papeleta.resultados.opc3,
+				},
+			];
+		} else if (papeleta.pregunta.subtipo === "5respuestas") {
+			dataChart = [
+				{
+					id: 0,
+					respuesta: "TOTALMENTE EN DESACUERDO",
+					resultados: papeleta.resultados.opc1,
+				},
+				{
+					id: 1,
+					respuesta: "EN DESACUERDO",
+					resultados: papeleta.resultados.opc2,
+				},
+				{
+					id: 2,
+					respuesta: "NEUTRAL",
+					resultados: papeleta.resultados.opc3,
+				},
+				{
+					id: 3,
+					respuesta: "DE ACUERDO",
+					resultados: papeleta.resultados.opc4,
+				},
+				{
+					id: 4,
+					respuesta: "TOTALMENTE DE ACUERDO",
+					resultados: papeleta.resultados.opc5,
+				},
+			];
+		} else if (papeleta.pregunta.subtipo === "personalizado1") {
 			dataChart = [
 				{
 					id: 0,
@@ -399,12 +467,66 @@ export const getJornadaRespuestasConsultas = async (idPapeleta, id) => {
 					resultados: papeleta.resultados.opc2,
 				},
 			];
+		} else if (papeleta.pregunta.subtipo === "personalizado2") {
+			dataChart = [
+				{
+					id: 0,
+					respuesta: papeleta.pregunta.opcion1,
+					resultados: papeleta.resultados.opc1,
+				},
+				{
+					id: 1,
+					respuesta: papeleta.pregunta.opcion2,
+					resultados: papeleta.resultados.opc2,
+				},
+				{
+					id: 2,
+					respuesta: papeleta.pregunta.opcion3,
+					resultados: papeleta.resultados.opc3,
+				},
+			];
+		} else if (papeleta.pregunta.subtipo === "personalizado3") {
+			dataChart = [
+				{
+					id: 0,
+					respuesta: papeleta.pregunta.opcion1,
+					resultados: papeleta.resultados.opc1,
+				},
+				{
+					id: 1,
+					respuesta: papeleta.pregunta.opcion2,
+					resultados: papeleta.resultados.opc2,
+				},
+				{
+					id: 2,
+					respuesta: papeleta.pregunta.opcion3,
+					resultados: papeleta.resultados.opc3,
+				},
+				{
+					id: 3,
+					respuesta: papeleta.pregunta.opcion4,
+					resultados: papeleta.resultados.opc4,
+				},
+				{
+					id: 4,
+					respuesta: papeleta.pregunta.opcion5,
+					resultados: papeleta.resultados.opc5,
+				},
+			];
 		}
+
+		const dataFinal = {
+			jornadaModel: data.jornadaModel,
+			papeleta: papeleta,
+			resultados: dataChart,
+		};
 
 		console.log("dataChart", dataChart);
 		console.log("papeleta", papeleta);
 
-		return { ok: true, data: dataChart };
+		data.resultados = dataChart;
+
+		return { ok: true, data: dataFinal };
 	} catch (error) {
 		console.log(error.message);
 		return { ok: false, errorMessage: error.message };

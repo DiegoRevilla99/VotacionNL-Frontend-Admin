@@ -18,15 +18,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { onSaveConfig } from "../../store/module-preparacion/consulta-ciudadana/thunks";
 import dayjs from "dayjs";
 
+// const validationSchema = object({
+// 	inicioDisponibilidad: date().required("Este campo es requerido"),
+// 	finDisponibilidad: date().required("Este campo es requerido"),
+// 	inicioEmpadronamiento: date().required("Este campo es requerido"),
+// 	finEmpadronamiento: date().required("Este campo es requerido"),
+// 	inicioRecepcionVotos: date().required("Este campo es requerido"),
+// 	finRecepcionVotos: date().required("Este campo es requerido"),
+// 	inicioAsignacionContrasenia: date().required("Este campo es requerido"),
+// 	finAsignacionContrasenia: date().required("Este campo es requerido"),
+// 	tiempoDuracionRespuesta: date().required("Este campo es requerido"),
+// 	tiempoExtra: date().required("Este campo es requerido"),
+// });
 const validationSchema = object({
-	inicioDisponibilidad: date().required("Este campo es requerido"),
-	finDisponibilidad: date().required("Este campo es requerido"),
+	// inicioDisponibilidad: date().required("Este campo es requerido"),
+	// finDisponibilidad: date().required("Este campo es requerido"),
 	inicioEmpadronamiento: date().required("Este campo es requerido"),
 	finEmpadronamiento: date().required("Este campo es requerido"),
 	inicioRecepcionVotos: date().required("Este campo es requerido"),
 	finRecepcionVotos: date().required("Este campo es requerido"),
-	inicioAsignacionContrasenia: date().required("Este campo es requerido"),
-	finAsignacionContrasenia: date().required("Este campo es requerido"),
+	// inicioAsignacionContrasenia: date().required("Este campo es requerido"),
+	// finAsignacionContrasenia: date().required("Este campo es requerido"),
 	tiempoDuracionRespuesta: date().required("Este campo es requerido"),
 	tiempoExtra: date().required("Este campo es requerido"),
 });
@@ -43,14 +55,14 @@ export const ConfiguracionConsulta = () => {
 
 	const onSubmit = (values) => {
 		const data = {
-			inicioDisponibilidad: new Date(values.inicioDisponibilidad).toISOString(),
-			finDisponibilidad: new Date(values.finDisponibilidad).toISOString(),
+			// inicioDisponibilidad: new Date(values.inicioDisponibilidad).toISOString(),
+			// finDisponibilidad: new Date(values.finDisponibilidad).toISOString(),
 			inicioEmpadronamiento: new Date(values.inicioEmpadronamiento).toISOString(),
 			finEmpadronamiento: new Date(values.finEmpadronamiento).toISOString(),
 			inicioRecepcionVotos: new Date(values.inicioRecepcionVotos).toISOString(),
 			finRecepcionVotos: new Date(values.finRecepcionVotos).toISOString(),
-			inicioAsignacionContrasenia: new Date(values.inicioAsignacionContrasenia).toISOString(),
-			finAsignacionContrasenia: new Date(values.finAsignacionContrasenia).toISOString(),
+			// inicioAsignacionContrasenia: new Date(values.inicioAsignacionContrasenia).toISOString(),
+			// finAsignacionContrasenia: new Date(values.finAsignacionContrasenia).toISOString(),
 			tiempoDuracionRespuesta: new Date(values.tiempoDuracionRespuesta)
 				.toTimeString()
 				.substring(0, 8),
@@ -100,14 +112,15 @@ export const ConfiguracionConsulta = () => {
 						initialValues={
 							Object.values(configSelected).length === 0
 								? {
-										inicioDisponibilidad: "",
-										finDisponibilidad: "",
-										inicioEmpadronamiento: "",
-										finEmpadronamiento: "",
-										inicioRecepcionVotos: "",
-										finRecepcionVotos: "",
-										inicioAsignacionContrasenia: "",
-										finAsignacionContrasenia: "",
+										inicioDisponibilidad: dayjs(null),
+										finDisponibilidad: dayjs(null),
+										// inicioEmpadronamiento: "",
+										inicioEmpadronamiento: dayjs(null),
+										finEmpadronamiento: dayjs(null),
+										inicioRecepcionVotos: dayjs(null),
+										finRecepcionVotos: dayjs(null),
+										inicioAsignacionContrasenia: dayjs(null),
+										finAsignacionContrasenia: dayjs(null),
 										tiempoDuracionRespuesta: "",
 										tiempoExtra: "",
 										habilitarVerificacion: false,
@@ -181,7 +194,7 @@ export const ConfiguracionConsulta = () => {
 								)}
 
 								<Grid container spacing={6} pt="1rem">
-									<Grid item xs={12} md={6} mt="0.5rem">
+									{/* <Grid item xs={12} md={6} mt="0.5rem">
 										<DateFieldWithTitle
 											label={
 												"FECHA Y HORA DE INICIO DE LA DISPONIBILIDAD DEL SISTEMA"
@@ -209,7 +222,7 @@ export const ConfiguracionConsulta = () => {
 											minDate={values.inicioDisponibilidad}
 											isDisabled={values.isDisabled}
 										/>
-									</Grid>
+									</Grid> */}
 									<Grid item xs={12} md={6} mt="0.5rem">
 										<DateFieldWithTitle
 											label={
@@ -235,7 +248,9 @@ export const ConfiguracionConsulta = () => {
 											handleChange={handleChange}
 											error={errors.finEmpadronamiento}
 											touched={touched.finEmpadronamiento}
-											minDate={values.inicioEmpadronamiento}
+											minDate={values.inicioEmpadronamiento.minute(
+												values.inicioEmpadronamiento.minute() + 1
+											)}
 											isDisabled={values.isDisabled}
 										/>
 									</Grid>
@@ -251,6 +266,9 @@ export const ConfiguracionConsulta = () => {
 											error={errors.inicioRecepcionVotos}
 											touched={touched.inicioRecepcionVotos}
 											isDisabled={values.isDisabled}
+											minDate={values.finEmpadronamiento.minute(
+												values.finEmpadronamiento.minute() + 1
+											)}
 										/>
 									</Grid>
 									<Grid item xs={12} md={6} mt="0.5rem">
@@ -264,11 +282,11 @@ export const ConfiguracionConsulta = () => {
 											handleChange={handleChange}
 											error={errors.finRecepcionVotos}
 											touched={touched.finRecepcionVotos}
-											minDate={values.inicioRecepcionVotos}
+											minDate={values.inicioRecepcionVotos.minute(1)}
 											isDisabled={values.isDisabled}
 										/>
 									</Grid>
-									<Grid item xs={12} md={6} mt="0.5rem">
+									{/* <Grid item xs={12} md={6} mt="0.5rem">
 										<DateFieldWithTitle
 											label={
 												"FECHA Y HORA DE INICIO DE ASIGNACIÓN DE CONTRASEÑAS"
@@ -296,7 +314,7 @@ export const ConfiguracionConsulta = () => {
 											minDate={values.inicioAsignacionContrasenia}
 											isDisabled={values.isDisabled}
 										/>
-									</Grid>
+									</Grid> */}
 									<Grid item xs={6} md={3} mt="0.5rem">
 										<TimeFieldWithTitle
 											label={"TIEMPO DE DURACIÓN DEL VOTO (mm:ss)"}

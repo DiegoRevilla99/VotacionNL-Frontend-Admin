@@ -24,19 +24,22 @@ import { ReporteInicialHTML } from "../components/ReporteInicialHTML";
 
 // ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export const ConsultaChart = ({ chartData }) => {
+export const ConsultaChart = ({ chartData = { resultados: [] } }) => {
 	const total = parseInt(
-		chartData.reduce((acc, cur) => acc + cur.resultados, 0),
+		chartData.resultados.reduce((acc, cur) => acc + cur.resultados, 0),
 		10
 	);
+
+	const labelsAdjusted = chartData.resultados.map((label) => label.respuesta.split(" "));
+	console.log(labelsAdjusted);
 	const chartRef = useRef(null);
 	const [data, setData] = useState({
 		// labels: chartData.map((data) => data.nombre),
-		labels: chartData.map((data) => data.respuesta),
+		labels: labelsAdjusted,
 		datasets: [
 			{
-				label: "Respuestas",
-				data: chartData.map((data) => data.resultados),
+				label: "Votos",
+				data: chartData.resultados.map((data) => data.resultados),
 				backgroundColor: [
 					"#8B3232",
 					"#8B5232",
@@ -52,9 +55,9 @@ export const ConsultaChart = ({ chartData }) => {
 				// labels: chartData.map((data) => data.respuesta),
 			},
 			{
-				label: "Resultados",
+				label: "Votos",
 
-				data: chartData.map((data) => 10),
+				data: chartData.resultados.map((data) => total),
 				// data: total,
 				backgroundColor: ["#ededed"],
 				grouped: false,
@@ -180,7 +183,7 @@ export const ConsultaChart = ({ chartData }) => {
 							align="center"
 							sx={{ wordBreak: "break-word" }}
 						>
-							Nuevo León
+							{chartData.jornadaModel.entidad}
 						</Typography>
 					</Grid>
 					<Grid
@@ -192,7 +195,7 @@ export const ConsultaChart = ({ chartData }) => {
 						alignContent="center"
 						alignItems="center"
 					>
-						<Box borderRight="1px solid" pr={4} display="flex" flexDirection="column">
+						{/* <Box borderRight="1px solid" pr={4} display="flex" flexDirection="column">
 							<Typography
 								variant="body1"
 								color="initial"
@@ -204,7 +207,7 @@ export const ConsultaChart = ({ chartData }) => {
 							<Typography variant="body2" color="initial" align="center">
 								Mayoría relativa
 							</Typography>
-						</Box>
+						</Box> */}
 					</Grid>
 					<Grid
 						item
@@ -220,7 +223,8 @@ export const ConsultaChart = ({ chartData }) => {
 							// fontWeight="bold"
 							align="center"
 						>
-							Voto por partido político y Candidatura independiente
+							Consulta ciudadana por respuesta{" "}
+							{chartData.papeleta.pregunta.tipoRespuesta}
 						</Typography>
 					</Grid>
 				</Grid>
@@ -275,86 +279,12 @@ export const ConsultaChart = ({ chartData }) => {
 				<Grid item container xs={12} md={6}>
 					<Box bgcolor="#f2f2f2" border="1px solid" width="100%" p={1}>
 						<Typography variant="h6" color="#543884" sx={{ fontSize: "1rem" }}>
-							Resumen de la votación
+							Resumen de la consulta ciudadana
 						</Typography>
-						<Grid container spacing={1} columns={15}>
+						<Grid container spacing={1} columns={12}>
 							<Grid
 								item
-								xs={3}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-								justifyContent="center"
-							>
-								<Typography
-									variant="caption"
-									color="initial"
-									sx={{ wordBreak: "break-word" }}
-								>
-									Votos acumulados
-								</Typography>
-							</Grid>
-							<Grid
-								item
-								xs={1}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-								justifyContent="center"
-							></Grid>
-							<Grid
-								item
-								xs={3}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-								justifyContent="center"
-							>
-								<Typography
-									variant="caption"
-									color="initial"
-									sx={{ wordBreak: "break-word" }}
-									align="center"
-								>
-									Candidaturas no registradas
-								</Typography>
-							</Grid>
-							<Grid
-								item
-								xs={1}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-								justifyContent="center"
-							></Grid>
-							<Grid
-								item
-								xs={3}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-								justifyContent="center"
-							>
-								<Typography
-									variant="caption"
-									color="initial"
-									sx={{ wordBreak: "break-word" }}
-									align="center"
-								>
-									Votos nulos
-								</Typography>
-							</Grid>
-							<Grid
-								item
-								xs={1}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-								justifyContent="center"
-							></Grid>
-							<Grid
-								item
-								xs={3}
+								xs={12}
 								display="flex"
 								flexDirection="column"
 								alignItems="center"
@@ -370,125 +300,23 @@ export const ConsultaChart = ({ chartData }) => {
 									align="center"
 									fontWeight="bold"
 								>
-									Total de votos
+									Total de respuestas
 								</Typography>
 							</Grid>
 
 							<Grid
 								item
-								xs={3}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-							>
-								<Box display="flex" flexDirection="column">
-									<Typography
-										variant="body1"
-										color="initial"
-										fontWeight="bold"
-										// sx={{ fontSize: "1rem" }}
-									>
-										0
-									</Typography>
-									<Typography variant="caption" color="initial" fontWeight="bold">
-										0.00%
-									</Typography>
-								</Box>
-							</Grid>
-							<Grid
-								item
-								xs={1}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-								justifyItems="center"
-							>
-								<Typography
-									variant="caption"
-									color="initial"
-									sx={{ fontSize: "2rem" }}
-									fontWeight="bold"
-								>
-									+
-								</Typography>
-							</Grid>
-							<Grid
-								item
-								xs={3}
+								xs={12}
 								display="flex"
 								flexDirection="column"
 								alignItems="center"
 							>
 								<Box display="flex" flexDirection="column">
 									<Typography variant="body1" color="initial" fontWeight="bold">
-										0
+										{total}
 									</Typography>
 									<Typography variant="caption" color="initial" fontWeight="bold">
-										0.00%
-									</Typography>
-								</Box>
-							</Grid>
-							<Grid
-								item
-								xs={1}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-							>
-								<Typography
-									variant="caption"
-									color="initial"
-									sx={{ fontSize: "2rem" }}
-									fontWeight="bold"
-								>
-									+
-								</Typography>
-							</Grid>
-							<Grid
-								item
-								xs={3}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-							>
-								<Box display="flex" flexDirection="column">
-									<Typography variant="body1" color="initial" fontWeight="bold">
-										0
-									</Typography>
-									<Typography variant="caption" color="initial" fontWeight="bold">
-										0.00%
-									</Typography>
-								</Box>
-							</Grid>
-							<Grid
-								item
-								xs={1}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-							>
-								<Typography
-									variant="caption"
-									color="initial"
-									sx={{ fontSize: "2rem" }}
-									fontWeight="bold"
-								>
-									=
-								</Typography>
-							</Grid>
-							<Grid
-								item
-								xs={3}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-							>
-								<Box display="flex" flexDirection="column">
-									<Typography variant="body1" color="initial" fontWeight="bold">
-										0
-									</Typography>
-									<Typography variant="caption" color="initial" fontWeight="bold">
-										0.00%
+										{((total * 100) / total).toFixed(2)}%
 									</Typography>
 								</Box>
 							</Grid>
@@ -496,6 +324,14 @@ export const ConsultaChart = ({ chartData }) => {
 					</Box>
 				</Grid>
 			</Grid>
+			<Box py="2rem">
+				<Typography variant="body1" color="initial" align="center" gutterBottom>
+					Pregunta:
+				</Typography>
+				<Typography variant="body1" color="initial" align="center" fontWeight="bold">
+					{chartData.papeleta.pregunta.descPregunta}
+				</Typography>
+			</Box>
 			<Chart
 				type="bar"
 				ref={chartRef}
@@ -521,26 +357,20 @@ export const ConsultaChart = ({ chartData }) => {
 								top: 10,
 								bottom: 30,
 							},
-							text: "Porcentaje de votos",
+							text: "Votos",
 						},
 						tooltip: {
 							filter: function (tooltipItem) {
 								// console.log("TOOLTIPITEM", tooltipItem);
 								return tooltipItem.datasetIndex === 0;
 							},
+
 							usePointStyle: true,
 							callbacks: {
-								labelPointStyle: (context) => {
-									console.log(context);
-									console.log("Imagen", context.dataset.image[context.dataIndex]);
-									const image = new Image(15, 15);
-									image.src = context.dataset.image[context.dataIndex];
-									return {
-										pointStyle: image,
-									};
-								},
-								beforeTitle: (context) => {
-									return context[0].dataset.labels[context[0].dataIndex];
+								title: (context) => {
+									// return context[0].dataset.labels[context[0].dataIndex];
+									// return chartData.map((data) => data.respuesta);
+									return chartData.resultados[[context[0].dataIndex]].respuesta;
 								},
 							},
 						},

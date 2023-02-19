@@ -86,6 +86,8 @@ export const onCreateConsultaCiudadana = (titulo, entidad, navigate = (id) => {}
 
 		console.log("ENTRA");
 
+		console.log("CREACION DE CONSULTA", id);
+
 		if (ok) {
 			dispatch(onAddConsultaCiudadana({ idJornada: id, nombreJornada: titulo }));
 			dispatch(onSuccessOperation());

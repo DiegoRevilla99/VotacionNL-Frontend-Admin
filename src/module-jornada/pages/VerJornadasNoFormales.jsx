@@ -8,7 +8,12 @@ import { useConsultaCiudadanaStore } from "../../module-preparacion/hooks/useCon
 import { onSetConsultaSelected } from "../../store/module-preparacion/consulta-ciudadana/consultaCiudadanaSlice";
 import { onGetConsultasCiudadanas } from "../../store/module-preparacion/consulta-ciudadana/thunks";
 import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
-import { onGetjornadas } from "../../store/module-preparacion/jornada/ThunksJornada";
+import {
+	onGetBoletasParaJornada,
+	onGetjornadas,
+	onGetjornadasNoFormales,
+} from "../../store/module-preparacion/jornada/ThunksJornada";
+import { getJornadasNoFormalesProvider } from "../../providers/Micro-NoFormales/providerNoFormales";
 
 export const VerJornadasNoFormales = () => {
 	const navigate = useNavigate();
@@ -39,12 +44,15 @@ export const VerJornadasNoFormales = () => {
 	];
 
 	useEffect(() => {
-		if (jornadasData.length === 0) dispatch(onGetjornadas());
+		dispatch(onGetjornadasNoFormales());
 	}, []);
 
 	const handleWatch = (id, titulo) => {
-		// dispatch(onSetConsultaSelected({ id, titulo, ballots: [] }));
-		// navigate("/preparacion/consulta/" + id);
+		dispatch(
+			onGetBoletasParaJornada(id, titulo, () =>
+				navigate("/jornada/reportes/" + id + "/reporteInicio/")
+			)
+		);
 	};
 
 	if (status === "checking")

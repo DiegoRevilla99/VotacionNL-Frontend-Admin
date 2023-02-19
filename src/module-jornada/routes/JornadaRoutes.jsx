@@ -16,8 +16,9 @@ export const JornadaRoutes = () => {
 
 				<Route path="/*" element={<Navigate to="/jornada/inicio" />} />
 				<Route path="reportesJornadasFormales" element={<VerJornadasFormales />} />
-				<Route path="reportesJornadasNoFormales" element={<VerJornadasNoFormales />} />
 				<Route path="reportes/:idJornada/*" element={<ReportesFormalesTabs />} />
+
+				<Route path="reportesJornadasNoFormales" element={<VerJornadasNoFormales />} />
 
 				<Route path="reportesConsultasCiudadanas" element={<VerConsultasCiudadanas />} />
 				<Route

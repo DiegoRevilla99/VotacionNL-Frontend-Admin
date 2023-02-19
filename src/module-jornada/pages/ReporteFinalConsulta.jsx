@@ -29,14 +29,14 @@ import { ConsultaChart } from "../components/ConsultaChart";
 import { JornadaFormalChart } from "./JornadaFormalChart";
 // import { VisualizadorDePDF } from "./VisualizadorDePDF";
 
-export const ReporteFinalConsulta = () => {
-	const { jornadaSelected, status, jornadaVotosData } = useJornadaStore();
+export const ReporteFinalConsulta = ({ status, jornadaVotosData }) => {
 	const { consultaSelected } = useConsultaCiudadanaStore();
 	const [papeleta, setPapeleta] = React.useState(null);
+
 	const params = useParams();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	console.log("BOLETA", papeleta);
+	console.log("PAPELETAAAAAAAAAAAA", papeleta);
 
 	const handleChangeSelect = (event) => {
 		setPapeleta(event.target.value);
@@ -76,12 +76,12 @@ export const ReporteFinalConsulta = () => {
 			<Grid container spacing={2}>
 				<Grid item xs={12}>
 					<FormControl size="small" fullWidth>
-						<InputLabel id="demo-select-small">Boleta</InputLabel>
+						<InputLabel id="demo-select-small">Papeleta</InputLabel>
 						<Select
 							labelId="demo-select-small"
 							id="demo-select-small"
 							value={papeleta === null ? "null" : papeleta}
-							label="Boleta"
+							label="Papeleta"
 							onChange={handleChangeSelect}
 						>
 							{/* <MenuItem value="">
@@ -118,8 +118,11 @@ export const ReporteFinalConsulta = () => {
 									</Box>
 								) : papeleta === null ? (
 									<></>
-								) : (
+								) : jornadaVotosData.length !== 0 ? (
 									<ConsultaChart chartData={jornadaVotosData} />
+								) : (
+									// <></>
+									<></>
 								)
 							}
 						/>

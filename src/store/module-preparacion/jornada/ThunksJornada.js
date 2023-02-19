@@ -1,4 +1,5 @@
 import { getPapeletas } from "../../../providers/Micro-Consultas/provider";
+import { getJornadasNoFormalesProvider } from "../../../providers/Micro-NoFormales/providerNoFormales";
 import {
 	createBoletaFormal,
 	createJornada,
@@ -9,6 +10,7 @@ import {
 	getJornadaRespuestasConsultas,
 	getJornadas,
 	getJornadasFormales,
+	getJornadasNoFormales,
 	getJornadaVotos,
 	updateBoletaData,
 } from "../../../providers/Micro-Preparacion/providerJornada";
@@ -62,6 +64,24 @@ export const onGetjornadas = () => {
 	return async (dispatch) => {
 		dispatch(onCheckingOperation());
 		const { ok, data, errorMessage } = await getJornadasFormales(); // PROVIDER
+		if (ok) {
+			dispatch(onSuccessOperation());
+			dispatch(onFillJornadasData(data)); // SLICE
+		} else {
+			dispatch(onErrorOperation());
+			dispatch(
+				onToastErrorOperation({
+					errorMessage: errorMessage || "No se pudo obtener las jornadas",
+				})
+			);
+		}
+	};
+};
+
+export const onGetjornadasNoFormales = () => {
+	return async (dispatch) => {
+		dispatch(onCheckingOperation());
+		const { ok, data, errorMessage } = await getJornadasNoFormales(); // PROVIDER
 		if (ok) {
 			dispatch(onSuccessOperation());
 			dispatch(onFillJornadasData(data)); // SLICE
