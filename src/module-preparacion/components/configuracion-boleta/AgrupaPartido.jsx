@@ -21,7 +21,7 @@ const styleButton = {
 
 export const AgrupaPartido = ({ info= {},handleOpenModal}) => {
   const { partidos = [] } = info;
-  console.log("AgrupaPartido", partidos);
+  // console.log("AgrupaPartido", partidos);
 
   return (
     <>

@@ -32,15 +32,16 @@ export const CrudJornada = () => {
   const navigate = useNavigate();
 	const [modalDeleteStatus, setModalDeleteStatus] = useState(false);
   const [idBoleta, setIdBoleta] = useState(null);
-	const [encabezadoBoleta, setNombreBoleta] = useState(null);
+	const [nombreEstructuraBoleta, setNombreBoleta] = useState(null);
   // ToDo:AQUI OBTENGAN LAS VARIABLES STATUS Y DATA DE SUS ESTADOS GLOBALES
   const { jornadaSelected, status } = useJornadaStore();
   const params = useParams();
   const dispatch = useDispatch();
+  // console.log("AQUI VA LA JORNADA",jornadaSelected);
   const columns = [
     // field: Debe de ir la variable que se va a mostrar en la tabla
     {
-      field: "nombreEleccion",
+      field: "nombreEstructuraBoleta",
       headerName: "TÍTULO DE LA BOLETA",
       flex: 10,
     },
@@ -69,7 +70,7 @@ export const CrudJornada = () => {
             </Button>
             <IconButton
               sx={{ color: "#511079" }}
-              onClick={() => handleDelete(params.id, params.row.nombreEleccion)}
+              onClick={() => handleDelete(params.id, params.row.nombreEstructuraBoleta)}
             >
               <DeleteIcon />
             </IconButton>
@@ -109,6 +110,7 @@ export const CrudJornada = () => {
   };
 
   const handleAdd = () => {
+    // console.log("jornadaSelected", jornadaSelected.boletas);
     // navigate("/preparacion/jornada/boleta/");
     navigate(
       "/preparacion/jornada/" +
@@ -237,7 +239,7 @@ export const CrudJornada = () => {
 					modalDeleteStatus={modalDeleteStatus} 
 					closeModalDelete={closeModalDelete} 
 					idBoleta={idBoleta}
-					encabezadoBoleta={encabezadoBoleta}
+					nombreEstructuraBoleta={nombreEstructuraBoleta}
 				/>	
       </Grid>
       

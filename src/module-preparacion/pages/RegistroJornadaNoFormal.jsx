@@ -28,7 +28,8 @@ export const RegistroJornadaNoFormal = () => {
 	// TODO:AQUI OBTENGAN LAS VARIABLES STATUS Y DATA DE SUS ESTADOS GLOBALES
 	// const { jornadasData, status } = useJornadaStore();
 	const {jornadasNoFormalesData, status } = useJornadaNoFormalStore();
-
+	
+	console.log("RegistroJornadaNoFormal", jornadasNoFormalesData);
 	const dispatch = useDispatch();
 	const columns = [
 		{ field: "nombreEleccion", headerName: "TÍTULO DE LA ELECCIÓN", flex: 10 },

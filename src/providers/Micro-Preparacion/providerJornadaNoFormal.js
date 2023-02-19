@@ -1,5 +1,5 @@
+import { ImagesAPI } from "./configImage";
 import { jornadasNoFormalesAPI } from "./configNoFormales";
-
 let idEleccion = 0;
 let idBoleta = 0;
 
@@ -7,6 +7,7 @@ export const getJornadasNoFormales = async () => {
 	try {
 		// https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/elecciones
 		const { data } = await jornadasNoFormalesAPI.get("jornada/no_formal/elecciones");
+		console.log("data del provider",data);
 		return { ok: true, data: data, errorMessage: "" };
 	} catch (error) {
 		return { ok: false, errorMessage: error.message };
@@ -70,40 +71,21 @@ export const getCandidatoBoletaNoFormal = async (idJornadaElectoral) => {
 };
 
 
-export const putImagenCandidato = async (idCandidato, imagen) => {
+export const postImage = async (file) => {
 	try {
-		// **FETCH
-		//https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/candidato/selfie/RAMIRO
-		const { data } = await jornadasNoFormalesAPI.put(
-			`jornada/no_formal/candidato/selfie/${idCandidato}`,
-			{
-				imagen: imagen,
-			}
-		);
-		console.log("Data imagen candidato: ", data);
-		return { ok: true, data: data };
+
+		const formData1 = new FormData();
+		formData1.append("file",file);
+		const response = await  ImagesAPI.post("file/upload", formData1);
+		console.log(response)
+		return { ok: true, data: response.data.link, errorMessage: "" };
+
 	} catch (error) {
 		console.log("Error la imagen: ", error);
 		return { ok: false };
 	}
 };
-export const putImagenAsociacion = async (idAsociacion, imagen) => {
-	try {
-		// **FETCH
-		//https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/asociacion/logo/202
-		const { data } = await jornadasNoFormalesAPI.put(
-			`jornada/no_formal/asociacion/logo/${idAsociacion}`,
-			{
-				imagen: imagen,
-			}
-		);
-		console.log("Data asociacion: ", data);
-		return { ok: true, data: data };
-	} catch (error) {
-		console.log("Error la imagen: ", error);
-		return { ok: false };
-	}
-};
+
 export const getBoletaData = async (idBoleta) => {
 	try {
 		// console.log("ID BOLETA: ", idBoleta);

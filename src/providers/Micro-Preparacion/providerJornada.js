@@ -1,8 +1,24 @@
 import { votoConsultaAPI } from "../Micro-VotoConsultas/configVotoConsultas";
+import { ImagesAPI } from "./configImage";
 import { jornadasAPI } from "./configJornada";
-
 let idJornadas = 0;
 let idBoleta = 0;
+
+
+export const postImage = async (file) => {
+	try {
+
+		const formData1 = new FormData();
+		formData1.append("file",file);
+		const response = await  ImagesAPI.post("file/upload", formData1);
+		console.log(response)
+		return { ok: true, data: response.data.link, errorMessage: "" };
+
+	} catch (error) {
+		console.log("Error la imagen: ", error);
+		return { ok: false };
+	}
+};
 
 export const getJornadas = async () => {
 	try {
@@ -215,7 +231,7 @@ export const createBoletaFormal = async (
 			},
 			partidos: [],
 		};
-		console.log("boletaInformacion", boletaInformacion);
+		
 		partidos.forEach((partido) => {
 			const boletaPartido = {
 				partidoModel: {
@@ -224,10 +240,10 @@ export const createBoletaFormal = async (
 					siglas: partido.siglasParty,
 					emblema: partido.emblemParty,
 					logo: partido.fotografiaParty,
-					status: partido.statusPary,
+					status: partido.statusParty,
 				},
 				candidatoModel: {
-					CURP: partido.candidatosPartido[0].claveElectoralCandidato,
+					curp: partido.candidatosPartido[0].claveElectoralCandidato,
 					apellidoPCandidato: partido.candidatosPartido[0].apellidoPCandidato,
 					apellidoMCandidato: partido.candidatosPartido[0].apellidoMCandidato,
 					nombreCandidato: partido.candidatosPartido[0].nombreCandidato,
@@ -237,7 +253,7 @@ export const createBoletaFormal = async (
 					genero: partido.candidatosPartido[0].generoCandidato,
 				},
 				suplenteModel: {
-					CURP: partido.candidatosPartido[0].claveElectoralSuplente,
+					curp: partido.candidatosPartido[0].claveElectoralSuplente,
 					apellidoPSuplente: partido.candidatosPartido[0].apellidoPSuplente,
 					apellidoMSuplente: partido.candidatosPartido[0].apellidoMSuplente,
 					nombreSuplente: partido.candidatosPartido[0].nombreSuplente,
@@ -250,11 +266,97 @@ export const createBoletaFormal = async (
 			boletaInformacion.partidos.push(boletaPartido);
 		});
 
+
+		// const boletaInformacion = {
+			
+		// 		estructuraBoletaModel: {
+		// 			nombreEstructuraBoleta:"GOBERNADOR",
+		// 			distrito:33 ,
+		// 			municipio: "SANTA LUCIA",
+		// 			primerFirmanteNombre: "JUAN PEREZ RODRIGUEZ",
+		// 			primerFirmanteCargo: "PRESIDENTE DE LA MESA ELECTORAL NACIONAL",
+		// 			segundoFirmanteNombre: "ROSALINDA RAMIREZ JUAREZ",
+		// 			segundoFirmanteCargo: "PRESIDENTE DE LA MESA ELECTORAL ESTATAL",
+		// 			modalidadVotacionModel:{
+		// 					idModalidadVotacion: 1
+		// 			},
+		// 			jornadaModel: {
+		// 					idJornada: "350714-JO-EL-CE-OR-20-NUE-2023"
+		// 			}
+		// 		},
+		// 		partidos: [
+		// 			{
+		// 				partidoModel:{
+		// 					clavePartido: "MR-02",
+		// 					nombre: "MORENA",
+		// 					siglas: "MORENA",
+		// 					emblema: "LA EXPERANZA DE MÉXICO",
+		// 					logo: "MORENA.PNG",
+		// 					status:false
+		// 				},
+		// 				candidatoModel: {
+		// 					curp: "SAL001207MOCRGD6",
+		// 					apellidoPCandidato: "SANCHEZ",
+		// 					apellidoMCandidato: "LOPEZ",
+		// 					nombreCandidato: "LAURA",
+		// 					fotoCandidato: "LAU.jgp",
+		// 					seudonimoCandidato: "LAURITA",
+		// 					fechaNacimiento: "2000-07-11T20:38:38.604+00:00",
+		// 					genero: "FEMENINO"
+		// 				},
+		// 				suplenteModel:{
+		// 					curp: "DIRA000302HOCGDJ9",
+		// 					apellidoPSuplente: "DIEGO",
+		// 					apellidoMSuplente: "REVILLA",
+		// 					nombreSuplente: "JOSE ANTONIO",
+		// 					fotoSuplente: "JOSE.jgp",
+		// 					seudonimoSuplente:"REVILLITA",
+		// 					fechaNacimiento: "2000-03-02T20:38:38.604+00:00",
+		// 					genero: "MASCULINO"
+		// 				}
+		// 			},
+		// 			{
+		// 				partidoModel:{
+		// 					clavePartido: "PR-02",
+		// 					nombre: "PARTIDO REVOLUCIONARIO I",
+		// 					siglas: "PRI",
+		// 					emblema: "EL PRI DE MÉXICO",
+		// 					logo: "PRI.PNG",
+		// 					status:true
+		// 				},
+		// 				candidatoModel: {
+		// 					curp: "HESY000601MOCRNNA8",
+		// 					apellidoPCandidato: "HERNANDEZ",
+		// 					apellidoMCandidato: "SANTIAGO",
+		// 					nombreCandidato: "YENY",
+		// 					fotoCandidato: "YENY.jgp",
+		// 					seudonimoCandidato: "YENIFER",
+		// 					fechaNacimiento: "2000-06-01T20:38:38.604+00:00",
+		// 					genero: "FEMENINO"
+		// 				},
+		// 				suplenteModel:{
+		// 					curp: "PESJ000721MTSRBSA8",
+		// 					apellidoPSuplente: "PEREZ",
+		// 					apellidoMSuplente: "SIBAJA",
+		// 					nombreSuplente: "JOSELYNE ANAHI",
+		// 					fotoSuplente: "YOSS.jgp",
+		// 					seudonimoSuplente:"YOSS",
+		// 					fechaNacimiento: "2000-07-21T20:38:38.604+00:00",
+		// 					genero: "FEMENINO"
+		// 				}
+		// 			}
+					
+		// 		]
+			
+		// };
+		console.log("boletaInformacion", boletaInformacion);
 		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/boletapartidos
 		const respuesta = await jornadasAPI.post(
 			"jornada/electoral/boletapartidos",
 			boletaInformacion
 		);
+
+		console.log("datraaaaaaaaaaa",respuesta);
 		return {
 			ok: true,
 			idEstructuraBoleta: respuesta.data.data.estructuraBoletaModel.idEstructuraBoleta,
