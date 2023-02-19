@@ -6,7 +6,7 @@ import {
     onToastErrorOperation, onToastSuccessOperation
 } from "../../ui/uiSlice";
 
-import { onAddAsociacion, onAddBoleta, onAddCandidato, onAddJornadasNoFormales, onCheckingOperation, onDeleteBoletaData, onDeleteJornadaData, onEditBoleta, onErrorOperation, onFillBoletas, onFillCandidatosNoFormalesData, onFillJornadasNoFormalesData, onSetAsociacionSelectedNull, onSetBoletasSelectedNull, onSetCandidatoSelectedNull, onSetjornadaNoFormalSelected, onSuccessOperation } from "./SliceJornadaNoFormal";
+import { onAddAsociacion, onAddBoleta, onAddCandidato, onAddJornadasNoFormales, onCheckingOperation, onDeleteBoletaData, onDeleteJornadaData, onEditBoleta, onErrorOperation, onFillBoletas, onFillCandidatosNoFormalesData, onFillJornadasNoFormalesData, onSetAsociacionNull, onSetAsociacionSelectedNull, onSetBoletasSelectedNull, onSetCandidatoNull, onSetCandidatoSelectedNull, onSetjornadaNoFormalSelected, onSuccessOperation } from "./SliceJornadaNoFormal";
 
 // Jornadas No Formales
 
@@ -27,12 +27,12 @@ export const onGetJornadasNoFormales = () => {
 
 export const onCreateJornadaNoFormal = (title, tipoEleccion, navigate = (id) => {}) => {
     return async (dispatch) => {
-        dispatch(onCheckingOperation());
         dispatch(onToastCheckingOperation("Guardando consulta..."));
+        dispatch(onCheckingOperation());
         const {ok, id } = await createJornada(title, tipoEleccion);// PROVIDER
         if (ok) {
-            dispatch(onSuccessOperation());
             dispatch(onAddJornadasNoFormales({idEleccion: id, nombreJornada: title}));// SLICE
+            dispatch(onSuccessOperation());
             dispatch(onToastSuccessOperation({ successMessage: "Jornada creada con éxito" }));
             dispatch(onSetjornadaNoFormalSelected({id, title, boletasNoFormales: []}));
             navigate(id);
@@ -45,12 +45,12 @@ export const onCreateJornadaNoFormal = (title, tipoEleccion, navigate = (id) => 
 
 export const onDeleteJornada = (id) => {
     return async (dispatch) => {
-        dispatch(onCheckingOperation());
         dispatch(onToastCheckingOperation("Eliminando jornada..."));
+        dispatch(onCheckingOperation());
         const {ok } = await deleteJornada(id);// PROVIDER
         if (ok) {
-            dispatch(onSuccessOperation());
             dispatch(onDeleteJornadaData(id));// SLICE
+            dispatch(onSuccessOperation());
             dispatch(onToastSuccessOperation({ successMessage: "Jornada eliminada con éxito" }));
         } else {
             dispatch(onErrorOperation());
@@ -70,6 +70,8 @@ export const onGetBoletasNoFormales = (idJornada, navigate = () => {} ) => {
             dispatch(onSetBoletasSelectedNull());
             dispatch(onSetCandidatoSelectedNull());
             dispatch(onSetAsociacionSelectedNull());
+            dispatch(onSetCandidatoNull());// SLICE
+            dispatch(onSetAsociacionNull());// SLICE
             dispatch(onFillBoletas(data));// SLICE
         } else {
             dispatch(onErrorOperation());
@@ -97,8 +99,8 @@ export const onGetCandidatosNoFormales = (idBoleta, navigate = () => {} ) => {
 export const onCreateBoleta = (data, idJornada, candidatos, onBoletaCreated, navigate = () => {}) => {
     return async (dispatch) => {
 
-        dispatch(onCheckingOperation());
         dispatch(onToastCheckingOperation("Guardando boleta..."));
+        dispatch(onCheckingOperation());
         const {ok, idEstructuraBoleta } = await createBoleta(data, idJornada, candidatos);// PROVIDER
 
         if (ok) {
@@ -116,8 +118,8 @@ export const onCreateBoleta = (data, idJornada, candidatos, onBoletaCreated, nav
 export const onCreateBoletaAsociaciones = (data, idJornada, candidatos, asociaciones, onBoletaCreated, navigate = () => {}) => {
     return async (dispatch) => {
 
-        dispatch(onCheckingOperation());
         dispatch(onToastCheckingOperation("Guardando boleta..."));
+        dispatch(onCheckingOperation());
         const {ok, idEstructuraBoleta } = await createBoletaAsociaciones(data, idJornada, candidatos, asociaciones);// PROVIDER
         if (ok) {
             dispatch(onSuccessOperation());
@@ -153,25 +155,6 @@ export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
     }
 };
 
-// export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
-//     return async (dispatch) => {
-//         dispatch(onCheckingOperation());
-//         console.log("IDBOLETA THUNKS: ", idBoleta);
-//         const {ok, data, dataCandidato } = await getBoletaData(idBoleta);// PROVIDER
-//         console.log("CANDIDATOS EN EL THUNKS",dataCandidato);
-//         console.log("boleta EN EL THUNKS",data);
-//         if (ok) {
-//             dispatch(onSuccessOperation());
-//             dispatch(onEditBoleta({idBoleta, ...data}));// SLICE
-//             dispatch(onAddCandidato(dataCandidato));// SLICE
-//             navigate();
-//         } else {
-//             dispatch(onErrorOperation());
-//             // dispatch(onToastErrorOperation({ errorMessage: errorMessage || "No se pudo obtener la boleta" }));
-//         }
-//     }
-// };
-
 export const onUpdateBoletaData = (
     values, 
     idJornada, 
@@ -196,12 +179,12 @@ export const onUpdateBoletaData = (
 
 export const onDeleteBoleta = (idBoleta) => {
     return async (dispatch) => {
-        dispatch(onCheckingOperation());
         dispatch(onToastCheckingOperation("Eliminando boleta..."));
+        // dispatch(onCheckingOperation());
         const {ok} = await deleteBoleta(idBoleta);// PROVIDER
         if (ok) {
-            dispatch(onSuccessOperation());
             dispatch(onDeleteBoletaData(idBoleta));// SLICE
+            // dispatch(onSuccessOperation());
             dispatch(onToastSuccessOperation({ successMessage: "Boleta eliminada con éxito" }));
         } else {
             dispatch(onErrorOperation());

@@ -57,8 +57,8 @@ export const onCreateJornada = (title, entidad, navigate = (id) => {}) => {
 		dispatch(onToastCheckingOperation("Guardando consulta..."));
 		const { ok, id } = await createJornada(title, entidad); // PROVIDER
 		if (ok) {
-			dispatch(onSuccessOperation());
 			dispatch(onAddJornadas({ idJornada: id, nombreJornada: title })); // SLICE
+			dispatch(onSuccessOperation());
 			dispatch(onToastSuccessOperation({ successMessage: "Jornada creada con éxito" }));
 			dispatch(onSetJornadaSelected({ id, title, boletas: [] }));
 			navigate(id);
@@ -71,12 +71,12 @@ export const onCreateJornada = (title, entidad, navigate = (id) => {}) => {
 
 export const onDeleteJornada = (id) => {
 	return async (dispatch) => {
-		dispatch(onCheckingOperation());
 		dispatch(onToastCheckingOperation("Eliminando jornada..."));
+		dispatch(onCheckingOperation());
 		const { ok } = await deleteJornada(id); // PROVIDER
 		if (ok) {
-			dispatch(onSuccessOperation());
 			dispatch(onDeleteJornadaData(id)); // SLICE
+			dispatch(onSuccessOperation());
 			dispatch(onToastSuccessOperation({ successMessage: "Jornada eliminada con éxito" }));
 		} else {
 			dispatch(onErrorOperation());
@@ -132,8 +132,8 @@ export const onCreateBoleta = (
 	navigate = () => {}
 ) => {
 	return async (dispatch) => {
-		dispatch(onCheckingOperation());
 		dispatch(onToastCheckingOperation("Guardando boleta..."));
+		dispatch(onCheckingOperation());
 		const { ok, idEstructuraBoleta } = await createBoletaFormal(
 			data,
 			idJornada,

@@ -69,6 +69,41 @@ export const getCandidatoBoletaNoFormal = async (idJornadaElectoral) => {
 	}
 };
 
+
+export const putImagenCandidato = async (idCandidato, imagen) => {
+	try {
+		// **FETCH
+		//https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/candidato/selfie/RAMIRO
+		const { data } = await jornadasNoFormalesAPI.put(
+			`jornada/no_formal/candidato/selfie/${idCandidato}`,
+			{
+				imagen: imagen,
+			}
+		);
+		console.log("Data imagen candidato: ", data);
+		return { ok: true, data: data };
+	} catch (error) {
+		console.log("Error la imagen: ", error);
+		return { ok: false };
+	}
+};
+export const putImagenAsociacion = async (idAsociacion, imagen) => {
+	try {
+		// **FETCH
+		//https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/asociacion/logo/202
+		const { data } = await jornadasNoFormalesAPI.put(
+			`jornada/no_formal/asociacion/logo/${idAsociacion}`,
+			{
+				imagen: imagen,
+			}
+		);
+		console.log("Data asociacion: ", data);
+		return { ok: true, data: data };
+	} catch (error) {
+		console.log("Error la imagen: ", error);
+		return { ok: false };
+	}
+};
 export const getBoletaData = async (idBoleta) => {
 	try {
 		// console.log("ID BOLETA: ", idBoleta);

@@ -5,19 +5,19 @@ import { useDispatch } from "react-redux";
 import { FielTextCustom } from "../components/FielTextCustom";
 // import { ModalEliminarPC } from "../components/ModalEliminarPC";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SettingsIcon from "@mui/icons-material/Settings";
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import { Formik } from 'formik';
 import { useNavigate, useParams } from "react-router-dom";
 import { object, string } from "yup";
 import { onCreateBoleta, onCreateBoletaAsociaciones, onUpdateBoletaData } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
 import { AddCandidatoGenericoMod } from "../components/AddCandidatoGenericoMod";
+import { AgrupaAsociacion } from "../components/configuracion-boleta/AgrupaAsociacion";
 import { ModalAsociacionGenerico } from "../components/ModalAsociacionGenerico";
 import { ModalBoletaCandidatoGenerico } from "../components/ModalBoletaCandidatoGenerico";
 import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
-
-import { AgrupaAsociacion } from "../components/configuracion-boleta/AgrupaAsociacion";
-
-
 const modalidadNoFormal = [ {
     value: 1,
     label: 'REPRESENTANTE',
@@ -340,6 +340,12 @@ export const AddBoletaJornadaGenerica = () => {
 								</MenuItem>
 								))}
 							</TextField>
+							<Tooltip title="Las modalidades disponibles son tres, de las cuales, en caso de elegir planilla debe recordar que es importante tener cuidado con los candidatos que pertenecen a las mismas asociaciones." 
+							placement="right">
+								<IconButton>
+									<HelpOutlineIcon fontSize="large"/>
+								</IconButton>
+								</Tooltip>
 
 						</Grid>
 						<Grid item xs={12}>

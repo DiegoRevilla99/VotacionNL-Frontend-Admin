@@ -226,9 +226,9 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 		handleCloseRegisterModal();
 	};
 	 //Validacion del formato imagen 
-	 const [fotografiaCandidato, setFotografia] = useState({
-		name: "Sin Archivo seleccionado",
-	  });
+	//  const [fotografiaCandidato, setFotografia] = useState({
+	// 	name: "Sin Archivo seleccionado",
+	//   });
 // ASDASDASDASDASD FECHAS
 	  const FechaNacimientoField = ({ name }) => {
 		const {
@@ -332,6 +332,25 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 		 }
 		 return errors;
 	   };
+
+	   const [fotografiaCandidato, setFotografiaCandidato] = useState({ name: "" });
+	   const [fotografia, setFotografia] = useState(null);
+	 
+	   const handleUploadImage = () => {
+		 const formData = new FormData();
+		 formData.append("file", fotografia);
+		// https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/candidato/selfie/RAMIRO
+		 fetch("https://ms-jornada-upload-images.herokuapp.com/file/upload?file", {
+		   method: "PUT",
+		   body: formData,
+		 })
+		   .then((response) => response.json())
+		   .then((data) => {
+			 setFotografiaCandidato({ name: data.link });
+			 setFotografia(null);
+		   })
+		   .catch((error) => console.error(error));
+	   };
 	return (
 		<Modal
 			open={statusRegisterModal}
@@ -354,7 +373,7 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 									apellidoMCandidato: "",
 									nombreCandidato: "",
 									seudonimoCandidato: "",//Text
-									fotografiaCandidato: "fotografiaCandidato.jpg",
+									fotografiaCandidato: "",
 									fechaNacimientoCandidatos: "",//Date
 									generoCandidato: "",//Text
 								}
@@ -473,13 +492,15 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 										value={fotografiaCandidato.name}
 										variant="outlined"
 										size="small"
-										></TextField>
+										/>
 										<IconButton
-											disabled={status === "checking"}
+											// disabled={status === "checking"}
 											color="primary"
 											aria-label="upload picture"
 											component="label"
 											size="large"
+											disabled={!fotografia}
+											onClick={handleUploadImage}
 											>
 											<input
 												hidden
