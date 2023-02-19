@@ -31,10 +31,14 @@ import NavigateNextSharpIcon from "@mui/icons-material/NavigateNextSharp";
 import { useDispatch, useSelector } from "react-redux";
 import { setVotanteFound } from "../../store/module-empadronamiento/votantes/empVotantesSlice";
 import { useState } from "react";
-import { getVotanteDireccion, getVotantes } from "../../store/module-empadronamiento/votantes/thunksVotantes";
+import {
+  getVotanteDireccion,
+  getVotantes,
+} from "../../store/module-empadronamiento/votantes/thunksVotantes";
 import { getVotanteDireccionProvider } from "../../providers/Micro-Votante/providerVotante";
 import { TroubleshootTwoTone } from "@mui/icons-material";
 import { Stack } from "@mui/system";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 
 let schema = yup.object().shape({
   curp: yup.string().required("CURP del votante es necesario"),
@@ -67,200 +71,188 @@ const useStyles = makeStyles({
   },
 });
 
-const isFirstVocal=(name,vocalC)=>{
-  const tam=name.length;
-  let bandera=false;
-  let vocal="";
+const isFirstVocal = (name, vocalC) => {
+  const tam = name.length;
+  let bandera = false;
+  let vocal = "";
   for (let i = 1; i < tam; i++) {
-    const letra=name.charAt(i);
-    const voacles="aAáÁeEéÉiIíÍoOóÓuUúÚ"
-    if(!bandera){
-      if(voacles.includes(letra)){
-        bandera=true;
-        vocal=letra;
+    const letra = name.charAt(i);
+    const voacles = "aAáÁeEéÉiIíÍoOóÓuUúÚ";
+    if (!bandera) {
+      if (voacles.includes(letra)) {
+        bandera = true;
+        vocal = letra;
       }
     }
   }
 
-  if(bandera && vocal.toUpperCase()===vocalC){
-    return true
-  }else{
-    return false
+  if (bandera && vocal.toUpperCase() === vocalC) {
+    return true;
+  } else {
+    return false;
   }
-  
-}
+};
 
-const isSecondCons=(name,consonanteC)=>{
+const isSecondCons = (name, consonanteC) => {
   // console.log("Curp:",consonanteC)
-  const tam=name.length;
-  const vowels = 'aeiou';
-  let bandera=false;
-  let consonante="";
-  let consonantRegex = new RegExp(`(?![${vowels}])[a-z]`, 'gi');
+  const tam = name.length;
+  const vowels = "aeiou";
+  let bandera = false;
+  let consonante = "";
+  let consonantRegex = new RegExp(`(?![${vowels}])[a-z]`, "gi");
   // let conta=0;
   for (let ic = 1; ic < tam; ic++) {
-    
-    const letra=name.charAt(ic);
-      if(!bandera && consonantRegex.test(letra)){
-        // conta=conta+1;
-        // if(conta===2){
-          bandera=true;
-          consonante=letra;
-        // }
-        
-      }
+    const letra = name.charAt(ic);
+    if (!bandera && consonantRegex.test(letra)) {
+      // conta=conta+1;
+      // if(conta===2){
+      bandera = true;
+      consonante = letra;
+      // }
+    }
   }
 
   // console.log(bandera ? "bander: true":"bandera:false")
   // console.log("consonante:",consonante)
-  if(bandera && consonante.toUpperCase()===consonanteC){
-    return true
-  }else{
-    return false
+  if (bandera && consonante.toUpperCase() === consonanteC) {
+    return true;
+  } else {
+    return false;
   }
-  
-}
+};
 
-const isSecondApPCons=(name,consonanteC)=>{
+const isSecondApPCons = (name, consonanteC) => {
   // console.log("isSecondApPCons")
   // console.log("-----------------APELLIDO:",name)
   // console.log("Curp:",consonanteC)
-  const tam=name.length;
-  const vowels = 'aeiouAEIOU';
-  const consonantess = 'BCDFGHJKLMNPQRSTVWXYZ';
-  let bandera=false;
-  let consonante="";
+  const tam = name.length;
+  const vowels = "aeiouAEIOU";
+  const consonantess = "BCDFGHJKLMNPQRSTVWXYZ";
+  let bandera = false;
+  let consonante = "";
   let consonantRegex = new RegExp(`(?![${vowels}])[a-z]`);
-  
-  for (let ic = 1; ic < tam; ic++) {
-      
-      const letra=name.charAt(ic);
-      // console.log("letra en turno:",letra)
-      if(consonantess.includes(letra.toUpperCase())){
-        // console.log("entreeee:",letra)
-        if(!bandera){    
-          // console.log("cond2:")
-          consonante=letra;
-          bandera=true;
-        }
-      };
 
-      
+  for (let ic = 1; ic < tam; ic++) {
+    const letra = name.charAt(ic);
+    // console.log("letra en turno:",letra)
+    if (consonantess.includes(letra.toUpperCase())) {
+      // console.log("entreeee:",letra)
+      if (!bandera) {
+        // console.log("cond2:")
+        consonante = letra;
+        bandera = true;
+      }
+    }
   }
-  
+
   // console.log(bandera ? "bander: true":"bandera:false")
   // console.log("consonante:",consonante.toUpperCase())
   // console.log("consonante:",consonanteC)
-  if(bandera && consonante.toUpperCase()===consonanteC){
-    return true
-  }else{
-    return false
+  if (bandera && consonante.toUpperCase() === consonanteC) {
+    return true;
+  } else {
+    return false;
   }
-  
-}
+};
 
-const isSecondAMCons=(name,consonanteC)=>{
+const isSecondAMCons = (name, consonanteC) => {
   // console.log("isSecondApPCons")
   // console.log("-----------------APELLIDO:",name)
   // console.log("Curp:",consonanteC)
-  const tam=name.length;
-  const vowels = 'aeiouAEIOU';
-  const consonantess = 'BCDFGHJKLMNPQRSTVWXYZ';
-  let bandera=false;
-  let consonante="";
+  const tam = name.length;
+  const vowels = "aeiouAEIOU";
+  const consonantess = "BCDFGHJKLMNPQRSTVWXYZ";
+  let bandera = false;
+  let consonante = "";
   let consonantRegex = new RegExp(`(?![${vowels}])[a-z]`);
-  
-  for (let ic = 1; ic < tam; ic++) {
-      
-      const letra=name.charAt(ic);
-      // console.log("letra en turno:",letra)
-      if(consonantess.includes(letra.toUpperCase())){
-        // console.log("entreeee:",letra)
-        if(!bandera){    
-          // console.log("cond2:")
-          consonante=letra;
-          bandera=true;
-        }
-      };
 
-      
+  for (let ic = 1; ic < tam; ic++) {
+    const letra = name.charAt(ic);
+    // console.log("letra en turno:",letra)
+    if (consonantess.includes(letra.toUpperCase())) {
+      // console.log("entreeee:",letra)
+      if (!bandera) {
+        // console.log("cond2:")
+        consonante = letra;
+        bandera = true;
+      }
+    }
   }
-  
+
   // console.log(bandera ? "bander: true":"bandera:false")
   // console.log("consonante:",consonante.toUpperCase())
   // console.log("consonante:",consonanteC)
-  if(bandera && consonante.toUpperCase()===consonanteC){
-    return true
-  }else{
-    return false
+  if (bandera && consonante.toUpperCase() === consonanteC) {
+    return true;
+  } else {
+    return false;
   }
-}
+};
 
-const valiMariaJose=(name)=>{
-  const nombress=name.trim().split(" ")
-  if(nombress.length>1){
-    if(nombress[0]==="JOSÉ"|nombress[0]==="JOSE"|nombress[0]==="MARIA"|nombress[0]==="MARÍA"){
-      return true
+const valiMariaJose = (name) => {
+  const nombress = name.trim().split(" ");
+  if (nombress.length > 1) {
+    if (
+      (nombress[0] === "JOSÉ") |
+      (nombress[0] === "JOSE") |
+      (nombress[0] === "MARIA") |
+      (nombress[0] === "MARÍA")
+    ) {
+      return true;
     }
   }
-  return false
-}
+  return false;
+};
 
-const errorNombreInitFuntion=(name,val1)=>{
-
-  if(valiMariaJose(name)){
-    const nombress=name.trim().split(" ")
-    const name2=nombress[1]
-    console.log(name2)
-    if(name2.charAt(0)!==val1) return true
-  }else{
-    if(name.toUpperCase().charAt(0)!==val1) return true
+const errorNombreInitFuntion = (name, val1) => {
+  if (valiMariaJose(name)) {
+    const nombress = name.trim().split(" ");
+    const name2 = nombress[1];
+    console.log(name2);
+    if (name2.charAt(0) !== val1) return true;
+  } else {
+    if (name.toUpperCase().charAt(0) !== val1) return true;
   }
-  return false
-}
+  return false;
+};
 
-const errorNombreCFuntion=(name,val2)=>{
-  if(valiMariaJose(name.toUpperCase())){
-    const nombress=name.trim().split(" ")
-    const name2=nombress[1]
-    if(!isSecondCons(name2.toUpperCase(),val2)){
-      return true
+const errorNombreCFuntion = (name, val2) => {
+  if (valiMariaJose(name.toUpperCase())) {
+    const nombress = name.trim().split(" ");
+    const name2 = nombress[1];
+    if (!isSecondCons(name2.toUpperCase(), val2)) {
+      return true;
     }
-    
-  }else{
-    if(!isSecondCons(name.toUpperCase(),val2)){
-      return true
+  } else {
+    if (!isSecondCons(name.toUpperCase(), val2)) {
+      return true;
     }
-   
   }
-  return false
-}
+  return false;
+};
 
 let validationCurp =
   /^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$/;
 
-
-const validando = (values,type) => {
+const validando = (values, type) => {
   // console.log(values.curp);
-   
 
   const errors = {};
   if (!validationCurp.test(values.curp.toUpperCase())) {
     errors.curp = "Esta curp no es valida";
   }
 
-  if(values.fechaNacimiento!==""){
-    if(type==="formales"){
-      const fecha=new Date(values.fechaNacimiento)
-      const edad=getAge(fecha);
-      console.log("edad",edad)
-      if(edad<18) errors.edad = "Esta persona no puede ser registrada a esta jornada ya que es menor de edad";
-      
+  if (values.fechaNacimiento !== "") {
+    if (type === "formales") {
+      const fecha = new Date(values.fechaNacimiento);
+      const edad = getAge(fecha);
+      console.log("edad", edad);
+      if (edad < 18)
+        errors.edad =
+          "Esta persona no puede ser registrada a esta jornada ya que es menor de edad";
     }
-    
   }
 
-  
   /* if(validationCurp.test(values.curp.toUpperCase())&& values.nombreVotante.trim().length>0){
       if(values.nombreVotante.toUpperCase().charAt(0)!==values.curp.charAt(3)) errors.nombreVotante = "La inical debe ser '"+values.curp.charAt(3)+"'";
   }
@@ -271,56 +263,103 @@ const validando = (values,type) => {
       }
   } */
 
-  
-
-if(validationCurp.test(values.curp.toUpperCase())&& values.nombreVotante.trim().length>0){
-    if(errorNombreCFuntion(values.nombreVotante.trim().toUpperCase(),values.curp.toUpperCase().charAt(15))){
-      errors.nombreVotante = "La segunda consonante debe ser '"+values.curp.toUpperCase().charAt(15)+"'";
-    }
-}
-  
-if(validationCurp.test(values.curp.toUpperCase())&& values.nombreVotante.trim().length>0){
-  if(errorNombreInitFuntion(values.nombreVotante.trim().toUpperCase(),values.curp.toUpperCase().charAt(3))) errors.nombreVotante = "La inical debe ser '"+values.curp.charAt(3)+"'";
-}
-  
-
-
-
-
-  
-
-  if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoPVotante.trim().length>0){
-    if(!isSecondApPCons(values.apellidoPVotante,values.curp.toUpperCase().charAt(13))){
-      errors.apellidoPVotante = "La segunda consonante debe ser '"+values.curp.charAt(13)+"'";
+  if (
+    validationCurp.test(values.curp.toUpperCase()) &&
+    values.nombreVotante.trim().length > 0
+  ) {
+    if (
+      errorNombreCFuntion(
+        values.nombreVotante.trim().toUpperCase(),
+        values.curp.toUpperCase().charAt(15)
+      )
+    ) {
+      errors.nombreVotante =
+        "La segunda consonante debe ser '" +
+        values.curp.toUpperCase().charAt(15) +
+        "'";
     }
   }
 
-  if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoPVotante.trim().length>0){
-    if(!isFirstVocal(values.apellidoPVotante,values.curp.toUpperCase().charAt(1))){
-      errors.apellidoPVotante = "La siguiente vocal debe ser '"+values.curp.charAt(1)+"'";
+  if (
+    validationCurp.test(values.curp.toUpperCase()) &&
+    values.nombreVotante.trim().length > 0
+  ) {
+    if (
+      errorNombreInitFuntion(
+        values.nombreVotante.trim().toUpperCase(),
+        values.curp.toUpperCase().charAt(3)
+      )
+    )
+      errors.nombreVotante =
+        "La inical debe ser '" + values.curp.charAt(3) + "'";
+  }
+
+  if (
+    validationCurp.test(values.curp.toUpperCase()) &&
+    values.apellidoPVotante.trim().length > 0
+  ) {
+    if (
+      !isSecondApPCons(
+        values.apellidoPVotante,
+        values.curp.toUpperCase().charAt(13)
+      )
+    ) {
+      errors.apellidoPVotante =
+        "La segunda consonante debe ser '" + values.curp.charAt(13) + "'";
     }
   }
 
-  if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoPVotante.trim().length>0){
-    if(values.apellidoPVotante.toUpperCase().charAt(0)!==values.curp.charAt(0)) errors.apellidoPVotante = "La inical debe ser '"+values.curp.charAt(0)+"'";
-  }
-  
-
-
-
-  
-
-  
-  if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoMVotante.trim().length>0){
-    if(!isSecondAMCons(values.apellidoMVotante,values.curp.toUpperCase().charAt(14))){
-      errors.apellidoMVotante = "La segunda consonante debe ser '"+values.curp.charAt(14)+"'";
+  if (
+    validationCurp.test(values.curp.toUpperCase()) &&
+    values.apellidoPVotante.trim().length > 0
+  ) {
+    if (
+      !isFirstVocal(
+        values.apellidoPVotante,
+        values.curp.toUpperCase().charAt(1)
+      )
+    ) {
+      errors.apellidoPVotante =
+        "La siguiente vocal debe ser '" + values.curp.charAt(1) + "'";
     }
   }
 
-  if(validationCurp.test(values.curp.toUpperCase())&& values.apellidoMVotante.trim().length>0){
-    if(values.apellidoMVotante.toUpperCase().charAt(0)!==values.curp.charAt(2)) errors.apellidoMVotante = "La inicial debe ser '"+values.curp.charAt(2)+"'";
+  if (
+    validationCurp.test(values.curp.toUpperCase()) &&
+    values.apellidoPVotante.trim().length > 0
+  ) {
+    if (
+      values.apellidoPVotante.toUpperCase().charAt(0) !== values.curp.charAt(0)
+    )
+      errors.apellidoPVotante =
+        "La inical debe ser '" + values.curp.charAt(0) + "'";
   }
 
+  if (
+    validationCurp.test(values.curp.toUpperCase()) &&
+    values.apellidoMVotante.trim().length > 0
+  ) {
+    if (
+      !isSecondAMCons(
+        values.apellidoMVotante,
+        values.curp.toUpperCase().charAt(14)
+      )
+    ) {
+      errors.apellidoMVotante =
+        "La segunda consonante debe ser '" + values.curp.charAt(14) + "'";
+    }
+  }
+
+  if (
+    validationCurp.test(values.curp.toUpperCase()) &&
+    values.apellidoMVotante.trim().length > 0
+  ) {
+    if (
+      values.apellidoMVotante.toUpperCase().charAt(0) !== values.curp.charAt(2)
+    )
+      errors.apellidoMVotante =
+        "La inicial debe ser '" + values.curp.charAt(2) + "'";
+  }
 
   return errors;
 };
@@ -355,21 +394,23 @@ const getGender = (curp = "") => {
 };
 
 const getAge = (fecha) => {
-  const birth=new Date(fecha);
-  const current=new Date();
-  let anios=parseInt(current.getFullYear(), 10)-parseInt(birth.getFullYear(), 10);
-  const difmonths=parseInt(current.getMonth(), 10)-parseInt(birth.getMonth(), 10);
+  const birth = new Date(fecha);
+  const current = new Date();
+  let anios =
+    parseInt(current.getFullYear(), 10) - parseInt(birth.getFullYear(), 10);
+  const difmonths =
+    parseInt(current.getMonth(), 10) - parseInt(birth.getMonth(), 10);
   // console.log("dif",difmonths)
-  if(difmonths<0){
-    anios=anios-1
-  }else{
-    if(difmonths===0){
-      const difdays=parseInt(current.getDate(), 10)-parseInt(birth.getDate(), 10);
-      if(difdays<0) anios=anios-1
+  if (difmonths < 0) {
+    anios = anios - 1;
+  } else {
+    if (difmonths === 0) {
+      const difdays =
+        parseInt(current.getDate(), 10) - parseInt(birth.getDate(), 10);
+      if (difdays < 0) anios = anios - 1;
     }
   }
-  return anios
-
+  return anios;
 };
 
 const FechaNacimientoField = ({ name }) => {
@@ -410,8 +451,6 @@ const FechaNacimientoField = ({ name }) => {
   );
 };
 
-
-
 const NombreField = ({ name }) => {
   const {
     values: {
@@ -450,35 +489,33 @@ const NombreField = ({ name }) => {
   );
 };
 
-
-
-
-
-export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
+export const FormInfo = ({
+  data = {},
+  onNext = () => {},
+  limpiar = () => {},
+}) => {
   const fecha = new Date();
   const styles = useStyles();
   const dispatch = useDispatch();
-  const [isFound, setIsFound] = useState("")
-  const [loading, setLoading] = useState(false)
-  const { votanteFound,type } = useSelector(
-    (state) => state.empVotantesSlice
-  );
+  const [isFound, setIsFound] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { votanteFound, type } = useSelector((state) => state.empVotantesSlice);
 
   useEffect(() => {
-    console.log(votanteFound)
-  }, [votanteFound])
+    console.log(votanteFound);
+  }, [votanteFound]);
 
-  const getAllVotantes=async()=>{
-    return dispatch(getVotantes())
-  }
+  const getAllVotantes = async () => {
+    return dispatch(getVotantes());
+  };
 
-  const getDireccionVotante=async(id)=>{
-    return getVotanteDireccionProvider(id)
-  }
+  const getDireccionVotante = async (id) => {
+    return getVotanteDireccionProvider(id);
+  };
 
-  const getType=()=>{
+  const getType = () => {
     return type;
-  }
+  };
 
   const SearchV = ({ curp2 }) => {
     const {
@@ -493,27 +530,32 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
       touched,
       setFieldValue,
     } = useFormikContext();
-  
+
     useEffect(() => {
-      if(!data.votanteModel){
-      
-      setFieldValue("nombreVotante", votanteFound.find==="si"?votanteFound.nombreVotante:"");
-      setFieldValue("apellidoMVotante", votanteFound.find==="si"?votanteFound.apellidoMVotante:"");
-      setFieldValue("apellidoPVotante",votanteFound.find==="si"?votanteFound.apellidoPVotante:"");
-      setFieldValue("genero",votanteFound.find==="si"?votanteFound.genero:"");
-    }
+      if (!data.votanteModel) {
+        setFieldValue(
+          "nombreVotante",
+          votanteFound.find === "si" ? votanteFound.nombreVotante : ""
+        );
+        setFieldValue(
+          "apellidoMVotante",
+          votanteFound.find === "si" ? votanteFound.apellidoMVotante : ""
+        );
+        setFieldValue(
+          "apellidoPVotante",
+          votanteFound.find === "si" ? votanteFound.apellidoPVotante : ""
+        );
+        setFieldValue(
+          "genero",
+          votanteFound.find === "si" ? votanteFound.genero : ""
+        );
+      }
       // setFieldValue("fechaNacimiento", votanteFound.find==="si"?new Date(votanteFound.fechaNacimiento).toISOString():"");
       //setFieldValue("genero", votanteFound?votanteFound.genero:"");
-      
-      
     }, [votanteFound]);
-  
-    return (
-      <>
-      </>
-    );
-  };
 
+    return <></>;
+  };
 
   const [value, setValue] = React.useState(dayjs("2014-08-18T21:11:54"));
 
@@ -528,32 +570,35 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
     console.log(data);
   }, []);
 
-  const onBuscar=async(curp)=>{
-    
-    console.log("ente;",curp)
-    if(validationCurp.test(curp)){
-      setLoading(true)
-    const respu=await getAllVotantes();
-    const vot=respu.find((v)=>{
-      if(v.curp===curp)return v
-    })
-    if(vot===undefined){
-      setIsFound("Este votante nunca ha sido registrado, favor de rellenar a mano")
-      dispatch(setVotanteFound({votanteFound:{find:"no"}}))
-      setLoading(false)
-      limpiar()
+  const onBuscar = async (curp) => {
+    console.log("ente;", curp);
+    if (validationCurp.test(curp)) {
+      setLoading(true);
+      const respu = await getAllVotantes();
+      const vot = respu.find((v) => {
+        if (v.curp === curp) return v;
+      });
+      if (vot === undefined) {
+        setIsFound(
+          "Este votante nunca ha sido registrado, favor de rellenar a mano"
+        );
+        dispatch(setVotanteFound({ votanteFound: { find: "no" } }));
+        setLoading(false);
+        limpiar();
+      } else {
+        limpiar();
+        const direc = await getDireccionVotante(vot.curp);
+        console.log("direct: ", direc);
+        dispatch(
+          setVotanteFound({
+            votanteFound: { ...vot, ...direc.data.direccionModel, find: "si" },
+          })
+        );
+        setIsFound("");
+        setLoading(false);
+      }
     }
-    else{ 
-      limpiar()
-      const direc=await getDireccionVotante(vot.curp);
-      console.log("direct: ",direc)
-      dispatch(setVotanteFound({votanteFound:{...vot,...direc.data.direccionModel,find:"si"}}))
-      setIsFound("")
-      setLoading(false)
-    }
-  }
-    
-  }
+  };
 
   return (
     <Formik
@@ -573,7 +618,7 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
           : "",
         genero: data.votanteModel?.genero ? data.votanteModel.genero : "",
       }}
-      validate={(values)=>validando(values,type)}
+      validate={(values) => validando(values, type)}
       validationSchema={schema}
       onSubmit={(valores) => {
         const info = { ...valores };
@@ -588,7 +633,7 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
     >
       {({ touched, errors, handleBlur, handleChange, values }) => (
         //autoComplete="off"
-        <Form  autoComplete="off" className={styles.fomi}>
+        <Form autoComplete="off" className={styles.fomi}>
           <Box
             sx={{
               height: "100%",
@@ -603,28 +648,25 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
               <Typography textAlign="center" sx={{ fontWeight: "bold", mb: 3 }}>
                 INFORMACIÓN DEL VOTANTE
               </Typography>
-
             </div>
-            {
-                errors.edad &&
-                <Alert sx={{mb:3}} severity="error">{errors.edad}</Alert>
-              }
+            {errors.edad && (
+              <Alert sx={{ mb: 3 }} severity="error">
+                {errors.edad}
+              </Alert>
+            )}
             <Box
               width="100%"
               height="50px"
               display="flex"
               alignItems="center"
               justifyContent="space-between"
-              
             >
-              
-              
               <Box width="90%">
                 <Box display={"flex"}>
                   <Typography>CURP</Typography>
-                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
+                  <Typography sx={{ ml: 1, color: "#D80F0F" }}>*</Typography>
                 </Box>
-                
+
                 <TextField
                   required
                   label=""
@@ -642,47 +684,50 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
                 ></TextField>
               </Box>
 
-               <Button  disabled={errors.edad} sx={{ height:"50px", mt: 3,ml:2 }} onClick={()=>onBuscar(values.curp.toUpperCase())} variant="contained">
+              <Button
+                disabled={errors.edad}
+                sx={{ height: "50px", mt: 3, ml: 2 }}
+                onClick={() => onBuscar(values.curp.toUpperCase())}
+                variant="contained"
+              >
                 Buscar votante
+                <PersonSearchIcon />
               </Button>
-              {
-                loading &&
-                    <Stack
-              justifyContent="center"
-              sx={{ color: "grey.500" }}
-              spacing={2}
-              direction="row"
-            >
-              <CircularProgress color="primary" />
-        </Stack>
-              }
-              
-              <SearchV  curp2={votanteFound?.curp}/>
+              {loading && (
+                <Stack
+                  justifyContent="center"
+                  sx={{ color: "grey.500" }}
+                  spacing={2}
+                  direction="row"
+                >
+                  <CircularProgress color="primary" />
+                </Stack>
+              )}
+
+              <SearchV curp2={votanteFound?.curp} />
             </Box>
-            
+
             <br />
             <ErrorMessage
               name="curp"
               component={() => <ErrorField>{errors.curp}</ErrorField>}
             />
-            { 
-              isFound==="Este votante nunca ha sido registrado, favor de rellenar a mano" &&
+            {isFound ===
+              "Este votante nunca ha sido registrado, favor de rellenar a mano" && (
               <Alert severity="warning">{isFound}</Alert>
-            }
-            {
-              votanteFound?.find==="si" &&
+            )}
+            {votanteFound?.find === "si" && (
               <Alert severity="success">Se encontró el votante</Alert>
-              
-            }
-            
-              <br />
-              <Box display={"flex"}>
-                  <Typography>NOMBRE DEL VOTANTE</Typography>
-                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
-              </Box>
-          
+            )}
+
+            <br />
+            <Box display={"flex"}>
+              <Typography>NOMBRE DEL VOTANTE</Typography>
+              <Typography sx={{ ml: 1, color: "#D80F0F" }}>*</Typography>
+            </Box>
+
             <TextField
-             disabled={votanteFound.find==="si"||votanteFound.find===""}
+              disabled={votanteFound.find === "si" || votanteFound.find === ""}
               required
               label=""
               variant="filled"
@@ -700,14 +745,14 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
             />
             <br />
             <br />
-            
+
             <Box display={"flex"}>
-            <Typography>PRIMER APELLIDO</Typography>
-                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
-              </Box>
+              <Typography>PRIMER APELLIDO</Typography>
+              <Typography sx={{ ml: 1, color: "#D80F0F" }}>*</Typography>
+            </Box>
             <TextField
               required
-              disabled={votanteFound.find==="si"||votanteFound.find===""}
+              disabled={votanteFound.find === "si" || votanteFound.find === ""}
               label=""
               variant="filled"
               name="apellidoPVotante"
@@ -727,12 +772,12 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
             <br />
             <br />
             <Box display={"flex"}>
-            <Typography>SEGUNDO APELLIDO</Typography>
-                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
-              </Box>
-            
+              <Typography>SEGUNDO APELLIDO</Typography>
+              <Typography sx={{ ml: 1, color: "#D80F0F" }}>*</Typography>
+            </Box>
+
             <TextField
-            disabled={votanteFound.find==="si"||votanteFound.find===""}
+              disabled={votanteFound.find === "si" || votanteFound.find === ""}
               required
               label=""
               variant="filled"
@@ -753,12 +798,11 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
             <br />
             <br />
             <Box
-              width="50%"
               justifyContent="space-between"
               display="flex"
               sx={{
                 flexDirection: { sm: "row", xs: "column" },
-                width: { lg: "50%", sm: "80%" },
+                width: { lg: "100%", sm: "80%" },
               }}
             >
               <Box>
@@ -781,25 +825,47 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar=()=>{} }) => {
               />
               <br />
 
-              <Box>
-              <Box display={"flex"}>
-              <Typography sx={{ mb: 1 }}>GENERO</Typography>
-                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
-              </Box>
-                
-              <FormControl disabled={votanteFound.find==="si"||votanteFound.find===""}>
+              <Box
+                display={"flex"}
+                flexDirection="column"
+                sx={{ pl: 5 }}
+                width={"100%"}
+              >
+                <Box width={"100%"} display={"flex"}>
+                  <Typography textAlign={"center"} sx={{ mb: 1, ml: "50px" }}>
+                    GENERO
+                  </Typography>
+                  <Typography sx={{ ml: 1, color: "#D80F0F" }}>*</Typography>
+                </Box>
+
+                <FormControl
+                  disabled={
+                    votanteFound.find === "si" || votanteFound.find === ""
+                  }
+                >
                   <RadioGroup
                     aria-labelledby="demo-controlled-radio-buttons-group"
                     name="genero"
                     value={values.genero}
-                   
                     onChange={handleChange}
                     onBlur={handleBlur}
                     sx={{ display: "flex", flexDirection: "row" }}
                   >
-                    <FormControlLabel value="HOMBRE" control={<Radio />} label="HOMBRE" />
-                    <FormControlLabel value="MUJER" control={<Radio />} label="MUJER" />
-                    <FormControlLabel value="OTRO" control={<Radio />} label="OTRO" />
+                    <FormControlLabel
+                      value="HOMBRE"
+                      control={<Radio />}
+                      label="HOMBRE"
+                    />
+                    <FormControlLabel
+                      value="MUJER"
+                      control={<Radio />}
+                      label="MUJER"
+                    />
+                    <FormControlLabel
+                      value="OTRO"
+                      control={<Radio />}
+                      label="OTRO"
+                    />
                   </RadioGroup>
                 </FormControl>
                 <br />
