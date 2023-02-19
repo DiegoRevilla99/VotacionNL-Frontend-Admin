@@ -18,17 +18,11 @@ export const Login = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const onSubmit = (values) => {
-		dispatch(onLogin());
-		// dispatch(
-		// 	onLoginWithEmailAndPassword(values.curp, values.contrasenia, () => {
-		// 		navigate("/preparacion/inicio");
-		// 	})
-		// );
-		// dispatch(
-		// 	onLoginWithEmailAndPassword(values.curp, values.contrasenia, () => {
-		// 		navigate("/preparacion/inicio");
-		// 	})
-		// );
+		dispatch(
+			onLoginWithEmailAndPassword(values.curp, values.contrasenia, () => {
+				navigate("/preparacion/inicio");
+			})
+		);
 	};
 
 	return (
