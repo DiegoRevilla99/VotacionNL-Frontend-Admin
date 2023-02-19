@@ -15,6 +15,8 @@ export const onLoginWithEmailAndPassword = (email, password, navigate = () => {}
 		if (ok) {
 			// dispatch(onLogin({ uid: uid, displayName: name, email: email }));
 			dispatch(onLogin({ accessToken, username, refreshToken, email }));
+
+			console.log("Setea toke login", accessToken);
 			setToken(accessToken);
 			setRefreshToken(refreshToken);
 			// navigate();
@@ -40,6 +42,7 @@ export const onRefreshSession = () => {
 					email: user.email,
 				})
 			);
+			console.log("Setea el token");
 			setToken(refreshResponse.accessToken);
 			setRefreshToken(refreshResponse.refreshToken);
 		} else {

@@ -20,22 +20,24 @@ export const AppRouter = () => {
 	// console.log(location);
 	sessionStorage.setItem("Location", location.pathname);
 	const logged = true;
-	return (
-		<Routes>
-			{/* LOGIN Y REGISTRO */}
+	if (status === "checking") return <>Cargando</>;
+	else
+		return (
+			<Routes>
+				{/* LOGIN Y REGISTRO */}
 
-			<Route path="/auth/*" element={<AuthRoutes />}></Route>
+				<Route path="/auth/*" element={<AuthRoutes />}></Route>
 
-			<Route
-				path="/*"
-				element={
-					<PrivateRoute>
-						<AdminRoutes />
-					</PrivateRoute>
-				}
-			></Route>
+				<Route
+					path="/*"
+					element={
+						<PrivateRoute>
+							<AdminRoutes />
+						</PrivateRoute>
+					}
+				></Route>
 
-			{/* <Route path={"/verPDF/reporteInicial/*"} element={<VisualizadorDePDF />} /> */}
-		</Routes>
-	);
+				{/* <Route path={"/verPDF/reporteInicial/*"} element={<VisualizadorDePDF />} /> */}
+			</Routes>
+		);
 };
