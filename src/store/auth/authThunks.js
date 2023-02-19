@@ -15,11 +15,9 @@ export const onLoginWithEmailAndPassword = (email, password, navigate = () => {}
 		if (ok) {
 			// dispatch(onLogin({ uid: uid, displayName: name, email: email }));
 			dispatch(onLogin({ accessToken, username, refreshToken, email }));
-
-			console.log("Setea toke login", accessToken);
 			setToken(accessToken);
 			setRefreshToken(refreshToken);
-			// navigate();
+			navigate();
 		} else {
 			dispatch(onError("Error de autenticación. Revisa tus credenciales"));
 			// dispatch(onToastErrorOperation({ errorMessage: "La papeleta no se pudo guardar" }));

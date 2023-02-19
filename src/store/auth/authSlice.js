@@ -18,10 +18,10 @@ export const authSlice = createSlice({
 		},
 		onLogin: (state, { payload }) => {
 			state.status = "logged";
-			state.accessToken = payload.accessToken;
-			state.refreshToken = payload.refreshToken;
-			state.username = payload.username;
-			state.email = payload.email;
+			// state.accessToken = payload.accessToken;
+			// state.refreshToken = payload.refreshToken;
+			// state.username = payload.username;
+			// state.email = payload.email;
 		},
 		onLogout: (state, { payload }) => {
 			state.status = "notLogged";

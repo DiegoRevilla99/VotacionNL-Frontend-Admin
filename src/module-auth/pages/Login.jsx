@@ -5,6 +5,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { object, string } from "yup";
+import { onLogin } from "../../store/auth/authSlice";
 import { onLoginWithEmailAndPassword } from "../../store/auth/authThunks";
 
 const validationSchema = object({
@@ -17,11 +18,17 @@ export const Login = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const onSubmit = (values) => {
-		dispatch(
-			onLoginWithEmailAndPassword(values.curp, values.contrasenia, () => {
-				navigate("/preparacion/inicio");
-			})
-		);
+		dispatch(onLogin());
+		// dispatch(
+		// 	onLoginWithEmailAndPassword(values.curp, values.contrasenia, () => {
+		// 		navigate("/preparacion/inicio");
+		// 	})
+		// );
+		// dispatch(
+		// 	onLoginWithEmailAndPassword(values.curp, values.contrasenia, () => {
+		// 		navigate("/preparacion/inicio");
+		// 	})
+		// );
 	};
 
 	return (

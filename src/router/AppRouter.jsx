@@ -12,32 +12,32 @@ export const AppRouter = () => {
 	// const { status: userStatus } = useSelector((state) => state.auth);
 	// const logged = userStatus === "logged" ? true : false;
 
-	const { status } = useCheckAuth();
+	// const { status } = useCheckAuth();
 
-	console.log("STATUS LOGIN", status);
+	// console.log("STATUS LOGIN", status);
 
-	const location = useLocation();
+	// const location = useLocation();
 	// console.log(location);
-	sessionStorage.setItem("Location", location.pathname);
+	// sessionStorage.setItem("Location", location.pathname);
 	const logged = true;
-	if (status === "checking") return <>Cargando</>;
-	else
-		return (
-			<Routes>
-				{/* LOGIN Y REGISTRO */}
+	// if (status === "checking") return <>Cargando</>;
+	// else
+	return (
+		<Routes>
+			{/* LOGIN Y REGISTRO */}
 
-				<Route path="/auth/*" element={<AuthRoutes />}></Route>
+			<Route path="/auth/*" element={<AuthRoutes />}></Route>
 
-				<Route
-					path="/*"
-					element={
-						<PrivateRoute>
-							<AdminRoutes />
-						</PrivateRoute>
-					}
-				></Route>
+			<Route
+				path="/*"
+				element={
+					<PrivateRoute>
+						<AdminRoutes />
+					</PrivateRoute>
+				}
+			></Route>
 
-				{/* <Route path={"/verPDF/reporteInicial/*"} element={<VisualizadorDePDF />} /> */}
-			</Routes>
-		);
+			{/* <Route path={"/verPDF/reporteInicial/*"} element={<VisualizadorDePDF />} /> */}
+		</Routes>
+	);
 };
