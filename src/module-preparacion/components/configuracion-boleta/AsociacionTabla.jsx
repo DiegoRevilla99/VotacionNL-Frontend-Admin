@@ -2,43 +2,36 @@ import EditIcon from "@mui/icons-material/Edit";
 import HighlightOffSharpIcon from "@mui/icons-material/HighlightOffSharp";
 import { IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { memo, useState } from "react";
-
+import React, { memo } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { onDeleteAsociacion, onEditAsociacion } from "../../../store/module-preparacion/jornada/SliceJornadaNoFormal";
+
 import "../../../styles/generalContainer.css";
 import { BoxCandidato } from "./BoxCandidato";
 
 export const AsociacionTabla = memo(({
-  info = {},
+  info = {}, handleOpenModal
 }) => {
-  const { idAsociacion, nombreAsociacion, candidatosAsociacion } = info;
-  const [asociacionI, setAsociacionI] = useState(info);
-  // console.log("candidatosAsociacion", candidatosAsociacion);
-  // const { id } = useParams();
+  console.log("AsociacionTabla", info);
+  const { id, nombreAsociacion, candidatosAsociacion } = info;
+
   const dispatch = useDispatch();
   const params = useParams();
-  const [modalAsociacion, setModalAsociacion] = useState(false);
-  const [confirmation, setConfirmation] = useState(false);
 
   const editar = () => {
-    // abrirCerrarModalAsociacion();
+    console.log('Editar', id);
+    handleOpenModal();
+    dispatch(onEditAsociacion(id));
   };
 
-  const abrirCerrarModalAsociacion = () => {
-    // setModalAsociacion(!modalAsociacion);
-  };
-
-  const abrirCerrarConfirmation = () => {
-    // setConfirmation(!confirmation);
-  };
   const eliminarbtn = () => {
     // abrirCerrarConfirmation();
+    console.log('ELIMINAR', id);
+    dispatch(onDeleteAsociacion(id));
   };
+  
 
-  const eliminarAsociacion = () => {
-    // dispatch(deleteCoalicion(params.id, abrirCerrarConfirmation));
-  };
 
   const styles = {
     marco: {
@@ -100,17 +93,7 @@ export const AsociacionTabla = memo(({
           </Box>
         </fieldset>
       </Box>
-      {/* <EditAsociacion
-        isOpen={modalAsociacion}
-        abrirCerrarModal={abrirCerrarModalAsociacion}
-        idBoleta={params.id}
-        asociacion={asociacionI}
-      ></EditAsociacion>
-      <ModalConfirmation
-        isOpen={confirmation}
-        abrirCerrarModal={abrirCerrarConfirmation}
-        confirmar={eliminarAsociacion}
-      /> */}
+
     </>
   );
 });

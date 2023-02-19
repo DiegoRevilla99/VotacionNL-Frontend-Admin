@@ -70,28 +70,28 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 		setfotografiaPartido({ name: "Sin Archivo seleccionado" });
 		console.log("valuessssssss", values);
 		if (Object.values(partidoSelected).length === 0) {
-		addPartido(
-			partidos.length,
-			values.clavePartido,
-			values.nameParty,
-			values.siglasParty,
-			values.emblemParty,
-			values.fotografiaParty,
-			values.statusParty,
-			values.candidatosPartido,
-		);
+			addPartido(
+				partidos.length,
+				values.clavePartido,
+				values.nameParty,
+				values.siglasParty,
+				values.emblemParty,
+				values.fotografiaParty,
+				values.statusParty,
+				values.candidatosPartido,
+			);
 		toastSuccesOperation("Datos registrados con éxito");
 		} else {
-		updatePartido(
-			partidoSelected.id,
-			values.clavePartido,
-			values.nameParty,
-			values.siglasParty,
-			values.emblemParty,
-			values.fotografiaParty,
-			values.statusParty,
-			values.candidatosPartido,
-		);
+			updatePartido(
+				partidoSelected.id,
+				values.clavePartido,
+				values.nameParty,
+				values.siglasParty,
+				values.emblemParty,
+				values.fotografiaParty,
+				values.statusParty,
+				values.candidatosPartido,
+			);
 		toastSuccesOperation("Datos actualizados con éxito");
 		}
 		setPartidoSelectedNull();
@@ -145,13 +145,20 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 				statusParty: switchValue,
 				candidatosPartido: [],
 			} : {
+				clavePartido: partidoSelected.clavePartido,
 				nameParty: partidoSelected.nameParty,
 				siglasParty: partidoSelected.siglasParty,
 				emblemParty: partidoSelected.emblemParty,
 				fotografiaParty: partidoSelected.fotografiaParty,
-				clavePartido: partidoSelected.clavePartido,
 				statusParty: partidoSelected.statusParty,
 				candidatosPartido: partidoSelected.candidatosPartido,
+				// clavePartido: partidoSelected.clavePartido["clavePartido"],
+				// nameParty: partidoSelected.nameParty["nameParty"],
+				// siglasParty: partidoSelected.siglasParty["siglasParty"],
+				// emblemParty: partidoSelected.emblemParty["emblemParty"],
+				// fotografiaParty: partidoSelected.fotografiaParty["fotografiaParty"],
+				// statusParty: partidoSelected.statusParty["statusParty"],
+				// candidatosPartido: partidoSelected.candidatosPartido["candidatosPartido"],
 			}
 		}
 		validate = {validando}

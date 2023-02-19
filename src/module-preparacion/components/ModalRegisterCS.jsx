@@ -180,12 +180,17 @@ const validationSchema = object({
 	seudonimoCandidato: string(
 		"Por favor, ingresa el seudónimo del candidato/a"
 		).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
-		fechaNacimientoCandidatos: date().required(
-		"Por favor, ingresa la fecha de nacimiento del candidato/a"
-		),
+		fechaNacimientoCandidatos: date()
+			.required("Por favor, ingresa la fecha de nacimiento del candidato")
+			.max(new Date(new Date().setFullYear(new Date().getFullYear() - 21)), "Debes ser mayor de 21 años"),
 		generoCandidato: string("").required("Por favor, selecciona el género"),
+		claveElectoralCandidato: string("").required(
+			"Por favor, ingresa LA CURP del candidato/a"
+			).matches(/^[0-9a-zA-ZÀ-ÿ\s]{17,18}$/, "Solo se permiten letras y espacios, el máximo es 18 caracteres"),
 	// Datos del suplente
-
+	claveElectoralSuplente: string("").required(
+		"Por favor, ingresa LA CURP del candidato/a"
+		).matches(/^[0-9a-zA-ZÀ-ÿ\s]{17,18}$/, "Solo se permiten letras y espacios, el máximo es 18 caracteres"),
 	apellidoPSuplente: string("").required(
 		"Por favor, ingresa el apellido paterno del Suplente"
 		).matches(/^[a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras y espacios"),
@@ -198,9 +203,9 @@ const validationSchema = object({
 	seudonimoSuplente: string(
 		"Por favor, ingresa el seudónimo del Suplente"
 		).matches(/^[0-9a-zA-ZÀ-ÿ\s]{1,40}$/, "Solo se permiten letras, números y espacios"),
-		fechaNacimientoSuplentes: date().required(
-		"Por favor, ingresa la fecha de nacimiento del Suplente"
-		),
+		fechaNacimientoSuplentes: date()
+		.required("Por favor, ingresa la fecha de nacimiento del Suplente")
+		.max(new Date(new Date().setFullYear(new Date().getFullYear() - 21)), "Debes ser mayor de 21 años"), // el minimo para diputado
 		generoSuplente: string("").required("Por favor, selecciona el género"),
 });
 export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
@@ -220,7 +225,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		const info = { ...values };
 
 
-		info.fechaNacimientoCandidatos = new Date(values.fechaNacimientoCandidatos);
+		info.fechaNacimientoCandidatos = new Date(values.fechaNacimientoCandidatos).toISOString();
         info.nombreCandidato = info.nombreCandidato.trim().toUpperCase();
         info.apellidoMCandidato = info.apellidoMCandidato.trim().toUpperCase();
         info.apellidoPCandidato = info.apellidoPCandidato.trim().toUpperCase();
@@ -229,7 +234,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		info.claveElectoralCandidato = info.claveElectoralCandidato.trim().toUpperCase();
 
 		// suplentes
-		info.fechaNacimientoSuplentes = new Date(values.fechaNacimientoSuplentes);
+		info.fechaNacimientoSuplentes = new Date(values.fechaNacimientoSuplentes).toISOString();
         info.nombreSuplente = info.nombreSuplente.trim().toUpperCase();
         info.apellidoPSuplente = info.apellidoPSuplente.trim().toUpperCase();
         info.apellidoMSuplente = info.apellidoMSuplente.trim().toUpperCase();
@@ -262,7 +267,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 			toastSuccesOperation("Datos registrados con éxito");
 		} else {
 			updateCandidatoAndSuplente(
-				candidatoandSuplenteSelected.length,
+				candidatoandSuplenteSelected.id,
 				info.apellidoPCandidato,
 				info.apellidoMCandidato,
 				info.nombreCandidato,
@@ -317,6 +322,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		  if (claveElectoralCandidato) {
 			const fecha = getDateBirth(claveElectoralCandidato);
 			setFieldValue(name, fecha);
+			
 		  }
 		}, [claveElectoralCandidato, touched.claveElectoralCandidato, setFieldValue, name]);
 	  
@@ -329,7 +335,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 			  // onChange={handleChange}
 			  disabled={true}
 			/>
-			{!!meta.touched && !!meta.error && <div>{meta.error}</div>}
+			{/* {!!meta.touched && !!meta.error && <div>{meta.error}</div>} */}
 		  </>
 		);
 	  };
@@ -387,7 +393,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 			  // onChange={handleChange}
 			  disabled={true}
 			/>
-			{!!meta.touched && !!meta.error && <div>{meta.error}</div>}
+			{/* {!!meta.touched && !!meta.error && <div>{meta.error}</div>} */}
 		  </>
 		);
 	  };
@@ -418,7 +424,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		const errors = {};
 
 		if (!validationCurp.test(values.claveElectoralCandidato.toUpperCase())) {
-		  errors.claveElectoralCandidato = "Esta clave Electoral no es valida";
+		  errors.claveElectoralCandidato = "Esta CURP no es valida";
 		}
 	  if(validationCurp.test(values.claveElectoralCandidato.toUpperCase())&& values.nombreCandidato.trim().length>0){
 		  if(errorNombreCFuntion(values.nombreCandidato.trim().toUpperCase(),values.claveElectoralCandidato.charAt(15))){
@@ -452,7 +458,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		// ** SUPLENTE
 
 		if (!validationCurp.test(values.claveElectoralSuplente.toUpperCase())) {
-			errors.claveElectoralSuplente = "Esta clave Electoral no es valida";
+			errors.claveElectoralSuplente = "Esta CURP no es valida";
 		  }
 		if(validationCurp.test(values.claveElectoralSuplente.toUpperCase())&& values.nombreSuplente.trim().length>0){
 			if(errorNombreCFuntion(values.nombreSuplente.trim().toUpperCase(),values.claveElectoralSuplente.charAt(15))){
@@ -548,7 +554,6 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 									generoSuplente: "",//Text
 								} : {
 									// CANDIDATO
-									claveElectoralCandidato: candidatoandSuplenteSelected["claveElectoralCandidato"],
 									apellidoPCandidato:candidatoandSuplenteSelected["apellidoPCandidato"],
 									apellidoMCandidato: candidatoandSuplenteSelected["apellidoMCandidato"],
 									nombreCandidato: candidatoandSuplenteSelected["nombreCandidato"],
@@ -556,6 +561,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 									seudonimoCandidato: candidatoandSuplenteSelected["seudonimoCandidato"],
 									fechaNacimientoCandidatos: candidatoandSuplenteSelected["fechaNacimientoCandidato"],
 									generoCandidato: candidatoandSuplenteSelected["generoCandidato"],
+									claveElectoralCandidato: candidatoandSuplenteSelected["claveElectoralCandidato"],
 									// SUPLENTE
 									claveElectoralSuplente:candidatoandSuplenteSelected["claveElectoralSuplente"],
 									apellidoPSuplente:candidatoandSuplenteSelected["apellidoPSuplente"],
@@ -814,7 +820,15 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 													>				
 
 															<FechaNacimientoField name="fechaNacimientoCandidatos" />
-
+															{touched.fechaNacimientoCandidatos && (
+															<Box ml={2}
+																sx={{
+																fontSize: "12px",
+																	color: "#791010" }}
+																>
+																{errors.fechaNacimientoCandidatos}
+															</Box>
+														)}
 													</Grid>  
 													
 													
@@ -970,6 +984,15 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 													<Grid
 													>				
 														<FechaNacimientoFieldSuplente name="fechaNacimientoSuplentes" />
+														{touched.fechaNacimientoSuplentes && (
+															<Box ml={2}
+																sx={{
+																fontSize: "12px",
+																	color: "#791010" }}
+																>
+																{errors.fechaNacimientoSuplentes}
+															</Box>
+														)}
 													</Grid>  
 													
 													

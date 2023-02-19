@@ -15,6 +15,7 @@ export const DataGridTableJornadaNoFormal = ({ handleOpenModal, handleOpenDelete
 		console.log("Estas por el iliminar el ID", id);
 	};
 	const handleEdit = (id) => {
+		console.log("Estas por EDITAR el ID", id);
 		handleOpenModal();
 		editCandidato(id);
 	};

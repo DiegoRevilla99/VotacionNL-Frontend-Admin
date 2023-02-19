@@ -6,6 +6,7 @@ import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
 import {
 	onSetjornadaNoFormalSelected
 } from "../../store/module-preparacion/jornada/SliceJornadaNoFormal";
@@ -16,40 +17,6 @@ import { GeneralTable } from "../components/GeneralTable";
 import { ModalDeleteJornadaNoFormal } from '../components/ModalDeleteJornadaNoFormal';
 import { ModalRegistroJornadaNoFormal } from "../components/ModalRegistroJornadaNoFormal";
 import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
-
-
-// ----------- Bradcrumbs ----------
-// import { experimentalStyled as styled } from '@mui/material/styles';
-import AllInboxIcon from '@mui/icons-material/AllInbox';
-import HomeIcon from '@mui/icons-material/Home';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Chip from '@mui/material/Chip';
-import { emphasize, styled } from '@mui/material/styles';
-const StyledBreadcrumb = styled(Chip)(({ theme }) => {
-    const backgroundColor =
-      theme.palette.mode === 'light'
-        ? theme.palette.grey[300]
-        : theme.palette.grey[800];
-    return {
-      backgroundColor,
-      height: theme.spacing(3),
-      color: theme.palette.text.primary,
-	  fontSize: "1.1rem", // Agrega esta línea
-      fontWeight: theme.typography.fontWeightRegular,
-      '&:hover, &:focus': {
-        backgroundColor: emphasize(backgroundColor, 0.06),
-      },
-      '&:active': {
-        boxShadow: theme.shadows[1],
-        backgroundColor: emphasize(backgroundColor, 0.12),
-      },
-    };
-  }); // TypeScript only: need a type cast here because https://github.com/Microsoft/TypeScript/issues/26591
-// ----------- Bradcrumbs ----------
-
-
-
-
 
 
 export const RegistroJornadaNoFormal = () => {
@@ -156,30 +123,18 @@ export const RegistroJornadaNoFormal = () => {
 					overflowY: "auto",
 				}}
 			>
-				<Grid item xs={12} sx={{ display: "flex", flexDirection: "column" }}>
+				<Grid item xs={12} sx={{ display: "flex", flexDirection: "column" }} mt={2}>
 					
-					<Box align="center" display="flex" justifyContent="center" mt={2.5} mb={1}>
-						<Breadcrumbs aria-label="breadcrumb">
-							<StyledBreadcrumb
-								component="a"
-								href="/preparacion/inicio"
-								label="INICIO"
-								icon={<HomeIcon fontSize="medium" />}
-								/>
-							<StyledBreadcrumb 
-								component="a"
-								// href="/preparacion/registroJornadaNoFormal"
-								icon={<AllInboxIcon fontSize="medium" />}
-								label="JORNADAS" 
-							/>
-							{/* <StyledBreadcrumb 
-								component="a"
-								href="/verificacion/visualizacion/boleta"
-								icon={<BallotIcon fontSize="medium" />}
-								label="BOLETAS" 
-							/> */}
-						</Breadcrumbs>
-					</Box>
+
+				<BreadCrumbsCustom
+					routes={[
+						{
+						name: "PREPARACIÓN",
+						url: "/preparacion/inicio",
+						},
+					]}
+					currentRoute="JORNADAS"
+					/>
 
 					<Box sx={{ m: "0.5rem", ml: "2rem" }}>
 						<Typography variant="h6" align="left" color="initial">

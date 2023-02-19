@@ -102,8 +102,8 @@ export const onCreateJornada = (title, entidad, navigate = (id) => {}) => {
 		dispatch(onToastCheckingOperation("Guardando consulta..."));
 		const { ok, id } = await createJornada(title, entidad); // PROVIDER
 		if (ok) {
-			dispatch(onSuccessOperation());
 			dispatch(onAddJornadas({ idJornada: id, nombreJornada: title })); // SLICE
+			dispatch(onSuccessOperation());
 			dispatch(onToastSuccessOperation({ successMessage: "Jornada creada con éxito" }));
 			dispatch(onSetJornadaSelected({ id, title, boletas: [] }));
 			navigate(id);
@@ -116,12 +116,12 @@ export const onCreateJornada = (title, entidad, navigate = (id) => {}) => {
 
 export const onDeleteJornada = (id) => {
 	return async (dispatch) => {
-		dispatch(onCheckingOperation());
 		dispatch(onToastCheckingOperation("Eliminando jornada..."));
+		dispatch(onCheckingOperation());
 		const { ok } = await deleteJornada(id); // PROVIDER
 		if (ok) {
-			dispatch(onSuccessOperation());
 			dispatch(onDeleteJornadaData(id)); // SLICE
+			dispatch(onSuccessOperation());
 			dispatch(onToastSuccessOperation({ successMessage: "Jornada eliminada con éxito" }));
 		} else {
 			dispatch(onErrorOperation());
@@ -134,7 +134,7 @@ export const onGetBoletas = (idJornada, navigate = () => {}) => {
 	return async (dispatch) => {
 		dispatch(onCheckingOperation());
 		const { ok, data } = await getBoletasJornada(idJornada); // PROVIDER
-		console.log("info de la peticion", data);
+		// console.log("info de la peticion",data);
 		if (ok) {
 			dispatch(onSuccessOperation());
 			dispatch(onSetBoletasSelectedNull());
@@ -173,6 +173,7 @@ export const onCreateBoleta = (
 	idJornada,
 	candidatoandSuplentes,
 	partidos,
+	onBoletaCreated,
 	navigate = () => {}
 ) => {
 	return async (dispatch) => {
@@ -189,11 +190,11 @@ export const onCreateBoleta = (
 			candidatoandSuplentes,
 			partidos
 		); // PROVIDER
-
 		if (ok) {
 			dispatch(onSuccessOperation());
 			dispatch(onToastSuccessOperation({ successMessage: "Boleta creada con éxito" }));
 			dispatch(onAddBoleta({ idEstructuraBoleta, encabezado: data.nombreCandidatura })); // SLICE
+			onBoletaCreated(idEstructuraBoleta); // ejecutar la función de devolución de llamada con el idEstructuraBoleta como argumento
 			navigate();
 		} else {
 			dispatch(onErrorOperation());

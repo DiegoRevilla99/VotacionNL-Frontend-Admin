@@ -2,7 +2,6 @@ import { Box, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React from "react";
 // import { useJornadaStore } from "../../../../../../../store/module-jornada/jornadaStore";
-import { useJornadaStore } from "../../hooks/useJornadaStore";
 
 import { PartidosTable } from "./PartidosTable";
 const useStyles = makeStyles({
@@ -20,26 +19,9 @@ const styleButton = {
   borderRadius: 50,
 };
 
-export const AgrupaPartido = ({}) => {
-	const { 
-		status, 
-		partidos, 
-		partidoSelected, 
-		candidatoandSuplentes,
-		candidatoandSuplenteSelected,
-		addPartido, 
-		setPartidoSelectedNull, 
-		updatePartido
-	} = useJornadaStore();
-
-
-  const guardar = () => {
-    navigate("/preparacion/comite");
-  };
-
-  const cancelar = () => {
-    navigate("/preparacion/comite");
-  };
+export const AgrupaPartido = ({ info= {},handleOpenModal}) => {
+  const { partidos = [] } = info;
+  console.log("AgrupaPartido", partidos);
 
   return (
     <>
@@ -77,7 +59,7 @@ export const AgrupaPartido = ({}) => {
                 {partidos.map((partidosAll, id) => (
                   // console.log("Este no se que es",partidosAll), // Todo: Se muestran los partidos
                   // console.log("Este id",id), // Todo: Se muestran los id de los partidos
-                  <PartidosTable key={id} info={partidosAll}></PartidosTable>
+                  <PartidosTable key={id} info={partidosAll} handleOpenModal={handleOpenModal}></PartidosTable>
                 ))}
               </Box>
             </Box>

@@ -20,17 +20,8 @@ const styleButton = {
 
 
 
-export const AgrupaAsociacion = ({ info = {} }) => {
+export const AgrupaAsociacion = ({ info = {}, handleOpenModal }) => {
   const { asociaciones = [] } = info;
-
-  console.log("esta es una asociacion",asociaciones);
-  const guardar = () => {
-    navigate("/preparacion/comite");
-  };
-
-  const cancelar = () => {
-    navigate("/preparacion/comite");
-  };
 
   return (
     <>
@@ -71,6 +62,7 @@ export const AgrupaAsociacion = ({ info = {} }) => {
                 <AsociacionTabla
                   key={asociacion.id}
                   info={asociacion}
+                  handleOpenModal={handleOpenModal}
                 ></AsociacionTabla>
               ))}
             </Box>

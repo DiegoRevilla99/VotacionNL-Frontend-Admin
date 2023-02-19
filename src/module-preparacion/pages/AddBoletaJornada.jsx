@@ -6,11 +6,12 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { number, object, string } from "yup";
 // import { useUiStore } from "../../hooks/useUiStore";
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import SettingsIcon from "@mui/icons-material/Settings";
+import { onCreateBoleta, onUpdateBoletaData } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { FielTextCustom } from "../components/FielTextCustom";
 import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
 import { ModalRegisterCS } from "../components/ModalRegisterCS";
-
-import { onCreateBoleta, onUpdateBoletaData } from "../../store/module-preparacion/jornada/ThunksJornada";
 // import { DataGridRowGrouping } from "../../ui/components/DataGridRowGrouping";
 import { AddCandidatoMod } from "../components/AddCandidatoMod";
 import { ModalEliminarCandidato } from "../components/ModalEliminarCandidato";
@@ -124,30 +125,71 @@ export const AddBoletaJornada = () => {
 	};
 
 
+	const [showModal, setShowModal] = useState(false);
+	const [estructuraBoletaId, setEstructuraBoletaId] = useState(null);
+	
 	const onSubmit = (values) => {
-		console.log("partidoooooooooooooooos",partidos);
-		if(Object.values(jornadaSelected.boletaSelected).length === 0){
-			if(candidatoandSuplentes.length > 0)
-				dispatch(
-					onCreateBoleta( values, params.id, candidatoandSuplentes, partidos, ()=>{
-						navigate("/preparacion/jornada/"+params.id);
-					})
-				) 
-		}else{
-			dispatch(
-				onUpdateBoletaData( 
-					values, 
-					params.id, 
-					candidatoandSuplentes, 
-					partidos, 
-					params.idBoleta,
-					()=>{
-						navigate("/preparacion/jornada/"+params.id);
-					}
-				)
-			);
+	  if(Object.values(jornadaSelected.boletaSelected).length === 0){
+		if(candidatoandSuplentes.length > 0 && partidos.length > 0)
+		  dispatch(
+			onCreateBoleta( values, params.id, candidatoandSuplentes, partidos, (idEstructuraBoleta)=>{
+				setEstructuraBoletaId(idEstructuraBoleta);
+			})
+		  ) 
+		  if (estructuraBoletaId >= 0) 
+		{			
+			setTimeout(() => {
+		 	setShowModal(true);
+			}, 1000);
 		}
+	  }else{
+		dispatch(
+		  onUpdateBoletaData( 
+			values, 
+			params.id, 
+			candidatoandSuplentes, 
+			partidos, 
+			params.idBoleta,
+			()=>{
+				navigate("/preparacion/jornada/"+params.id);
+			}
+		  )
+		);
+	  }
 	};
+	
+	const handleTerminar = () => {
+	  navigate("/preparacion/jornada/"+params.id);
+	};
+	const handleConfigurar = () => {
+		// console.log("boletaId aaaaa", estructuraBoletaId);
+		navigate("/preparacion/jornada/configboleta/" + estructuraBoletaId);
+	};
+
+	// const onSubmit = (values) => {
+	// 	console.log("partidoooooooooooooooos",partidos);
+	// 	if(Object.values(jornadaSelected.boletaSelected).length === 0){
+	// 		if(candidatoandSuplentes.length > 0)
+	// 			dispatch(
+	// 				onCreateBoleta( values, params.id, candidatoandSuplentes, partidos, ()=>{
+	// 					navigate("/preparacion/jornada/"+params.id);
+	// 				})
+	// 			) 
+	// 	}else{
+	// 		dispatch(
+	// 			onUpdateBoletaData( 
+	// 				values, 
+	// 				params.id, 
+	// 				candidatoandSuplentes, 
+	// 				partidos, 
+	// 				params.idBoleta,
+	// 				()=>{
+	// 					navigate("/preparacion/jornada/"+params.id);
+	// 				}
+	// 			)
+	// 		);
+	// 	}
+	// };
 	return (
 		<>
           {isLoading ? (
@@ -355,7 +397,7 @@ export const AddBoletaJornada = () => {
 									// mb: 2,
 								}}
 								>
-									<AgrupaPartido/>
+									<AgrupaPartido info={{ partidos: partidos}} handleOpenModal={handleOpenMatchModal}/>
 								</Box>
 
 							</Box>
@@ -427,6 +469,83 @@ export const AddBoletaJornada = () => {
 		)}
 		</Formik>
 		)}
+		<div>
+		{/* Resto de la interfaz */}
+		{showModal && (
+			<div style={{ 
+			position: 'fixed', 
+			top: '50%', 
+			left: '50%', 
+			transform: 'translate(-50%, -50%)', 
+			background: 'rgba(0, 0, 0, 0.5)', 
+			width: '400px',
+			height: '400px',
+			// background: '#fff', 
+			zIndex: 9999, 
+			padding: '20px',
+			borderRadius: '10px',
+			textAlign: 'center'
+			}}>
+			<Typography id="modal-modal-title" variant= "h4"  color="white" align="center" mr={5} ml={5} mb={5}>
+                    ¿Deseas configurar la boleta o prefieres terminar y salir?
+				</Typography>
+				
+				<Grid
+					container
+					direction="row"
+					justifyContent="center"  // Cambio aquí
+					alignItems="center"
+					// spacing={5}
+				>
+							<Button
+								onClick={handleConfigurar}
+								variant="contained"
+								size="large"
+								endIcon={<SettingsIcon />}
+								sx={{
+									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+									transition: "all 0.5s ease",
+									backgroundColor: "#511079",
+									width: "80%",
+									borderRadius: "25px 25px 25px 25px",
+									"&:hover": {
+										backgroundColor: "#7E328B !important",
+										transform: "translate(-5px, -5px)",
+										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+									},
+								}}
+							>
+								Configurar boleta
+							</Button>
+
+
+							<Button
+								onClick={handleTerminar}
+								variant="contained"
+								size="large"
+								endIcon={<ExitToAppIcon />}
+								sx={{
+									margin: '10px 0 0 0',
+									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+									transition: "all 0.5s ease",
+									backgroundColor: "#791010",
+									width: "80%",
+									borderRadius: "25px 25px 25px 25px",
+									"&:hover": {
+										backgroundColor: "#8B3232 !important",
+										transform: "translate(-5px, -5px)",
+										boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+									},
+								}}
+							>
+								Terminar y configurar después
+							</Button>
+
+					</Grid>
+			</div>
+		)}
+		</div>
+
 	</>
 		  
 	);

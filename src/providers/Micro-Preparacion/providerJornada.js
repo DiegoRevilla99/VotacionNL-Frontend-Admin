@@ -17,6 +17,7 @@ export const getJornadasFormales = async () => {
 	try {
 		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/formales
 		const { data } = await jornadasAPI.get("jornada/electoral/");
+		console.log("DATA JORNADAS", data);
 		return { ok: true, data: data.data, errorMessage: "" };
 	} catch (error) {
 		return { ok: false, errorMessage: error.message };
@@ -80,6 +81,7 @@ export const getBoletaData = async (idTicket) => {
 		const { data } = await jornadasAPI.get("jornada/electoral/estructuraboleta/" + idTicket);
 		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/5
 		// **Fetch de candidatos y suplentes por boleta
+		console.log("idTicket", idTicket);
 		const { data: data1 } = await jornadasAPI.get(
 			"jornada/electoral/estructuraboleta/" + idTicket + "/candidatoSuplente"
 			// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/estructuraboleta/5/candidatoSuplente
@@ -96,7 +98,7 @@ export const getBoletaData = async (idTicket) => {
 		);
 
 		// console.log("DATA BOLETA", data.data);
-		// console.log("DATA candidatos y suplentes por boleta", data1.data);
+		console.log("DATA candidatos y suplentes por boleta", data1.data);
 		// console.log("DATA candidatos  por boleta", data1.data);
 		// console.log("DATA  partidos por boleta", data2.data);
 		// // console.log("clave del partido", data2.data[0].clavePartido);
@@ -107,7 +109,7 @@ export const getBoletaData = async (idTicket) => {
 		const formatCandidatoSuplente = {
 			candidatoModel: {
 				id: objeto.candidatoModel.idCandidato,
-				claveElectoralCandidato: objeto.candidatoModel.claveElectoral,
+				claveElectoralCandidato: objeto.candidatoModel.CURP,
 				apellidoPCandidato: objeto.candidatoModel.apellidoPCandidato,
 				apellidoMCandidato: objeto.candidatoModel.apellidoMCandidato,
 				nombreCandidato: objeto.candidatoModel.nombreCandidato,
@@ -118,7 +120,7 @@ export const getBoletaData = async (idTicket) => {
 			},
 			suplenteModel: {
 				id: objeto.suplenteModel.idSuplente,
-				claveElectoralSuplente: objeto.suplenteModel.claveElectoral,
+				claveElectoralSuplente: objeto.suplenteModel.CURP,
 				apellidoPSuplente: objeto.suplenteModel.apellidoPSuplente,
 				apellidoMSuplente: objeto.suplenteModel.apellidoMSuplente,
 				nombreSuplente: objeto.suplenteModel.nombreSuplente,
@@ -140,7 +142,7 @@ export const getBoletaData = async (idTicket) => {
 				{
 					// MY FORMAT || API FORMAT
 					id: data3.data.idCandidato,
-					claveElectoralCandidato: data3.data.claveElectoral,
+					claveElectoralCandidato: data3.data.CURP,
 					apellidoPCandidato: data3.data.apellidoPCandidato,
 					apellidoMCandidato: data3.data.apellidoMCandidato,
 					nombreCandidato: data3.data.nombreCandidato,
@@ -155,7 +157,7 @@ export const getBoletaData = async (idTicket) => {
 		const format = {
 			// MY FORMAT || API FORMAT
 			// id: data.data.idEstructuraBoleta,
-			nombreCandidatura: data.data.nombreEleccion,
+			nombreCandidatura: data.data.nombreEstructuraBoleta,
 			municipio: data.data.municipio,
 			distritoElectoral: data.data.distrito,
 			primerFirmante: data.data.primerFirmanteNombre,
@@ -197,7 +199,7 @@ export const createBoletaFormal = async (
 		// Boletas
 		const boletaInformacion = {
 			estructuraBoletaModel: {
-				nombreEleccion: data.nombreCandidatura,
+				nombreEstructuraBoleta: data.nombreCandidatura,
 				distrito: data.distritoElectoral,
 				municipio: data.municipio,
 				primerFirmanteNombre: data.primerFirmante,
@@ -225,7 +227,7 @@ export const createBoletaFormal = async (
 					status: partido.statusPary,
 				},
 				candidatoModel: {
-					claveElectoral: partido.candidatosPartido[0].claveElectoralCandidato,
+					CURP: partido.candidatosPartido[0].claveElectoralCandidato,
 					apellidoPCandidato: partido.candidatosPartido[0].apellidoPCandidato,
 					apellidoMCandidato: partido.candidatosPartido[0].apellidoMCandidato,
 					nombreCandidato: partido.candidatosPartido[0].nombreCandidato,
@@ -235,7 +237,7 @@ export const createBoletaFormal = async (
 					genero: partido.candidatosPartido[0].generoCandidato,
 				},
 				suplenteModel: {
-					claveElectoral: partido.candidatosPartido[0].claveElectoralSuplente,
+					CURP: partido.candidatosPartido[0].claveElectoralSuplente,
 					apellidoPSuplente: partido.candidatosPartido[0].apellidoPSuplente,
 					apellidoMSuplente: partido.candidatosPartido[0].apellidoMSuplente,
 					nombreSuplente: partido.candidatosPartido[0].nombreSuplente,
@@ -277,7 +279,7 @@ export const updateBoletaData = async (
 		console.log("idBoleta provider", idBoleta);
 
 		const boletaInformacion = {
-			nombreEleccion: data.nombreCandidatura,
+			nombreEstructuraBoleta: data.nombreCandidatura,
 			distrito: data.distritoElectoral,
 			municipio: data.municipio,
 			primerFirmanteNombre: data.primerFirmante,

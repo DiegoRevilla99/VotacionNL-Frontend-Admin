@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { date, object, string } from "yup";
 import { useUiStore } from "../../hooks/useUiStore";
-import { DateFieldFechaNacimiento } from '../../module-empadronamiento/components/DateFieldFechaNacimiento';
+import { DateFieldFechaNacimientoNoFormal } from '../../module-empadronamiento/components/DateFieldFechaNacimientoNoFormal';
 import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 import { GeneroRadioButton } from "./GeneroRadioButton";
 const style = {
@@ -153,7 +153,7 @@ let validationCurp =
 const validationSchema = object({
 		// // Datos del candidato
 		claveCandidato: string("").required(
-			"Por favor, ingresa la clave del candidato/a"
+			"Por favor, ingresa la CURP del candidato/a"
 			),
 		apellidoPCandidato: string("").required(
 			"Por favor, ingresa el apellido paterno del candidato/a"
@@ -179,9 +179,9 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 	const { toastSuccesOperation } = useUiStore();
 	const { status, candidatos, addCandidato, setCandidatosSelectedNull, candidatoSelected, updateCandidato } = useJornadaNoFormalStore();
 	const onSubmit = (values) => {
-
+		
 		const info = { ...values };
-		info.fechaNacimientoCandidatos = new Date(values.fechaNacimientoCandidatos);
+		info.fechaNacimientoCandidatos = new Date(values.fechaNacimientoCandidatos).toISOString();
         info.nombreCandidato = info.nombreCandidato.trim().toUpperCase();
         info.apellidoMCandidato = info.apellidoMCandidato.trim().toUpperCase();
         info.apellidoPCandidato = info.apellidoPCandidato.trim().toUpperCase();
@@ -192,7 +192,6 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 		setFotografia({ name: "Sin Archivo seleccionado" });
 		// console.log(values);
 		if (Object.values(candidatoSelected).length === 0) {
-			// const fechaNacimientoCandidato = new Date(values.fechaNacimientoCandidatos);
 			addCandidato(
 				candidatos.length,
 				info.claveCandidato,
@@ -227,14 +226,15 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 		handleCloseRegisterModal();
 	};
 	 //Validacion del formato imagen 
-	 const [fotografiaCandidato, setFotografia] = useState({
-		name: "Sin Archivo seleccionado",
-	  });
-		
-const FechaNacimientoField = ({ name }) => {
+	//  const [fotografiaCandidato, setFotografia] = useState({
+	// 	name: "Sin Archivo seleccionado",
+	//   });
+// ASDASDASDASDASD FECHAS
+	  const FechaNacimientoField = ({ name }) => {
 		const {
 		  values: {
 			claveCandidato,
+
 			fechaNacimientoCandidatos,
 		  },
 		  touched,
@@ -253,8 +253,8 @@ const FechaNacimientoField = ({ name }) => {
 	  
 		return (
 		  <>
-			<Typography>FECHA DE NACIMIENTO</Typography>
-			<DateFieldFechaNacimiento
+			<Typography>FECHA NACIMIENTO</Typography>
+			<DateFieldFechaNacimientoNoFormal
 			  name="fechaNacimientoCandidatos"
 			  value={fechaNacimientoCandidatos}
 			  // onChange={handleChange}
@@ -264,7 +264,6 @@ const FechaNacimientoField = ({ name }) => {
 		  </>
 		);
 	  };
-	  
 	  const getDateBirth = (claveCandidato = "") => {
 		const fechaActual = new Date();
 		if (validationCurp.test(claveCandidato.toUpperCase())) {
@@ -284,12 +283,12 @@ const FechaNacimientoField = ({ name }) => {
 		}
 		return false;
 	  };
-
+/// ASDASDASDASDASD
 	  const validando = (values, props) => {
 		const errors = {};
 
 		if (!validationCurp.test(values.claveCandidato.toUpperCase())) {
-		  errors.claveCandidato = "Esta clave Electoral no es valida";
+		  errors.claveCandidato = "Esta CURP no es valida";
 		}
 	  
 	  if(validationCurp.test(values.claveCandidato.toUpperCase())&& values.nombreCandidato.trim().length>0){
@@ -333,6 +332,25 @@ const FechaNacimientoField = ({ name }) => {
 		 }
 		 return errors;
 	   };
+
+	   const [fotografiaCandidato, setFotografiaCandidato] = useState({ name: "" });
+	   const [fotografia, setFotografia] = useState(null);
+	 
+	   const handleUploadImage = () => {
+		 const formData = new FormData();
+		 formData.append("file", fotografia);
+		// https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/candidato/selfie/RAMIRO
+		 fetch("https://ms-jornada-upload-images.herokuapp.com/file/upload?file", {
+		   method: "PUT",
+		   body: formData,
+		 })
+		   .then((response) => response.json())
+		   .then((data) => {
+			 setFotografiaCandidato({ name: data.link });
+			 setFotografia(null);
+		   })
+		   .catch((error) => console.error(error));
+	   };
 	return (
 		<Modal
 			open={statusRegisterModal}
@@ -359,13 +377,14 @@ const FechaNacimientoField = ({ name }) => {
 									fechaNacimientoCandidatos: "",//Date
 									generoCandidato: "",//Text
 								}
+
 								: {
 									claveCandidato: candidatoSelected["claveCandidato"],
+									nombreCandidato: candidatoSelected["nombreCandidato"],
 									apellidoPCandidato: candidatoSelected["apellidoPCandidato"],
 									apellidoMCandidato: candidatoSelected["apellidoMCandidato"],
-									nombreCandidato: candidatoSelected["nombreCandidato"],
-									seudonimoCandidato: candidatoSelected["fotografiaCandidato"],
-									fotografiaCandidato: candidatoSelected["seudonimoCandidato"],
+									fotografiaCandidato: candidatoSelected["fotografiaCandidato"],
+									seudonimoCandidato: candidatoSelected["seudonimoCandidato"],
 									fechaNacimientoCandidatos: candidatoSelected["fechaNacimientoCandidato"],
 									generoCandidato: candidatoSelected["generoCandidato"],
 								}
@@ -473,13 +492,15 @@ const FechaNacimientoField = ({ name }) => {
 										value={fotografiaCandidato.name}
 										variant="outlined"
 										size="small"
-										></TextField>
+										/>
 										<IconButton
-											disabled={status === "checking"}
+											// disabled={status === "checking"}
 											color="primary"
 											aria-label="upload picture"
 											component="label"
 											size="large"
+											disabled={!fotografia}
+											onClick={handleUploadImage}
 											>
 											<input
 												hidden
@@ -504,15 +525,6 @@ const FechaNacimientoField = ({ name }) => {
 									FECHA DE NACIMIENTO<span style={{ color: "red" }}>*</span>
 									</Typography> */}
 									<Grid>				
-										{/* <DatePickerModGenerico
-											label=""
-											name={"fechaNacimientoCandidatos"}
-											value={values.fechaNacimientoCandidatos}
-											setFieldValue={setFieldValue}
-											handleChange={handleChange}
-											error={errors.fechaNacimientoCandidatos}
-											touched={touched.fechaNacimientoCandidatos}
-										/> */}
 										<FechaNacimientoField name="fechaNacimientoCandidatos" />
 									</Grid>
 									<Typography variant="h7" mt={"2rem"}>

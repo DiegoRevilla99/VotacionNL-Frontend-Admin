@@ -211,23 +211,24 @@ export const useJornadaStore = () => {
 
 	const updatePartido = (
 		id, 
-		clavePartido, 
-		nameParty, 
-		siglasParty, 
-		emblemParty, 
-		fotografiaParty,
-		statusParty,
-		candidatosPartido ) => {
+		claveParty, 
+		namePartyy, 
+		siglasPartyy, 
+		emblemaPartyy, 
+		fotografiaPartyy,
+		statusPartyy,
+		candidatosPartido 
+		) => {
 		dispatch(
 			onUpdatePartido({
 				id, 
-				clavePartido, 
-				nameParty, 
-				siglasParty, 
-				emblemParty, 
-				fotografiaParty,
-				statusParty,
-				candidatosPartido
+				claveParty, 
+				namePartyy, 
+				siglasPartyy, 
+				emblemaPartyy, 
+				fotografiaPartyy,
+				statusPartyy,
+				candidatosPartido 
 			})
 		);
 	};

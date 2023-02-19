@@ -1,7 +1,6 @@
-import { Alert, Button, IconButton, Slide, Snackbar } from "@mui/material";
+import { Alert, Slide, Snackbar } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { useUiStore } from "../hooks/useUiStore";
 import { EmpadronamientoRoutes } from "../module-empadronamiento/routes/EmpadronamientoRoutes";
 // import { VisualizadorDePDF } from "../module-jornada/pages/VisualizadorDePDF";
@@ -89,6 +88,8 @@ export const AdminRoutes = () => {
 
 						{/* PREPARACION */}
 						<Route path="/preparacion/*" element={<PreparacionRoutes />}></Route>
+						{/* CONFIGURACION */}
+						{/* <Route path="/configuracion/*" element={< CONFIG />}></Route> */}
 
 						{/* RUTA POR DEFAULT */}
 						{/* <Route path="/" element={<Navigate to="/preparacion/"></Navigate>}></Route> */}

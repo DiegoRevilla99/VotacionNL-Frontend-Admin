@@ -5,10 +5,12 @@ import { Form, Formik } from "formik";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { object } from "yup";
+import { array, object, string } from "yup";
 import { useUiStore } from "../../hooks/useUiStore";
 import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 // import { CandidatoCheck } from './configuracion-boleta/CandidatoCheck';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import Tooltip from '@mui/material/Tooltip';
 const style = {
 	position: "absolute",
 	top: "50%",
@@ -26,13 +28,13 @@ const style = {
 
 const validationSchema = object({
 		// // Datos del candidato
-	// nombreAsociacion: string("").required(
-	// 	"Por favor, ingresa el apellido paterno del candidato/a"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,50}$/, "Solo se permiten letras y espacios"),
-	// 	emblema: string("").required(
-	// 	"Por favor, ingresa el apellido materno del candidato/a"
-	// 	).matches(/^[a-zA-ZÀ-ÿ\s]{1,50}$/, "Solo se permiten letras y espacios"),
-
+	nombreAsociacion: string("").required(
+		"Por favor, ingresa el nombre de la asociación"
+		),
+		emblema: string("").required(
+		"Por favor, ingresa el emblema de las asociación"
+		),
+		candidatosAsociacion: array().min(1, "Es necesario que la asociación cuente con un candidato al menos"),
 });
 
 export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleCloseRegisterAsociacionModal }) => {
@@ -54,7 +56,7 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 			toastSuccesOperation("Datos registrados con éxito");
 		} else {
 			updateAsociacion(
-				asociacionesSelected.length,
+				asociacionesSelected.id,
 				values.nombreAsociacion,
 				values.emblema,
 				values.logo,
@@ -83,20 +85,8 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 		 return errors;
 	   };
 
-
-	// const [candidatosS, setCandidatosS] = useState(
-	// 	asociaciones ? asociaciones.candidatos : []
-	// );
-	// const onSelectCandidato = (candidato) => {
-	// 	console.log("cnadidato: " + candidato);
-	// 	let candi = null;
-	// 	candi = candidatosS.find((c) => c === candidato);
-	// 	if (candi) {
-	// 		setCandidatosS(candidatosS.filter((c) => c !== candidato));
-	// 	} else {
-	// 		setCandidatosS([...candidatosS, candidato]);
-	// 	}
-	// };
+	   // PARA EL LOGO DE ASOCIACIONES
+	//    https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/asociacion/logo/202
 	  
 	return (
 		<Modal
@@ -117,7 +107,7 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 								{
 								nombreAsociacion: "",
 								emblema: "",
-								logo: "",
+								logo: "logo.png",
 								candidatosAsociacion: [],
 								} :{
 									nombreAsociacion: asociacionesSelected.nombreAsociacion,
@@ -142,35 +132,7 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 							handleBlur,
 							setFieldValue,
 							}) => {
-
 								const [candidatosDisponibles, setCandidatosDisponibles] = useState(candidatos);
-
-								// useEffect(() => {
-								//   setCandidatosDisponibles(
-								// 	candidatos.filter(candidato => !values.candidatosAsociacion.includes(candidato.id))
-								//   );
-								// }, [values.candidatosAsociacion]);
-								  
-
-
-								// const candidatosNoAsociados = [];
-
-								// candidatosDisponibles.map(candidato => {
-								//   let candidatoEncontrado = false;
-								  
-								//   asociaciones.map(asociacion => {
-								// 	asociacion.candidatosAsociacion.map(candidatoAsociacion => {
-								// 	  if (candidato.id === candidatoAsociacion.id) {
-								// 		candidatoEncontrado = true;
-								// 	  }
-								// 	});
-								//   });
-								
-								//   if (!candidatoEncontrado) {
-								// 	candidatosNoAsociados.push(candidato);
-								//   }
-								// });
-								
 							return (
 								<Form onSubmit={handleSubmit}>
 									<Typography variant="h7">
@@ -267,6 +229,12 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 										<Typography variant="h7" mt={"1rem"}>
 										SELECCIONE LOS CANDIDATOS CORRESPONDIENTES A ESTA ASOCIACIÓN  <span style={{ color: "red" }}>*</span>
 									</Typography>
+									<Tooltip title="RECUERDE QUE DEBES SELECCIONAR LOS MISMOS CANDIDATOS QUE CORRESPONDEN A LA ASOCIACIÓN EN CASO DE CREAR UNA NUEVA." 
+									placement="right">
+									<IconButton>
+										<HelpOutlineIcon/>
+									</IconButton>
+									</Tooltip>
 										<Box
 										sx={{
 											display: "flex",
@@ -333,10 +301,17 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 											</Box>
 											))}
 										</Box>
-										{touched.candidatos && candidatosS.length === 0 && (
-										<ErrorField>{errors.candidatos}</ErrorField>
-										)}
 									</Box>
+									{touched.candidatosAsociacion &&
+												(
+													   <Box ml={2} 
+														   sx={{
+														   fontSize: "12px",
+															   color: "#791010" }}
+														   >
+														   {errors.candidatosAsociacion}
+													   </Box>
+											   )}
 									<br />
 
 									{/* Esto es del los botones */}
