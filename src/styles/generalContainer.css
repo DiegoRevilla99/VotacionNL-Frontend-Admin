@@ -36,6 +36,7 @@ body,
 
 .agrupacion{
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  
 }
 .agrupacion:hover{
   
@@ -49,4 +50,6 @@ body,
 
 }
 
- 
+.field {
+  width: 50px !important;
+}

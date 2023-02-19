@@ -139,7 +139,11 @@ export const FormDireccion = ({
               </Typography>
             </div>
             <SearchV/>
+            <Box display={"flex"}>
             <Typography>ESTADO</Typography>
+                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
+              </Box>
+            
             <TextField
               disabled
               required
@@ -152,7 +156,11 @@ export const FormDireccion = ({
             ></TextField>
             <br />
             <br />
+            <Box display={"flex"}>
             <Typography>MUNICIPIO</Typography>
+                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
+              </Box>
+            
             <TextField
             disabled={!votanteFound||votanteFound?.find==="si"}
               required
@@ -188,7 +196,11 @@ export const FormDireccion = ({
             />
             <br />
             <br />
+            <Box display={"flex"}>
             <Typography>COLONIA</Typography>
+                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
+              </Box>
+            
             <TextField
               required
               disabled={!votanteFound||votanteFound?.find==="si"}
@@ -209,8 +221,11 @@ export const FormDireccion = ({
               component={() => <ErrorField>{errors.colonia}</ErrorField>}
             />
             <br />
-
+            <Box display={"flex"}>
             <Typography>CÓDIGO POSTAL</Typography>
+                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
+              </Box>
+            
             <TextField
               required
               disabled={!votanteFound||votanteFound?.find==="si"}
@@ -231,7 +246,11 @@ export const FormDireccion = ({
               component={() => <ErrorField>{errors.cp}</ErrorField>}
             />
             <br />
+            <Box display={"flex"}>
             <Typography>CALLE</Typography>
+                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
+              </Box>
+            
             <TextField
               required
               disabled={!votanteFound||votanteFound?.find==="si"}
@@ -248,7 +267,11 @@ export const FormDireccion = ({
 
             <br />
             <br />
+            <Box display={"flex"}>
             <Typography>NÚMERO</Typography>
+                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
+              </Box>
+            
             <TextField
               required
               disabled={!votanteFound||votanteFound?.find==="si"}

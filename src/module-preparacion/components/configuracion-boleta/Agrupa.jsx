@@ -45,36 +45,34 @@ export const Agrupa =
             sx={{
               width: "100%",
               boxShadow: 1,
+              display:"flex",
               border: "2px solid rgba(0,0,0,0.5)",
               borderRadius: "10px",
               background: "#F8F8F8",
+              justifyContent:"center",
+              alignItems:"center",
+
             }}
           >
-            <Box
-              sx={{
-                width: "100%",
-                mt: 1,
-                p: 1,
-                borderRadius: "10px",
-                background: "#F8F8F8",
-              }}
-            >
+           
               <Box
                 sx={{
                   display: "flex",
-                  width: "100%",
+                  width: "95%",
                   flexDirection: "row",
                   flexWrap: "wrap",
+                  gap: "10px",
                   justifyContent: "center",
                   alignItems: "center",
-                  p: 1,
+                  mb:5
+                  
                 }}
               >
                 {coaliciones.map((coalicion, i) => (
                   <Coalicion actualizar={actualizar} key={i} info={coalicion}></Coalicion>
                 ))}
               </Box>
-            </Box>
+            
           </Box>
         ) : (
           <Box>No hay coaliciones</Box>

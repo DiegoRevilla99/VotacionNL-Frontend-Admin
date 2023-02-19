@@ -145,8 +145,11 @@ export const FormContacto = ({
                 CONTACTO DEL VOTANTE
               </Typography>
             </div>
-
+            <Box display={"flex"}>
             <Typography>NÚMERO TELÉFONICO</Typography>
+                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
+              </Box>
+            
             <TextField
               required
               disabled={votanteFound.find==="si"||votanteFound.find===""}
@@ -199,7 +202,11 @@ export const FormContacto = ({
             />
             <br />
             <br />
+            <Box display={"flex"}>
             <Typography>CORREO ELECTRÓNICO</Typography>
+                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
+              </Box>
+            
             <TextField
               required
               disabled={votanteFound.find==="si"||votanteFound.find===""}

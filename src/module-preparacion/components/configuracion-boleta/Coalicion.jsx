@@ -63,21 +63,22 @@ export const Coalicion = memo(
       <>
         <Box
           sx={{
-            ml: 1,
+            width: {xl:"500px",md:"500px",xs:"80%"},
           }}
         >
           <fieldset
+          
             className="agrupacion "
             style={{
+              width:"100%",
               display: "flex",
               boxShadow: 1,
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
               background: colorb,
-              width: "100%",
-
               mb: 5,
+             
               borderRadius: "8px",
               border: "1px solid rgba(0,0,0,0.9)",
             }}
@@ -90,10 +91,26 @@ export const Coalicion = memo(
                 <HighlightOffSharpIcon fontSize="large" color="primary" />
               </IconButton>
             </legend>
-            <Typography sx={{ fontWeight: "bold" }}>
-              {coalicionModel.nombre}
-            </Typography>
-            <Typography sx={{}}>{candidatoModel.nombreCandidato}</Typography>
+
+            <Typography sx={{ mb:1,fontSize:{lg:"25px",md:"19px",xs:"15px"},fontWeight: "bold" }}>
+                  {coalicionModel.nombre}
+                  </Typography>
+          <Typography sx={{ fontSize:{lg:"17px",xs:"10px"},mb:2 }} >{coalicionModel.emblema}</Typography>
+            <Box  width="100%" display={"flex"}  justifyContent="center" flexDirection={{lg:"row",xs:"column"}} alignItems="center">
+              <Box width={{md:"150px",xs:"100px"}} sx={{mr:2}}>
+                  <a href={coalicionModel.logo}><img width="100%" height="60px" src={coalicionModel.logo} alt="Logo coalición"/></a>
+              </Box>
+              <Box>
+                  
+                 
+                  
+                </Box>
+                
+            </Box>
+            <Typography sx={{ mt:2,fontSize:{lg:"20px",md:"19px",xs:"15px"},fontWeight: "bold" }} >{candidatoModel.nombreCandidato }{" "}{candidatoModel.apellidoPCandidato}{" "}{candidatoModel.apellidoMCandidato}</Typography>
+            
+            <Typography sx={{ fontSize:{lg:"17px",xs:"10px"},fontWeight: "bold",mt:3 }} >Partidos:</Typography>
+            
             <Box
               sx={{
                 display: "flex",

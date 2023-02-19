@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getEleccionFormal } from "../../../store/module-empadronamiento/consultas/thunksConsultas";
+import { setType } from "../../../store/module-empadronamiento/votantes/empVotantesSlice";
 import { getVotantesbyJornada } from "../../../store/module-empadronamiento/votantes/thunksVotantes";
 
 import { BreadCrumbsCustom } from "../../components/BreadCrumbsCustom";
@@ -23,6 +24,7 @@ export const EmpadronamientoC = () => {
   useEffect(() => {
     dispatch(getEleccionFormal(id));
     dispatch(getVotantesbyJornada(id));
+    dispatch(setType({type:"consultas"}))
   }, []);
 
   return (
