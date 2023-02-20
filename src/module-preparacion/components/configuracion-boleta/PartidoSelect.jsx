@@ -61,7 +61,9 @@ export const PartidoSelect = memo(
           <img
             style={{ width: "60px", height: "100%" }}
             alt="Logo"
-            src={candidatoPhoto}
+            src={
+              "https://imagesvotacion.s3.eu-north-1.amazonaws.com/1676885104536_candidato.png"
+            }
           />
           <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
             CANDIDATO

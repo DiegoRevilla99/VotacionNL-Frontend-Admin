@@ -45,10 +45,10 @@ export const CrudJornada = () => {
 					<Stack spacing={2} direction="row">
 						<Button
 							variant="outlined"
-							startIcon={<EditIcon />}
+							startIcon={<BallotIcon />}
 							onClick={() => handleEdit(params.id)}
 						>
-							Editar
+							Ver
 						</Button>
 						<Button
 							variant="outlined"
@@ -96,7 +96,7 @@ export const CrudJornada = () => {
 
 	// MÉTODO PARA IR A LA PAGINA DE CONFIGURACIÓN DEL REGISTRO
 	const handleConfig = (id) => {
-		navigate("/preparacion/jornada/configboleta/" + id);
+		navigate("/preparacion/jornada/configboleta/" + params.id + "/" + id);
 		// dispatch(onGetConfig(id));
 	};
 
@@ -112,6 +112,7 @@ export const CrudJornada = () => {
 	const openModalDelete = () => {
 		setModalDeleteStatus(true);
 	};
+
 	if (status === "checking")
 		return (
 			<Box sx={{ width: "100%" }}>
@@ -136,7 +137,7 @@ export const CrudJornada = () => {
 								url: "/preparacion/inicio",
 							},
 							{
-								name: "JORNADAS ELECTORALES",
+								name: "JORNADAS FORMALES",
 								url: "/preparacion/registroJornadaFormal",
 							},
 						]}
@@ -188,12 +189,11 @@ export const CrudJornada = () => {
 								height: "100%",
 								display: "flex",
 								flexDirection: "column",
-								// backgroundColor: "white",
+								backgroundColor: "white",
 								mt: "2rem",
 								borderRadius: "2rem",
 								p: "2rem",
 								pt: "1rem",
-								backgroundColor: "rgb(239,236,221, 0.8)",
 							}}
 						>
 							<Typography variant="h5" color="initial" mb="0.5rem" align="center">
@@ -206,31 +206,6 @@ export const CrudJornada = () => {
 									height: "100%",
 									display: "flex",
 									flexDirection: "column",
-									"& .MuiDataGrid-columnHeaderTitleContainer": {
-										justifyContent: "left",
-										borderColor: "rgb(0 0 0 / 63%) !important",
-									},
-									"& .MuiDataGrid-columnHeaders": {
-										justifyContent: "left",
-										borderColor: "rgb(0 0 0 / 59%) !important",
-									},
-									"& .MuiDataGrid-footerContainer": {
-										justifyContent: "left",
-										borderColor: "rgb(0 0 0 / 59%) !important",
-									},
-									"& .MuiDataGrid-cell--textLeft": {
-										justifyContent: "left",
-										align: "left",
-										borderColor: "rgb(0 0 0 / 3%) !important",
-									},
-									"& .MuiDataGrid-cell": {
-										outline: "none !important",
-										borderColor: "rgb(0 0 0 / 17%) !important",
-									},
-									"& .MuiDataGrid-columnHeader": {
-										outline: "none !important",
-										borderColor: "black !important",
-									},
 								}}
 							>
 								{/* TABLA GENERAL, TIENEN QUE PASARLE LA DATA DE LOS REGISTROS Y EL ID DE 

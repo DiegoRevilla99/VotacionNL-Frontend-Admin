@@ -57,7 +57,7 @@ export const ConfiguracionJornadaNF = () => {
   } = useSelector((state) => state.configJornada);
 
   const onCancel = () => {
-    navigate("/preparacion/registroJornadaFormal");
+    navigate("/preparacion/registroJornadaNoFormal");
   };
 
   useEffect(() => {

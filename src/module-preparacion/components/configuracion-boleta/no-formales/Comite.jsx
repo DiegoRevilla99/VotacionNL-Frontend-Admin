@@ -20,8 +20,6 @@ import { useDispatch, useSelector } from "react-redux";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import { SeleccionesForm } from "../SeleccionesForm";
 
-
-
 const useStyles = makeStyles({
   hr: {
     height: "3px",
@@ -61,7 +59,7 @@ const boxOpciones = {
 
 export const Comite = ({ boletaInfo }) => {
   const styles = useStyles();
-  
+
   const { id } = useParams();
   const [cnr, setCnr] = useState(false);
   const [vn, setVn] = useState(false);
@@ -69,8 +67,6 @@ export const Comite = ({ boletaInfo }) => {
   const abrirCerrarModalCoalicion = () => {
     setModalCoalicion(!modalCoalicion);
   };
-
- 
 
   return (
     <>
@@ -108,7 +104,7 @@ export const Comite = ({ boletaInfo }) => {
               justifyContent: "start",
             }}
           >
-            <Button
+            {/* <Button
               type="submit"
               className={styles.boton}
               variant="contained"
@@ -120,7 +116,7 @@ export const Comite = ({ boletaInfo }) => {
             >
               <ReplyAllIcon />
               Regresar
-            </Button>
+            </Button> */}
           </Box>
         </Box>
       </Stack>

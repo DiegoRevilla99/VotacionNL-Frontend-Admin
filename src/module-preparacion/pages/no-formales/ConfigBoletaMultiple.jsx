@@ -28,9 +28,10 @@ import { Representante } from "../../components/configuracion-boleta/no-formales
 import { Comite } from "../../components/configuracion-boleta/no-formales/Comite";
 import { Planilla } from "../../components/configuracion-boleta/no-formales/Planilla";
 import { useBoletaNF } from "../../hooks/config-boleta/useBoletaNF";
+import { BotonBack } from "../../components/BotonBack";
 
 export const ConfigBoletaMultiple = () => {
-  const { id } = useParams();
+  const { jornada, id } = useParams();
 
   const { boletaInfo, errorBoleta, isLoadingBoleta, changeCandNoReg } =
     useBoletaNF(id);
@@ -85,6 +86,8 @@ export const ConfigBoletaMultiple = () => {
         ) : (
           isType(modalidad)
         )}
+
+        <BotonBack url={"/preparacion/jornada/noFormal/" + jornada} />
       </PlantillaHeader>
     </>
   );

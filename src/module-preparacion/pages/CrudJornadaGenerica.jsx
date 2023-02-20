@@ -95,7 +95,7 @@ export const CrudJornadaGenerica = () => {
 	}, []);
 	// MÉTODO PARA IR A LA PAGINA DE CONFIGURACIÓN DEL REGISTRO
 	const handleConfig = (id) => {
-		navigate("/preparacion/jornadaNoFormal/configboleta/" + id);
+		navigate("/preparacion/jornadaNoFormal/configboleta/" + params.id + "/" + id);
 		// dispatch(onGetConfig(id));
 	};
 
@@ -145,7 +145,7 @@ export const CrudJornadaGenerica = () => {
 								url: "/preparacion/inicio",
 							},
 							{
-								name: "ELECCIONES POPULARES",
+								name: "JORNADAS NO FORMALES",
 								url: "/preparacion/registroJornadaNoFormal",
 							},
 						]}
@@ -198,12 +198,11 @@ export const CrudJornadaGenerica = () => {
 								height: "100%",
 								display: "flex",
 								flexDirection: "column",
-								// backgroundColor: "white",
+								backgroundColor: "white",
 								mt: "2rem",
 								borderRadius: "2rem",
 								p: "2rem",
 								pt: "1rem",
-								backgroundColor: "rgb(239,236,221, 0.8)",
 							}}
 						>
 							<Typography variant="h5" color="initial" mb="0.5rem" align="center">
@@ -216,31 +215,6 @@ export const CrudJornadaGenerica = () => {
 									height: "100%",
 									display: "flex",
 									flexDirection: "column",
-									"& .MuiDataGrid-columnHeaderTitleContainer": {
-										justifyContent: "left",
-										borderColor: "rgb(0 0 0 / 63%) !important",
-									},
-									"& .MuiDataGrid-columnHeaders": {
-										justifyContent: "left",
-										borderColor: "rgb(0 0 0 / 59%) !important",
-									},
-									"& .MuiDataGrid-footerContainer": {
-										justifyContent: "left",
-										borderColor: "rgb(0 0 0 / 59%) !important",
-									},
-									"& .MuiDataGrid-cell--textLeft": {
-										justifyContent: "left",
-										align: "left",
-										borderColor: "rgb(0 0 0 / 3%) !important",
-									},
-									"& .MuiDataGrid-cell": {
-										outline: "none !important",
-										borderColor: "rgb(0 0 0 / 17%) !important",
-									},
-									"& .MuiDataGrid-columnHeader": {
-										outline: "none !important",
-										borderColor: "black !important",
-									},
 								}}
 							>
 								{/* TABLA GENERAL, TIENEN QUE PASARLE LA DATA DE LOS REGISTROS Y EL ID DE 

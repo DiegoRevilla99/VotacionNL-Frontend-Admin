@@ -210,21 +210,7 @@ export const Representante = memo(({ boletaInfo, updateCand }) => {
 
                     justifyContent: "start",
                   }}
-                >
-                  {/* <Button
-              type="submit"
-              className={styles.boton}
-              variant="contained"
-              color="primary"
-              style={styleButton}
-              sx={{
-                width: { sm: `150px`, xs: "150px" },
-              }}
-            >
-              <ReplyAllIcon />
-              Regresar
-            </Button> */}
-                </Box>
+                ></Box>
               </Box>
             </>
           )}
