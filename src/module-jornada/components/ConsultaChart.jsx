@@ -24,7 +24,8 @@ import { ReporteInicialHTML } from "../components/ReporteInicialHTML";
 
 // ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export const ConsultaChart = ({ chartData = { resultados: [] } }) => {
+export const ConsultaChart = ({ chartData = { resultados: [] }, tipoReporte }) => {
+	console.log("CHART DATAAAAAAAAA QUE LLEGAAAAAAAAA", chartData);
 	const total = parseInt(
 		chartData.resultados.reduce((acc, cur) => acc + cur.resultados, 0),
 		10
@@ -57,7 +58,7 @@ export const ConsultaChart = ({ chartData = { resultados: [] } }) => {
 			{
 				label: "Votos",
 
-				data: chartData.resultados.map((data) => total),
+				data: chartData.resultados.map((data) => 10),
 				// data: total,
 				backgroundColor: ["#ededed"],
 				grouped: false,
@@ -148,7 +149,7 @@ export const ConsultaChart = ({ chartData = { resultados: [] } }) => {
 		// console.log("bolll", boleta);
 		// ReporteInicialPDF();
 		// captureScreen();
-		captureCanvas();
+		captureCanvas(tipoReporte);
 		// let doc = new jsPDF("p", "pt", "letter");
 		// let margin = 10;
 		// let scale = (doc.internal.pageSize.width - margin * 2) / document.body.scrollWidth;
@@ -326,7 +327,8 @@ export const ConsultaChart = ({ chartData = { resultados: [] } }) => {
 											color="initial"
 											fontWeight="bold"
 										>
-											{((total * 100) / total).toFixed(2)}%
+											{total !== 0 ? ((total * 100) / total).toFixed(2) : "0"}
+											%
 										</Typography>
 									</Box>
 								</Grid>
@@ -409,7 +411,9 @@ export const ConsultaChart = ({ chartData = { resultados: [] } }) => {
 										// 	return data.datasetIndex === 0;
 										// },
 										formatter: function (value, context) {
-											return ((value * 100) / total).toFixed(2) + "%";
+											return total !== 0
+												? ((value * 100) / total).toFixed(2) + "%"
+												: "0%";
 										},
 										anchor: "end",
 										align: "top",
@@ -461,7 +465,7 @@ export const ConsultaChart = ({ chartData = { resultados: [] } }) => {
 							},
 						}}
 					>
-						DESCARGAR REPORTE
+						DESCARGAR REPORTE INICIAL
 					</Button>
 				</Box>
 				{/* <ReporteInicialHTML /> */}

@@ -20,6 +20,7 @@ import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore"
 import { PrivateRoute } from "../../router/PrivateRoute";
 import { onGetBoletas } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { ReporteFinalConsultaHTML } from "../components/ReporteFinalConsultaHTML";
+import { ReporteInicialConsultaHTML } from "../components/ReporteInicialConsultaHTML";
 import { ReporteInicialHTML } from "../components/ReporteInicialHTML";
 import { ReporteFinal } from "./ReporteFinal";
 import { ReporteFinalConsulta } from "./ReporteFinalConsulta";
@@ -59,7 +60,7 @@ export const ConsultasTabs = () => {
 	// 	);
 	// else
 	return (
-		<Box sx={{ overflow: "hidden" }}>
+		<Box sx={{ overflow: "visible" }}>
 			<Box
 				sx={{
 					height: "100%",
@@ -117,9 +118,12 @@ export const ConsultasTabs = () => {
 					</PrivateRoute>
 				</Box>
 			</Box>
-			<Box sx={{ overflowY: "hidden" }}>
-				{jornadaVotosData.length !== 0 && status !== "checking" && (
-					<ReporteFinalConsultaHTML jornadaVotosData={jornadaVotosData} />
+			<Box sx={{ overflowY: "visible" }}>
+				{jornadaVotosData.resultados.length !== 0 && status !== "checking" && (
+					<>
+						<ReporteFinalConsultaHTML jornadaVotosData={jornadaVotosData} />
+						<ReporteInicialConsultaHTML jornadaVotosData={jornadaVotosData} />
+					</>
 				)}
 			</Box>
 		</Box>

@@ -119,7 +119,10 @@ export const ReporteFinalConsulta = ({ status, jornadaVotosData }) => {
 								) : papeleta === null ? (
 									<></>
 								) : jornadaVotosData.length !== 0 ? (
-									<ConsultaChart chartData={jornadaVotosData} />
+									<ConsultaChart
+										chartData={jornadaVotosData}
+										tipoReporte="reporteInicialHTMLBUENO"
+									/>
 								) : (
 									// <></>
 									<></>

@@ -1,80 +1,54 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import React, { useLayoutEffect, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 
-const imagenes = [
-	"https://www.chartjs.org/img/chartjs-logo.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/5/5c/PAN_logo_%28Mexico%29.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/b/b5/PRI_logo_%28Mexico%29.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/8/8f/PRD_logo_%28Mexico%29.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/e/e7/Worker%27s_Party_logo_%28Mexico%29.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/a/ae/Logo-partido-verde-2020.png",
-	"https://upload.wikimedia.org/wikipedia/commons/3/34/Logo_Partido_Movimiento_Ciudadano_%28M%C3%A9xico%29.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/e/ea/Morena_logo_%28Mexico%29.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/7/7f/Logo_Encuentro_Solidario.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/d/d8/Partido_Nueva_Alianza_%28M%C3%A9xico%29.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/f/fb/PRS_logo_%28Mexico%29.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/e/e8/RSP_logo_%28Mexico%29.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/5/52/Partido_Socialdem%C3%B3crata_%28Mexico%29_Logo.png",
-];
-
-export const ReporteFinalNoFormalHTML = ({
-	jornadaVotosData = { resultados: [], jornadaModel: {}, boleta: null },
-}) => {
-	const { jornadaSelected } = useSelector((state) => state.jornada);
-	// const [cifrasVotos, setCifrasVotos] = useState(0);
-	const [dataVotos, setDataVotos] = useState(jornadaVotosData);
+export const ReporteInicialConsultaHTML = ({ jornadaVotosData = { resultados: [] } }) => {
+	console.log("JORNADA VOTOS DATA QUE LLEGA", jornadaVotosData);
+	const [cifrasVotos, setCifrasVotos] = useState(0);
 	const [arrayResultado, setArrayResultado] = useState(
 		jornadaVotosData.resultados.map((resultado) => resultado.resultados)
 	);
 	const [fecha, setFecha] = useState(null);
-	const [planillasState, setPlanillas] = useState({
-		candidatosPlanillas: [],
-		planillas: [],
-	});
 
-	console.log("DATA VOTOS", dataVotos);
-
-	const resultadosOrdenados = (array) => {
-		let arrayForSort = [...array];
-		console.log("LO que entra", arrayForSort);
-		arrayForSort.sort((a, b) => {
-			return a.resultados < b.resultados ? 1 : a.resultados > b.resultados ? -1 : 0;
-		});
-
-		let nuevo = [...arrayForSort];
-		return [...nuevo];
-	};
+	console.log("ARRAY DE RESULTADOS", arrayResultado);
 
 	useEffect(() => {
-		if (dataVotos.resultados.length > 0) {
-			let arrayForSort = [...dataVotos.resultados];
-			console.log("LO que entra", arrayForSort);
-			arrayForSort.sort((a, b) => {
-				return a.resultados < b.resultados ? 1 : a.resultados > b.resultados ? -1 : 0;
-			});
+		const fechax = new Date();
 
-			let nuevo = [...arrayForSort];
+		setFecha(fechax.toLocaleString());
 
-			setDataVotos({ ...dataVotos, resultados: [...nuevo] });
-		}
+		setArrayResultado(
+			jornadaVotosData.resultados.map((resultado) => resultado.resultados) || []
+		);
+		// const arrayResultado = jornadaVotosData.resultados.map((resultado) => resultado.resultados);
+
+		console.log("ARRAY", arrayResultado);
+
+		let max = 0;
+		max = arrayResultado.reduce((acc, cur) => {
+			console.log(acc, cur);
+			if (cur.toString().length >= acc.toString().length) return cur;
+			else return acc;
+		}, 0);
+
+		setCifrasVotos(max.toString().length);
 	}, [jornadaVotosData]);
 
-	useEffect(() => {
-		if (dataVotos.resultados.length > 0) {
-			const fechax = new Date();
+	const cifra = (index1, index2) => {
+		const numeroArray = arrayResultado[index1];
+		const cifras = numeroArray.toString().length;
 
-			setFecha(fechax.toLocaleString());
-
-			setArrayResultado(dataVotos.resultados.map((resultado) => resultado.resultados) || []);
-			// const arrayResultado = jornadaVotosData.resultados.map((resultado) => resultado.resultados);
+		if (cifrasVotos - index2 <= cifras) {
+			const invertido = numeroArray.toString().split("").reverse().join("");
+			return invertido.toString().charAt(cifrasVotos - index2 - 1);
+		} else {
+			return "";
 		}
-	}, [dataVotos]);
+	};
 
-	if (jornadaVotosData.resultados.length === 0) return <></>;
+	if (jornadaVotosData.resultados.length === 0) return <>Reporte no disponible</>;
 	else
 		return (
-			<Box id="reporteInicialHTML">
+			<Box id="reporteInicialHTMLBUENO">
 				<Box width="8.5in" height="11in" bgcolor="white" border="2px solid">
 					<Box height="10rem" px="1in" pt="0.2in">
 						<img
@@ -97,10 +71,7 @@ export const ReporteFinalNoFormalHTML = ({
 								fontWeight="bold"
 								fontFamily="times"
 							>
-								{
-									jornadaVotosData.boleta.boletaCandidatos.boletaModel
-										.encabezadoBoleta
-								}
+								{jornadaVotosData.papeleta.estructuraPapeleta.nombre}
 							</Typography>
 							<Typography
 								variant="h6"
@@ -109,7 +80,7 @@ export const ReporteFinalNoFormalHTML = ({
 								fontSize="0.9rem"
 								fontFamily="times"
 							>
-								{/* {jornadaVotosData.jornadaModel.entidad} */}
+								{jornadaVotosData.jornadaModel.entidad}
 							</Typography>
 							<Typography
 								variant="body1"
@@ -118,7 +89,7 @@ export const ReporteFinalNoFormalHTML = ({
 								pt={2}
 								fontFamily="times"
 							>
-								Reporte final de votación
+								Reporte inicial de consulta ciudadana
 							</Typography>
 						</Box>
 					</Box>
@@ -170,7 +141,7 @@ export const ReporteFinalNoFormalHTML = ({
 									fontFamily="times"
 									fontWeight="bold"
 								>
-									Candidaturas no registradas
+									Tipo de pregunta
 								</Typography>
 								<Typography
 									variant="body2"
@@ -178,10 +149,7 @@ export const ReporteFinalNoFormalHTML = ({
 									fontFamily="times"
 									align="center"
 								>
-									{jornadaVotosData.boleta.boletaCandidatos.modalidad
-										.mostrarCandidaturasNoReg
-										? "Si"
-										: "No"}
+									{jornadaVotosData.papeleta.pregunta.tipoRespuesta}
 								</Typography>
 							</Grid>
 							<Grid item xs={6}>
@@ -200,7 +168,7 @@ export const ReporteFinalNoFormalHTML = ({
 									fontFamily="times"
 									align="center"
 								>
-									{jornadaVotosData.boleta.boletaCandidatos.modalidad.modalidad}
+									{jornadaVotosData.papeleta.pregunta.subtipo}
 								</Typography>
 							</Grid>
 							<Grid item xs={6}></Grid>
@@ -215,14 +183,39 @@ export const ReporteFinalNoFormalHTML = ({
 										align="center"
 										my={1}
 									>
-										Resultados de la jornada
+										Resultados de la consulta ciudadana
+									</Typography>
+								</Box>
+							</Grid>
+
+							<Grid item xs={12}>
+								<Box
+									border="2px solid"
+									mt="0.2rem"
+									sx={{ borderTopLeftRadius: "5px" }}
+									height="100%"
+									display="flex"
+									flexDirection="column"
+									justifyContent="center"
+									justifyItems="center"
+									alignContent="center"
+									alignItems="center"
+								>
+									<Typography
+										variant="body1"
+										// color="white"
+										fontFamily="times"
+										align="center"
+										my={1}
+									>
+										{jornadaVotosData.papeleta.pregunta.descPregunta}
 									</Typography>
 								</Box>
 							</Grid>
 
 							<Grid item xs={6}>
 								<Box
-									borderTop="2px solid"
+									// borderTop="0px"
 									borderLeft="2px solid"
 									// borderRight="2px solid"
 									borderBottom="2px solid"
@@ -243,14 +236,14 @@ export const ReporteFinalNoFormalHTML = ({
 										align="center"
 										my={1}
 									>
-										Representante
+										Respuesta
 									</Typography>
 								</Box>
 							</Grid>
 							{/* <Grid item xs={cifrasVotos + 1}> */}
 							<Grid item xs={3}>
 								<Box
-									borderTop="2px solid"
+									// borderTop="0px"
 									borderLeft="2px solid"
 									// borderRight="2px solid"
 									borderBottom="2px solid"
@@ -276,7 +269,7 @@ export const ReporteFinalNoFormalHTML = ({
 							</Grid>
 							<Grid item xs={3}>
 								<Box
-									borderTop="2px solid"
+									// borderTop="0px"
 									borderLeft="2px solid"
 									borderRight="2px solid"
 									borderBottom="2px solid"
@@ -302,149 +295,43 @@ export const ReporteFinalNoFormalHTML = ({
 								</Box>
 							</Grid>
 
-							{dataVotos.resultados.map((resultado, index1) => (
+							{jornadaVotosData.resultados.map((resultado, index1) => (
 								<React.Fragment key={resultado.id}>
 									{/* <Grid item xs={2} border="2px solid"></Grid> */}
 									<Grid
 										item
-										container
 										xs={6} // borderTop="0px"
 										borderLeft="2px solid"
 										// borderRight="2px solid"
 										borderBottom="2px solid"
 									>
-										{jornadaVotosData.boleta.boletaCandidatos.modalidad
-											.modalidad === "PLANILLA" ? (
-											<>
-												<Grid item xs={7} borderRight="2px solid">
-													<Box
-														py="0.2rem"
-														display="flex"
-														justifyContent="center"
-														justifyItems="center"
-														alignContent="center"
-														alignItems="center"
-														height="100%"
-														flexDirection="column"
-														// bgcolor={index1}
-													>
-														{resultado?.candiato?.map((candidato) => (
-															<Typography
-																variant="body2"
-																// fontSize="0.9rem"
-																color="initial"
-																fontFamily="times"
-															>
-																{candidato}
-															</Typography>
-														))}
-													</Box>
-												</Grid>
-												<Grid item xs={5}>
-													{resultado?.planillas?.map(
-														(planilla, index, array) => (
-															<Box
-																py="0.2rem"
-																display="flex"
-																justifyContent="center"
-																justifyItems="center"
-																alignContent="center"
-																alignItems="center"
-																height={100 / array.length + "%"}
-																flexDirection="column"
-																// borderBottom="2px solid"
-																borderBottom={
-																	index !== array.length - 1
-																		? "2px solid"
-																		: "0px"
-																}
-															>
-																<Typography
-																	variant="body2"
-																	// fontSize="0.9rem"
-																	color="initial"
-																	fontFamily="times"
-
-																	// align="center"
-																>
-																	{planilla}
-																</Typography>
-															</Box>
-														)
-													)}
-												</Grid>
-											</>
-										) : (
-											<Grid item xs={12}>
-												<Box
-													py="0.2rem"
-													display="flex"
-													justifyContent="center"
-													justifyItems="center"
-													alignContent="center"
-													alignItems="center"
-													height="100%"
-													flexDirection="column"
-													// bgcolor={index1}
-												>
-													<Typography
-														variant="body2"
-														// fontSize="0.9rem"
-														color="initial"
-														fontFamily="times"
-													>
-														{resultado.candiato}
-													</Typography>
-												</Box>
-											</Grid>
-										)}
-										{/* <Grid item xs={12}>
-											<Box
-												py="0.2rem"
-												display="flex"
-												justifyContent="center"
-												justifyItems="center"
-												alignContent="center"
-												alignItems="center"
-												height="100%"
-												flexDirection="column"
-												// bgcolor={index1}
+										<Box
+											py="0.2rem"
+											display="flex"
+											justifyContent="center"
+											justifyItems="center"
+											alignContent="center"
+											alignItems="center"
+											height="100%"
+										>
+											<Typography
+												variant="body2"
+												// fontSize="0.9rem"
+												color="initial"
+												fontFamily="times"
 											>
-												{jornadaVotosData.boleta.boletaCandidatos.modalidad
-													.modalidad === "PLANILLA" ? (
-													resultado?.candiato?.map((candiato, index) => {
-														return (
-															<Typography
-																variant="body2"
-																// fontSize="0.9rem"
-																color="initial"
-																fontFamily="times"
-															>
-																{candiato}
-															</Typography>
-														);
-													})
-												) : (
-													<Typography
-														variant="body2"
-														// fontSize="0.9rem"
-														color="initial"
-														fontFamily="times"
-													>
-														{resultado.candiato}
-													</Typography>
-												)}
-											</Box>
-										</Grid> */}
+												{resultado.respuesta}
+											</Typography>
+										</Box>
 									</Grid>
 									{/* {(() => {
 									let grids = [];
 									for (let index2 = 0; index2 < cifrasVotos; index2++) {
 										grids.push(
 											<Grid
-											key={index2}
-											item
-											xs={cifrasVotos / cifrasVotos + 1}
+												key={index2}
+												item
+												xs={cifrasVotos / cifrasVotos + 1}
 												// border="1px solid #c6c6c6"
 												// borderTop="0px"
 												borderLeft="2px solid"

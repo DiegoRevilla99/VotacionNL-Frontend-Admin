@@ -33,12 +33,12 @@ export const captureScreen = () => {
 		});
 };
 
-export const captureCanvas = () => {
+export const captureCanvas = (reporte) => {
 	// const node = document.getElementById("reporteInicialHTML");
 	let doc = new jsPDF("p", "px", "letter"); // using defaults: orientation=portrait, unit=mm, size=A4
 	let scale2 = doc.internal.pageSize.width / 200;
 
-	html2canvas(document.getElementById("reporteInicialHTML"), {
+	html2canvas(document.getElementById(reporte), {
 		scale: scale2,
 		allowTaint: true,
 		useCORS: true,

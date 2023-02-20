@@ -16,6 +16,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useParams } from "react-router-dom";
 import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
 import { ModalEliminarBoletaFormal } from "../components/ModalEliminarBoletaFormal";
+import BallotIcon from "@mui/icons-material/Ballot";
 
 export const CrudJornada = () => {
 	const navigate = useNavigate();

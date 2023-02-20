@@ -8,15 +8,18 @@ import {
 	getBoletasJornadaNoFormal,
 	getJornadaNoFormalVotos,
 	getJornadaRespuestasConsultas,
+	getJornadaRespuestasConsultasInicio,
 	getJornadas,
 	getJornadasFormales,
 	getJornadasNoFormales,
-	getJornadaVotos, postImage, updateBoletaData
+	getJornadaVotos,
+	postImage,
+	updateBoletaData,
 } from "../../../providers/Micro-Preparacion/providerJornada";
 import {
 	onToastCheckingOperation,
 	onToastErrorOperation,
-	onToastSuccessOperation
+	onToastSuccessOperation,
 } from "../../ui/uiSlice";
 
 import {
@@ -38,23 +41,23 @@ import {
 	onSetJornadasVotosData,
 	onSetPartidoNull,
 	onSetPartidoSelectedNull,
-	onSuccessOperation
+	onSuccessOperation,
 } from "./SliceJornada";
 export const onPostImage = (image) => {
-    return async (dispatch) => {
-        dispatch(onToastCheckingOperation("Subiendo imagen..."));
-        dispatch(onCheckingOperation());
-        const {ok, data, errorMessage } = await postImage(image);// PROVIDER
-        if (ok) {
-            dispatch(onSuccessOperation());
-            dispatch(onToastSuccessOperation({ successMessage: "Imagen subida con éxito" }));
-            return data;
-        } else {
-            dispatch(onErrorOperation());
-            dispatch(onToastErrorOperation({ errorMessage: "No se pudo subir la imagen" }));
-            return false;
-        }
-    }
+	return async (dispatch) => {
+		dispatch(onToastCheckingOperation("Subiendo imagen..."));
+		dispatch(onCheckingOperation());
+		const { ok, data, errorMessage } = await postImage(image); // PROVIDER
+		if (ok) {
+			dispatch(onSuccessOperation());
+			dispatch(onToastSuccessOperation({ successMessage: "Imagen subida con éxito" }));
+			return data;
+		} else {
+			dispatch(onErrorOperation());
+			dispatch(onToastErrorOperation({ errorMessage: "No se pudo subir la imagen" }));
+			return false;
+		}
+	};
 };
 export const onGetAlljornadas = () => {
 	return async (dispatch) => {
@@ -172,7 +175,7 @@ export const onGetBoletasParaJornada = (idJornada, title, navigate = () => {}) =
 			dispatch(onSuccessOperation());
 			dispatch(onSetBoletasSelectedNull());
 
-			dispatch(onSetJornadaSelected({ idJornada, title }));
+			dispatch(onSetJornadaSelected({ id: idJornada, title }));
 			dispatch(onFillBoletas(data));
 			navigate();
 		} else {
@@ -308,11 +311,15 @@ export const onDeleteBoleta = (idBoleta) => {
 	};
 };
 
-export const onGetJornadaVotos = (idBoleta) => {
+export const onGetJornadaVotos = (idBoleta, idJornada) => {
 	return async (dispatch) => {
 		dispatch(onCheckingOperation());
 
-		const { ok, data } = await getJornadaVotos(idBoleta); // PROVIDER
+		console.log("IDBOLETA", idBoleta);
+
+		const { ok, data } = await getJornadaVotos(idBoleta, idJornada); // PROVIDER
+
+		console.log("DATA OBTENIDA DEL PROVIDER", data);
 		if (ok) {
 			dispatch(onSetJornadasVotosData(data)); // SLICE
 			dispatch(onSuccessOperation());
@@ -330,6 +337,25 @@ export const onGetJornadaRespuestasConsultas = (idPapeleta, id) => {
 		const { ok, data } = await getJornadaRespuestasConsultas(idPapeleta, id); // PROVIDER
 
 		console.log("DATA DE LA BUSQUEDAAAAAAAAAAAAAAAAAAA", data);
+		if (ok) {
+			dispatch(onSetJornadasVotosData(data)); // SLICE
+			dispatch(onSuccessOperation());
+		} else {
+			dispatch(onErrorOperation());
+			dispatch(onToastErrorOperation({ errorMessage: "No se pudo eliminar la boleta" }));
+		}
+	};
+};
+
+export const onGetJornadaRespuestasConsultasInicio = (idPapeleta, id) => {
+	return async (dispatch) => {
+		dispatch(onCheckingOperation());
+
+		console.log("ENTRA A TUUUUUUNK");
+
+		const { ok, data } = await getJornadaRespuestasConsultasInicio(idPapeleta, id); // PROVIDER
+
+		console.log("DATA DE LA BUSQUEDAAA INICIAL", data);
 		if (ok) {
 			dispatch(onSetJornadasVotosData(data)); // SLICE
 			dispatch(onSuccessOperation());

@@ -24,18 +24,21 @@ import { ReporteInicialHTML } from "../components/ReporteInicialHTML";
 
 // ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export const JornadaFormalChart = ({ chartData }) => {
-	const total = chartData.reduce((acc, cur) => acc + cur.votos, 0);
+export const JornadaFormalChart = ({ chartData = { resultados: [] } }) => {
+	const total = parseInt(
+		chartData.resultados.reduce((acc, cur) => acc + cur.resultados, 0),
+		10
+	);
 	const { jornadaSelected } = useJornadaStore();
 	const chartRef = useRef(null);
 	const params = useParams();
 	const [data, setData] = useState({
 		// labels: chartData.map((data) => data.nombre),
-		labels: chartData.map((data) => ""),
+		labels: chartData.resultados.map((resultado) => resultado.candiato),
 		datasets: [
 			{
 				label: "Votos",
-				data: chartData.map((data) => data.votos),
+				data: chartData.resultados.map((data) => data.resultados),
 				backgroundColor: [
 					"#8B3232",
 					"#8B5232",
@@ -63,12 +66,12 @@ export const JornadaFormalChart = ({ chartData }) => {
 					"https://upload.wikimedia.org/wikipedia/commons/e/e8/RSP_logo_%28Mexico%29.svg",
 					"https://upload.wikimedia.org/wikipedia/commons/5/52/Partido_Socialdem%C3%B3crata_%28Mexico%29_Logo.png",
 				],
-				labels: chartData.map((data) => data.nombre),
+				// labels: chartData.map((data) => data.nombre),
 			},
 			{
 				label: "Votos",
 
-				data: chartData.map((data) => 600),
+				data: chartData.resultados.map((data) => total),
 				backgroundColor: ["#ededed"],
 				grouped: false,
 				order: 1,
@@ -94,7 +97,7 @@ export const JornadaFormalChart = ({ chartData }) => {
 				ctx.drawImage(
 					logo,
 					x.getPixelForValue(index) - 40 / 2,
-					y.getPixelForValue(0) + 5,
+					y.getPixelForValue(0) + 30,
 					30,
 					30
 				);
@@ -174,469 +177,507 @@ export const JornadaFormalChart = ({ chartData }) => {
 		// });
 	};
 
-	return (
-		<>
-			<Grid container spacing={2} id="ejemplo23">
-				<Grid item xs={3}></Grid>
-				<Grid item container xs={6}>
-					<Grid
-						item
-						xs={4}
-						display="flex"
-						justifyContent="center"
-						alignContent="center"
-						alignItems="center"
-					>
-						<Typography
-							variant="h6"
-							color="initial"
-							align="center"
-							sx={{ wordBreak: "break-word" }}
+	if (chartData.resultados.length === 0) return <>Reporte no disponible</>;
+	else
+		return (
+			<>
+				<Grid container spacing={2} id="ejemplo23">
+					<Grid item xs={3}></Grid>
+					<Grid item container xs={6}>
+						<Grid
+							item
+							xs={4}
+							display="flex"
+							justifyContent="center"
+							alignContent="center"
+							alignItems="center"
 						>
-							Nuevo León
-						</Typography>
+							<Typography
+								variant="h6"
+								color="initial"
+								align="center"
+								sx={{ wordBreak: "break-word" }}
+							>
+								Nuevo León
+							</Typography>
+						</Grid>
+						<Grid
+							item
+							xs={3}
+							display="flex"
+							flexDirection="column"
+							justifyContent="center"
+							alignContent="center"
+							alignItems="center"
+						>
+							<Box
+								borderRight="1px solid"
+								pr={4}
+								display="flex"
+								flexDirection="column"
+							>
+								<Typography
+									variant="body1"
+									color="initial"
+									align="center"
+									fontWeight="bold"
+								>
+									Presidente
+								</Typography>
+								<Typography variant="body2" color="initial" align="center">
+									Mayoría relativa
+								</Typography>
+							</Box>
+						</Grid>
+						<Grid
+							item
+							xs={5}
+							display="flex"
+							justifyContent="center"
+							alignContent="center"
+							alignItems="center"
+						>
+							<Typography
+								variant="body2"
+								color="initial"
+								// fontWeight="bold"
+								align="center"
+							>
+								Voto por partido político y Candidatura independiente
+							</Typography>
+						</Grid>
 					</Grid>
-					<Grid
-						item
-						xs={3}
-						display="flex"
-						flexDirection="column"
-						justifyContent="center"
-						alignContent="center"
-						alignItems="center"
-					>
-						<Box borderRight="1px solid" pr={4} display="flex" flexDirection="column">
+					<Grid item xs={3}></Grid>
+				</Grid>
+				<Divider sx={{ paddingTop: "1.5rem" }} />
+				<Grid container spacing={2} pb={3}>
+					<Grid item container xs={12} md={6}>
+						<Grid
+							item
+							xs={6}
+							display="flex"
+							flexDirection="column"
+							justifyContent="center"
+							alignContent="center"
+							alignItems="center"
+						>
+							<Typography variant="body1" color="initial" align="center">
+								Participación ciudadana
+							</Typography>
 							<Typography
 								variant="body1"
 								color="initial"
-								align="center"
 								fontWeight="bold"
+								align="center"
 							>
-								Presidente
+								0.0%
 							</Typography>
-							<Typography variant="body2" color="initial" align="center">
-								Mayoría relativa
+						</Grid>
+						<Grid
+							item
+							xs={6}
+							display="flex"
+							flexDirection="column"
+							justifyContent="center"
+							alignContent="center"
+							alignItems="center"
+						>
+							<Typography variant="body1" color="initial" align="center">
+								Inicio
 							</Typography>
+							<Typography
+								variant="body2"
+								color="initial"
+								fontWeight="bold"
+								align="center"
+							>
+								20 Enero 2023
+							</Typography>
+						</Grid>
+					</Grid>
+					<Grid item container xs={12} md={6}>
+						<Box bgcolor="#f2f2f2" border="1px solid" width="100%" p={1}>
+							<Typography variant="h6" color="#543884" sx={{ fontSize: "1rem" }}>
+								Resumen de la votación
+							</Typography>
+							<Grid container spacing={1} columns={15}>
+								<Grid
+									item
+									xs={3}
+									display="flex"
+									flexDirection="column"
+									alignItems="center"
+									justifyContent="center"
+								>
+									<Typography
+										variant="caption"
+										color="initial"
+										sx={{ wordBreak: "break-word" }}
+									>
+										Votos acumulados
+									</Typography>
+								</Grid>
+								<Grid
+									item
+									xs={1}
+									display="flex"
+									flexDirection="column"
+									alignItems="center"
+									justifyContent="center"
+								></Grid>
+								<Grid
+									item
+									xs={3}
+									display="flex"
+									flexDirection="column"
+									alignItems="center"
+									justifyContent="center"
+								>
+									<Typography
+										variant="caption"
+										color="initial"
+										sx={{ wordBreak: "break-word" }}
+										align="center"
+									>
+										Candidaturas no registradas
+									</Typography>
+								</Grid>
+								<Grid
+									item
+									xs={1}
+									display="flex"
+									flexDirection="column"
+									alignItems="center"
+									justifyContent="center"
+								></Grid>
+								<Grid
+									item
+									xs={3}
+									display="flex"
+									flexDirection="column"
+									alignItems="center"
+									justifyContent="center"
+								>
+									<Typography
+										variant="caption"
+										color="initial"
+										sx={{ wordBreak: "break-word" }}
+										align="center"
+									>
+										Votos nulos
+									</Typography>
+								</Grid>
+								<Grid
+									item
+									xs={1}
+									display="flex"
+									flexDirection="column"
+									alignItems="center"
+									justifyContent="center"
+								></Grid>
+								<Grid
+									item
+									xs={3}
+									display="flex"
+									flexDirection="column"
+									alignItems="center"
+									justifyContent="center"
+								>
+									<Typography
+										variant="caption"
+										color="initial"
+										sx={{
+											wordBreak: "break-word",
+											textDecoration: "underline",
+										}}
+										align="center"
+										fontWeight="bold"
+									>
+										Total de votos
+									</Typography>
+								</Grid>
+
+								<Grid
+									item
+									xs={3}
+									display="flex"
+									flexDirection="column"
+									alignItems="center"
+								>
+									<Box display="flex" flexDirection="column">
+										<Typography
+											variant="body1"
+											color="initial"
+											fontWeight="bold"
+											// sx={{ fontSize: "1rem" }}
+										>
+											0
+										</Typography>
+										<Typography
+											variant="caption"
+											color="initial"
+											fontWeight="bold"
+										>
+											0.00%
+										</Typography>
+									</Box>
+								</Grid>
+								<Grid
+									item
+									xs={1}
+									display="flex"
+									flexDirection="column"
+									alignItems="center"
+									justifyItems="center"
+								>
+									<Typography
+										variant="caption"
+										color="initial"
+										sx={{ fontSize: "2rem" }}
+										fontWeight="bold"
+									>
+										+
+									</Typography>
+								</Grid>
+								<Grid
+									item
+									xs={3}
+									display="flex"
+									flexDirection="column"
+									alignItems="center"
+								>
+									<Box display="flex" flexDirection="column">
+										<Typography
+											variant="body1"
+											color="initial"
+											fontWeight="bold"
+										>
+											0
+										</Typography>
+										<Typography
+											variant="caption"
+											color="initial"
+											fontWeight="bold"
+										>
+											0.00%
+										</Typography>
+									</Box>
+								</Grid>
+								<Grid
+									item
+									xs={1}
+									display="flex"
+									flexDirection="column"
+									alignItems="center"
+								>
+									<Typography
+										variant="caption"
+										color="initial"
+										sx={{ fontSize: "2rem" }}
+										fontWeight="bold"
+									>
+										+
+									</Typography>
+								</Grid>
+								<Grid
+									item
+									xs={3}
+									display="flex"
+									flexDirection="column"
+									alignItems="center"
+								>
+									<Box display="flex" flexDirection="column">
+										<Typography
+											variant="body1"
+											color="initial"
+											fontWeight="bold"
+										>
+											0
+										</Typography>
+										<Typography
+											variant="caption"
+											color="initial"
+											fontWeight="bold"
+										>
+											0.00%
+										</Typography>
+									</Box>
+								</Grid>
+								<Grid
+									item
+									xs={1}
+									display="flex"
+									flexDirection="column"
+									alignItems="center"
+								>
+									<Typography
+										variant="caption"
+										color="initial"
+										sx={{ fontSize: "2rem" }}
+										fontWeight="bold"
+									>
+										=
+									</Typography>
+								</Grid>
+								<Grid
+									item
+									xs={3}
+									display="flex"
+									flexDirection="column"
+									alignItems="center"
+								>
+									<Box display="flex" flexDirection="column">
+										<Typography
+											variant="body1"
+											color="initial"
+											fontWeight="bold"
+										>
+											0
+										</Typography>
+										<Typography
+											variant="caption"
+											color="initial"
+											fontWeight="bold"
+										>
+											0.00%
+										</Typography>
+									</Box>
+								</Grid>
+							</Grid>
 						</Box>
 					</Grid>
-					<Grid
-						item
-						xs={5}
-						display="flex"
-						justifyContent="center"
-						alignContent="center"
-						alignItems="center"
-					>
-						<Typography
-							variant="body2"
-							color="initial"
-							// fontWeight="bold"
-							align="center"
-						>
-							Voto por partido político y Candidatura independiente
-						</Typography>
-					</Grid>
 				</Grid>
-				<Grid item xs={3}></Grid>
-			</Grid>
-			<Divider sx={{ paddingTop: "1.5rem" }} />
-			<Grid container spacing={2} pb={3}>
-				<Grid item container xs={12} md={6}>
-					<Grid
-						item
-						xs={6}
-						display="flex"
-						flexDirection="column"
-						justifyContent="center"
-						alignContent="center"
-						alignItems="center"
-					>
-						<Typography variant="body1" color="initial" align="center">
-							Participación ciudadana
-						</Typography>
-						<Typography
-							variant="body1"
-							color="initial"
-							fontWeight="bold"
-							align="center"
-						>
-							0.0%
-						</Typography>
-					</Grid>
-					<Grid
-						item
-						xs={6}
-						display="flex"
-						flexDirection="column"
-						justifyContent="center"
-						alignContent="center"
-						alignItems="center"
-					>
-						<Typography variant="body1" color="initial" align="center">
-							Inicio
-						</Typography>
-						<Typography
-							variant="body2"
-							color="initial"
-							fontWeight="bold"
-							align="center"
-						>
-							20 Enero 2023
-						</Typography>
-					</Grid>
-				</Grid>
-				<Grid item container xs={12} md={6}>
-					<Box bgcolor="#f2f2f2" border="1px solid" width="100%" p={1}>
-						<Typography variant="h6" color="#543884" sx={{ fontSize: "1rem" }}>
-							Resumen de la votación
-						</Typography>
-						<Grid container spacing={1} columns={15}>
-							<Grid
-								item
-								xs={3}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-								justifyContent="center"
-							>
-								<Typography
-									variant="caption"
-									color="initial"
-									sx={{ wordBreak: "break-word" }}
-								>
-									Votos acumulados
-								</Typography>
-							</Grid>
-							<Grid
-								item
-								xs={1}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-								justifyContent="center"
-							></Grid>
-							<Grid
-								item
-								xs={3}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-								justifyContent="center"
-							>
-								<Typography
-									variant="caption"
-									color="initial"
-									sx={{ wordBreak: "break-word" }}
-									align="center"
-								>
-									Candidaturas no registradas
-								</Typography>
-							</Grid>
-							<Grid
-								item
-								xs={1}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-								justifyContent="center"
-							></Grid>
-							<Grid
-								item
-								xs={3}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-								justifyContent="center"
-							>
-								<Typography
-									variant="caption"
-									color="initial"
-									sx={{ wordBreak: "break-word" }}
-									align="center"
-								>
-									Votos nulos
-								</Typography>
-							</Grid>
-							<Grid
-								item
-								xs={1}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-								justifyContent="center"
-							></Grid>
-							<Grid
-								item
-								xs={3}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-								justifyContent="center"
-							>
-								<Typography
-									variant="caption"
-									color="initial"
-									sx={{
-										wordBreak: "break-word",
-										textDecoration: "underline",
-									}}
-									align="center"
-									fontWeight="bold"
-								>
-									Total de votos
-								</Typography>
-							</Grid>
-
-							<Grid
-								item
-								xs={3}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-							>
-								<Box display="flex" flexDirection="column">
-									<Typography
-										variant="body1"
-										color="initial"
-										fontWeight="bold"
-										// sx={{ fontSize: "1rem" }}
-									>
-										0
-									</Typography>
-									<Typography variant="caption" color="initial" fontWeight="bold">
-										0.00%
-									</Typography>
-								</Box>
-							</Grid>
-							<Grid
-								item
-								xs={1}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-								justifyItems="center"
-							>
-								<Typography
-									variant="caption"
-									color="initial"
-									sx={{ fontSize: "2rem" }}
-									fontWeight="bold"
-								>
-									+
-								</Typography>
-							</Grid>
-							<Grid
-								item
-								xs={3}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-							>
-								<Box display="flex" flexDirection="column">
-									<Typography variant="body1" color="initial" fontWeight="bold">
-										0
-									</Typography>
-									<Typography variant="caption" color="initial" fontWeight="bold">
-										0.00%
-									</Typography>
-								</Box>
-							</Grid>
-							<Grid
-								item
-								xs={1}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-							>
-								<Typography
-									variant="caption"
-									color="initial"
-									sx={{ fontSize: "2rem" }}
-									fontWeight="bold"
-								>
-									+
-								</Typography>
-							</Grid>
-							<Grid
-								item
-								xs={3}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-							>
-								<Box display="flex" flexDirection="column">
-									<Typography variant="body1" color="initial" fontWeight="bold">
-										0
-									</Typography>
-									<Typography variant="caption" color="initial" fontWeight="bold">
-										0.00%
-									</Typography>
-								</Box>
-							</Grid>
-							<Grid
-								item
-								xs={1}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-							>
-								<Typography
-									variant="caption"
-									color="initial"
-									sx={{ fontSize: "2rem" }}
-									fontWeight="bold"
-								>
-									=
-								</Typography>
-							</Grid>
-							<Grid
-								item
-								xs={3}
-								display="flex"
-								flexDirection="column"
-								alignItems="center"
-							>
-								<Box display="flex" flexDirection="column">
-									<Typography variant="body1" color="initial" fontWeight="bold">
-										0
-									</Typography>
-									<Typography variant="caption" color="initial" fontWeight="bold">
-										0.00%
-									</Typography>
-								</Box>
-							</Grid>
-						</Grid>
-					</Box>
-				</Grid>
-			</Grid>
-			<Chart
-				type="bar"
-				ref={chartRef}
-				data={data}
-				plugins={[ChartDataLabels, imageItems]}
-				options={{
-					layout: {
-						padding: {
-							bottom: 30,
-						},
-					},
-
-					interaction: {
-						intersect: false,
-						mode: "index",
-					},
-					indexAxis: "x",
-					responsive: true,
-					plugins: {
-						title: {
-							display: true,
+				<Chart
+					type="bar"
+					ref={chartRef}
+					data={data}
+					plugins={[ChartDataLabels, imageItems]}
+					options={{
+						layout: {
 							padding: {
-								top: 10,
 								bottom: 30,
 							},
-							text: "Porcentaje de votos",
 						},
-						tooltip: {
-							filter: function (tooltipItem) {
-								// console.log("TOOLTIPITEM", tooltipItem);
-								return tooltipItem.datasetIndex === 0;
-							},
-							usePointStyle: true,
-							callbacks: {
-								labelPointStyle: (context) => {
-									console.log(context);
-									console.log("Imagen", context.dataset.image[context.dataIndex]);
-									const image = new Image(15, 15);
-									image.src = context.dataset.image[context.dataIndex];
-									return {
-										pointStyle: image,
-									};
-								},
-								beforeTitle: (context) => {
-									return context[0].dataset.labels[context[0].dataIndex];
-								},
-							},
-						},
-						legend: {
-							display: false,
-						},
-						datalabels: {
-							display: function (data) {
-								return data.datasetIndex === 0;
-							},
-							labels: {
-								// events: ["mousemove"],
-								title: {
-									display: function (data) {
-										return data.datasetIndex === 0;
-									},
-									formatter: function (value, context) {
-										return value + "\nvotos";
-									},
-									textAlign: "center",
-									color: "white",
-								},
-								value: {
-									// display: function (data) {
-									// 	return data.datasetIndex === 0;
-									// },
-									formatter: function (value, context) {
-										return ((value * 100) / total).toFixed(2) + "%";
-									},
-									anchor: "end",
-									align: "top",
-									color: "black",
-								},
-							},
-						},
-					},
-					aspectRatio: 3,
-					scales: {
-						y: {
-							grid: {
-								display: false,
-							},
-						},
-						x: {
-							grid: {
-								display: false,
-							},
-						},
-					},
-				}}
-			/>
-			<Box
-				sx={{
-					display: "flex",
-					flexDirection: "row",
-					pt: 5,
-				}}
-			>
-				{/* <Button color="base">Regresar</Button> */}
-				<Box sx={{ flex: "1 1 auto" }} />
 
-				<Button
-					variant="contained"
-					size="large"
-					onClick={handlePDF}
-					id="nodoespecifico"
-					sx={{
-						boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
-						transition: "all 0.5s ease",
-						backgroundColor: "#511079",
-						width: "25%",
-						// borderRadius: "25px 25px 25px 25px",
-						"&:hover": {
-							backgroundColor: "#7E328B !important",
-							transform: "translate(-5px, -5px)",
-							boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+						interaction: {
+							intersect: false,
+							mode: "index",
+						},
+						indexAxis: "x",
+						responsive: true,
+						plugins: {
+							title: {
+								display: true,
+								padding: {
+									top: 10,
+									bottom: 30,
+								},
+								text: "Porcentaje de votos",
+							},
+							tooltip: {
+								filter: function (tooltipItem) {
+									// console.log("TOOLTIPITEM", tooltipItem);
+									return tooltipItem.datasetIndex === 0;
+								},
+								usePointStyle: true,
+								callbacks: {
+									labelPointStyle: (context) => {
+										console.log(context);
+										console.log(
+											"Imagen",
+											context.dataset.image[context.dataIndex]
+										);
+										const image = new Image(15, 15);
+										image.src = context.dataset.image[context.dataIndex];
+										return {
+											pointStyle: image,
+										};
+									},
+									beforeTitle: (context) => {
+										return context[0].dataset.labels[context[0].dataIndex];
+									},
+								},
+							},
+							legend: {
+								display: false,
+							},
+							datalabels: {
+								display: function (data) {
+									return data.datasetIndex === 0;
+								},
+								labels: {
+									// events: ["mousemove"],
+									title: {
+										display: function (data) {
+											return data.datasetIndex === 0;
+										},
+										formatter: function (value, context) {
+											return value + "\nvotos";
+										},
+										textAlign: "center",
+										color: "white",
+									},
+									value: {
+										// display: function (data) {
+										// 	return data.datasetIndex === 0;
+										// },
+										formatter: function (value, context) {
+											return ((value * 100) / total).toFixed(2) + "%";
+										},
+										anchor: "end",
+										align: "top",
+										color: "black",
+									},
+								},
+							},
+						},
+						aspectRatio: 3,
+						scales: {
+							y: {
+								grid: {
+									display: false,
+								},
+							},
+							x: {
+								grid: {
+									display: false,
+								},
+							},
 						},
 					}}
+				/>
+				<Box
+					sx={{
+						display: "flex",
+						flexDirection: "row",
+						pt: 5,
+					}}
 				>
-					DESCARGAR REPORTE
-				</Button>
-			</Box>
-			{/* <ReporteInicialHTML /> */}
-		</>
-	);
+					{/* <Button color="base">Regresar</Button> */}
+					<Box sx={{ flex: "1 1 auto" }} />
+
+					<Button
+						variant="contained"
+						size="large"
+						onClick={handlePDF}
+						id="nodoespecifico"
+						sx={{
+							boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+							transition: "all 0.5s ease",
+							backgroundColor: "#511079",
+							width: "25%",
+							// borderRadius: "25px 25px 25px 25px",
+							"&:hover": {
+								backgroundColor: "#7E328B !important",
+								transform: "translate(-5px, -5px)",
+								boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+							},
+						}}
+					>
+						DESCARGAR REPORTE
+					</Button>
+				</Box>
+				{/* <ReporteInicialHTML /> */}
+			</>
+		);
 };

@@ -41,7 +41,7 @@ export const ReporteFinal = () => {
 
 	useEffect(() => {
 		if (boleta !== null) {
-			dispatch(onGetJornadaVotos(boleta));
+			dispatch(onGetJornadaVotos(boleta, jornadaSelected.id));
 			console.log("BUSCO LA BOLETAAAAA");
 		}
 	}, [boleta]);
@@ -86,7 +86,7 @@ export const ReporteFinal = () => {
 										value={boleta.idEstructuraBoleta}
 										key={boleta.idEstructuraBoleta}
 									>
-										{boleta.nombreEleccion}
+										{boleta.nombreEstructuraBoleta}
 									</MenuItem>
 								);
 							})}
@@ -116,8 +116,11 @@ export const ReporteFinal = () => {
 									</Box>
 								) : boleta === null ? (
 									<></>
-								) : (
+								) : jornadaVotosData.resultados.length !== 0 ? (
 									<JornadaFormalChart chartData={jornadaVotosData} />
+								) : (
+									// <></>
+									<></>
 								)
 							}
 						/>

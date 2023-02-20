@@ -59,7 +59,7 @@ export const ReportesNoFormalesTabs = () => {
 	// 	);
 	// else
 	return (
-		<Box sx={{ overflow: "visible" }}>
+		<Box sx={{ overflow: "hidden" }}>
 			<Box
 				sx={{
 					height: "100%",
@@ -145,7 +145,7 @@ export const ReportesNoFormalesTabs = () => {
 					</PrivateRoute>
 				</Box>
 			</Box>
-			<Box sx={{ overflowY: "visible" }}>
+			<Box sx={{ overflowY: "hidden" }}>
 				{jornadaVotosData.length !== 0 && status !== "checking" && (
 					<ReporteFinalNoFormalHTML jornadaVotosData={jornadaVotosData} />
 					// <></>

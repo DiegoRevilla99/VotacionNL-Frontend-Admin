@@ -384,7 +384,7 @@ export const SliceJornada = createSlice({
 		},
 
 		onSetJornadaSelected: (state, { payload }) => {
-			console.log(payload);
+			console.log("JORNADA SELECTED", payload);
 			state.jornadaSelected.id = payload.id;
 			state.jornadaSelected.title = payload.title;
 			state.jornadaSelected.boletas = payload.boletas || [];
@@ -419,6 +419,9 @@ export const SliceJornada = createSlice({
 		},
 		onSetJornadasVotosData: (state, { payload }) => {
 			state.jornadaVotosData = payload;
+		},
+		onDeleteJornadaDataCustom: (state) => {
+			state.jornadasData = [];
 		},
 	},
 });
@@ -474,4 +477,5 @@ export const {
 	onErrorOperation,
 	onOffOperation,
 	onSetJornadasVotosData,
+	onDeleteJornadaDataCustom,
 } = SliceJornada.actions;

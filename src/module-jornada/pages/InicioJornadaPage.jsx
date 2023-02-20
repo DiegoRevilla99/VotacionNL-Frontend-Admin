@@ -1,9 +1,12 @@
 import { Box, Button, Divider, Grid, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { onDeleteJornadaDataCustom } from "../../store/module-preparacion/jornada/SliceJornada";
 
 export const InicioJornadaPage = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const goFormales = () => {
 		navigate("/jornada/reportesJornadasFormales");
@@ -16,6 +19,10 @@ export const InicioJornadaPage = () => {
 	const goConsultas = () => {
 		navigate("/jornada/reportesConsultasCiudadanas");
 	};
+
+	useEffect(() => {
+		dispatch(onDeleteJornadaDataCustom());
+	}, []);
 
 	return (
 		<Box

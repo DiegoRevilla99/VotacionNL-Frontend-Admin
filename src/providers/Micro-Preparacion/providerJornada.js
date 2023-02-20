@@ -3,6 +3,7 @@ import { votosNoFormalesAPI } from "../Micro-VotosNoFormales/configVotosNoFormal
 import { jornadasAPI } from "./configJornada";
 import { jornadasNoFormalesAPI } from "./configNoFormales";
 import { ImagesAPI } from "./configImage";
+import { votoFormalAPI } from "../Micro-VotoFormal/configVotoFormal";
 let idJornadas = 0;
 let idBoleta = 0;
 
@@ -577,27 +578,50 @@ export const deleteBoleta = async (id) => {
 	}
 };
 
-export const getJornadaVotos = async (id) => {
+export const getJornadaVotos = async (idBoleta, idJornada) => {
 	try {
-		await timeout(200);
-		const chartData = [
-			{ id: 1, nombre: "Partido verde", votos: 100 },
-			{ id: 2, nombre: "Partido 2", votos: 120 },
-			{ id: 3, nombre: "Partido 3", votos: 104 },
-			{ id: 4, nombre: "Partido 4", votos: 230 },
-			{ id: 5, nombre: "Partido 5", votos: 440 },
-			{ id: 6, nombre: "Partido 6", votos: 130 },
-			{ id: 7, nombre: "Partido 7", votos: 600 },
-			{ id: 8, nombre: "Partido 8", votos: 389 },
-			{ id: 9, nombre: "Partido 8", votos: 2 },
-			{ id: 10, nombre: "Partido 6", votos: 130 },
-			{ id: 11, nombre: "Partido 7", votos: 600 },
-			{ id: 12, nombre: "Partido 8", votos: 389 },
-			{ id: 13, nombre: "Partido 8", votos: 200 },
-		];
+		console.log("ID BOLETA QUE LLEGA", idBoleta);
+		const { data } = await votoFormalAPI.get(
+			`votos_seguros/jornadaelectoral/${idJornada}/resultados`
+		);
 
-		return { ok: true, data: chartData };
+		console.log("RESULTADOS FORMALES", data);
+
+		const boleta = data.boletas.find((boleta) => boleta.idBoleta === idBoleta);
+
+		console.log("BOLETA FORMALES", boleta);
+
+		let dataChart = [];
+
+		dataChart = boleta.boletaCandidatos.map((paquete) => {
+			// const candidatox = boleta.boletaCandidatos.candidatoModels.find(
+			// 	(candidato) => candidato.claveCandidato === paquete.id
+			// );
+
+			// console.log("CANDIDATO BUSCADO", candidatox);
+			return {
+				id: paquete.id,
+				candiato:
+					paquete.id === 99999
+						? "Votos nulos"
+						: paquete.id === "NULO"
+						? "Votos nulos"
+						: paquete.name,
+				resultados: paquete.candidad,
+			};
+		});
+
+		const dataFinal = {
+			jornadaModel: {},
+			boleta: boleta || null,
+			resultados: dataChart,
+		};
+
+		console.log("DATA CHART FINAL", dataChart);
+
+		return { ok: true, data: dataFinal };
 	} catch (error) {
+		console.log("ERRORRRRRRRRR", error.message);
 		return { ok: false, errorMessage: error.message };
 	}
 };
@@ -824,6 +848,159 @@ export const getJornadaRespuestasConsultas = async (idPapeleta, id) => {
 		};
 
 		data.resultados = dataChart;
+
+		return { ok: true, data: dataFinal };
+	} catch (error) {
+		console.log("ERRORXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", error.message);
+		return { ok: false, errorMessage: error.message };
+	}
+};
+
+export const getJornadaRespuestasConsultasInicio = async (idPapeleta, id) => {
+	try {
+		const { data } = await votoConsultaAPI.get(`votos/consulta/jornada/${id}/resultados`);
+
+		console.log("DATA PAPALETA XXXX", data);
+
+		const papeleta = data.papeletas.find(
+			(papeleta) => papeleta.estructuraPapeleta.idPapeleta === idPapeleta
+		);
+
+		let dataChart = [];
+
+		console.log("PAPELETA ENCONTRADAAAAAAAA", papeleta);
+
+		if (papeleta === undefined) {
+			console.log("entr a undefined");
+		} else if (papeleta.pregunta.subtipo === "2respuestas") {
+			dataChart = [
+				{
+					id: 0,
+					respuesta: "SI",
+					resultados: 0,
+				},
+				{
+					id: 1,
+					respuesta: "NO",
+					resultados: 0,
+				},
+			];
+		} else if (papeleta.pregunta.subtipo === "3respuestas") {
+			dataChart = [
+				{
+					id: 0,
+					respuesta: "EN DESACUERDO",
+					resultados: 0,
+				},
+				{
+					id: 1,
+					respuesta: "NEUTRAL",
+					resultados: 0,
+				},
+				{
+					id: 2,
+					respuesta: "DE ACUERDO",
+					resultados: 0,
+				},
+			];
+		} else if (papeleta.pregunta.subtipo === "5respuestas") {
+			dataChart = [
+				{
+					id: 0,
+					respuesta: "TOTALMENTE EN DESACUERDO",
+					resultados: 0,
+				},
+				{
+					id: 1,
+					respuesta: "EN DESACUERDO",
+					resultados: 0,
+				},
+				{
+					id: 2,
+					respuesta: "NEUTRAL",
+					resultados: 0,
+				},
+				{
+					id: 3,
+					respuesta: "DE ACUERDO",
+					resultados: 0,
+				},
+				{
+					id: 4,
+					respuesta: "TOTALMENTE DE ACUERDO",
+					resultados: 0,
+				},
+			];
+		} else if (papeleta.pregunta.subtipo === "personalizado1") {
+			dataChart = [
+				{
+					id: 0,
+					respuesta: papeleta.pregunta.opcion1,
+					resultados: 0,
+				},
+				{
+					id: 1,
+					respuesta: papeleta.pregunta.opcion2,
+					resultados: 0,
+				},
+			];
+		} else if (papeleta.pregunta.subtipo === "personalizado2") {
+			dataChart = [
+				{
+					id: 0,
+					respuesta: papeleta.pregunta.opcion1,
+					resultados: 0,
+				},
+				{
+					id: 1,
+					respuesta: papeleta.pregunta.opcion2,
+					resultados: 0,
+				},
+				{
+					id: 2,
+					respuesta: papeleta.pregunta.opcion3,
+					resultados: 0,
+				},
+			];
+		} else if (papeleta.pregunta.subtipo === "personalizado3") {
+			dataChart = [
+				{
+					id: 0,
+					respuesta: papeleta.pregunta.opcion1,
+					resultados: 0,
+				},
+				{
+					id: 1,
+					respuesta: papeleta.pregunta.opcion2,
+					resultados: 0,
+				},
+				{
+					id: 2,
+					respuesta: papeleta.pregunta.opcion3,
+					resultados: 0,
+				},
+				{
+					id: 3,
+					respuesta: papeleta.pregunta.opcion4,
+					resultados: 0,
+				},
+				{
+					id: 4,
+					respuesta: papeleta.pregunta.opcion5,
+					resultados: 0,
+				},
+			];
+		}
+
+		const dataFinal = {
+			jornadaModel: data.jornadaModel,
+			papeleta: papeleta || null,
+			resultados: dataChart,
+		};
+
+		// data.resultados = dataChart;
+
+		// console.log("DATA REP INICIAL", dataFinal);
 
 		return { ok: true, data: dataFinal };
 	} catch (error) {

@@ -23,8 +23,10 @@ import { PrivateRoute } from "../../router/PrivateRoute";
 import {
 	onGetBoletas,
 	onGetJornadaRespuestasConsultas,
+	onGetJornadaRespuestasConsultasInicio,
 	onGetJornadaVotos,
 } from "../../store/module-preparacion/jornada/ThunksJornada";
+import { ConsultaChart } from "../components/ConsultaChart";
 import { JornadaFormalChart } from "./JornadaFormalChart";
 // import { VisualizadorDePDF } from "./VisualizadorDePDF";
 
@@ -49,7 +51,7 @@ export const ReporteInicialConsulta = () => {
 
 	useEffect(() => {
 		if (papeleta !== null) {
-			dispatch(onGetJornadaRespuestasConsultas(papeleta, consultaSelected.id));
+			dispatch(onGetJornadaRespuestasConsultasInicio(papeleta, consultaSelected.id));
 			console.log("BUSCO LA BOLETAAAAA");
 		}
 	}, [papeleta]);
@@ -117,8 +119,14 @@ export const ReporteInicialConsulta = () => {
 									</Box>
 								) : papeleta === null ? (
 									<></>
+								) : jornadaVotosData.length !== 0 ? (
+									<ConsultaChart
+										chartData={jornadaVotosData}
+										tipoReporte="reporteInicialHTML"
+									/>
 								) : (
-									<JornadaFormalChart chartData={jornadaVotosData} />
+									// <></>
+									<></>
 								)
 							}
 						/>

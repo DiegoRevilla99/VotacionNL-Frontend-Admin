@@ -123,7 +123,8 @@ export const ReporteFinalJornadaNoFormal = ({ status, jornadaVotosData }) => {
 									</Box>
 								) : boleta === null ? (
 									<></>
-								) : jornadaVotosData.length !== 0 ? (
+								) : // ) : jornadaVotosData.length !== 0 ? (
+								jornadaVotosData.resultados.length !== 0 ? (
 									<JornadaNoFormalChart chartData={jornadaVotosData} />
 								) : (
 									// <></>

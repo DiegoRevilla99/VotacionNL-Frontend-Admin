@@ -40,7 +40,7 @@ export const VerJornadasFormales = () => {
 	];
 
 	useEffect(() => {
-		if (jornadasData.length === 0) dispatch(onGetjornadas());
+		dispatch(onGetjornadas());
 	}, []);
 
 	const handleWatch = (id, titulo) => {
