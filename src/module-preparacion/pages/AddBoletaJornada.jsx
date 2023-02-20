@@ -9,7 +9,7 @@ import { number, object, string } from "yup";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import { onCreateBoleta, onUpdateBoletaData } from "../../store/module-preparacion/jornada/ThunksJornada";
-import { FielTextCustom } from "../components/FielTextCustom";
+import { FielTextCustomJornadas } from "../components/FielTextCustomJornadas";
 import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
 import { ModalRegisterCS } from "../components/ModalRegisterCS";
 // import { DataGridRowGrouping } from "../../ui/components/DataGridRowGrouping";
@@ -251,7 +251,7 @@ export const AddBoletaJornada = () => {
 						</Grid>
 
 						<Grid item xs={12}>
-							<FielTextCustom
+							<FielTextCustomJornadas
 							disabled={status === "checking"}
 								label="NOMBRE DE LA CANDIDATURA"
 								name="nombreCandidatura"
@@ -269,7 +269,7 @@ export const AddBoletaJornada = () => {
 						</Grid>
 
 						<Grid item xs={12} md={12} lg={8}>
-							<FielTextCustom
+							<FielTextCustomJornadas
 							disabled={status === "checking"}
 								label="MUNICIPIO O DELEGACIÓN"
 								name="municipio"
@@ -282,7 +282,7 @@ export const AddBoletaJornada = () => {
 						</Grid>
 
 						<Grid item xs={12} md={12} lg={4}>
-							<FielTextCustom
+							<FielTextCustomJornadas
 							disabled={status === "checking"}
 								label="DISTRITO ELECTORAL"
 								name="distritoElectoral"
@@ -307,7 +307,7 @@ export const AddBoletaJornada = () => {
 							</Typography>
 						</Grid>
 						<Grid item xs={12}>
-							<FielTextCustom
+							<FielTextCustomJornadas
 							disabled={status === "checking"}
 								label="NOMBRE DEL PRIMER FIRMANTE"
 								name="primerFirmante"
@@ -319,7 +319,7 @@ export const AddBoletaJornada = () => {
 							{/* {touched.primerFirmante && errors.primerFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.primerFirmante}</Typography>} */}
 						</Grid>
 						<Grid item xs={12}>
-							<FielTextCustom
+							<FielTextCustomJornadas
 							disabled={status === "checking"}
 								label="CARGO DEL PRIMER FIRMANTE"
 								name="cargoPrimerFirmante"
@@ -331,7 +331,7 @@ export const AddBoletaJornada = () => {
 							{/* {touched.cargoPrimerFirmante && errors.cargoPrimerFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.cargoPrimerFirmante}</Typography>} */}
 						</Grid>
 						<Grid item xs={12}>
-							<FielTextCustom
+							<FielTextCustomJornadas
 							disabled={status === "checking"}
 								label="NOMBRE DEL SEGUNDO FIRMANTE"
 								name="segundoFirmante"
@@ -343,7 +343,7 @@ export const AddBoletaJornada = () => {
 							{/* {touched.segundoFirmante && errors.segundoFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.segundoFirmante}</Typography>} */}
 						</Grid>
 						<Grid item xs={12}>
-							<FielTextCustom
+							<FielTextCustomJornadas
 							disabled={status === "checking"}
 								label="CARGO DEL SEGUNDO FIRMANTE"
 								name="cargoSegundoFirmante"
