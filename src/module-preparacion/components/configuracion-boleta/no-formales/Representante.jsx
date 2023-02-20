@@ -65,8 +65,8 @@ export const Representante = ({ boletaInfo }) => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const [cnr, setCnr] = useState(boletaInfo.mostrarCandidaturasNoReg);
-  const [vn, setVn] = useState(boletaInfo.mostrarVotoNulo);
+  const [cnr, setCnr] = useState(boletaInfo?.mostrarCandidaturasNoReg);
+  const [vn, setVn] = useState(boletaInfo?.mostrarVotoNulo);
 
   /* useEffect(() => {
     if (boletaInfo.mostrarCandidaturasNoReg != undefined)
@@ -87,19 +87,19 @@ export const Representante = ({ boletaInfo }) => {
     setVn(event.target.checked);
   };
 
-  const onGuardar=()=>{
-    console.log("guardando config")
-    const datasend={
-    mostrarCandidaturasNoReg: cnr,
-    mostrarVotoNulo:vn
-  }
-    dispatch(putCandRegNF(id,datasend,error))
-  }
+  const onGuardar = () => {
+    console.log("guardando config");
+    const datasend = {
+      mostrarCandidaturasNoReg: cnr,
+      mostrarVotoNulo: vn,
+    };
+    dispatch(putCandRegNF(id, datasend, error));
+  };
 
-  const error=()=>{
+  const error = () => {
     setCnr(boletaInfo.mostrarCandidaturasNoReg);
     setVn(boletaInfo.mostrarVotoNulo);
-  }
+  };
 
   return (
     <>
@@ -118,7 +118,7 @@ export const Representante = ({ boletaInfo }) => {
         }}
       >
         <Typography sx={{ mb: 3, fontSize: "22px", fontWeight: "bold" }}>
-          OPCIONES DE {boletaInfo.modalidad}
+          OPCIONES DE {boletaInfo?.modalidad}
         </Typography>
         <Box className="" sx={boxOpciones}>
           <FormGroup
@@ -130,25 +130,25 @@ export const Representante = ({ boletaInfo }) => {
             }}
           >
             <FormControlLabel
-              control={<Switch checked={cnr?cnr:false} onChange={handleChangeCand} />}
+              control={
+                <Switch
+                  checked={cnr ? cnr : false}
+                  onChange={handleChangeCand}
+                />
+              }
               label="Opción o candidatura no registrada"
             />
             <FormControlLabel
-              control={<Switch checked={vn?vn:false} onChange={handleChangeVoto} />}
+              control={
+                <Switch checked={vn ? vn : false} onChange={handleChangeVoto} />
+              }
               label="Mostrar voto nulo"
             />
           </FormGroup>
-          
-          
         </Box>
-        <Button
-                  
-                  type="submit"
-                  variant="contained"
-                  onClick={onGuardar}
-                >
-                  Guardar
-                </Button>
+        <Button type="submit" variant="contained" onClick={onGuardar}>
+          Guardar
+        </Button>
         {/* <Box
           sx={{
             display: "flex",
@@ -211,9 +211,6 @@ export const Representante = ({ boletaInfo }) => {
           </Box>
         </Box>
       </Stack>
-
-      
     </>
   );
 };
-

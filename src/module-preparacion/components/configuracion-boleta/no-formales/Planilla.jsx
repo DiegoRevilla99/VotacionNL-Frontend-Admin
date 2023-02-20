@@ -24,7 +24,6 @@ import { SeleccionesForm } from "../SeleccionesForm";
 import { useAsociaciones } from "../../../hooks/config-boleta/useAsociaciones";
 import { putPlanilla } from "../../../../store/module-preparacion/configuracion-boletaNF/thunksConfigBoletaNF";
 
-
 const useStyles = makeStyles({
   hr: {
     height: "3px",
@@ -61,11 +60,11 @@ const boxOpciones = {
   mb: 5,
 };
 
-export const Planilla = ({ boletaInfo, changeCandNoReg }) => {
+export const Planilla = ({ boletaInfo }) => {
   const styles = useStyles();
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { asociaciones, isLoadingAsociaciones } = useAsociaciones(id);
+  // const { asociaciones, isLoadingAsociaciones } = useAsociaciones(id);
 
   const [modalAsociacion, setModalAsociacion] = useState(false);
   const [cnr, setCnr] = useState(false);

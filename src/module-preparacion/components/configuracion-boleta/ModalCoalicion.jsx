@@ -89,12 +89,11 @@ export const ModalCoalicion = memo(
     const styles = useStyles();
     const dispatch = useDispatch();
     const { id } = useParams();
-    const {
-      candidatos = [],
-      status
-    } = useSelector((state) => state.configBoleta);
+    const { candidatos = [], status } = useSelector(
+      (state) => state.configBoleta
+    );
 
-    const [errorSend,seterrorSend]=useState(null)
+    const [errorSend, seterrorSend] = useState(null);
 
     const [logo, setLogo] = useState(
       coalicion
@@ -112,22 +111,18 @@ export const ModalCoalicion = memo(
           : { candidato: "Sin candidato" }
         : { candidato: "Sin candidato" }
     );
-    const [loandingUP, setLoandingUP] = useState(false)
+    const [loandingUP, setLoandingUP] = useState(false);
 
     const onSelectPartido = (info) => {
-      console.log(info)
+      console.log(info);
       setCandidato(info);
     };
-
-   
 
     const cerrarM = () => {
       abrirCerrarModal();
       setCandidato({});
       setLogo({ name: "Sin Archivo seleccionado" });
     };
-
-    
 
     useEffect(() => {
       seterrorSend(null);
@@ -165,14 +160,13 @@ export const ModalCoalicion = memo(
     const afterUpdate = () => {
       console.log("Actualizando...");
       //dispatch(getCoaliciones(id));
-      actualizarC(),
-      cerrarM();
+      actualizarC(), cerrarM();
     };
 
-    const getURLImage=async()=>{
-      const url= await dispatch(postImage(logo))
+    const getURLImage = async () => {
+      const url = await dispatch(postImage(logo));
       return url;
-    }
+    };
 
     const body = (
       <Box sx={modalResponsive}>
@@ -185,69 +179,71 @@ export const ModalCoalicion = memo(
           }}
           validate={validando}
           validationSchema={schema}
-          onSubmit={async(valores) => {
-            setLoandingUP(true)
+          onSubmit={async (valores) => {
+            setLoandingUP(true);
             if (coalicion) {
-                let url=logo.name;
-                if(coalicion.coalicionModel.logo!==logo.name){
-                    console.log("se cambio la imagen")
-                    url=await getURLImage();
-                    console.log("url:",url)
-                }else{
-                  console.log("no se cambio la imagen")
-                }
+              let url = logo.name;
+              if (coalicion.coalicionModel.logo !== logo.name) {
+                console.log("se cambio la imagen");
+                url = await getURLImage();
+                console.log("url:", url);
+              } else {
+                console.log("no se cambio la imagen");
+              }
 
+              const data = {
+                coalicionModel: {
+                  nombre: valores.nombre,
+                  emblema: valores.emblema,
+                  logo: url,
+                },
+                partidos: candidato.partidos,
+              };
+              setLoandingUP(false);
+              actualizar(
+                id,
+                candidato.idCandidato,
+                coalicion.coalicionModel.claveCoalicion,
+                data,
+                afterUpdate
+              );
+            } else {
+              const urll = await getURLImage();
+              if (urll) {
                 const data = {
                   coalicionModel: {
                     nombre: valores.nombre,
                     emblema: valores.emblema,
-                    logo: url,
+                    logo: urll,
                   },
                   partidos: candidato.partidos,
                 };
-                setLoandingUP(false)
-                actualizar(
-                  id,
-                  candidato.idCandidato,
-                  coalicion.coalicionModel.claveCoalicion,
-                  data,
-                  afterUpdate
-                );
-            } else {
-                const urll=await getURLImage();
-                if(urll){
-                  const data = {
-                    coalicionModel: {
-                      nombre: valores.nombre,
-                      emblema: valores.emblema,
-                      logo: urll,
-                    },
-                    partidos: candidato.partidos,
-                  };
-                  setLoandingUP(false)
-                  agregar(id,candidato.id,data, afterUpdate);
-                  seterrorSend(null)
-                }else{
-                  setLoandingUP(false)
-                  seterrorSend("Sucedio un error vuelve intentarlo más tarde")
-                }
-                  
+                setLoandingUP(false);
+                agregar(id, candidato.id, data, afterUpdate);
+                seterrorSend(null);
+              } else {
+                setLoandingUP(false);
+                seterrorSend("Sucedio un error vuelve intentarlo más tarde");
+              }
             }
-            
+
             //enviar(data);
           }}
         >
           {({ touched, errors, handleBlur, handleChange, values }) => (
             <Form className={styles.fomi}>
               <Box sx={{ width: "100%" }}>
-                <div aling="left">
-                  <Typography sx={{ fontWeight: "bold", mb: 3 }}>
+                <div aling="center">
+                  <Typography
+                    textAlign={"center"}
+                    sx={{ fontWeight: "bold", mb: 3 }}
+                  >
                     COALICIÓN
                   </Typography>
                 </div>
                 <Typography>NOMBRE DE LA COALICIÓN</Typography>
                 <TextField
-                disabled={status==="checking"}
+                  disabled={status === "checking"}
                   required
                   label=""
                   variant="outlined"
@@ -267,7 +263,7 @@ export const ModalCoalicion = memo(
                 <br />
                 <Typography>EMBLEMA</Typography>
                 <TextField
-                disabled={status==="checking"}
+                  disabled={status === "checking"}
                   required
                   label=""
                   variant="outlined"
@@ -307,7 +303,7 @@ export const ModalCoalicion = memo(
                     size="large"
                   >
                     <input
-                    disabled={status==="checking"}
+                      disabled={status === "checking"}
                       hidden
                       onChange={(e) => setLogo(e.target.files[0])}
                       onBlur={handleBlur}
@@ -356,34 +352,24 @@ export const ModalCoalicion = memo(
                   >
                     {candidatos.map((candidat) => (
                       <PartidoSelect
-                        key={candidat.candidatoModel.claveElectoral}
-                        claveElectoral={candidat.candidatoModel.claveElectoral}
+                        key={candidat.candidatoModel.curp}
+                        claveElectoral={candidat.candidatoModel.curp}
                         candidato={candidat.candidatoModel.nombreCandidato}
                         candidatoid={candidat.candidatoModel.idCandidato}
                         partidos={candidat.partidos}
                         onSelect={onSelectPartido}
-                        valueRadio={
-                          candidato.claveElectoral
-                            ? candidato.claveElectoral
-                            : ""
-                        }
+                        valueRadio={candidato.curp ? candidato.curp : ""}
                       ></PartidoSelect>
                     ))}
                     {coalicion && (
                       <PartidoSelect
-                        key={coalicion.candidatoModel.claveElectoral}
-                        claveElectoral={
-                          coalicion.candidatoModel.claveElectoral
-                        }
+                        key={coalicion.candidatoModel.curp}
+                        claveElectoral={coalicion.candidatoModel.curp}
                         candidato={coalicion.candidatoModel.nombreCandidato}
                         candidatoid={coalicion.candidatoModel.idCandidato}
                         partidos={coalicion.partidos}
                         onSelect={onSelectPartido}
-                        valueRadio={
-                          candidato.claveElectoral
-                            ? candidato.claveElectoral
-                            : ""
-                        }
+                        valueRadio={candidato.curp ? candidato.curp : ""}
                       ></PartidoSelect>
                     )}
                   </Box>
@@ -394,24 +380,21 @@ export const ModalCoalicion = memo(
                 </Box>
                 <br />
               </Box>
-              {
-                  (loandingUP || status==="checking") &&
-                          <Stack
-                    justifyContent="center"
-                    sx={{ color: "grey.500" }}
-                    spacing={2}
-                    direction="row"
-                  >
-                    <CircularProgress color="primary" />
-                  </Stack>
-              }
+              {(loandingUP || status === "checking") && (
+                <Stack
+                  justifyContent="center"
+                  sx={{ color: "grey.500" }}
+                  spacing={2}
+                  direction="row"
+                >
+                  <CircularProgress color="primary" />
+                </Stack>
+              )}
               <Box
                 display="flex"
                 sx={{ mt: 1, p: 2, width: "100%" }}
                 justifyContent="end"
               >
-                
-
                 <Button
                   type="submit"
                   variant="contained"

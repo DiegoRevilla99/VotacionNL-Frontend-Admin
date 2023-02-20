@@ -42,17 +42,17 @@ export const ConfigBoletaMultiple = () => {
       return (
         <Representante
           boletaInfo={boletaInfo}
-          changeCandNoReg={changeCandNoReg}
+          // changeCandNoReg={changeCandNoReg}
         ></Representante>
       );
 
-    if (type === "COMITÉ") return <Comite boletaInfo={boletaInfo}></Comite>;
+    if (type === "COMITE") return <Comite boletaInfo={boletaInfo}></Comite>;
 
     if (type === "PLANILLA")
       return (
         <Planilla
           boletaInfo={boletaInfo}
-          changeCandNoReg={changeCandNoReg}
+          // changeCandNoReg={changeCandNoReg}
         ></Planilla>
       );
 
