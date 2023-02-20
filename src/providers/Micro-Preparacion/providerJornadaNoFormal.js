@@ -103,11 +103,16 @@ export const getBoletaData = async (idBoleta) => {
 		const { data: data2 } = await jornadasNoFormalesAPI.get(
 			`jornada/no_formal/estructura_boleta/${idBoleta}/asociaciones_candidatos`);
 			//https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/estructura_boleta/11/asociaciones_candidatos
-			
+			//asociaciones
+		const { data: data3 } = await jornadasNoFormalesAPI.get(
+			`jornada/no_formal/estructuras/boleta/${idBoleta}/modalidad`
+				// https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/estructuras/boleta/10/modalidad
+			);
 		console.log("Data boleta: ", data);
 		console.log("Data boleta y candidato: ", data1);
-		// console.log("Data models todos los candidatos: ", data1.candidatoModels);
+		// // console.log("Data models todos los candidatos: ", data1.candidatoModels);
 		console.log("Data asociacion: ", data2);
+		// console.log("Data modalidad: ", data3.modalidadVotacionModel.idModalidadVotacion);
 		const format = {
 			// MY FORMAT || API FORMAT
 			id: data.idEstructuraBoleta,
@@ -118,12 +123,13 @@ export const getBoletaData = async (idBoleta) => {
 			cargoPrimerFirmante: data.primerFirmanteCargo,
 			segundoFirmante: data.segundoFirmanteNombre,
 			cargoSegundoFirmante:data.segundoFirmanteCargo,
+			modalidadVotacion:data3.modalidadVotacionModel.idModalidadVotacion
 		}
-		// console.log("Format boleta: ", format);
+		console.log("Format boleta: ", format);
 		const formatCandidato = data1.candidatoModels.map(candidato => {
 			return {
-			//   id: "",
-			claveCandidato: candidato.claveCandidato,
+			  id: "",
+			  claveCandidato: candidato.claveCandidato,
 			  apellidoPCandidato: candidato.apellidoPCandidato,
 			  apellidoMCandidato: candidato.apellidoMCandidato,
 			  nombreCandidato: candidato.nombreCandidato,
@@ -140,6 +146,7 @@ export const getBoletaData = async (idBoleta) => {
 			// console.log("formatAsociaciones: ", asociacion.asociacionModel);
 			const formatCandidatos = asociacion.candidatos.map(candidato => {
 				return {
+					id: "",
 					claveCandidato: candidato.claveCandidato,
 					apellidoPCandidato: candidato.apellidoPCandidato,
 					apellidoMCandidato: candidato.apellidoMCandidato,
@@ -150,12 +157,12 @@ export const getBoletaData = async (idBoleta) => {
 					generoCandidato: candidato.genero
 				};
 			});
-
 			return {
+				id: "",
 				nombreAsociacion: asociacion.asociacionModel.nombreAsociacion,
 				emblema: asociacion.asociacionModel.emblema,
 				logo: asociacion.asociacionModel.logo,
-				candidatos: formatCandidatos
+				candidatosAsociacion: formatCandidatos
 			};
 		});
 		// console.log("format asociaciones: ", formatAsociaciones);

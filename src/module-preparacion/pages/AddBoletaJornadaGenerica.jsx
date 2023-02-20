@@ -87,7 +87,7 @@ export const AddBoletaJornadaGenerica = () => {
 		cargoSegundoFirmante: "",//Text
 	}:{
 		encabezado: jornadaNoFormalSelected.boletaNoFormalSelected.encabezado,	//Text
-		modalidadVotacion: jornadaNoFormalSelected.boletaNoFormalSelected.modalidadVotacionModel.modalidadVotacion,//Text
+		modalidadVotacion: jornadaNoFormalSelected.boletaNoFormalSelected.modalidadVotacion,//Text
 		entidadFederativa: jornadaNoFormalSelected.boletaNoFormalSelected.entidadFederativa,//Text
 		municipio: jornadaNoFormalSelected.boletaNoFormalSelected.municipio,//Text
 		primerFirmante: jornadaNoFormalSelected.boletaNoFormalSelected.primerFirmante,//Text
