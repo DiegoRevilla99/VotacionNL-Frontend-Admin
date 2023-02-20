@@ -19,7 +19,12 @@ export const PartidoSelect = memo(
     valueRadio = "",
   }) => {
     const handleChange = (event) => {
-      onSelect({ claveElectoral, partidos,id:candidatoid,idCandidato:candidatoid });
+      onSelect({
+        curp: claveElectoral,
+        partidos,
+        id: candidatoid,
+        idCandidato: candidatoid,
+      });
     };
 
     const value = valueRadio === claveElectoral;

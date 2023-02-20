@@ -26,6 +26,7 @@ import {
   getCandidatos,
   getCoaliciones,
 } from "../../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
 
 const useStyles = makeStyles({
   hr: {
@@ -134,14 +135,16 @@ export const Representante = memo(({ boletaInfo, updateCand }) => {
                 {boletaInfo?.nombreEstructuraBoleta.toUpperCase()}
               </Typography>
               <Typography textAlign={"center"} sx={{ p: 5 }}>
-                No se permiten coaliciones en esta boleta
+                No hay posibles coaliciones para esta boleta
               </Typography>
             </>
           ) : (
             <>
               <Typography
+                textAlign={"center"}
                 sx={{
                   mb: 3,
+                  mt: 3,
                   fontSize: { md: "22px", xs: "15px" },
                   fontWeight: "bold",
                 }}
@@ -172,11 +175,12 @@ export const Representante = memo(({ boletaInfo, updateCand }) => {
                     }}
                     onClick={abrirCerrarModalCoalicion}
                   >
-                    Agregar coalición
+                    {"Agregar coalición  "}
+                    <GroupAddIcon sx={{ ml: 1 }} />
                   </Button>
                 ) : (
                   <Typography sx={{ color: "#09AD29" }}>
-                    ¡No se permiten más coaliciones!
+                    ¡COALICIONES COMPLETADAS CON ÉXITO!
                   </Typography>
                 )}
               </Box>

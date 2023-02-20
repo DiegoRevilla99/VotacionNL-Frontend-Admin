@@ -24,8 +24,7 @@ const styleButton = {
 
 // 2=ASOCIACION    1=COALICION
 
-export const Agrupa =
-  ({ tipo = 1, info = {}, actualizar }) => {
+export const Agrupa = ({ tipo = 1, info = {}, actualizar }) => {
   const { coaliciones = [], asociaciones = [] } = info;
   const tipoAgrupacion = tipo == 1 ? "COALICIÓN" : "ASOCIACIÓN";
 
@@ -45,37 +44,39 @@ export const Agrupa =
             sx={{
               width: "100%",
               boxShadow: 1,
-              display:"flex",
+              display: "flex",
               border: "2px solid rgba(0,0,0,0.5)",
               borderRadius: "10px",
               background: "#F8F8F8",
-              justifyContent:"center",
-              alignItems:"center",
-
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-           
-              <Box
-                sx={{
-                  display: "flex",
-                  width: "95%",
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                  gap: "10px",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  mb:5
-                  
-                }}
-              >
-                {coaliciones.map((coalicion, i) => (
-                  <Coalicion actualizar={actualizar} key={i} info={coalicion}></Coalicion>
-                ))}
-              </Box>
-            
+            <Box
+              sx={{
+                display: "flex",
+                width: "95%",
+                flexDirection: "row",
+                flexWrap: "wrap",
+                gap: "10px",
+                justifyContent: "center",
+                alignItems: "center",
+                mb: 5,
+              }}
+            >
+              {coaliciones.map((coalicion, i) => (
+                <Coalicion
+                  actualizar={actualizar}
+                  key={i}
+                  info={coalicion}
+                ></Coalicion>
+              ))}
+            </Box>
           </Box>
         ) : (
-          <Box>No hay coaliciones</Box>
+          <Typography mt={5} textAlign={"center"}>
+            Sin coaliciones
+          </Typography>
         )
       ) : asociaciones ? (
         <Box
