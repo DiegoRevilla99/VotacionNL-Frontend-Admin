@@ -1,5 +1,7 @@
 import { votoConsultaAPI } from "../Micro-VotoConsultas/configVotoConsultas";
+import { votosNoFormalesAPI } from "../Micro-VotosNoFormales/configVotosNoFormales";
 import { jornadasAPI } from "./configJornada";
+import { jornadasNoFormalesAPI } from "./configNoFormales";
 
 let idJornadas = 0;
 let idBoleta = 0;
@@ -70,6 +72,21 @@ export const getBoletasJornada = async (idJornadaElectoral) => {
 		);
 		// console.log("DATA BOLETASSSS", data);
 		return { ok: true, data: data.data };
+	} catch (error) {
+		return { ok: false };
+	}
+};
+export const getBoletasJornadaNoFormal = async (idJornadaElectoral) => {
+	try {
+		// **FETCH
+		console.log("ID JORNADA QUE LLEGAAAAAAA", idJornadaElectoral);
+		// https://ms-jornada-elec-nl.herokuapp.com/jornada/electoral/jornada/JO-EL-GO-OR-20-NUE-2023/estructurasboletas
+		const { data } = await jornadasNoFormalesAPI.get(
+			`jornada/no_formal/${idJornadaElectoral}/boletas`
+		);
+		console.log("RESPUESTA", data);
+		// console.log("DATA BOLETASSSS", data);
+		return { ok: true, data: data.listBoletas };
 	} catch (error) {
 		return { ok: false };
 	}
@@ -385,6 +402,56 @@ export const getJornadaVotos = async (id) => {
 	}
 };
 
+export const getJornadaNoFormalVotos = async (idBoleta, id) => {
+	try {
+		const { data } = await votosNoFormalesAPI.get(`votos/no/formal/jornada/${id}/resultados`);
+		// votos/no/formal/jornada/546622-EL-DE-PR-ES-ORD-2023/resultados
+
+		console.log("DATA DE NO FORMALES", data);
+
+		const boleta = data.boletas.find((boleta) => boleta.idBoleta === idBoleta);
+
+		console.log("BOLETA ENCONTRADA", boleta);
+
+		let dataChart = [];
+
+		if (boleta === undefined) {
+			console.log("entr a undefined");
+		} else {
+			dataChart = boleta.representanteResultado.map((paquete) => {
+				const candidatox = boleta.boletaCandidatos.candidatoModels.find(
+					(candidato) => candidato.claveCandidato === paquete.id
+				);
+				console.log("CANDIDATO BUSCADO", candidatox);
+				return {
+					id: paquete.id,
+					candiato:
+						paquete.id === "CANORE"
+							? "Candidatura no registrada"
+							: paquete.id === "NULO"
+							? "Votos nulos"
+							: candidatox.nombreCandidato +
+							  candidatox.apellidoPCandidato +
+							  candidatox.apellidoMCandidato,
+					resultados: paquete.candidad,
+				};
+			});
+		}
+
+		const dataFinal = {
+			jornadaModel: {},
+			boleta: boleta || null,
+			resultados: dataChart,
+		};
+
+		console.log("DATA CHAAARTS", dataChart);
+		return { ok: true, data: dataFinal };
+	} catch (error) {
+		console.log("ERROR NO FORMALES", error.message);
+		return { ok: false, errorMessage: error.message };
+	}
+};
+
 export const getJornadaRespuestasConsultas = async (idPapeleta, id) => {
 	try {
 		const { data } = await votoConsultaAPI.get(`votos/consulta/jornada/${id}/resultados`);
@@ -397,7 +464,11 @@ export const getJornadaRespuestasConsultas = async (idPapeleta, id) => {
 
 		let dataChart = [];
 
-		if (papeleta.pregunta.subtipo === "2respuestas") {
+		console.log("PAPELETA ENCONTRADAAAAAAAA", papeleta);
+
+		if (papeleta === undefined) {
+			console.log("entr a undefined");
+		} else if (papeleta.pregunta.subtipo === "2respuestas") {
 			dataChart = [
 				{
 					id: 0,
@@ -519,18 +590,15 @@ export const getJornadaRespuestasConsultas = async (idPapeleta, id) => {
 
 		const dataFinal = {
 			jornadaModel: data.jornadaModel,
-			papeleta: papeleta,
+			papeleta: papeleta || null,
 			resultados: dataChart,
 		};
-
-		console.log("dataChart", dataChart);
-		console.log("papeleta", papeleta);
 
 		data.resultados = dataChart;
 
 		return { ok: true, data: dataFinal };
 	} catch (error) {
-		console.log(error.message);
+		console.log("ERRORXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", error.message);
 		return { ok: false, errorMessage: error.message };
 	}
 };

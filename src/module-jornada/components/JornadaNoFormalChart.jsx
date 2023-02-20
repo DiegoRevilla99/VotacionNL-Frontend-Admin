@@ -24,18 +24,29 @@ import { ReporteInicialHTML } from "../components/ReporteInicialHTML";
 
 // ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export const ConsultaChart = ({ chartData = { resultados: [] } }) => {
+export const JornadaNoFormalChart = ({ chartData = { resultados: [] } }) => {
 	const total = parseInt(
 		chartData.resultados.reduce((acc, cur) => acc + cur.resultados, 0),
 		10
 	);
 
-	const labelsAdjusted = chartData.resultados.map((label) => label.respuesta.split(" "));
-	console.log(labelsAdjusted);
+	// const labelsAdjusted = chartData.resultados.map((label) => label.respuesta.split(" "));
+	// console.log(labelsAdjusted);
+
+	console.log(
+		"RESULTADOOOOS",
+		chartData.resultados.map((data) => data.resultados)
+	);
+	console.log(
+		"NOMBREEES",
+		chartData.resultados.map((resultado) => resultado.candidato)
+	);
 	const chartRef = useRef(null);
 	const [data, setData] = useState({
 		// labels: chartData.map((data) => data.nombre),
-		labels: labelsAdjusted,
+		// labels: labelsAdjusted,
+		labels: chartData.resultados.map((resultado) => resultado.candiato),
+		// labels: "juan",
 		datasets: [
 			{
 				label: "Votos",
@@ -185,7 +196,7 @@ export const ConsultaChart = ({ chartData = { resultados: [] } }) => {
 								align="center"
 								sx={{ wordBreak: "break-word" }}
 							>
-								{chartData.jornadaModel.entidad}
+								{/* {chartData.jornadaModel.entidad} */}
 							</Typography>
 						</Grid>
 						<Grid
@@ -226,7 +237,7 @@ export const ConsultaChart = ({ chartData = { resultados: [] } }) => {
 								align="center"
 							>
 								Consulta ciudadana por respuesta{" "}
-								{chartData.papeleta.pregunta.tipoRespuesta}
+								{/* {chartData.papeleta.pregunta.tipoRespuesta} */}
 							</Typography>
 						</Grid>
 					</Grid>
@@ -339,7 +350,7 @@ export const ConsultaChart = ({ chartData = { resultados: [] } }) => {
 						Pregunta:
 					</Typography>
 					<Typography variant="body1" color="initial" align="center" fontWeight="bold">
-						{chartData.papeleta.pregunta.descPregunta}
+						{/* {chartData.papeleta.pregunta.descPregunta} */}
 					</Typography>
 				</Box>
 				<Chart
@@ -377,12 +388,12 @@ export const ConsultaChart = ({ chartData = { resultados: [] } }) => {
 
 								usePointStyle: true,
 								callbacks: {
-									title: (context) => {
-										// return context[0].dataset.labels[context[0].dataIndex];
-										// return chartData.map((data) => data.respuesta);
-										return chartData.resultados[[context[0].dataIndex]]
-											.respuesta;
-									},
+									// title: (context) => {
+									// 	// return context[0].dataset.labels[context[0].dataIndex];
+									// 	// return chartData.map((data) => data.respuesta);
+									// 	return chartData.resultados[[context[0].dataIndex]]
+									// 		.candidato;
+									// },
 								},
 							},
 							legend: {

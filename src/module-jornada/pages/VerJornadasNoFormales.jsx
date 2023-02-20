@@ -10,6 +10,7 @@ import { onGetConsultasCiudadanas } from "../../store/module-preparacion/consult
 import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
 import {
 	onGetBoletasParaJornada,
+	onGetBoletasParaJornadaNoFormal,
 	onGetjornadas,
 	onGetjornadasNoFormales,
 } from "../../store/module-preparacion/jornada/ThunksJornada";
@@ -20,7 +21,7 @@ export const VerJornadasNoFormales = () => {
 	const { jornadasData, status } = useJornadaStore();
 	const dispatch = useDispatch();
 	const columns = [
-		{ field: "nombreJornada", headerName: "Título de la jornada formal", flex: 10 },
+		{ field: "nombreEleccion", headerName: "Título de la jornada formal", flex: 10 },
 		{
 			field: "acciones",
 			headerName: "Acciones",
@@ -33,7 +34,7 @@ export const VerJornadasNoFormales = () => {
 						<Button
 							variant="outlined"
 							startIcon={<BallotIcon />}
-							onClick={() => handleWatch(params.id, params.row.nombreJornada)}
+							onClick={() => handleWatch(params.id, params.row.nombreEleccion)}
 						>
 							Ver reportes
 						</Button>
@@ -49,8 +50,8 @@ export const VerJornadasNoFormales = () => {
 
 	const handleWatch = (id, titulo) => {
 		dispatch(
-			onGetBoletasParaJornada(id, titulo, () =>
-				navigate("/jornada/reportes/" + id + "/reporteInicio/")
+			onGetBoletasParaJornadaNoFormal(id, titulo, () =>
+				navigate("/jornada/reportesJornadasNoFormales/reportes/" + id + "/reporteInicio/")
 			)
 		);
 	};
@@ -115,7 +116,7 @@ export const VerJornadasNoFormales = () => {
 								<GeneralTable
 									data={jornadasData}
 									columns={columns}
-									idName={"idJornada"}
+									idName={"idEleccion"}
 								/>
 							</Box>
 						</Box>

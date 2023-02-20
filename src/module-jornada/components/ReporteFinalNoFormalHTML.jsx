@@ -1,5 +1,6 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import React, { useLayoutEffect, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const imagenes = [
 	"https://www.chartjs.org/img/chartjs-logo.svg",
@@ -17,53 +18,54 @@ const imagenes = [
 	"https://upload.wikimedia.org/wikipedia/commons/5/52/Partido_Socialdem%C3%B3crata_%28Mexico%29_Logo.png",
 ];
 
-export const ReporteFinalConsultaHTML = ({ jornadaVotosData = { resultados: [] } }) => {
-	console.log("JORNADA VOTOS DATA QUE LLEGA", jornadaVotosData);
-	const [cifrasVotos, setCifrasVotos] = useState(0);
+export const ReporteFinalNoFormalHTML = ({ jornadaVotosData = { resultados: [] } }) => {
+	const { jornadaSelected } = useSelector((state) => state.jornada);
+	// const [cifrasVotos, setCifrasVotos] = useState(0);
+	const [dataVotos, setDataVotos] = useState(jornadaVotosData);
 	const [arrayResultado, setArrayResultado] = useState(
 		jornadaVotosData.resultados.map((resultado) => resultado.resultados)
 	);
 	const [fecha, setFecha] = useState(null);
 
-	console.log("ARRAY DE RESULTADOS", arrayResultado);
+	console.log("DATA VOTOS", dataVotos);
 
-	useEffect(() => {
-		const fechax = new Date();
+	const resultadosOrdenados = (array) => {
+		let arrayForSort = [...array];
+		console.log("LO que entra", arrayForSort);
+		arrayForSort.sort((a, b) => {
+			return a.resultados < b.resultados ? 1 : a.resultados > b.resultados ? -1 : 0;
+		});
 
-		setFecha(fechax.toLocaleString());
-
-		setArrayResultado(
-			jornadaVotosData.resultados.map((resultado) => resultado.resultados) || []
-		);
-		// const arrayResultado = jornadaVotosData.resultados.map((resultado) => resultado.resultados);
-
-		console.log("ARRAY", arrayResultado);
-
-		let max = 0;
-		max = arrayResultado.reduce((acc, cur) => {
-			console.log(acc, cur);
-			if (cur.toString().length >= acc.toString().length) return cur;
-			else return acc;
-		}, 0);
-
-		setCifrasVotos(max.toString().length);
-	}, [jornadaVotosData]);
-
-	const cifra = (index1, index2) => {
-		const numeroArray = arrayResultado[index1];
-		const cifras = numeroArray.toString().length;
-
-		if (cifrasVotos - index2 <= cifras) {
-			const invertido = numeroArray.toString().split("").reverse().join("");
-			return invertido.toString().charAt(cifrasVotos - index2 - 1);
-		} else {
-			return "";
-		}
+		let nuevo = [...arrayForSort];
+		return [...nuevo];
 	};
 
-	const porcentaje = (index1, index2) => {};
+	useEffect(() => {
+		if (dataVotos.resultados.length > 0) {
+			let arrayForSort = [...dataVotos.resultados];
+			console.log("LO que entra", arrayForSort);
+			arrayForSort.sort((a, b) => {
+				return a.resultados < b.resultados ? 1 : a.resultados > b.resultados ? -1 : 0;
+			});
 
-	if (jornadaVotosData.resultados.length === 0) return <>Reporte no disponible</>;
+			let nuevo = [...arrayForSort];
+
+			setDataVotos({ ...dataVotos, resultados: [...nuevo] });
+		}
+	}, [jornadaVotosData]);
+
+	useEffect(() => {
+		if (dataVotos.resultados.length > 0) {
+			const fechax = new Date();
+
+			setFecha(fechax.toLocaleString());
+
+			setArrayResultado(dataVotos.resultados.map((resultado) => resultado.resultados) || []);
+			// const arrayResultado = jornadaVotosData.resultados.map((resultado) => resultado.resultados);
+		}
+	}, [dataVotos]);
+
+	if (jornadaVotosData.resultados.length === 0) return <>No disponible</>;
 	else
 		return (
 			<Box id="reporteInicialHTML">
@@ -89,7 +91,7 @@ export const ReporteFinalConsultaHTML = ({ jornadaVotosData = { resultados: [] }
 								fontWeight="bold"
 								fontFamily="times"
 							>
-								{jornadaVotosData.papeleta.estructuraPapeleta.nombre}
+								{/* {jornadaVotosData.papeleta.estructuraPapeleta.nombre} */}
 							</Typography>
 							<Typography
 								variant="h6"
@@ -98,7 +100,7 @@ export const ReporteFinalConsultaHTML = ({ jornadaVotosData = { resultados: [] }
 								fontSize="0.9rem"
 								fontFamily="times"
 							>
-								{jornadaVotosData.jornadaModel.entidad}
+								{/* {jornadaVotosData.jornadaModel.entidad} */}
 							</Typography>
 							<Typography
 								variant="body1"
@@ -107,7 +109,7 @@ export const ReporteFinalConsultaHTML = ({ jornadaVotosData = { resultados: [] }
 								pt={2}
 								fontFamily="times"
 							>
-								Reporte final de consulta ciudadana
+								Reporte final de votación
 							</Typography>
 						</Box>
 					</Box>
@@ -159,7 +161,7 @@ export const ReporteFinalConsultaHTML = ({ jornadaVotosData = { resultados: [] }
 									fontFamily="times"
 									fontWeight="bold"
 								>
-									Tipo de pregunta
+									Candidaturas no registradas
 								</Typography>
 								<Typography
 									variant="body2"
@@ -167,7 +169,7 @@ export const ReporteFinalConsultaHTML = ({ jornadaVotosData = { resultados: [] }
 									fontFamily="times"
 									align="center"
 								>
-									{jornadaVotosData.papeleta.pregunta.tipoRespuesta}
+									{/* {jornadaVotosData.papeleta.pregunta.tipoRespuesta} */}
 								</Typography>
 							</Grid>
 							<Grid item xs={6}>
@@ -186,7 +188,7 @@ export const ReporteFinalConsultaHTML = ({ jornadaVotosData = { resultados: [] }
 									fontFamily="times"
 									align="center"
 								>
-									{jornadaVotosData.papeleta.pregunta.subtipo}
+									{/* {jornadaVotosData.papeleta.pregunta.subtipo} */}
 								</Typography>
 							</Grid>
 							<Grid item xs={6}></Grid>
@@ -201,39 +203,14 @@ export const ReporteFinalConsultaHTML = ({ jornadaVotosData = { resultados: [] }
 										align="center"
 										my={1}
 									>
-										Resultados de la consulta ciudadana
-									</Typography>
-								</Box>
-							</Grid>
-
-							<Grid item xs={12}>
-								<Box
-									border="2px solid"
-									mt="0.2rem"
-									sx={{ borderTopLeftRadius: "5px" }}
-									height="100%"
-									display="flex"
-									flexDirection="column"
-									justifyContent="center"
-									justifyItems="center"
-									alignContent="center"
-									alignItems="center"
-								>
-									<Typography
-										variant="body1"
-										// color="white"
-										fontFamily="times"
-										align="center"
-										my={1}
-									>
-										{jornadaVotosData.papeleta.pregunta.descPregunta}
+										Resultados de la jornada
 									</Typography>
 								</Box>
 							</Grid>
 
 							<Grid item xs={6}>
 								<Box
-									// borderTop="0px"
+									borderTop="2px solid"
 									borderLeft="2px solid"
 									// borderRight="2px solid"
 									borderBottom="2px solid"
@@ -254,14 +231,14 @@ export const ReporteFinalConsultaHTML = ({ jornadaVotosData = { resultados: [] }
 										align="center"
 										my={1}
 									>
-										Respuesta
+										Representante
 									</Typography>
 								</Box>
 							</Grid>
 							{/* <Grid item xs={cifrasVotos + 1}> */}
 							<Grid item xs={3}>
 								<Box
-									// borderTop="0px"
+									borderTop="2px solid"
 									borderLeft="2px solid"
 									// borderRight="2px solid"
 									borderBottom="2px solid"
@@ -287,7 +264,7 @@ export const ReporteFinalConsultaHTML = ({ jornadaVotosData = { resultados: [] }
 							</Grid>
 							<Grid item xs={3}>
 								<Box
-									// borderTop="0px"
+									borderTop="2px solid"
 									borderLeft="2px solid"
 									borderRight="2px solid"
 									borderBottom="2px solid"
@@ -313,7 +290,7 @@ export const ReporteFinalConsultaHTML = ({ jornadaVotosData = { resultados: [] }
 								</Box>
 							</Grid>
 
-							{jornadaVotosData.resultados.map((resultado, index1) => (
+							{dataVotos.resultados.map((resultado, index1) => (
 								<React.Fragment key={resultado.id}>
 									{/* <Grid item xs={2} border="2px solid"></Grid> */}
 									<Grid
@@ -331,6 +308,7 @@ export const ReporteFinalConsultaHTML = ({ jornadaVotosData = { resultados: [] }
 											alignContent="center"
 											alignItems="center"
 											height="100%"
+											// bgcolor={index1}
 										>
 											<Typography
 												variant="body2"
@@ -338,7 +316,7 @@ export const ReporteFinalConsultaHTML = ({ jornadaVotosData = { resultados: [] }
 												color="initial"
 												fontFamily="times"
 											>
-												{resultado.respuesta}
+												{resultado.candiato}
 											</Typography>
 										</Box>
 									</Grid>

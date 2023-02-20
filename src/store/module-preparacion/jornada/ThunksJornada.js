@@ -7,6 +7,8 @@ import {
 	deleteJornada,
 	getBoletaData,
 	getBoletasJornada,
+	getBoletasJornadaNoFormal,
+	getJornadaNoFormalVotos,
 	getJornadaRespuestasConsultas,
 	getJornadas,
 	getJornadasFormales,
@@ -168,6 +170,28 @@ export const onGetBoletasParaJornada = (idJornada, title, navigate = () => {}) =
 	};
 };
 
+export const onGetBoletasParaJornadaNoFormal = (idJornada, title, navigate = () => {}) => {
+	return async (dispatch) => {
+		dispatch(onCheckingOperation());
+
+		console.log("SELECCIONAAAAA", idJornada, title);
+		const { ok, data } = await getBoletasJornadaNoFormal(idJornada);
+
+		console.log("DATA DE JORNADAS NO FORMALES", data);
+		if (ok) {
+			dispatch(onSuccessOperation());
+			dispatch(onSetBoletasSelectedNull());
+
+			dispatch(onSetJornadaSelected({ id: idJornada, title }));
+			dispatch(onFillBoletas(data));
+			navigate();
+		} else {
+			dispatch(onErrorOperation());
+			dispatch(onToastErrorOperation({ errorMessage: "No se pudo obtener las boletas" }));
+		}
+	};
+};
+
 export const onCreateBoleta = (
 	data,
 	idJornada,
@@ -290,9 +314,29 @@ export const onGetJornadaVotos = (idBoleta) => {
 export const onGetJornadaRespuestasConsultas = (idPapeleta, id) => {
 	return async (dispatch) => {
 		dispatch(onCheckingOperation());
-		console.log("ENTRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
 		const { ok, data } = await getJornadaRespuestasConsultas(idPapeleta, id); // PROVIDER
+
+		console.log("DATA DE LA BUSQUEDAAAAAAAAAAAAAAAAAAA", data);
+		if (ok) {
+			dispatch(onSetJornadasVotosData(data)); // SLICE
+			dispatch(onSuccessOperation());
+		} else {
+			dispatch(onErrorOperation());
+			dispatch(onToastErrorOperation({ errorMessage: "No se pudo eliminar la boleta" }));
+		}
+	};
+};
+
+export const onGetJornadaNoFormalVotos = (idBoleta, id) => {
+	return async (dispatch) => {
+		dispatch(onCheckingOperation());
+
+		console.log("IDSSSSSSSSSSSSSSSSSSSSSSS", idBoleta, id);
+
+		const { ok, data } = await getJornadaNoFormalVotos(idBoleta, id); // PROVIDER
+
+		console.log("DATA DE LA BUSQUEDAAAAAAAAAAAAAAAAAAA", data);
 		if (ok) {
 			dispatch(onSetJornadasVotosData(data)); // SLICE
 			dispatch(onSuccessOperation());

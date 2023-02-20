@@ -19,8 +19,10 @@ import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
 import { PrivateRoute } from "../../router/PrivateRoute";
 import { onGetBoletas } from "../../store/module-preparacion/jornada/ThunksJornada";
+import { ReporteFinalNoFormalHTML } from "../components/ReporteFinalNoFormalHTML";
 import { ReporteInicialHTML } from "../components/ReporteInicialHTML";
 import { ReporteFinal } from "./ReporteFinal";
+import { ReporteFinalJornadaNoFormal } from "./ReporteFinalJornadaNoFormal";
 import { ReporteInicial } from "./ReporteInicial";
 import { VerSesiones } from "./VerSesiones";
 
@@ -39,6 +41,7 @@ function LinkTab(props) {
 }
 
 export const ReportesNoFormalesTabs = () => {
+	const { status, jornadaVotosData } = useJornadaStore();
 	const [value, setValue] = React.useState(0);
 	const params = useParams();
 
@@ -55,7 +58,7 @@ export const ReportesNoFormalesTabs = () => {
 	// 	);
 	// else
 	return (
-		<Box sx={{ overflow: "hidden" }}>
+		<Box sx={{ overflow: "visible" }}>
 			<Box
 				sx={{
 					height: "100%",
@@ -110,18 +113,29 @@ export const ReportesNoFormalesTabs = () => {
 				>
 					<PrivateRoute>
 						<Routes>
-							{/* <Route path="reporteInicio/*" element={<ReporteInicial />} /> */}
 							<Route path="reporteInicio/*" element={<>Reporte inicial</>} />
+							<Route
+								path="reporteFinal/*"
+								element={
+									<ReporteFinalJornadaNoFormal
+										status={status}
+										jornadaVotosData={jornadaVotosData}
+									/>
+								}
+							/>
 							{/* <Route path="reporteFinal/*" element={<ReporteFinal />} /> */}
-							<Route path="reporteFinal/*" element={<>Reporte Final</>} />
+							{/* <Route path="reporteFinal/*" element={<>Reporte Final</>} /> */}
 							<Route path="sesiones/*" element={<VerSesiones />} />
 							{/* <Route path="sesiones" element={<JornadasNoFormales />} /> */}
 						</Routes>
 					</PrivateRoute>
 				</Box>
 			</Box>
-			<Box sx={{ overflowY: "hidden" }}>
-				<ReporteInicialHTML />
+			<Box sx={{ overflowY: "visible" }}>
+				{jornadaVotosData.length !== 0 && status !== "checking" && (
+					<ReporteFinalNoFormalHTML jornadaVotosData={jornadaVotosData} />
+					// <></>
+				)}
 			</Box>
 		</Box>
 	);

@@ -168,7 +168,7 @@ export const getBallotData = async (idBallot) => {
 
 export const createPapeleta = async (data, idConsulta, questions) => {
 	try {
-		// console.log("DATA QUE LLEGA", questions);
+		console.log("DATA QUE LLEGA", questions);
 		const { data: data1 } = await consultasAPI.post("jornada/consulta/estructurapapeleta", {
 			nombre: data.encabezadoConsulta,
 			distrito: data.distritoElectoral,
@@ -187,7 +187,7 @@ export const createPapeleta = async (data, idConsulta, questions) => {
 			{
 				descPregunta: questions[0].pregunta,
 				tipoRespuesta: questions[0].tipoDeRespuesta,
-				subtipo: questions[0].tipoCerrada,
+				subtipo: questions[0].subtipo,
 				opcion1: questions[0].respuesta1,
 				opcion2: questions[0].respuesta2,
 				opcion3: questions[0].respuesta3,
@@ -207,6 +207,7 @@ export const createPapeleta = async (data, idConsulta, questions) => {
 
 export const updateBallotData = async (data, questions, idConsulta, idPapeleta) => {
 	try {
+		console.log("DATA QUE LLEGA UPDATE", questions);
 		const { data: data1 } = await consultasAPI.put(
 			"jornada/consulta/estructurapapeleta/" + idPapeleta,
 			{
@@ -228,6 +229,7 @@ export const updateBallotData = async (data, questions, idConsulta, idPapeleta) 
 			{
 				descPregunta: questions[0].pregunta,
 				tipoRespuesta: questions[0].tipoDeRespuesta,
+				subtipo: questions[0].subtipo,
 				opcion1: questions[0].respuesta1,
 				opcion2: questions[0].respuesta2,
 				opcion3: questions[0].respuesta3,

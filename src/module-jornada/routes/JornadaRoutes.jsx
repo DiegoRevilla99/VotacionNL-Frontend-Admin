@@ -4,6 +4,7 @@ import { PrivateRoute } from "../../router/PrivateRoute";
 import { ConsultasTabs } from "../pages/ConsultasTabs";
 import { InicioJornadaPage } from "../pages/InicioJornadaPage";
 import { ReportesFormalesTabs } from "../pages/ReportesFormalesTabs";
+import { ReportesNoFormalesTabs } from "../pages/ReportesNoFormalesTabs";
 import { VerConsultasCiudadanas } from "../pages/VerConsultasCiudadanas";
 import { VerJornadasFormales } from "../pages/VerJornadasFormales";
 import { VerJornadasNoFormales } from "../pages/VerJornadasNoFormales";
@@ -19,6 +20,10 @@ export const JornadaRoutes = () => {
 				<Route path="reportes/:idJornada/*" element={<ReportesFormalesTabs />} />
 
 				<Route path="reportesJornadasNoFormales" element={<VerJornadasNoFormales />} />
+				<Route
+					path="reportesJornadasNoFormales/reportes/:idJornada/*"
+					element={<ReportesNoFormalesTabs />}
+				/>
 
 				<Route path="reportesConsultasCiudadanas" element={<VerConsultasCiudadanas />} />
 				<Route
