@@ -422,6 +422,9 @@ export const SliceJornada = createSlice({
 		},
 		onDeleteJornadaDataCustom: (state) => {
 			state.jornadasData = [];
+			state.jornadaVotosData = {
+				resultados: [],
+			};
 		},
 	},
 });

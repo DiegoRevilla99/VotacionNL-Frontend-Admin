@@ -325,7 +325,7 @@ export const onGetJornadaVotos = (idBoleta, idJornada) => {
 			dispatch(onSuccessOperation());
 		} else {
 			dispatch(onErrorOperation());
-			dispatch(onToastErrorOperation({ errorMessage: "No se pudo eliminar la boleta" }));
+			dispatch(onToastErrorOperation({ errorMessage: "Error al obtener las boletas" }));
 		}
 	};
 };
@@ -342,7 +342,7 @@ export const onGetJornadaRespuestasConsultas = (idPapeleta, id) => {
 			dispatch(onSuccessOperation());
 		} else {
 			dispatch(onErrorOperation());
-			dispatch(onToastErrorOperation({ errorMessage: "No se pudo eliminar la boleta" }));
+			dispatch(onToastErrorOperation({ errorMessage: "Error al obtener las boletas" }));
 		}
 	};
 };
@@ -380,7 +380,7 @@ export const onGetJornadaNoFormalVotos = (idBoleta, id) => {
 			dispatch(onSuccessOperation());
 		} else {
 			dispatch(onErrorOperation());
-			dispatch(onToastErrorOperation({ errorMessage: "No se pudo eliminar la boleta" }));
+			dispatch(onToastErrorOperation({ errorMessage: "Error al obtener las boletas" }));
 		}
 	};
 };
