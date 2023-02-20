@@ -62,7 +62,7 @@ export const ModalRegistroJornadaNoFormal = ({ modalStatus, closeModal, openModa
 			<Box sx={style}>
 				<Box sx={{ overflowY: "auto", height: "100%" }}>
 					<Typography id="modal-modal-title" variant="h5" color="initial" align="center">
-						REGISTRO DE JORNADA NO FORMAL
+						REGISTRO DE ELECCIÓN POPULAR
 					</Typography>
 					<Box m={"2rem"}>
 						<Formik
@@ -78,7 +78,7 @@ export const ModalRegistroJornadaNoFormal = ({ modalStatus, closeModal, openModa
 							{({ values, handleSubmit, handleChange, errors, touched, setValues }) => (
 								<form onSubmit={handleSubmit}>
 									<Typography variant="h6" mb="0.5rem">
-										TÍTULO DE LA JORNADA NO FORMAL
+										TÍTULO DE LA ELECCIÓN POPULAR
 									</Typography>
 									<TextField
 										name="title"
@@ -87,7 +87,12 @@ export const ModalRegistroJornadaNoFormal = ({ modalStatus, closeModal, openModa
 										id="title"
 										label="Título de la jornada"
 										variant="filled"
-										onChange={handleChange}
+										onChange={(event) => {
+											// Convertir el valor a mayúsculas antes de actualizar el estado del formulario
+											const uppercaseValue = event.target.value.toUpperCase();
+											handleChange(event);
+											setValues((values) => ({ ...values, title: uppercaseValue }));
+										}}
 										value={values.title}
 										error={touched.title && Boolean(errors.title)}
 										helperText={touched.title && errors.title}

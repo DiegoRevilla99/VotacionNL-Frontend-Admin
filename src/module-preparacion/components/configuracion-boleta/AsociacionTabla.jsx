@@ -8,13 +8,13 @@ import { useParams } from "react-router-dom";
 import { onDeleteAsociacion, onEditAsociacion } from "../../../store/module-preparacion/jornada/SliceJornadaNoFormal";
 
 import "../../../styles/generalContainer.css";
-import { BoxCandidato } from "./BoxCandidato";
+import { BoxCandidatoFormal } from "./BoxCandidatoFormal";
 
 export const AsociacionTabla = memo(({
   info = {}, handleOpenModal
 }) => {
   console.log("AsociacionTabla", info);
-  const { id, nombreAsociacion, candidatosAsociacion } = info;
+  const { id, nombreAsociacion, logo, candidatosAsociacion } = info;
 
   const dispatch = useDispatch();
   const params = useParams();
@@ -85,10 +85,11 @@ export const AsociacionTabla = memo(({
             }}
           >
             {candidatosAsociacion.map((candidato) => (
-              <BoxCandidato
+              <BoxCandidatoFormal
                 key={candidato.id}
                 candidato={candidato.nombreCandidato}
-              ></BoxCandidato>
+                img={logo}
+              ></BoxCandidatoFormal>
             ))}
           </Box>
         </fieldset>

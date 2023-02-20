@@ -152,11 +152,11 @@ export const onCreateBoletaAsociaciones = (data, idJornada, candidatos, asociaci
 export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
     return async (dispatch) => {
         dispatch(onCheckingOperation());
-        console.log("IDBOLETA THUNKS: ", idBoleta);
+        // console.log("IDBOLETA THUNKS: ", idBoleta);
         const {ok, data, dataCandidato, dataAsociacion } = await getBoletaData(idBoleta);// PROVIDER
         console.log("CANDIDATOS EN EL THUNKS",dataCandidato);
-        console.log("boleta EN EL THUNKS",data);
-        console.log("asociacion EN EL THUNKS",dataAsociacion);
+        // console.log("boleta EN EL THUNKS",data);
+        // console.log("asociacion EN EL THUNKS",dataAsociacion);
         if (ok) {
             dispatch(onSuccessOperation());
             dispatch(onEditBoleta({idBoleta, ...data}));// SLICE

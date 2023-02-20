@@ -54,7 +54,7 @@ export const SliceJornadaNoFormal = createSlice({
             payload.forEach((candidato) => {
                 state.candidatos.push({
                     id: candidato?.id,
-                    claveCandidato: payload?.claveCandidato,
+                    claveCandidato: candidato?.claveCandidato,
                     nombreCandidato: candidato?.nombreCandidato,
                     apellidoPCandidato: candidato?.apellidoPCandidato,
                     apellidoMCandidato: candidato?.apellidoMCandidato,
@@ -64,6 +64,7 @@ export const SliceJornadaNoFormal = createSlice({
                     generoCandidato: candidato?.generoCandidato,
                 });
             });
+            console.log("candidatos en mi state", state.candidatos);
         },
 
         onDeleteCandidato: (state, { payload }) => {
@@ -124,7 +125,7 @@ export const SliceJornadaNoFormal = createSlice({
                     candidatosAsociacion: asociacion?.candidatosAsociacion,
                 });
             });
-            
+            console.log("asociaciones en mi state", state.asociaciones)
         },
         onDeleteAsociacion: (state, { payload }) => {
             const asociacionFound = state.asociaciones.find((asociacion) => asociacion.id === payload?.id);

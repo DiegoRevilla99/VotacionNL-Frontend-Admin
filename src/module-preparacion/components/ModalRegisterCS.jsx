@@ -564,7 +564,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 			<Box sx={style}>
 				<Box sx={{ overflowY: "auto", height: "100%" }}>
 					<Typography id="modal-modal-title" variant="h5" color="initial" align="center">
-						REGISTRO DE CANDIDATOS Y SUPLENTE
+						REGISTRO DE CANDIDATO Y SUPLENTE
 					</Typography>
 					<Box m={"2rem"}>
 
@@ -745,6 +745,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														helperText={touched.claveElectoralCandidato && errors.claveElectoralCandidato}
 														onChange={handleChange}
 														onBlur={handleBlur}
+														maxLength={18} // se agrega el atributo maxLength
 													/>
 											<Typography variant="h7" mt={"2rem"}>
 												PRIMER APELLIDO <span style={{ color: "red" }}>*</span>
@@ -916,6 +917,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														helperText={touched.claveElectoralSuplente && errors.claveElectoralSuplente}
 														onChange={handleChange}
 														onBlur={handleBlur}
+														maxLength={18} // se agrega el atributo maxLength
 													/>
 											<Typography variant="h7" mt={"2rem"}>
 												PRIMER APELLIDO <span style={{ color: "red" }}>*</span>

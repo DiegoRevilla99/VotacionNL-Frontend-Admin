@@ -145,7 +145,7 @@ export const CrudJornadaGenerica = () => {
 								url: "/preparacion/inicio",
 							},
 							{
-								name: "JORNADAS NO FORMALES",
+								name: "ELECCIONES POPULARES",
 								url: "/preparacion/registroJornadaNoFormal",
 							},
 						]}

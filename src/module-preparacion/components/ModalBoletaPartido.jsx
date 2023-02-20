@@ -262,7 +262,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						size="small"
 						id="outlined-basic" 
 						variant="outlined"
-						label=""
+						label="Ingrese el nombre de un partido..."
 						name="nameParty"
 						value={values.nameParty}
 						error = {touched.nameParty && errors.nameParty}
@@ -278,7 +278,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						size="small"
 						id="outlined-basic" 
 						variant="outlined"
-						label=""
+						label="Ingrese las siglas del partido..."
 						name="siglasParty"
 						value={values.siglasParty}
 						error = {touched.siglasParty && errors.siglasParty}
@@ -294,7 +294,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						size="small"
 						id="outlined-basic" 
 						variant="outlined"
-						label=""
+						label="Ingrese el emblema del partido..."
 						name="emblemParty"
 						value={values.emblemParty}
 						error = {touched.emblemParty && errors.emblemParty}
@@ -416,13 +416,13 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 								>
 									<Box
 									sx={{
-										borderRadius: "15px",
+										// borderRadius: "35px",
 										width: "50px",
 										height: "50px",
-										background: "#000",
+										// background: "#000",
 										ml: 1,
 									}}
-									></Box>
+									><a href={candidato.fotografiaCandidato}><img width="60px" height="55px" src={candidato.fotografiaCandidato} alt="fotoCandidato"/></a></Box>
 									<Box sx={{ p: 2 }}>
 									<Typography sx={{ fontSize: "15px", fontWeight: "bold" }}>
 										{candidato.nombreCandidato}

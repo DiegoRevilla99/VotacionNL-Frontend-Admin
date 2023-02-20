@@ -423,6 +423,7 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 										error={touched.claveCandidato && Boolean(errors.claveCandidato)}
 										helperText={touched.claveCandidato && errors.claveCandidato}
 										onBlur={handleBlur}
+										maxLength={18} // se agrega el atributo maxLength
 									/>
 									<Typography variant="h7">
 										PRIMER APELLIDO <span style={{ color: "red" }}>*</span>

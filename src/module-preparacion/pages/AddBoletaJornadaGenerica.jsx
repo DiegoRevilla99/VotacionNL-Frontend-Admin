@@ -2,7 +2,7 @@ import { Box, Button, CircularProgress, Divider, Grid, MenuItem, TextField, Typo
 import { Stack } from "@mui/system";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { FielTextCustom } from "../components/FielTextCustom";
+import { FielTextCustomJornadas } from "../components/FielTextCustomJornadas";
 // import { ModalEliminarPC } from "../components/ModalEliminarPC";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
@@ -87,7 +87,7 @@ export const AddBoletaJornadaGenerica = () => {
 		cargoSegundoFirmante: "",//Text
 	}:{
 		encabezado: jornadaNoFormalSelected.boletaNoFormalSelected.encabezado,	//Text
-		modalidadVotacion: jornadaNoFormalSelected.boletaNoFormalSelected.modalidadVotacionModel.modalidadVotacion,//Text
+		modalidadVotacion: jornadaNoFormalSelected.boletaNoFormalSelected.modalidadVotacion,//Text
 		entidadFederativa: jornadaNoFormalSelected.boletaNoFormalSelected.entidadFederativa,//Text
 		municipio: jornadaNoFormalSelected.boletaNoFormalSelected.municipio,//Text
 		primerFirmante: jornadaNoFormalSelected.boletaNoFormalSelected.primerFirmante,//Text
@@ -291,7 +291,7 @@ export const AddBoletaJornadaGenerica = () => {
 							</Typography>
 						</Grid>
 						<Grid item xs={12}>
-						<FielTextCustom
+						<FielTextCustomJornadas
 						
 							disabled={status === "checking"}
 							name="encabezado"
@@ -354,7 +354,7 @@ export const AddBoletaJornadaGenerica = () => {
 							</Typography>
 						</Grid>
 						<Grid item xs={12}>
-							<FielTextCustom
+							<FielTextCustomJornadas
 							disabled={status === "checking"}
 								label="ENTIDAD FEDERATIVA"
 								name="entidadFederativa"
@@ -366,7 +366,7 @@ export const AddBoletaJornadaGenerica = () => {
 							{/* {touched.entidadFederativa && errors.entidadFederativa && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.entidadFederativa}</Typography>} */}
 						</Grid>
 						<Grid item xs={12}>
-							<FielTextCustom
+							<FielTextCustomJornadas
 							disabled={status === "checking"}
 								label="MUNICIPIO O DELEGACIÓN"
 								name="municipio"
@@ -384,7 +384,7 @@ export const AddBoletaJornadaGenerica = () => {
 							</Typography>
 						</Grid>
 						<Grid item xs={12}>
-							<FielTextCustom
+							<FielTextCustomJornadas
 							disabled={status === "checking"}
 								label="NOMBRE DEL PRIMER FIRMANTE"
 								name="primerFirmante"
@@ -396,7 +396,7 @@ export const AddBoletaJornadaGenerica = () => {
 							{/* {touched.primerFirmante && errors.primerFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.primerFirmante}</Typography>} */}
 						</Grid>
 						<Grid item xs={12}>
-							<FielTextCustom
+							<FielTextCustomJornadas
 							disabled={status === "checking"}
 								label="CARGO DEL PRIMER FIRMANTE"
 								name="cargoPrimerFirmante"
@@ -408,7 +408,7 @@ export const AddBoletaJornadaGenerica = () => {
 							{/* {touched.cargoPrimerFirmante && errors.cargoPrimerFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.cargoPrimerFirmante}</Typography>} */}
 						</Grid>
 						<Grid item xs={12}>
-							<FielTextCustom
+							<FielTextCustomJornadas
 							disabled={status === "checking"}
 								label="NOMBRE DEL SEGUNDO FIRMANTE"
 								name="segundoFirmante"
@@ -420,7 +420,7 @@ export const AddBoletaJornadaGenerica = () => {
 							{/* {touched.segundoFirmante && errors.segundoFirmante && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.segundoFirmante}</Typography>} */}
 						</Grid>
 						<Grid item xs={12}>
-							<FielTextCustom
+							<FielTextCustomJornadas
 							disabled={status === "checking"}
 								label="CARGO DEL SEGUNDO FIRMANTE"
 								name="cargoSegundoFirmante"
@@ -550,22 +550,21 @@ export const AddBoletaJornadaGenerica = () => {
 		<div>
 		{/* Resto de la interfaz */}
 		{showModal && (
-			<div style={{ 
-			position: 'fixed', 
-			top: '50%', 
-			left: '50%', 
-			transform: 'translate(-50%, -50%)', 
-			background: 'rgba(0, 0, 0, 0.5)', 
-			width: '400px',
-			height: '400px',
-			// background: '#fff', 
-			zIndex: 9999, 
-			padding: '20px',
-			borderRadius: '10px',
-			textAlign: 'center'
-			}}>
-			<Typography id="modal-modal-title" variant= "h4"  color="white" align="center" mr={5} ml={5} mb={5}>
-                    ¿Deseas configurar la boleta o prefieres terminar y salir?
+			<div style={{
+				position: 'fixed',
+				top: '50%',
+				left: '50%',
+				transform: 'translate(-50%, -50%)',
+				background: '#fff',
+				width: '400px',
+				height: '400px',
+				zIndex: 9999,
+				padding: '20px',
+				borderRadius: '10px',
+				textAlign: 'center'
+			}}>			
+				<Typography id="modal-modal-title" variant="h4" color="black" align="center" mr={5} ml={5} mb={5}>
+				¿Deseas configurar la boleta o prefieres terminar y salir?
 				</Typography>
 				
 				<Grid

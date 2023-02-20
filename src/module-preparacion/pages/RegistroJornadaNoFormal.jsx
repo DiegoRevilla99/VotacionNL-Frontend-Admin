@@ -134,12 +134,12 @@ export const RegistroJornadaNoFormal = () => {
 						url: "/preparacion/inicio",
 						},
 					]}
-					currentRoute="JORNADAS"
+					currentRoute="ELECCIONES POPULARES"
 					/>
 
 					<Box sx={{ m: "0.5rem", ml: "2rem" }}>
 						<Typography variant="h6" align="left" color="initial">
-							REGISTRO DE UNA JORNADA NO FORMAL
+							REGISTRO DE UNA ELECCIÓN POPULAR
 						</Typography>
 					</Box>
 					<Divider />
@@ -170,7 +170,7 @@ export const RegistroJornadaNoFormal = () => {
 										},
 									}}
 								>
-									Registrar Jornada
+									Registrar ELECCIÓN POPULAR
 								</Button>
 							</Grid>
 						</Grid>
@@ -189,7 +189,7 @@ export const RegistroJornadaNoFormal = () => {
 							}}
 						>
 							<Typography variant="h5" color="initial" mb="0.5rem" align="center">
-								JORNADAS
+								ELECCIONES POPULAR
 							</Typography>
 							<Divider />
 							<Box

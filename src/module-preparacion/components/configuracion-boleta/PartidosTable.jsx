@@ -7,15 +7,15 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { onDeletePartido, onEditPartido } from "../../../store/module-preparacion/jornada/SliceJornada";
 import "../../../styles/generalContainer.css";
-import { BoxCandidato } from "./BoxCandidato";
+import { BoxCandidatoFormal } from "./BoxCandidatoFormal";
 
 export const PartidosTable = memo(({info = {}, handleOpenModal}) => {
 
     const params = useParams();
     const dispatch = useDispatch();
     // console.log("INFOR EN TABLE",info);
-    const { id, nameParty, candidatosPartido } = info;
-
+    const { id, nameParty, fotografiaParty, candidatosPartido } = info;
+    console.log("candidatos",info);
 
     const editar = () => {
       handleOpenModal();
@@ -80,11 +80,12 @@ export const PartidosTable = memo(({info = {}, handleOpenModal}) => {
                 flexWrap: "wrap",
               }}
             >
-              {candidatosPartido.map(({ id, nombreCandidato }) => (
-                <BoxCandidato
-                  key={id}
-                  candidato={nombreCandidato}
-                ></BoxCandidato>
+              {candidatosPartido.map(( candidato ) => (
+                <BoxCandidatoFormal
+                  key={candidato.id}
+                  candidato={candidato.nombreCandidato}
+                  img={fotografiaParty}
+                ></BoxCandidatoFormal>
               ))}
             </Box>
           </fieldset>
