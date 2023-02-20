@@ -6,7 +6,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { object, string } from "yup";
 import { useUiStore } from "../../hooks/useUiStore";
 import {
-	onCreatePapeleta, onUpdateBallotData
+	onCreatePapeleta,
+	onUpdateBallotData,
 } from "../../store/module-preparacion/consulta-ciudadana/thunks";
 import { AddPapeletasTable } from "../components/AddPapeletasTable";
 import { ButtonsContainer } from "../components/ButtonsContainer";
@@ -267,6 +268,7 @@ export const AddPapeleta = () => {
 								<AddPapeletasTable
 									handleOpenModal={handleOpenModal}
 									status={status}
+									questions={questions}
 								/>
 							</Grid>
 							<ButtonsContainer status={status} onCancel={onCancel} />

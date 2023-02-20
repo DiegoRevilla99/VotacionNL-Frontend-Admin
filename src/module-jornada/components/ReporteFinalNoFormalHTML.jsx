@@ -26,6 +26,10 @@ export const ReporteFinalNoFormalHTML = ({ jornadaVotosData = { resultados: [] }
 		jornadaVotosData.resultados.map((resultado) => resultado.resultados)
 	);
 	const [fecha, setFecha] = useState(null);
+	const [planillasState, setPlanillas] = useState({
+		candidatosPlanillas: [],
+		planillas: [],
+	});
 
 	console.log("DATA VOTOS", dataVotos);
 
@@ -65,7 +69,7 @@ export const ReporteFinalNoFormalHTML = ({ jornadaVotosData = { resultados: [] }
 		}
 	}, [dataVotos]);
 
-	if (jornadaVotosData.resultados.length === 0) return <>No disponible</>;
+	if (jornadaVotosData.resultados.length === 0) return <></>;
 	else
 		return (
 			<Box id="reporteInicialHTML">
@@ -91,7 +95,10 @@ export const ReporteFinalNoFormalHTML = ({ jornadaVotosData = { resultados: [] }
 								fontWeight="bold"
 								fontFamily="times"
 							>
-								{/* {jornadaVotosData.papeleta.estructuraPapeleta.nombre} */}
+								{
+									jornadaVotosData.boleta.boletaCandidatos.boletaModel
+										.encabezadoBoleta
+								}
 							</Typography>
 							<Typography
 								variant="h6"
@@ -169,7 +176,10 @@ export const ReporteFinalNoFormalHTML = ({ jornadaVotosData = { resultados: [] }
 									fontFamily="times"
 									align="center"
 								>
-									{/* {jornadaVotosData.papeleta.pregunta.tipoRespuesta} */}
+									{jornadaVotosData.boleta.boletaCandidatos.modalidad
+										.mostrarCandidaturasNoReg
+										? "Si"
+										: "No"}
 								</Typography>
 							</Grid>
 							<Grid item xs={6}>
@@ -188,7 +198,7 @@ export const ReporteFinalNoFormalHTML = ({ jornadaVotosData = { resultados: [] }
 									fontFamily="times"
 									align="center"
 								>
-									{/* {jornadaVotosData.papeleta.pregunta.subtipo} */}
+									{jornadaVotosData.boleta.boletaCandidatos.modalidad.modalidad}
 								</Typography>
 							</Grid>
 							<Grid item xs={6}></Grid>
@@ -295,39 +305,144 @@ export const ReporteFinalNoFormalHTML = ({ jornadaVotosData = { resultados: [] }
 									{/* <Grid item xs={2} border="2px solid"></Grid> */}
 									<Grid
 										item
+										container
 										xs={6} // borderTop="0px"
 										borderLeft="2px solid"
 										// borderRight="2px solid"
 										borderBottom="2px solid"
 									>
-										<Box
-											py="0.2rem"
-											display="flex"
-											justifyContent="center"
-											justifyItems="center"
-											alignContent="center"
-											alignItems="center"
-											height="100%"
-											// bgcolor={index1}
-										>
-											<Typography
-												variant="body2"
-												// fontSize="0.9rem"
-												color="initial"
-												fontFamily="times"
+										{jornadaVotosData.boleta.boletaCandidatos.modalidad
+											.modalidad === "PLANILLA" ? (
+											<>
+												<Grid item xs={7} borderRight="2px solid">
+													<Box
+														py="0.2rem"
+														display="flex"
+														justifyContent="center"
+														justifyItems="center"
+														alignContent="center"
+														alignItems="center"
+														height="100%"
+														flexDirection="column"
+														// bgcolor={index1}
+													>
+														{resultado?.candiato?.map((candidato) => (
+															<Typography
+																variant="body2"
+																// fontSize="0.9rem"
+																color="initial"
+																fontFamily="times"
+															>
+																{candidato}
+															</Typography>
+														))}
+													</Box>
+												</Grid>
+												<Grid item xs={5}>
+													{resultado?.planillas?.map(
+														(planilla, index, array) => (
+															<Box
+																py="0.2rem"
+																display="flex"
+																justifyContent="center"
+																justifyItems="center"
+																alignContent="center"
+																alignItems="center"
+																height={100 / array.length + "%"}
+																flexDirection="column"
+																// borderBottom="2px solid"
+																borderBottom={
+																	index !== array.length - 1
+																		? "2px solid"
+																		: "0px"
+																}
+															>
+																<Typography
+																	variant="body2"
+																	// fontSize="0.9rem"
+																	color="initial"
+																	fontFamily="times"
+
+																	// align="center"
+																>
+																	{planilla}
+																</Typography>
+															</Box>
+														)
+													)}
+												</Grid>
+											</>
+										) : (
+											<Grid item xs={12}>
+												<Box
+													py="0.2rem"
+													display="flex"
+													justifyContent="center"
+													justifyItems="center"
+													alignContent="center"
+													alignItems="center"
+													height="100%"
+													flexDirection="column"
+													// bgcolor={index1}
+												>
+													<Typography
+														variant="body2"
+														// fontSize="0.9rem"
+														color="initial"
+														fontFamily="times"
+													>
+														{resultado.candiato}
+													</Typography>
+												</Box>
+											</Grid>
+										)}
+										{/* <Grid item xs={12}>
+											<Box
+												py="0.2rem"
+												display="flex"
+												justifyContent="center"
+												justifyItems="center"
+												alignContent="center"
+												alignItems="center"
+												height="100%"
+												flexDirection="column"
+												// bgcolor={index1}
 											>
-												{resultado.candiato}
-											</Typography>
-										</Box>
+												{jornadaVotosData.boleta.boletaCandidatos.modalidad
+													.modalidad === "PLANILLA" ? (
+													resultado?.candiato?.map((candiato, index) => {
+														return (
+															<Typography
+																variant="body2"
+																// fontSize="0.9rem"
+																color="initial"
+																fontFamily="times"
+															>
+																{candiato}
+															</Typography>
+														);
+													})
+												) : (
+													<Typography
+														variant="body2"
+														// fontSize="0.9rem"
+														color="initial"
+														fontFamily="times"
+													>
+														{resultado.candiato}
+													</Typography>
+												)}
+											</Box>
+										</Grid> */}
 									</Grid>
 									{/* {(() => {
 									let grids = [];
 									for (let index2 = 0; index2 < cifrasVotos; index2++) {
 										grids.push(
 											<Grid
-												key={index2}
-												item
-												xs={cifrasVotos / cifrasVotos + 1}
+											key={index2}
+											item
+											xs={cifrasVotos / cifrasVotos + 1}
 												// border="1px solid #c6c6c6"
 												// borderTop="0px"
 												borderLeft="2px solid"

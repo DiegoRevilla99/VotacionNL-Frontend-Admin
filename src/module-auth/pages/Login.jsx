@@ -138,6 +138,7 @@ export const Login = () => {
 												id="contrasenia"
 												label="Contraseña"
 												variant="standard"
+												type="password"
 												onChange={handleChange}
 												value={values.contrasenia}
 												error={

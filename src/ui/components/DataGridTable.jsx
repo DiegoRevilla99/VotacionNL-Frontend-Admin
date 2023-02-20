@@ -20,15 +20,15 @@ export const DataGridTable = ({ handleOpenModal }) => {
 	};
 
 	const columns = [
-		{ field: "id", headerName: "ID", width: 30 },
-		{ field: "pregunta", headerName: "Pregunta", width: 140 },
-		{ field: "tipoDeRespuesta", headerName: "Tipo de respuesta", width: 120 },
-		{ field: "subtipo", headerName: "Subtipo", width: 150 },
-		{ field: "respuesta1", headerName: "Respuesta 1", width: 100 },
-		{ field: "respuesta2", headerName: "Respuesta 2", width: 100 },
-		{ field: "respuesta3", headerName: "Respuesta 3", width: 100 },
-		{ field: "respuesta4", headerName: "Respuesta 4", width: 100 },
-		{ field: "respuesta5", headerName: "Respuesta 5", width: 100 },
+		{ field: "id", headerName: "ID", flex: 1 },
+		{ field: "pregunta", headerName: "Pregunta", flex: 4 },
+		{ field: "tipoDeRespuesta", headerName: "Tipo de respuesta", flex: 3 },
+		{ field: "subtipo", headerName: "Subtipo", flex: 3 },
+		{ field: "respuesta1", headerName: "Respuesta 1", flex: 3 },
+		{ field: "respuesta2", headerName: "Respuesta 2", flex: 3 },
+		{ field: "respuesta3", headerName: "Respuesta 3", flex: 3 },
+		{ field: "respuesta4", headerName: "Respuesta 4", flex: 3 },
+		{ field: "respuesta5", headerName: "Respuesta 5", flex: 3 },
 		{
 			field: "actions",
 			headerName: "Acciones",

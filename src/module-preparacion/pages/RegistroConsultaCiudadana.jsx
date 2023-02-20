@@ -18,6 +18,7 @@ import {
 	onSetConfigSelectedNull,
 	onSetConsultaSelected,
 } from "../../store/module-preparacion/consulta-ciudadana/consultaCiudadanaSlice";
+import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
 
 export const RegistroConsultaCiudadana = () => {
 	const navigate = useNavigate();
@@ -72,7 +73,7 @@ export const RegistroConsultaCiudadana = () => {
 	};
 
 	const handleEdit = (id, titulo) => {
-		dispatch(onSetConsultaSelected({ id, titulo, ballots: [] }));
+		dispatch(onSetConsultaSelected({ id, title: titulo, ballots: [] }));
 		navigate("/preparacion/consulta/" + id);
 	};
 
@@ -110,6 +111,15 @@ export const RegistroConsultaCiudadana = () => {
 				}}
 			>
 				<Grid item xs={12} sx={{ display: "flex", flexDirection: "column" }}>
+					<BreadCrumbsCustom
+						routes={[
+							{
+								name: "PREPARACIÓN",
+								url: "/preparacion/inicio",
+							},
+						]}
+						currentRoute="CONSULTAS CIUDADANAS"
+					/>
 					<Box sx={{ m: "0.5rem", ml: "2rem" }}>
 						<Typography variant="h6" align="left" color="initial">
 							REGISTRO DE CONSULTA CIUDADANA

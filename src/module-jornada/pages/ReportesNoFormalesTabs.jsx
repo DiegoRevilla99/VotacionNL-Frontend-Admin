@@ -16,6 +16,7 @@ import {
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
+import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
 import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
 import { PrivateRoute } from "../../router/PrivateRoute";
 import { onGetBoletas } from "../../store/module-preparacion/jornada/ThunksJornada";
@@ -41,7 +42,7 @@ function LinkTab(props) {
 }
 
 export const ReportesNoFormalesTabs = () => {
-	const { status, jornadaVotosData } = useJornadaStore();
+	const { status, jornadaVotosData, jornadaSelected } = useJornadaStore();
 	const [value, setValue] = React.useState(0);
 	const params = useParams();
 
@@ -71,6 +72,19 @@ export const ReportesNoFormalesTabs = () => {
 					overflowY: "auto",
 				}}
 			>
+				<BreadCrumbsCustom
+					routes={[
+						{
+							name: "JORNADA",
+							url: "/jornada/inicio",
+						},
+						{
+							name: "REPORTES DE JORNADA",
+							url: "/jornada/reportesJornadasNoFormales",
+						},
+					]}
+					currentRoute={jornadaSelected.title}
+				></BreadCrumbsCustom>
 				<Tabs
 					sx={{ mt: 1 }}
 					value={value}

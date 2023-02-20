@@ -15,6 +15,7 @@ import {
 	onGetjornadasNoFormales,
 } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { getJornadasNoFormalesProvider } from "../../providers/Micro-NoFormales/providerNoFormales";
+import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
 
 export const VerJornadasNoFormales = () => {
 	const navigate = useNavigate();
@@ -73,6 +74,15 @@ export const VerJornadasNoFormales = () => {
 				}}
 			>
 				<Grid item xs={12} sx={{ display: "flex", flexDirection: "column" }}>
+					<BreadCrumbsCustom
+						routes={[
+							{
+								name: "JORNADA",
+								url: "/jornada/inicio",
+							},
+						]}
+						currentRoute="JORNADAS REGISTRADAS"
+					/>
 					<Box sx={{ m: "0.5rem", ml: "2rem" }}>
 						<Typography variant="h6" align="left" color="initial">
 							JORNADAS POPULARES REGISTRADAS

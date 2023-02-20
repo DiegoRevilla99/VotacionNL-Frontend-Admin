@@ -12,6 +12,7 @@ import {
 	onGetBallotData,
 	onGetPapeletas,
 } from "../../store/module-preparacion/consulta-ciudadana/thunks";
+import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
 
 export const CrudPapeletas = () => {
 	const { consultaSelected, status } = useConsultaCiudadanaStore();
@@ -86,6 +87,19 @@ export const CrudPapeletas = () => {
 				}}
 			>
 				<Grid item xs={12} sx={{ display: "flex", flexDirection: "column" }}>
+					<BreadCrumbsCustom
+						routes={[
+							{
+								name: "PREPARACIÓN",
+								url: "/preparacion/inicio",
+							},
+							{
+								name: "CONSULTAS CIUDADANAS",
+								url: "/preparacion/registroConsultaCiudadana",
+							},
+						]}
+						currentRoute={consultaSelected.title}
+					></BreadCrumbsCustom>
 					<Box sx={{ m: "0.5rem", ml: "2rem" }}>
 						<Typography variant="h6" align="left" color="initial">
 							{consultaSelected.title}
@@ -131,11 +145,12 @@ export const CrudPapeletas = () => {
 								height: "100%",
 								display: "flex",
 								flexDirection: "column",
-								backgroundColor: "white",
+								// backgroundColor: "white",
 								mt: "2rem",
 								borderRadius: "2rem",
 								p: "2rem",
 								pt: "1rem",
+								backgroundColor: "rgb(239,236,221, 0.8)",
 							}}
 						>
 							<Typography variant="h5" color="initial" mb="0.5rem">
@@ -144,7 +159,36 @@ export const CrudPapeletas = () => {
 							<Divider />
 							<Box
 								mt={"1rem"}
-								sx={{ height: "100%", display: "flex", flexDirection: "column" }}
+								sx={{
+									height: "100%",
+									display: "flex",
+									flexDirection: "column",
+									"& .MuiDataGrid-columnHeaderTitleContainer": {
+										justifyContent: "left",
+										borderColor: "rgb(0 0 0 / 63%) !important",
+									},
+									"& .MuiDataGrid-columnHeaders": {
+										justifyContent: "left",
+										borderColor: "rgb(0 0 0 / 59%) !important",
+									},
+									"& .MuiDataGrid-footerContainer": {
+										justifyContent: "left",
+										borderColor: "rgb(0 0 0 / 59%) !important",
+									},
+									"& .MuiDataGrid-cell--textLeft": {
+										justifyContent: "left",
+										align: "left",
+										borderColor: "rgb(0 0 0 / 3%) !important",
+									},
+									"& .MuiDataGrid-cell": {
+										outline: "none !important",
+										borderColor: "rgb(0 0 0 / 17%) !important",
+									},
+									"& .MuiDataGrid-columnHeader": {
+										outline: "none !important",
+										borderColor: "black !important",
+									},
+								}}
 							>
 								<GeneralTable
 									data={consultaSelected.ballots}

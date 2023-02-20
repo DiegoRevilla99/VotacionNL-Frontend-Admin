@@ -606,6 +606,7 @@ export const getJornadaNoFormalVotos = async (idBoleta, id) => {
 	try {
 		const { data } = await votosNoFormalesAPI.get(`votos/no/formal/jornada/${id}/resultados`);
 		// votos/no/formal/jornada/546622-EL-DE-PR-ES-ORD-2023/resultados
+		// https://ms-jornada-votos-no-formales.herokuapp.com/votos/no/formal/jornada/546622-EL-DE-PR-ES-ORD-2023/resultados
 
 		console.log("DATA DE NO FORMALES", data);
 
@@ -615,29 +616,57 @@ export const getJornadaNoFormalVotos = async (idBoleta, id) => {
 
 		let dataChart = [];
 
-		if (boleta === undefined) {
-			console.log("entr a undefined");
-		} else {
+		if (boleta.boletaCandidatos.modalidad.modalidad === "PLANILLA") {
+			console.log("ENRTRA AQUI EN PLANILLA");
 			dataChart = boleta.representanteResultado.map((paquete) => {
-				const candidatox = boleta.boletaCandidatos.candidatoModels.find(
-					(candidato) => candidato.claveCandidato === paquete.id
+				console.log("paso 1", boleta.boletaCandidatos);
+				const planilla = boleta.boletaCandidatos.candidatosAsociaciones.find(
+					(cands) => cands.idCombinacion === paquete.id
 				);
-				console.log("CANDIDATO BUSCADO", candidatox);
+				console.log("PLANILLA ENCONTRADA", planilla);
+
+				const candidatosDePlanilla = planilla.candidatos.map(
+					(candidato) => candidato.nombreCandidato
+				);
+
+				// candidatosDePlanilla.push(" ");
+
+				const nombresPlanillas = planilla.asociacionModel.map((as) => as.nombreAsociacion);
+
+				// candidatosDePlanilla.push(...nombresPlanillas);
+
 				return {
 					id: paquete.id,
-					candiato:
-						paquete.id === "CANORE"
-							? "Candidatura no registrada"
-							: paquete.id === "NULO"
-							? "Votos nulos"
-							: candidatox.nombreCandidato +
-							  candidatox.apellidoPCandidato +
-							  candidatox.apellidoMCandidato,
+					candiato: candidatosDePlanilla,
+					planillas: nombresPlanillas,
 					resultados: paquete.candidad,
 				};
 			});
-		}
+		} else {
+			if (boleta === undefined) {
+				console.log("entr a undefined");
+			} else {
+				dataChart = boleta.representanteResultado.map((paquete) => {
+					const candidatox = boleta.boletaCandidatos.candidatoModels.find(
+						(candidato) => candidato.claveCandidato === paquete.id
+					);
 
+					console.log("CANDIDATO BUSCADO", candidatox);
+					return {
+						id: paquete.id,
+						candiato:
+							paquete.id === "CANORE"
+								? "Candidatura no registrada"
+								: paquete.id === "NULO"
+								? "Votos nulos"
+								: candidatox.nombreCandidato +
+								  candidatox.apellidoPCandidato +
+								  candidatox.apellidoMCandidato,
+						resultados: paquete.candidad,
+					};
+				});
+			}
+		}
 		const dataFinal = {
 			jornadaModel: {},
 			boleta: boleta || null,

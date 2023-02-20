@@ -58,7 +58,7 @@ export const ModalRegistroConsultaCiudadana = ({ modalStatus, closeModal, openMo
 						<Formik
 							initialValues={{
 								titulo: "",
-								entidad: "",
+								entidad: "NUEVO LEÓN",
 							}}
 							validationSchema={validationSchema}
 							onSubmit={(values) => {
@@ -95,6 +95,7 @@ export const ModalRegistroConsultaCiudadana = ({ modalStatus, closeModal, openMo
 										id="titulo"
 										label="Entidad donde se llevará a cabo la consulta"
 										variant="filled"
+										disabled={true}
 										onChange={handleChange}
 										value={values.entidad}
 										error={touched.entidad && Boolean(errors.entidad)}

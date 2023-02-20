@@ -2,7 +2,7 @@ import { Box, Button, Grid } from "@mui/material";
 import React from "react";
 import { DataGridTable } from "../../ui/components/DataGridTable";
 
-export const AddPapeletasTable = React.memo(({ handleOpenModal, status }) => {
+export const AddPapeletasTable = React.memo(({ handleOpenModal, status, questions }) => {
 	return (
 		<>
 			<Grid item xs={12} md={6} lg={4}>
@@ -10,7 +10,7 @@ export const AddPapeletasTable = React.memo(({ handleOpenModal, status }) => {
 					onClick={handleOpenModal}
 					variant="contained"
 					size="large"
-					disabled={status === "checking"}
+					disabled={status === "checking" || questions.length === 1}
 					sx={{
 						boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
 						transition: "all 0.5s ease",
@@ -24,7 +24,7 @@ export const AddPapeletasTable = React.memo(({ handleOpenModal, status }) => {
 						},
 					}}
 				>
-					Agregar preguntas
+					Agregar pregunta
 				</Button>
 			</Grid>
 			<Grid item xs={12}>
