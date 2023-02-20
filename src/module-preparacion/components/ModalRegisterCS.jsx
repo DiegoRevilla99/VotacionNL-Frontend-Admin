@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { date, object, string } from "yup";
 import { useUiStore } from "../../hooks/useUiStore";
+import { onPostImage } from '../../store/module-preparacion/jornada/ThunksJornada';
 import { useJornadaStore } from "../hooks/useJornadaStore";
 import { RadioButtMod } from "./RadioButtMod";
 import { RadioButtModSuplente } from "./RadioButtModSuplente";
@@ -221,7 +222,9 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		updateCandidatoAndSuplente,
 	} = useJornadaStore();
 
-	const onSubmit = (values) => {
+	const onSubmit = async(values) => {
+
+		
 		const info = { ...values };
 
 
@@ -242,15 +245,15 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		info.generoSuplente = info.generoSuplente.trim().toUpperCase();
 		info.claveElectoralSuplente = info.claveElectoralSuplente.trim().toUpperCase();
 		
-		setFotografia({ name: "Sin Archivo seleccionado" });
-		setFotografiaSuplente({ name: "Sin Archivo seleccionado" });
 		if (Object.values(candidatoandSuplenteSelected).length === 0) {
+			const urllCandidato = await getURLImageCandidato();
+			const urllSuplente = await getURLImageSuplente();
 			addCandidatoAndSuplente(
 				candidatoandSuplentes.length,
 				info.apellidoPCandidato,
 				info.apellidoMCandidato,
 				info.nombreCandidato,
-				values.fotografiaCandidato,
+				urllCandidato,
 				info.seudonimoCandidato,
 				info.fechaNacimientoCandidatos,
 				info.generoCandidato,
@@ -259,19 +262,33 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 				info.apellidoPSuplente,
 				info.apellidoMSuplente,
 				info.nombreSuplente,
-				values.fotografiaSuplente,
+				urllSuplente,
 				info.seudonimoSuplente,
 				info.fechaNacimientoSuplentes,
 				info.generoSuplente
 			);
 			toastSuccesOperation("Datos registrados con éxito");
 		} else {
+				  	// lo de fotografia
+// fotografiaCandidato
+// fotografiaSuplente
+			let urlCandidatos=fotografiaCandidato.name;
+			let urlSuplentes=fotografiaSuplente.name;
+                if(candidatoandSuplentes.fotografiaCandidato!==fotografiaCandidato.name || candidatoandSuplentes.fotografiaSuplente!==fotografiaSuplente.name){
+                    console.log("se cambio la imagen")
+                    urlCandidatos=await getURLImageCandidato();
+                    urlSuplentes=await getURLImageSuplente();
+                    console.log("url:",urlCandidatos)
+                    console.log("url:",urlSuplentes)
+                }else{
+                  console.log("no se cambio la imagen")
+                }
 			updateCandidatoAndSuplente(
 				candidatoandSuplenteSelected.id,
 				info.apellidoPCandidato,
 				info.apellidoMCandidato,
 				info.nombreCandidato,
-				values.fotografiaCandidato,
+				urlCandidatos,
 				info.seudonimoCandidato,
 				info.fechaNacimientoCandidatos,
 				info.generoCandidato,
@@ -280,7 +297,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 				info.apellidoPSuplente,
 				info.apellidoMSuplente,
 				info.nombreSuplente,
-				values.fotografiaSuplente,
+				urlSuplentes,
 				info.seudonimoSuplente,
 				info.fechaNacimientoSuplentes,
 				info.generoSuplente
@@ -290,7 +307,8 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		setCandidatoAndSuplenteSelectedNull();
 		setActiveStep(0);
 		handleToggleModal();
-
+		setFotografia({ name: "Sin Archivo seleccionado" });
+		setFotografiaSuplente({ name: "Sin Archivo seleccionado" });
 	};
 
 	const onCancel = () => {
@@ -299,12 +317,6 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		handleToggleModal();
 	};
 
-	 const [fotografiaCandidato, setFotografia] = useState({
-	   name: "Sin Archivo seleccionado",
-	 });
-	 const [fotografiaSuplente, setFotografiaSuplente] = useState({
-		name: "Sin Archivo seleccionado",
-	  });
 	  const FechaNacimientoField = ({ name }) => {
 		const {
 		  values: {
@@ -504,6 +516,32 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 			}
 		return errors;
 	  };
+	  // imagenes
+	  	// lo de fotografia
+	 const [fotografiaCandidato, setFotografia] = useState(candidatoandSuplentes
+        ? {
+            name: candidatoandSuplentes.fotografiaCandidato
+              ? candidatoandSuplentes.fotografiaCandidato
+              : "Sin Archivo seleccionado",
+          }
+        : { name: "Sin Archivo seleccionado" });
+	  const [fotografiaSuplente, setFotografiaSuplente] = useState(candidatoandSuplentes
+        ? {
+            name: candidatoandSuplentes.fotografiaSuplente
+              ? candidatoandSuplentes.fotografiaSuplente
+              : "Sin Archivo seleccionado",
+          }
+        : { name: "Sin Archivo seleccionado" });
+
+		const getURLImageCandidato = async () => {
+			const urlCandidato = await dispatch(onPostImage(fotografiaCandidato));
+			return urlCandidato;
+		};
+		const getURLImageSuplente = async () => {
+			const urlSuplente = await dispatch(onPostImage(fotografiaSuplente));
+			return urlSuplente;
+		};
+
     // LOS STEPS
     const [activeStep, setActiveStep] = React.useState(0);
   
@@ -539,7 +577,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 									apellidoPCandidato: "",
 									apellidoMCandidato: "", 
 									nombreCandidato: "", 
-									fotografiaCandidato: "candidato.jpg",
+									fotografiaCandidato: "",
 									seudonimoCandidato: "",//Text
 									fechaNacimientoCandidatos: "",//Date
 									generoCandidato: "",//Text
@@ -548,7 +586,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 									apellidoPSuplente: "",
 									apellidoMSuplente: "", 
 									nombreSuplente: "", 
-									fotografiaSuplente: "suplente.jpg",
+									fotografiaSuplente: "",
 									seudonimoSuplente: "",//Text
 									fechaNacimientoSuplentes: "",//Date
 									generoSuplente: "",//Text
@@ -782,9 +820,13 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														>
 														<input
 															hidden
+															disabled={status==="checking"}
 															onChange={(e) => setFotografia(e.target.files[0])}
-															accept="image/png,image/jpg"
+															onBlur={handleBlur}
+															accept="image/x-png,image/jpeg"
 															type="file"
+															name="fotografiaCandidato"
+															id="fotografiaCandidato"
 														/>
 														<PhotoCamera fontSize="" />
 													</IconButton>
@@ -949,9 +991,13 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														>
 														<input
 															hidden
+															disabled={status==="checking"}
 															onChange={(e) => setFotografiaSuplente(e.target.files[0])}
-															accept="image/png,image/jpg"
+															onBlur={handleBlur}
+															accept="image/x-png,image/jpeg"
 															type="file"
+															name="fotografiaSuplente"
+															id="fotografiaSuplente"
 														/>
 														<PhotoCamera fontSize="" />
 													</IconButton>

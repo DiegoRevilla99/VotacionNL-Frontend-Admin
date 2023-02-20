@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { array, object, string } from "yup";
 import { useUiStore } from "../../hooks/useUiStore";
+import { onPostImage } from '../../store/module-preparacion/jornada/ThunksJornada';
 import { useJornadaStore } from "../hooks/useJornadaStore";
 
 const style = {
@@ -66,29 +67,38 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 		candidatosAMostrar,
 	} = useJornadaStore();
 
-	const onSubmit = (values) => {
-		setfotografiaPartido({ name: "Sin Archivo seleccionado" });
-		console.log("valuessssssss", values);
+	const onSubmit = async(values) => {
+		// console.log("valuessssssss", values);
 		if (Object.values(partidoSelected).length === 0) {
+			const urll = await getURLImage();
 			addPartido(
 				partidos.length,
 				values.clavePartido,
 				values.nameParty,
 				values.siglasParty,
 				values.emblemParty,
-				values.fotografiaParty,
+				urll,
 				values.statusParty,
 				values.candidatosPartido,
 			);
 		toastSuccesOperation("Datos registrados con éxito");
 		} else {
+			let fotografiaPartys=fotografiaParty.name;
+
+                if(partidos.fotografiaParty!==fotografiaParty.name){
+                    console.log("se cambio la imagen")
+                    fotografiaPartys=await getURLImage();
+                    console.log("url:",fotografiaPartys)
+                }else{
+                  console.log("no se cambio la imagen")
+                }
 			updatePartido(
 				partidoSelected.id,
 				values.clavePartido,
 				values.nameParty,
 				values.siglasParty,
 				values.emblemParty,
-				values.fotografiaParty,
+				fotografiaPartys,
 				values.statusParty,
 				values.candidatosPartido,
 			);
@@ -96,6 +106,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 		}
 		setPartidoSelectedNull();
 		handleToggleModal();
+		setfotografiaPartido({ name: "Sin Archivo seleccionado" });
 	};
 
 	const onCancel = () => {
@@ -103,11 +114,20 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 		setPartidoSelectedNull();
 		handleToggleModal();
 	};
+	const [switchValue, setSwitchValue] = useState(false);
+	const handleChangeSwitch = (event) => {
+	   setSwitchValue(event.target.checked);
+	 };
 
 	//Validacion del formato imagen 
-	const [fotografiaParty, setfotografiaPartido] = useState({
-	  name: "Sin Archivo seleccionado",
-	});
+	const [fotografiaParty, setfotografiaPartido] = useState(
+		partidos
+        ? {
+            name: partidos.fotografiaParty
+              ? partidos.fotografiaParty
+              : "Sin Archivo seleccionado",
+          }
+        : { name: "Sin Archivo seleccionado" });
 	 
    const validando = (values, props) => {
 	   const errors = {};
@@ -118,10 +138,9 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 	   return errors;
 	 };
 
-
-	 const [switchValue, setSwitchValue] = useState(false);
-	 const handleChangeSwitch = (event) => {
-		setSwitchValue(event.target.checked);
+	 const getURLImage = async () => {
+		const url = await dispatch(onPostImage(fotografiaParty));
+		return url;
 	  };
 
 	return (
@@ -309,10 +328,14 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 							>
 							<input
 								hidden
+								disabled={status==="checking"}
 								onChange={(e) => setfotografiaPartido(e.target.files[0])}
-								accept="image/png,image/jpg"
+								onBlur={handleBlur}
+								accept="image/x-png,image/jpeg"
 								type="file"
-							/>
+								name="fotografiaParty"
+								id="fotografiaParty"
+								/>
 							<PhotoCamera fontSize="" />
 						</IconButton>
 					</Box>

@@ -21,7 +21,7 @@ const style = {
 	p: 4,
 };
 
-export const ModalEliminarBoletaFormal = ({ modalDeleteStatus, closeModalDelete, openModalDelete, idBoleta, encabezadoBoleta }) => {
+export const ModalEliminarBoletaFormal = ({ modalDeleteStatus, closeModalDelete, openModalDelete, idBoleta, nombreEstructuraBoleta }) => {
 	const dispatch = useDispatch();
 	const params = useParams();
 	const { status } = useJornadaStore();
@@ -53,7 +53,7 @@ export const ModalEliminarBoletaFormal = ({ modalDeleteStatus, closeModalDelete,
 				
 				/>
 				<Typography id="modal-modal-title" variant= "h4"  color="initial" align="center" mr={5} ml={5} mb={2}>
-                    Si eliminas la boleta con el nombre "{encabezadoBoleta}" desaparecerá para siempre. ¿Está seguro que deseas continuar?
+                    Si eliminas la boleta con el nombre "{nombreEstructuraBoleta}" desaparecerá para siempre. ¿Está seguro que deseas continuar?
 				</Typography>
                 <Box ml={"2rem"} mr={"2rem"}
 				mb={"2rem"}

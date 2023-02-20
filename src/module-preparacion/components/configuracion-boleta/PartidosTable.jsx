@@ -13,7 +13,7 @@ export const PartidosTable = memo(({info = {}, handleOpenModal}) => {
 
     const params = useParams();
     const dispatch = useDispatch();
-    console.log("INFOR EN TABLE",info);
+    // console.log("INFOR EN TABLE",info);
     const { id, nameParty, candidatosPartido } = info;
 
 

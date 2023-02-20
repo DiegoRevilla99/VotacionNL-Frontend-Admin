@@ -1,5 +1,3 @@
-import { getPapeletas } from "../../../providers/Micro-Consultas/provider";
-import { getJornadasNoFormalesProvider } from "../../../providers/Micro-NoFormales/providerNoFormales";
 import {
 	createBoletaFormal,
 	createJornada,
@@ -13,13 +11,12 @@ import {
 	getJornadas,
 	getJornadasFormales,
 	getJornadasNoFormales,
-	getJornadaVotos,
-	updateBoletaData,
+	getJornadaVotos, postImage, updateBoletaData
 } from "../../../providers/Micro-Preparacion/providerJornada";
 import {
 	onToastCheckingOperation,
 	onToastErrorOperation,
-	onToastSuccessOperation,
+	onToastSuccessOperation
 } from "../../ui/uiSlice";
 
 import {
@@ -41,9 +38,24 @@ import {
 	onSetJornadasVotosData,
 	onSetPartidoNull,
 	onSetPartidoSelectedNull,
-	onSuccessOperation,
+	onSuccessOperation
 } from "./SliceJornada";
-
+export const onPostImage = (image) => {
+    return async (dispatch) => {
+        dispatch(onToastCheckingOperation("Subiendo imagen..."));
+        dispatch(onCheckingOperation());
+        const {ok, data, errorMessage } = await postImage(image);// PROVIDER
+        if (ok) {
+            dispatch(onSuccessOperation());
+            dispatch(onToastSuccessOperation({ successMessage: "Imagen subida con éxito" }));
+            return data;
+        } else {
+            dispatch(onErrorOperation());
+            dispatch(onToastErrorOperation({ errorMessage: "No se pudo subir la imagen" }));
+            return false;
+        }
+    }
+};
 export const onGetAlljornadas = () => {
 	return async (dispatch) => {
 		dispatch(onCheckingOperation());

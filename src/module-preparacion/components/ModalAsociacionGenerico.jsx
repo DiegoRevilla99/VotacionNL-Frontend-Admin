@@ -11,6 +11,8 @@ import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 // import { CandidatoCheck } from './configuracion-boleta/CandidatoCheck';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import Tooltip from '@mui/material/Tooltip';
+import { onPostImage } from '../../store/module-preparacion/jornada/ThunksJornadaNoFormal';
+
 const style = {
 	position: "absolute",
 	top: "50%",
@@ -42,19 +44,28 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 	const navigate = useNavigate();
 	const { toastSuccesOperation } = useUiStore();
 	const { status, candidatos, asociaciones,asociacionesSelected, updateAsociacion, addAsociacion, setAsociacionesSelectedNull } = useJornadaNoFormalStore();
-	const onSubmit = (values) => {
-		setLogo({ name: "Sin Archivo seleccionado" });
-		console.log(values);
+	const onSubmit = async(values) => {
+		// setLogo({ name: "Sin Archivo seleccionado" });
+		// console.log(values);
 		if (Object.values(asociacionesSelected).length === 0) {
+			const urll = await getURLImage();
 			addAsociacion(
 				asociaciones.length,
 				values.nombreAsociacion,
 				values.emblema,
-				values.logo,
+				urll,
 				values.candidatosAsociacion,
 			);
 			toastSuccesOperation("Datos registrados con éxito");
 		} else {
+			let logos=logo.name;
+                if(asociaciones.logo!==logo.name){
+                    console.log("se cambio la imagen")
+                    logos=await getURLImage();
+                    console.log("url:",logos)
+                }else{
+                  console.log("no se cambio la imagen")
+                }
 			updateAsociacion(
 				asociacionesSelected.id,
 				values.nombreAsociacion,
@@ -66,15 +77,16 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 		}
 		setAsociacionesSelectedNull();
 		handleCloseRegisterAsociacionModal();
+		setLogo({ name: "Sin Archivo seleccionado" });
 	};
 	const onCancel = () => {
         setAsociacionesSelectedNull();
 		handleCloseRegisterAsociacionModal();
 	};
 	 //Validacion del formato imagen 
-	 const [logo, setLogo] = useState({
-		name: "Sin Archivo seleccionado",
-	  });
+	//  const [logo, setLogo] = useState({
+	// 	name: "Sin Archivo seleccionado",
+	//   });
 		
 	 const validando = (values, props) => {
 		 const errors = {};
@@ -85,6 +97,19 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 		 return errors;
 	   };
 
+	   const [logo, setLogo] = useState(
+		asociaciones
+        ? {
+            name: asociaciones.logo
+              ? asociaciones.logo
+              : "Sin Archivo seleccionado",
+          }
+        : { name: "Sin Archivo seleccionado" }
+    );
+	   const getURLImage = async () => {
+		const url = await dispatch(onPostImage(logo));
+		return url;
+	  };
 	   // PARA EL LOGO DE ASOCIACIONES
 	//    https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/asociacion/logo/202
 	  
@@ -107,7 +132,7 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 								{
 								nombreAsociacion: "",
 								emblema: "",
-								logo: "logo.png",
+								logo: "",
 								candidatosAsociacion: [],
 								} :{
 									nombreAsociacion: asociacionesSelected.nombreAsociacion,
@@ -193,9 +218,13 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 											>
 											<input
 												hidden
+												disabled={status==="checking"}
 												onChange={(e) => setLogo(e.target.files[0])}
-												accept="image/png,image/jpg"
+												onBlur={handleBlur}
+												accept="image/x-png,image/jpeg"
 												type="file"
+												name="logo"
+												id="logo"
 											/>
 											<PhotoCamera fontSize="" />
 										</IconButton>

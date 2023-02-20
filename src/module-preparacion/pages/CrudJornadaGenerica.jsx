@@ -106,6 +106,7 @@ export const CrudJornadaGenerica = () => {
   };
 
   const handleAdd = () => {
+    console.log("Presionaste agregar",jornadaNoFormalSelected.boletasNoFormales.listBoletas);
     //AQUI VAN LOS NULLS
     setCandidatosSelectedNull();
     setAsociacionesSelectedNull();

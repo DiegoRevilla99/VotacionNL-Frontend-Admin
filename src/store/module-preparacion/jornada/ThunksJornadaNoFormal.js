@@ -1,5 +1,5 @@
 import {
-    createBoleta, createBoletaAsociaciones, createJornada, deleteBoleta, deleteJornada, getBoletaData, getBoletasJornadaNoFormal, getCandidatoBoletaNoFormal, getJornadasNoFormales, updateBoletaData
+    createBoleta, createBoletaAsociaciones, createJornada, deleteBoleta, deleteJornada, getBoletaData, getBoletasJornadaNoFormal, getCandidatoBoletaNoFormal, getJornadasNoFormales, postImage, updateBoletaData
 } from "../../../providers/Micro-Preparacion/providerJornadaNoFormal";
 import {
     onToastCheckingOperation,
@@ -9,7 +9,22 @@ import {
 import { onAddAsociacion, onAddBoleta, onAddCandidato, onAddJornadasNoFormales, onCheckingOperation, onDeleteBoletaData, onDeleteJornadaData, onEditBoleta, onErrorOperation, onFillBoletas, onFillCandidatosNoFormalesData, onFillJornadasNoFormalesData, onSetAsociacionNull, onSetAsociacionSelectedNull, onSetBoletasSelectedNull, onSetCandidatoNull, onSetCandidatoSelectedNull, onSetjornadaNoFormalSelected, onSuccessOperation } from "./SliceJornadaNoFormal";
 
 // Jornadas No Formales
-
+export const onPostImage = (image) => {
+    return async (dispatch) => {
+        dispatch(onToastCheckingOperation("Subiendo imagen..."));
+        dispatch(onCheckingOperation());
+        const {ok, data, errorMessage } = await postImage(image);// PROVIDER
+        if (ok) {
+            dispatch(onSuccessOperation());
+            dispatch(onToastSuccessOperation({ successMessage: "Imagen subida con éxito" }));
+            return data;
+        } else {
+            dispatch(onErrorOperation());
+            dispatch(onToastErrorOperation({ errorMessage: "No se pudo subir la imagen" }));
+            return false;
+        }
+    }
+};
 export const onGetJornadasNoFormales = () => {
     return async (dispatch) => {
         dispatch(onCheckingOperation());
@@ -31,7 +46,7 @@ export const onCreateJornadaNoFormal = (title, tipoEleccion, navigate = (id) => 
         dispatch(onCheckingOperation());
         const {ok, id } = await createJornada(title, tipoEleccion);// PROVIDER
         if (ok) {
-            dispatch(onAddJornadasNoFormales({idEleccion: id, nombreJornada: title}));// SLICE
+            dispatch(onAddJornadasNoFormales({idEleccion: id, nombreEleccion: title}));// SLICE
             dispatch(onSuccessOperation());
             dispatch(onToastSuccessOperation({ successMessage: "Jornada creada con éxito" }));
             dispatch(onSetjornadaNoFormalSelected({id, title, boletasNoFormales: []}));

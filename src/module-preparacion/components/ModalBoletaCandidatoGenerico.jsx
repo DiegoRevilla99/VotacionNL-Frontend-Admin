@@ -8,8 +8,10 @@ import { useNavigate } from "react-router-dom";
 import { date, object, string } from "yup";
 import { useUiStore } from "../../hooks/useUiStore";
 import { DateFieldFechaNacimientoNoFormal } from '../../module-empadronamiento/components/DateFieldFechaNacimientoNoFormal';
+import { onPostImage } from '../../store/module-preparacion/jornada/ThunksJornadaNoFormal';
 import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 import { GeneroRadioButton } from "./GeneroRadioButton";
+
 const style = {
 	position: "absolute",
 	top: "50%",
@@ -178,7 +180,7 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 	const navigate = useNavigate();
 	const { toastSuccesOperation } = useUiStore();
 	const { status, candidatos, addCandidato, setCandidatosSelectedNull, candidatoSelected, updateCandidato } = useJornadaNoFormalStore();
-	const onSubmit = (values) => {
+	const onSubmit = async(values) => {
 		
 		const info = { ...values };
 		info.fechaNacimientoCandidatos = new Date(values.fechaNacimientoCandidatos).toISOString();
@@ -189,29 +191,38 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 		info.generoCandidato = info.generoCandidato.trim().toUpperCase();
 		info.claveCandidato = info.claveCandidato.trim().toUpperCase();
 
-		setFotografia({ name: "Sin Archivo seleccionado" });
+		// setFotografia({ name: "Sin Archivo seleccionado" });
 		// console.log(values);
 		if (Object.values(candidatoSelected).length === 0) {
+			const urll = await getURLImage();
 			addCandidato(
 				candidatos.length,
 				info.claveCandidato,
 				info.nombreCandidato,
 				info.apellidoPCandidato,
 				info.apellidoMCandidato,
-				values.fotografiaCandidato,
+				urll,
 				info.seudonimoCandidato,
 				info.fechaNacimientoCandidatos,
 				info.generoCandidato,
 			  );
 			toastSuccesOperation("Candidato/a registrado/a con éxito");
 		} else {
+			let fotografiaCandidatos=fotografiaCandidato.name;
+			if(candidatos.fotografiaCandidato!==fotografiaCandidato.name){
+				console.log("se cambio la imagen")
+				fotografiaCandidatos=await getURLImage();
+				console.log("url:",fotografiaCandidatos)
+			}else{
+			  console.log("no se cambio la imagen")
+			}
 			updateCandidato(
 				candidatoSelected.id,
 				info.claveCandidato,
 				info.nombreCandidato,
 				info.apellidoPCandidato,
 				info.apellidoMCandidato,
-				values.fotografiaCandidato,
+				fotografiaCandidatos,
 				info.seudonimoCandidato,
 				info.fechaNacimientoCandidatos,
 				info.generoCandidato,
@@ -220,7 +231,9 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 		}
 		setCandidatosSelectedNull();
 		handleCloseRegisterModal();
-	};
+		setFotografia({ name: "Sin Archivo seleccionado" });
+		}
+	
 	const onCancel = () => {
 		setCandidatosSelectedNull();
 		handleCloseRegisterModal();
@@ -332,25 +345,22 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 		 }
 		 return errors;
 	   };
-
-	   const [fotografiaCandidato, setFotografiaCandidato] = useState({ name: "" });
-	   const [fotografia, setFotografia] = useState(null);
 	 
-	   const handleUploadImage = () => {
-		 const formData = new FormData();
-		 formData.append("file", fotografia);
-		// https://ms-jornada-no-formal.herokuapp.com/jornada/no_formal/candidato/selfie/RAMIRO
-		 fetch("https://ms-jornada-upload-images.herokuapp.com/file/upload?file", {
-		   method: "PUT",
-		   body: formData,
-		 })
-		   .then((response) => response.json())
-		   .then((data) => {
-			 setFotografiaCandidato({ name: data.link });
-			 setFotografia(null);
-		   })
-		   .catch((error) => console.error(error));
-	   };
+	   const [fotografiaCandidato, setFotografiaCandidato] = useState(
+		candidatos
+        ? {
+            name: candidatos.fotografiaCandidato
+              ? candidatos.fotografiaCandidato
+              : "Sin Archivo seleccionado",
+          }
+        : { name: "Sin Archivo seleccionado" }
+    );
+
+	  
+	  const getURLImage = async () => {
+		const url = await dispatch(onPostImage(fotografiaCandidato));
+		return url;
+	  };
 	return (
 		<Modal
 			open={statusRegisterModal}
@@ -486,31 +496,33 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 										flexDirection="row"
 									>
 										<TextField
-										fullWidth
-										label=""
-										disabled
-										value={fotografiaCandidato.name}
-										variant="outlined"
-										size="small"
-										/>
-										<IconButton
-											// disabled={status === "checking"}
-											color="primary"
-											aria-label="upload picture"
-											component="label"
-											size="large"
-											disabled={!fotografia}
-											onClick={handleUploadImage}
-											>
-											<input
-												hidden
-												onChange={(e) => setFotografia(e.target.files[0])}
-												accept="image/png,image/jpg"
-												type="file"
-											/>
-											<PhotoCamera fontSize="" />
-										</IconButton>
-									</Box>
+                    label=""
+                    disabled
+                    variant="outlined"
+                    size="small"
+                    value={fotografiaCandidato.name}
+                    // className={styles.textField}
+                  ></TextField>
+                  <IconButton
+                    color="primary"
+                    aria-label="upload picture"
+                    component="label"
+                    size="large"
+                  >
+                    <input
+                    disabled={status==="checking"}
+                      hidden
+                      onChange={(e) => setFotografiaCandidato(e.target.files[0])}
+                      onBlur={handleBlur}
+                      accept="image/x-png,image/jpeg"
+                      type="file"
+                      name="fotografiaCandidato"
+                      id="fotografiaCandidato"
+                    />
+                    <PhotoCamera fontSize="" />
+                  </IconButton>
+                </Box>
+
 									{touched.fotografiaCandidato &&
 										fotografiaCandidato.name === "Sin Archivo seleccionado" && (
 										<Box ml={2} 
