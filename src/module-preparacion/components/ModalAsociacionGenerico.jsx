@@ -47,8 +47,8 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 	const onSubmit = async(values) => {
 		// setLogo({ name: "Sin Archivo seleccionado" });
 		// console.log(values);
-		const urll = await getURLImage();
 		if (Object.values(asociacionesSelected).length === 0) {
+			const urll = await getURLImage();
 			addAsociacion(
 				asociaciones.length,
 				values.nombreAsociacion,
@@ -58,6 +58,14 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 			);
 			toastSuccesOperation("Datos registrados con éxito");
 		} else {
+			let logos=logo.name;
+                if(asociaciones.logo!==logo.name){
+                    console.log("se cambio la imagen")
+                    logos=await getURLImage();
+                    console.log("url:",logos)
+                }else{
+                  console.log("no se cambio la imagen")
+                }
 			updateAsociacion(
 				asociacionesSelected.id,
 				values.nombreAsociacion,

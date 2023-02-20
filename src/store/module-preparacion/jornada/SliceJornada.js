@@ -111,60 +111,88 @@ export const SliceJornada = createSlice({
 		// },
 		
 		onAddCandidatoAndSuplente: (state, { payload }) => {
-
-			if(payload.suplenteModel) {
-			const { candidatoModel, suplenteModel } = payload;
-		  
-			state.candidatoandSuplentes.push({
-			  id: candidatoModel?.id,
-			  apellidoPCandidato: candidatoModel?.apellidoPCandidato,
-			  apellidoMCandidato: candidatoModel?.apellidoMCandidato,
-			  nombreCandidato: candidatoModel?.nombreCandidato,
-			  fotografiaCandidato: candidatoModel?.fotografiaCandidato,
-			  seudonimoCandidato: candidatoModel?.seudonimoCandidato,
-			  fechaNacimientoCandidato: candidatoModel?.fechaNacimientoCandidato,
-			  generoCandidato: candidatoModel?.generoCandidato,
-			  claveElectoralCandidato: candidatoModel?.claveElectoralCandidato,
-			  claveElectoralSuplente: suplenteModel?.claveElectoralSuplente,
-			  apellidoPSuplente: suplenteModel?.apellidoPSuplente,
-			  apellidoMSuplente: suplenteModel?.apellidoMSuplente,
-			  nombreSuplente: suplenteModel?.nombreSuplente,
-			  fotografiaSuplente: suplenteModel?.fotografiaSuplente,
-			  seudonimoSuplente: suplenteModel?.seudonimoSuplente,
-			  fechaNacimientoSuplente: suplenteModel?.fechaNacimientoSuplente,
-			  generoSuplente: suplenteModel?.generoSuplente,
-			});
-		  
-			console.log("CANDIDATOS CON SUPLENTES en SLICE", state.candidatoandSuplentes[0]);
-		} else {
-			console.log("payload SLICE", payload);
-			state.candidatoandSuplentes.push({
-				id: payload?.id,
-				apellidoPCandidato: payload?.apellidoPCandidato,
-				apellidoMCandidato: payload?.apellidoMCandidato,
-				nombreCandidato: payload?.nombreCandidato,
-				fotografiaCandidato: payload?.fotografiaCandidato,
-				seudonimoCandidato: payload?.seudonimoCandidato,
-				fechaNacimientoCandidato: payload?.fechaNacimientoCandidato,
-				generoCandidato: payload?.generoCandidato,
-				// idSuplente: payload?.idSuplente,
-				claveElectoralCandidato: payload?.claveElectoralCandidato,
-				claveElectoralSuplente: payload?.claveElectoralSuplente,
-				apellidoPSuplente: payload?.apellidoPSuplente,
-				apellidoMSuplente: payload?.apellidoMSuplente,
-				nombreSuplente: payload?.nombreSuplente,
-				fotografiaSuplente: payload?.fotografiaSuplente,
-				seudonimoSuplente: payload?.seudonimoSuplente,
-				fechaNacimientoSuplente: payload?.fechaNacimientoSuplente,
-				generoSuplente: payload?.generoSuplente,
-			});
-			console.log("CANDIDATOS CON SUPLENTES en SLICE", state.candidatoandSuplentes[0]);
-		}
+			if (typeof payload === 'object' && !Array.isArray(payload)) {
+				console.log("payload SLICE", payload);
+				state.candidatoandSuplentes.push({
+				  id: payload?.id,
+				  apellidoPCandidato: payload?.apellidoPCandidato,
+				  apellidoMCandidato: payload?.apellidoMCandidato,
+				  nombreCandidato: payload?.nombreCandidato,
+				  fotografiaCandidato: payload?.fotografiaCandidato,
+				  seudonimoCandidato: payload?.seudonimoCandidato,
+				  fechaNacimientoCandidato: payload?.fechaNacimientoCandidato,
+				  generoCandidato: payload?.generoCandidato,
+				  claveElectoralCandidato: payload?.claveElectoralCandidato,
+				  claveElectoralSuplente: payload?.claveElectoralSuplente,
+				  apellidoPSuplente: payload?.apellidoPSuplente,
+				  apellidoMSuplente: payload?.apellidoMSuplente,
+				  nombreSuplente: payload?.nombreSuplente,
+				  fotografiaSuplente: payload?.fotografiaSuplente,
+				  seudonimoSuplente: payload?.seudonimoSuplente,
+				  fechaNacimientoSuplente: payload?.fechaNacimientoSuplente,
+				  generoSuplente: payload?.generoSuplente,
+				});
+			  } else {
+				payload.forEach((obj) => {
+				  const { candidatoModel, suplenteModel } = obj;
+				  const candidato = {
+					id: candidatoModel?.id,
+					apellidoPCandidato: candidatoModel?.apellidoPCandidato,
+					apellidoMCandidato: candidatoModel?.apellidoMCandidato,
+					nombreCandidato: candidatoModel?.nombreCandidato,
+					fotografiaCandidato: candidatoModel?.fotografiaCandidato,
+					seudonimoCandidato: candidatoModel?.seudonimoCandidato,
+					fechaNacimientoCandidato: candidatoModel?.fechaNacimientoCandidato,
+					generoCandidato: candidatoModel?.generoCandidato,
+					claveElectoralCandidato: candidatoModel?.claveElectoralCandidato,
+				  };
+				
+				  const suplente = {
+					claveElectoralSuplente: suplenteModel?.claveElectoralSuplente,
+					apellidoPSuplente: suplenteModel?.apellidoPSuplente,
+					apellidoMSuplente: suplenteModel?.apellidoMSuplente,
+					nombreSuplente: suplenteModel?.nombreSuplente,
+					fotografiaSuplente: suplenteModel?.fotografiaSuplente,
+					seudonimoSuplente: suplenteModel?.seudonimoSuplente,
+					fechaNacimientoSuplente: suplenteModel?.fechaNacimientoSuplente,
+					generoSuplente: suplenteModel?.generoSuplente,
+				  };
+				
+				  state.candidatoandSuplentes.push({ ...candidato, ...suplente });
+				});
+			  
+				console.log("CANDIDATOS CON SUPLENTES en SLICE", state.candidatoandSuplentes);
+			  }
+			  
 		  },
 		  
-		  
-		// Este cambio se tuvo que hacer para que jale lo del back
 		// onAddCandidatoAndSuplente: (state, { payload }) => {
+		// 	console.log("ESTAMOS EN EL PAYLOAD", payload);
+		// 	if(payload.suplenteModel) {
+		// 	const { candidatoModel, suplenteModel } = payload;
+		  
+		// 	state.candidatoandSuplentes.push({
+		// 	  id: candidatoModel?.id,
+		// 	  apellidoPCandidato: candidatoModel?.apellidoPCandidato,
+		// 	  apellidoMCandidato: candidatoModel?.apellidoMCandidato,
+		// 	  nombreCandidato: candidatoModel?.nombreCandidato,
+		// 	  fotografiaCandidato: candidatoModel?.fotografiaCandidato,
+		// 	  seudonimoCandidato: candidatoModel?.seudonimoCandidato,
+		// 	  fechaNacimientoCandidato: candidatoModel?.fechaNacimientoCandidato,
+		// 	  generoCandidato: candidatoModel?.generoCandidato,
+		// 	  claveElectoralCandidato: candidatoModel?.claveElectoralCandidato,
+		// 	  claveElectoralSuplente: suplenteModel?.claveElectoralSuplente,
+		// 	  apellidoPSuplente: suplenteModel?.apellidoPSuplente,
+		// 	  apellidoMSuplente: suplenteModel?.apellidoMSuplente,
+		// 	  nombreSuplente: suplenteModel?.nombreSuplente,
+		// 	  fotografiaSuplente: suplenteModel?.fotografiaSuplente,
+		// 	  seudonimoSuplente: suplenteModel?.seudonimoSuplente,
+		// 	  fechaNacimientoSuplente: suplenteModel?.fechaNacimientoSuplente,
+		// 	  generoSuplente: suplenteModel?.generoSuplente,
+		// 	});
+		  
+		// 	console.log("CANDIDATOS CON SUPLENTES en SLICE", state.candidatoandSuplentes[0]);
+		// } else {
 			// console.log("payload SLICE", payload);
 			// state.candidatoandSuplentes.push({
 			// 	id: payload?.id,
@@ -187,7 +215,12 @@ export const SliceJornada = createSlice({
 			// 	generoSuplente: payload?.generoSuplente,
 			// });
 			// console.log("CANDIDATOS CON SUPLENTES en SLICE", state.candidatoandSuplentes[0]);
-		// },
+		// }
+		//   },
+		  
+		  
+		// Este cambio se tuvo que hacer para que jale lo del back
+
 		
 		onDeleteCandidato: (state, { payload }) => {
 			const candidatoFound = state.candidatos.find(

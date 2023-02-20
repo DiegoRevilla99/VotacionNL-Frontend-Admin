@@ -224,9 +224,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 
 	const onSubmit = async(values) => {
 
-		const urllCandidato = await getURLImageCandidato();
-		const urllSuplente = await getURLImageSuplente();
-
+		
 		const info = { ...values };
 
 
@@ -248,6 +246,8 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		info.claveElectoralSuplente = info.claveElectoralSuplente.trim().toUpperCase();
 		
 		if (Object.values(candidatoandSuplenteSelected).length === 0) {
+			const urllCandidato = await getURLImageCandidato();
+			const urllSuplente = await getURLImageSuplente();
 			addCandidatoAndSuplente(
 				candidatoandSuplentes.length,
 				info.apellidoPCandidato,
@@ -269,12 +269,26 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 			);
 			toastSuccesOperation("Datos registrados con éxito");
 		} else {
+				  	// lo de fotografia
+// fotografiaCandidato
+// fotografiaSuplente
+			let urlCandidatos=fotografiaCandidato.name;
+			let urlSuplentes=fotografiaSuplente.name;
+                if(candidatoandSuplentes.fotografiaCandidato!==fotografiaCandidato.name || candidatoandSuplentes.fotografiaSuplente!==fotografiaSuplente.name){
+                    console.log("se cambio la imagen")
+                    urlCandidatos=await getURLImageCandidato();
+                    urlSuplentes=await getURLImageSuplente();
+                    console.log("url:",urlCandidatos)
+                    console.log("url:",urlSuplentes)
+                }else{
+                  console.log("no se cambio la imagen")
+                }
 			updateCandidatoAndSuplente(
 				candidatoandSuplenteSelected.id,
 				info.apellidoPCandidato,
 				info.apellidoMCandidato,
 				info.nombreCandidato,
-				values.fotografiaCandidato,
+				urlCandidatos,
 				info.seudonimoCandidato,
 				info.fechaNacimientoCandidatos,
 				info.generoCandidato,
@@ -283,7 +297,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 				info.apellidoPSuplente,
 				info.apellidoMSuplente,
 				info.nombreSuplente,
-				values.fotografiaSuplente,
+				urlSuplentes,
 				info.seudonimoSuplente,
 				info.fechaNacimientoSuplentes,
 				info.generoSuplente

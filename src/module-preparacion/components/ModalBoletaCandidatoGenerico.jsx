@@ -191,10 +191,10 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 		info.generoCandidato = info.generoCandidato.trim().toUpperCase();
 		info.claveCandidato = info.claveCandidato.trim().toUpperCase();
 
-		const urll = await getURLImage();
 		// setFotografia({ name: "Sin Archivo seleccionado" });
 		// console.log(values);
 		if (Object.values(candidatoSelected).length === 0) {
+			const urll = await getURLImage();
 			addCandidato(
 				candidatos.length,
 				info.claveCandidato,
@@ -208,14 +208,21 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 			  );
 			toastSuccesOperation("Candidato/a registrado/a con éxito");
 		} else {
-
+			let fotografiaCandidatos=fotografiaCandidato.name;
+			if(candidatos.fotografiaCandidato!==fotografiaCandidato.name){
+				console.log("se cambio la imagen")
+				fotografiaCandidatos=await getURLImage();
+				console.log("url:",fotografiaCandidatos)
+			}else{
+			  console.log("no se cambio la imagen")
+			}
 			updateCandidato(
 				candidatoSelected.id,
 				info.claveCandidato,
 				info.nombreCandidato,
 				info.apellidoPCandidato,
 				info.apellidoMCandidato,
-				values.fotografiaCandidato,
+				fotografiaCandidatos,
 				info.seudonimoCandidato,
 				info.fechaNacimientoCandidatos,
 				info.generoCandidato,

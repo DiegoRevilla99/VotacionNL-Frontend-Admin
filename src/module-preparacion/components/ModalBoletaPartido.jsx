@@ -69,8 +69,8 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 
 	const onSubmit = async(values) => {
 		// console.log("valuessssssss", values);
-		const urll = await getURLImage();
 		if (Object.values(partidoSelected).length === 0) {
+			const urll = await getURLImage();
 			addPartido(
 				partidos.length,
 				values.clavePartido,
@@ -83,13 +83,22 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 			);
 		toastSuccesOperation("Datos registrados con éxito");
 		} else {
+			let fotografiaPartys=fotografiaParty.name;
+
+                if(partidos.fotografiaParty!==fotografiaParty.name){
+                    console.log("se cambio la imagen")
+                    fotografiaPartys=await getURLImage();
+                    console.log("url:",fotografiaPartys)
+                }else{
+                  console.log("no se cambio la imagen")
+                }
 			updatePartido(
 				partidoSelected.id,
 				values.clavePartido,
 				values.nameParty,
 				values.siglasParty,
 				values.emblemParty,
-				values.fotografiaParty,
+				fotografiaPartys,
 				values.statusParty,
 				values.candidatosPartido,
 			);
