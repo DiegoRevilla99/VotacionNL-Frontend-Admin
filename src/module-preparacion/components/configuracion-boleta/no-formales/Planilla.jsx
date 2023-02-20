@@ -157,7 +157,7 @@ export const Planilla = ({ boletaInfo }) => {
               justifyContent: "start",
             }}
           >
-            <Button
+            {/* <Button
               type="submit"
               className={styles.boton}
               variant="contained"
@@ -169,7 +169,7 @@ export const Planilla = ({ boletaInfo }) => {
             >
               <ReplyAllIcon />
               Regresar
-            </Button>
+            </Button> */}
           </Box>
         </Box>
       </Stack>

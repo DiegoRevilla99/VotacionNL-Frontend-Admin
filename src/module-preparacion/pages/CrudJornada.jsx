@@ -7,7 +7,7 @@ import {
   Grid,
   IconButton,
   LinearProgress,
-  Typography
+  Typography,
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   onGetBoletaData,
-  onGetBoletas
+  onGetBoletas,
 } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { GeneralTable } from "../components/GeneralTable";
 import { useJornadaStore } from "../hooks/useJornadaStore";
@@ -25,14 +25,11 @@ import { useParams } from "react-router-dom";
 import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
 import { ModalEliminarBoletaFormal } from "../components/ModalEliminarBoletaFormal";
 
-
-
-
 export const CrudJornada = () => {
   const navigate = useNavigate();
-	const [modalDeleteStatus, setModalDeleteStatus] = useState(false);
+  const [modalDeleteStatus, setModalDeleteStatus] = useState(false);
   const [idBoleta, setIdBoleta] = useState(null);
-	const [nombreEstructuraBoleta, setNombreBoleta] = useState(null);
+  const [nombreEstructuraBoleta, setNombreBoleta] = useState(null);
   // ToDo:AQUI OBTENGAN LAS VARIABLES STATUS Y DATA DE SUS ESTADOS GLOBALES
   const { jornadaSelected, status } = useJornadaStore();
   const params = useParams();
@@ -70,7 +67,9 @@ export const CrudJornada = () => {
             </Button>
             <IconButton
               sx={{ color: "#511079" }}
-              onClick={() => handleDelete(params.id, params.row.nombreEstructuraBoleta)}
+              onClick={() =>
+                handleDelete(params.id, params.row.nombreEstructuraBoleta)
+              }
             >
               <DeleteIcon />
             </IconButton>
@@ -88,7 +87,7 @@ export const CrudJornada = () => {
   // METODO PARA BORRAR UN REGISTRO
   const handleDelete = (id, title) => {
     setIdBoleta(id);
-		setNombreBoleta(title);
+    setNombreBoleta(title);
     openModalDelete();
     // dispatch(onDeleteBoleta(id));
   };
@@ -105,7 +104,7 @@ export const CrudJornada = () => {
 
   // MÉTODO PARA IR A LA PAGINA DE CONFIGURACIÓN DEL REGISTRO
   const handleConfig = (id) => {
-    navigate("/preparacion/jornada/configboleta/" + id);
+    navigate("/preparacion/jornada/configboleta/" + params.id + "/" + id);
     // dispatch(onGetConfig(id));
   };
 
@@ -120,13 +119,13 @@ export const CrudJornada = () => {
     );
   };
   const closeModalDelete = () => {
-		setModalDeleteStatus(false);
-	};
+    setModalDeleteStatus(false);
+  };
 
-	const openModalDelete = () => {
-		setModalDeleteStatus(true);
-	};
-  
+  const openModalDelete = () => {
+    setModalDeleteStatus(true);
+  };
+
   if (status === "checking")
     return (
       <Box sx={{ width: "100%" }}>
@@ -143,22 +142,26 @@ export const CrudJornada = () => {
           overflowY: "auto",
         }}
       >
-        <Grid item xs={12} sx={{ display: "flex", flexDirection: "column" }} mt={2}>
+        <Grid
+          item
+          xs={12}
+          sx={{ display: "flex", flexDirection: "column" }}
+          mt={2}
+        >
+          <BreadCrumbsCustom
+            routes={[
+              {
+                name: "PREPARACIÓN",
+                url: "/preparacion/inicio",
+              },
+              {
+                name: "JORNADAS FORMALES",
+                url: "/preparacion/registroJornadaFormal",
+              },
+            ]}
+            currentRoute={jornadaSelected.title}
+          ></BreadCrumbsCustom>
 
-        <BreadCrumbsCustom
-          routes={[
-            {
-              name: "PREPARACIÓN",
-              url: "/preparacion/inicio",
-            },
-            {
-              name: "JORNADAS FORMALES",
-              url: "/preparacion/registroJornadaFormal",
-            },
-          ]}
-          currentRoute={jornadaSelected.title}
-        ></BreadCrumbsCustom>
-          
           <Box sx={{ m: "0.5rem", ml: "2rem" }}>
             <Typography variant="h6" align="left" color="initial">
               {jornadaSelected.title}
@@ -211,7 +214,12 @@ export const CrudJornada = () => {
                 pt: "1rem",
               }}
             >
-              <Typography variant="h5" color="initial" mb="0.5rem" align="center">
+              <Typography
+                variant="h5"
+                color="initial"
+                mb="0.5rem"
+                align="center"
+              >
                 BOLETAS
               </Typography>
               <Divider />
@@ -236,12 +244,11 @@ export const CrudJornada = () => {
           </Box>
         </Grid>
         <ModalEliminarBoletaFormal
-					modalDeleteStatus={modalDeleteStatus} 
-					closeModalDelete={closeModalDelete} 
-					idBoleta={idBoleta}
-					nombreEstructuraBoleta={nombreEstructuraBoleta}
-				/>	
+          modalDeleteStatus={modalDeleteStatus}
+          closeModalDelete={closeModalDelete}
+          idBoleta={idBoleta}
+          nombreEstructuraBoleta={nombreEstructuraBoleta}
+        />
       </Grid>
-      
     );
 };

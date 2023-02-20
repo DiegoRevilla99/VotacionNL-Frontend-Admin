@@ -1,5 +1,5 @@
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 import SettingsIcon from "@mui/icons-material/Settings";
 import {
   Box,
@@ -8,32 +8,37 @@ import {
   Grid,
   IconButton,
   LinearProgress,
-  Typography
+  Typography,
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
-import { onGetBoletaData, onGetBoletasNoFormales } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
+import {
+  onGetBoletaData,
+  onGetBoletasNoFormales,
+} from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
 import { GeneralTable } from "../components/GeneralTable";
 import { ModalEliminarBoleta } from "../components/ModalEliminarBoleta";
 import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
-
-
 
 export const CrudJornadaGenerica = () => {
   const navigate = useNavigate();
 
   // ToDo:AQUI OBTENGAN LAS VARIABLES STATUS Y DATA DE SUS ESTADOS GLOBALES
-  const { jornadaNoFormalSelected , status, setCandidatosSelectedNull,
-    setAsociacionesSelectedNull } = useJornadaNoFormalStore();
+  const {
+    jornadaNoFormalSelected,
+    status,
+    setCandidatosSelectedNull,
+    setAsociacionesSelectedNull,
+  } = useJornadaNoFormalStore();
   const params = useParams();
   const dispatch = useDispatch();
 
-	const [modalDeleteStatus, setModalDeleteStatus] = useState(false);
+  const [modalDeleteStatus, setModalDeleteStatus] = useState(false);
   const [idBoleta, setIdBoleta] = useState(null);
-	const [encabezadoBoleta, setNombreBoleta] = useState(null);
+  const [encabezadoBoleta, setNombreBoleta] = useState(null);
   const columns = [
     // field: Debe de ir la variable que se va a mostrar en la tabla
     {
@@ -66,7 +71,9 @@ export const CrudJornadaGenerica = () => {
             </Button>
             <IconButton
               sx={{ color: "#511079" }}
-              onClick={() => handleDelete(params.id, params.row.encabezadoBoleta)}
+              onClick={() =>
+                handleDelete(params.id, params.row.encabezadoBoleta)
+              }
             >
               <DeleteIcon />
             </IconButton>
@@ -78,8 +85,8 @@ export const CrudJornadaGenerica = () => {
   // METODO PARA BORRAR UN REGISTRO
   const handleDelete = (id, title) => {
     setIdBoleta(id);
-		setNombreBoleta(title);
-		openModalDelete();
+    setNombreBoleta(title);
+    openModalDelete();
   };
   // MÉTODO PARA EDITAR UN REGISTRO
   const handleEdit = (id) => {
@@ -87,26 +94,30 @@ export const CrudJornadaGenerica = () => {
     dispatch(
       onGetBoletaData(id, () => {
         navigate(
-          "/preparacion/jornada/noFormal/" + params.id +
-          "/boletanf/" + id
+          "/preparacion/jornada/noFormal/" + params.id + "/boletanf/" + id
         );
       })
     );
   };
   // USEEFFECT QUE PUEDES USAR PARA HACER UN GET DE LAS JORNADAS AL RENDERIZAR LA PAGINA
   useEffect(() => {
-      dispatch(onGetBoletasNoFormales(params.id));
-      setCandidatosSelectedNull();
-      setAsociacionesSelectedNull();
+    dispatch(onGetBoletasNoFormales(params.id));
+    setCandidatosSelectedNull();
+    setAsociacionesSelectedNull();
   }, []);
   // MÉTODO PARA IR A LA PAGINA DE CONFIGURACIÓN DEL REGISTRO
   const handleConfig = (id) => {
-    navigate("/preparacion/jornadaNoFormal/configboleta/" + id);
+    navigate(
+      "/preparacion/jornadaNoFormal/configboleta/" + params.id + "/" + id
+    );
     // dispatch(onGetConfig(id));
   };
 
   const handleAdd = () => {
-    console.log("Presionaste agregar",jornadaNoFormalSelected.boletasNoFormales.listBoletas);
+    console.log(
+      "Presionaste agregar",
+      jornadaNoFormalSelected.boletasNoFormales.listBoletas
+    );
     //AQUI VAN LOS NULLS
     setCandidatosSelectedNull();
     setAsociacionesSelectedNull();
@@ -119,14 +130,14 @@ export const CrudJornadaGenerica = () => {
   };
 
   const closeModalDelete = () => {
-		setModalDeleteStatus(false);
-	};
+    setModalDeleteStatus(false);
+  };
 
-	const openModalDelete = () => {
-		setModalDeleteStatus(true);
-	};
-  
-	// console.log("haber que guardo aqui", jornadaNoFormalSelected.boletasNoFormales.listBoletas.idEstructuraBoleta);
+  const openModalDelete = () => {
+    setModalDeleteStatus(true);
+  };
+
+  // console.log("haber que guardo aqui", jornadaNoFormalSelected.boletasNoFormales.listBoletas.idEstructuraBoleta);
   if (status === "checking")
     return (
       <Box sx={{ width: "100%" }}>
@@ -143,20 +154,25 @@ export const CrudJornadaGenerica = () => {
           overflowY: "auto",
         }}
       >
-        <Grid item xs={12} sx={{ display: "flex", flexDirection: "column" }} mt={2}>
-        <BreadCrumbsCustom
-          routes={[
-            {
-              name: "PREPARACIÓN",
-              url: "/preparacion/inicio",
-            },
-            {
-              name: "JORNADAS NO FORMALES",
-              url: "/preparacion/registroJornadaNoFormal",
-            },
-          ]}
-          currentRoute={jornadaNoFormalSelected.title}
-        ></BreadCrumbsCustom>
+        <Grid
+          item
+          xs={12}
+          sx={{ display: "flex", flexDirection: "column" }}
+          mt={2}
+        >
+          <BreadCrumbsCustom
+            routes={[
+              {
+                name: "PREPARACIÓN",
+                url: "/preparacion/inicio",
+              },
+              {
+                name: "JORNADAS NO FORMALES",
+                url: "/preparacion/registroJornadaNoFormal",
+              },
+            ]}
+            currentRoute={jornadaNoFormalSelected.title}
+          ></BreadCrumbsCustom>
 
           <Box sx={{ m: "0.5rem", ml: "2rem" }}>
             <Typography variant="h6" align="left" color="initial">
@@ -211,7 +227,12 @@ export const CrudJornadaGenerica = () => {
                 pt: "1rem",
               }}
             >
-              <Typography variant="h5" color="initial" mb="0.5rem" align="center">
+              <Typography
+                variant="h5"
+                color="initial"
+                mb="0.5rem"
+                align="center"
+              >
                 BOLETAS
               </Typography>
               <Divider />
@@ -230,20 +251,19 @@ export const CrudJornadaGenerica = () => {
                   data={jornadaNoFormalSelected.boletasNoFormales.listBoletas} // DATA DE LOS REGISTROS
                   // data={jornadaNoFormalSelected.boletasNoFormales} // DATA DE LOS REGISTROS
                   columns={columns}
-                  idName={"idEstructuraBoleta"}// NOMBRE DEL ID DE CADA REGISTRO
+                  idName={"idEstructuraBoleta"} // NOMBRE DEL ID DE CADA REGISTRO
                   // getRowId={(row) => row.idEstructuraBoleta}
                 />
-                
               </Box>
             </Box>
           </Box>
         </Grid>
-        <ModalEliminarBoleta 
-					modalDeleteStatus={modalDeleteStatus} 
-					closeModalDelete={closeModalDelete} 
-					idBoleta={idBoleta}
-					encabezadoBoleta={encabezadoBoleta}
-				/>	
+        <ModalEliminarBoleta
+          modalDeleteStatus={modalDeleteStatus}
+          closeModalDelete={closeModalDelete}
+          idBoleta={idBoleta}
+          encabezadoBoleta={encabezadoBoleta}
+        />
       </Grid>
     );
 };

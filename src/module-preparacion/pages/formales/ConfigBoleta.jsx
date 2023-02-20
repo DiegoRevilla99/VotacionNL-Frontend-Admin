@@ -19,25 +19,22 @@ import { Representante } from "../../components/configuracion-boleta/formales/Re
 import { useCandidatos } from "../../../module-empadronamiento/hooks/useCandidatos";
 import { getCandidatos } from "../../../store/module-preparacion/configuracion-boleta/thunksConfigBoleta";
 import { useDispatch } from "react-redux";
+import { BotonBack } from "../../components/BotonBack";
 
 export const ConfigBoleta = memo(() => {
-  const { id } = useParams();
+  const { jornada, id } = useParams();
   const dispatch = useDispatch();
-  const { boleta, errorBoleta, isLoadingBoleta} =useBoleta(id);
-  const {candidatos,
-    isLoadingCandidatos,
-  }=useCandidatos(id)
+  const { boleta, errorBoleta, isLoadingBoleta } = useBoleta(id);
+  const { candidatos, isLoadingCandidatos } = useCandidatos(id);
 
   useEffect(() => {
-      console.log("cambio boleta info:",boleta)
-  }, [boleta])
+    console.log("cambio boleta info:", boleta);
+  }, [boleta]);
 
-  const updateCand =()=>{
-    console.log("Actualizando candi")
+  const updateCand = () => {
+    console.log("Actualizando candi");
     dispatch(getCandidatos(id));
-  }
-     
-  
+  };
 
   return (
     <>
@@ -62,17 +59,15 @@ export const ConfigBoleta = memo(() => {
           >
             <Typography>No se encontro boleta</Typography>
           </Box>
-        ) :  (
-          
-            <Representante
+        ) : (
+          <Representante
             updateCand={updateCand}
             boletaInfo={boleta}
           ></Representante>
-          
-          
-        ) }
+        )}
+
+        <BotonBack url={"/preparacion/jornada/" + jornada} />
       </PlantillaHeader>
     </>
   );
 });
-

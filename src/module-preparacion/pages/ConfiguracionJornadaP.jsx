@@ -33,10 +33,10 @@ const validationSchema = object({
   finDisponibilidad: date().required("Este campo es requerido"),
   inicioEmpadronamiento: date().required("Este campo es requerido"),
   finEmpadronamiento: date().required("Este campo es requerido"),
-  inicioRecepcionVotos: date().required("Este campo es requerido"),
-  finRecepcionVotos: date().required("Este campo es requerido"),
-  inicioAsignacionContrasenia: date().required("Este campo es requerido"),
-  finAsignacionContrasenia: date().required("Este campo es requerido"),
+  inicioRecepVoto: date().required("Este campo es requerido"),
+  finRecepVoto: date().required("Este campo es requerido"),
+  inicioAssignPass: date().required("Este campo es requerido"),
+  finAssignPass: date().required("Este campo es requerido"),
   tiempoDuracionRespuesta: date().required("Este campo es requerido"),
   tiempoExtra: date().required("Este campo es requerido"),
 });
@@ -80,16 +80,10 @@ export const ConfiguracionJornadaP = () => {
           values.inicioEmpadronamiento
         ).toISOString(),
         finEmpadronamiento: new Date(values.finEmpadronamiento).toISOString(),
-        inicioRecepcionVotos: new Date(
-          values.inicioRecepcionVotos
-        ).toISOString(),
-        finRecepcionVotos: new Date(values.finRecepcionVotos).toISOString(),
-        inicioAsignacionContrasenia: new Date(
-          values.inicioAsignacionContrasenia
-        ).toISOString(),
-        finAsignacionContrasenia: new Date(
-          values.finAsignacionContrasenia
-        ).toISOString(),
+        inicioRecepVoto: new Date(values.inicioRecepVoto).toISOString(),
+        finRecepVoto: new Date(values.finRecepVoto).toISOString(),
+        inicioAssignPass: new Date(values.inicioAssignPass).toISOString(),
+        finAssignPass: new Date(values.finAssignPass).toISOString(),
       },
       configVotoModel: {
         tiempoDuracionVoto: new Date(values.tiempoDuracionRespuesta)
@@ -124,12 +118,12 @@ export const ConfiguracionJornadaP = () => {
       errors.inicioEmpadronamiento =
         "El empadornamiento debe ser posterior a la fin de disponibilidad del sistema";
     }
-    if (values.finEmpadronamiento >= values.inicioAsignacionContrasenia) {
-      errors.inicioAsignacionContrasenia =
+    if (values.finEmpadronamiento >= values.inicioAssignPass) {
+      errors.inicioAssignPass =
         "La asignación de contraseñas debe ser posterior al empadronamiento";
     }
-    if (values.finAsignacionContrasenia >= values.inicioRecepcionVotos) {
-      errors.inicioRecepcionVotos =
+    if (values.finAssignPass >= values.inicioRecepVoto) {
+      errors.inicioRecepVoto =
         "La recepción de votos debe ser posterior a la asignacion de contraseñas";
     }
 
@@ -138,13 +132,13 @@ export const ConfiguracionJornadaP = () => {
         "La fecha de inicial no puede ser menor o igual que la final";
     }
 
-    if (values.inicioRecepcionVotos >= values.finRecepcionVotos) {
-      errors.finRecepcionVotos =
+    if (values.inicioRecepVoto >= values.finRecepVoto) {
+      errors.finRecepVoto =
         "La fecha de inicial no puede ser menor o igual que la final";
     }
 
-    if (values.inicioAsignacionContrasenia >= values.finAsignacionContrasenia) {
-      errors.finAsignacionContrasenia =
+    if (values.inicioAssignPass >= values.finAssignPass) {
+      errors.finAssignPass =
         "La fecha de inicial no puede ser menor o igual que la final";
     }
 
@@ -204,10 +198,10 @@ export const ConfiguracionJornadaP = () => {
                       finDisponibilidad: "",
                       inicioEmpadronamiento: "",
                       finEmpadronamiento: "",
-                      inicioRecepcionVotos: "",
-                      finRecepcionVotos: "",
-                      inicioAsignacionContrasenia: "",
-                      finAsignacionContrasenia: "",
+                      inicioRecepVoto: "",
+                      finRecepVoto: "",
+                      inicioAssignPass: "",
+                      finAssignPass: "",
                       tiempoDuracionRespuesta: "",
                       tiempoExtra: "",
                       habilitarVerificacion: false,
@@ -224,14 +218,12 @@ export const ConfiguracionJornadaP = () => {
                       finEmpadronamiento: dayjs(
                         configJornada.configuracionModel?.finEmpadronamiento
                       ),
-                      inicioRecepcionVotos: dayjs(
-                        configJornada.inicioRecepVoto
-                      ),
-                      finRecepcionVotos: dayjs(configJornada.finRecepVoto),
-                      inicioAsignacionContrasenia: dayjs(
+                      inicioRecepVoto: dayjs(configJornada.inicioRecepVoto),
+                      finRecepVoto: dayjs(configJornada.finRecepVoto),
+                      inicioAssignPass: dayjs(
                         configJornada.configuracionModel?.inicioAssignPass
                       ),
-                      finAsignacionContrasenia: dayjs(
+                      finAssignPass: dayjs(
                         configJornada.configuracionModel?.finAssignPass
                       ),
                       tiempoDuracionRespuesta: dayjs(
@@ -349,50 +341,50 @@ export const ConfiguracionJornadaP = () => {
                     <Grid item xs={12} md={6} mt="0.5rem">
                       <DateFieldWithTitle
                         label={"INICIO DE ASIGNACIÓN DE CONTRASEÑAS"}
-                        name={"inicioAsignacionContrasenia"}
-                        value={values.inicioAsignacionContrasenia}
+                        name={"inicioAssignPass"}
+                        value={values.inicioAssignPass}
                         setFieldValue={setFieldValue}
                         handleChange={handleChange}
-                        error={errors.inicioAsignacionContrasenia}
-                        touched={touched.inicioAsignacionContrasenia}
+                        error={errors.inicioAssignPass}
+                        touched={touched.inicioAssignPass}
                         isDisabled={values.isDisabled}
                       />
                     </Grid>
                     <Grid item xs={12} md={6} mt="0.5rem">
                       <DateFieldWithTitle
                         label={"FINALIZACIÓN DE ASIGNACIÓN DE CONTRASEÑAS"}
-                        name={"finAsignacionContrasenia"}
-                        value={values.finAsignacionContrasenia}
+                        name={"finAssignPass"}
+                        value={values.finAssignPass}
                         setFieldValue={setFieldValue}
                         handleChange={handleChange}
-                        error={errors.finAsignacionContrasenia}
-                        touched={touched.finAsignacionContrasenia}
-                        minDate={values.inicioAsignacionContrasenia}
+                        error={errors.finAssignPass}
+                        touched={touched.finAssignPass}
+                        minDate={values.inicioAssignPass}
                         isDisabled={values.isDisabled}
                       />
                     </Grid>
                     <Grid item xs={12} md={6} mt="0.5rem">
                       <DateFieldWithTitle
                         label={"INICIO DE RECEPCIÓN DE VOTACIÓN"}
-                        name={"inicioRecepcionVotos"}
-                        value={values.inicioRecepcionVotos}
+                        name={"inicioRecepVoto"}
+                        value={values.inicioRecepVoto}
                         setFieldValue={setFieldValue}
                         handleChange={handleChange}
-                        error={errors.inicioRecepcionVotos}
-                        touched={touched.inicioRecepcionVotos}
+                        error={errors.inicioRecepVoto}
+                        touched={touched.inicioRecepVoto}
                         isDisabled={values.isDisabled}
                       />
                     </Grid>
                     <Grid item xs={12} md={6} mt="0.5rem">
                       <DateFieldWithTitle
                         label={"FINALIZACIÓN DE RECEPCIÓN DE VOTACIÓN"}
-                        name={"finRecepcionVotos"}
-                        value={values.finRecepcionVotos}
+                        name={"finRecepVoto"}
+                        value={values.finRecepVoto}
                         setFieldValue={setFieldValue}
                         handleChange={handleChange}
-                        error={errors.finRecepcionVotos}
-                        touched={touched.finRecepcionVotos}
-                        minDate={values.inicioRecepcionVotos}
+                        error={errors.finRecepVoto}
+                        touched={touched.finRecepVoto}
+                        minDate={values.inicioRecepVoto}
                         isDisabled={values.isDisabled}
                       />
                     </Grid>
