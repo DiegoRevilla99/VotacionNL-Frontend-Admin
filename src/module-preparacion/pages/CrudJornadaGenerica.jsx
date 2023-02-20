@@ -9,7 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
 import {
 	onGetBoletaData,
-	onGetBoletasNoFormales,
+	onGetBoletasNoFormales
 } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
 import { GeneralTable } from "../components/GeneralTable";
 import { ModalEliminarBoleta } from "../components/ModalEliminarBoleta";
@@ -145,7 +145,7 @@ export const CrudJornadaGenerica = () => {
 								url: "/preparacion/inicio",
 							},
 							{
-								name: "JORNADAS NO FORMALES",
+								name: "ELECCIONES POPULARES",
 								url: "/preparacion/registroJornadaNoFormal",
 							},
 						]}

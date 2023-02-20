@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
 	onGetBoletaData,
-	onGetBoletas,
+	onGetBoletas
 } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { GeneralTable } from "../components/GeneralTable";
 import { useJornadaStore } from "../hooks/useJornadaStore";
@@ -45,7 +45,7 @@ export const CrudJornada = () => {
 					<Stack spacing={2} direction="row">
 						<Button
 							variant="outlined"
-							startIcon={<BallotIcon />}
+							startIcon={<EditIcon />}
 							onClick={() => handleEdit(params.id)}
 						>
 							Ver
@@ -137,7 +137,7 @@ export const CrudJornada = () => {
 								url: "/preparacion/inicio",
 							},
 							{
-								name: "JORNADAS FORMALES",
+								name: "JORNADAS ELECTORALES",
 								url: "/preparacion/registroJornadaFormal",
 							},
 						]}
