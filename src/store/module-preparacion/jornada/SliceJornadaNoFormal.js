@@ -97,10 +97,12 @@ export const SliceJornadaNoFormal = createSlice({
 
         onSetCandidatoSelectedNull: (state, { payload }) => {
             state.candidatoSelected = {};
+            // state.contador= 0;
         },
 
         onSetCandidatoNull: (state, { payload }) => {
             state.candidatos = [];
+            state.contador= 0;
         },
 
         onFillCandidatosNoFormalesData: (state, { payload }) => {
