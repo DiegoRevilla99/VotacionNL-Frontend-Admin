@@ -1,4 +1,3 @@
-import BallotIcon from "@mui/icons-material/Ballot";
 import SettingsIcon from "@mui/icons-material/Settings";
 import {
   Box,
@@ -21,10 +20,10 @@ import { GeneralTable } from "../components/GeneralTable";
 import { useJornadaStore } from "../hooks/useJornadaStore";
 
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from '@mui/icons-material/Edit';
 import { useParams } from "react-router-dom";
 import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
 import { ModalEliminarBoletaFormal } from "../components/ModalEliminarBoletaFormal";
-
 
 
 
@@ -56,10 +55,10 @@ export const CrudJornada = () => {
           <Stack spacing={2} direction="row">
             <Button
               variant="outlined"
-              startIcon={<BallotIcon />}
+              startIcon={<EditIcon />}
               onClick={() => handleEdit(params.id)}
             >
-              Ver
+              Editar
             </Button>
             <Button
               variant="outlined"
@@ -152,7 +151,7 @@ export const CrudJornada = () => {
               url: "/preparacion/inicio",
             },
             {
-              name: "JORNADAS FORMALES",
+              name: "JORNADAS ELECTORALES",
               url: "/preparacion/registroJornadaFormal",
             },
           ]}

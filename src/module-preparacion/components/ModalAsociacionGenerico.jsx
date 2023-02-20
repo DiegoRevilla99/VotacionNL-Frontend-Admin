@@ -301,7 +301,12 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 													background: "#000",
 													ml: 1,
 												}}
-												></Box>
+												>
+												<a href={candidato.fotografiaCandidato}>
+													<img width="60px" height="55px" src={candidato.fotografiaCandidato} alt="fotoCandidato"/>
+												</a>
+
+												</Box>
 												<Box sx={{ p: 2 }}>
 												<Typography sx={{ fontSize: "15px", fontWeight: "bold" }}>
 													{candidato.nombreCandidato}

@@ -7,7 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { number, object, string } from "yup";
 // import { useUiStore } from "../../hooks/useUiStore";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import SettingsIcon from "@mui/icons-material/Settings";
+import HandshakeIcon from '@mui/icons-material/Handshake';
 import { onCreateBoleta, onUpdateBoletaData } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { FielTextCustom } from "../components/FielTextCustom";
 import { ModalBoletaPartido } from "../components/ModalBoletaPartido";
@@ -31,7 +31,7 @@ const validationSchema = object({
 		),
 	distritoElectoral: number("").required(
 		"Por favor, ingresa un distrito Electoral"
-		).max("3000").positive("Solo números positivos, por favor.").integer(""),
+		).max("300").positive("Solo números positivos, por favor.").typeError("Debes ingresar un número").moreThan(1, "Debes ingresar un número mayor a 1"),
 	primerFirmante: string("").required(
 		"Por favor, ingresa el nombre del Primer Firmante"
 		),
@@ -287,10 +287,17 @@ export const AddBoletaJornada = () => {
 								label="DISTRITO ELECTORAL"
 								name="distritoElectoral"
 								value={values.distritoElectoral}
-								handleChange={handleChange}
+								handleChange={(e) => {
+									const inputValue = e.target.value;
+									const isNumber = /^\d+$/.test(inputValue);
+									const isPositive = parseInt(inputValue) > 0;
+									if (isNumber && isPositive) {
+									  handleChange(e);
+									}
+								  }}
 								error={errors.distritoElectoral}
 								touched={touched.distritoElectoral}
-								type="number"
+								type="text"
 							/>
 							{/* {touched.distritoElectoral && errors.distritoElectoral && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.distritoElectoral}</Typography>} */}
 						</Grid>
@@ -362,8 +369,7 @@ export const AddBoletaJornada = () => {
 							
 							<Grid item xs={12} md={6} lg={4}>
 								<Button
-									
-									// onClick={abrirCerrarModalAsociacion}
+									// onClick={setShowModal(true)}
 									onClick={handleOpenMatchModal}
 									variant="contained"
 									size="large"
@@ -384,9 +390,6 @@ export const AddBoletaJornada = () => {
 									AGREGAR PARTIDO
 								</Button>
 							</Grid>
-							{
-								
-							}
 								<Box
 								sx={{
 									display: "flex",
@@ -472,22 +475,21 @@ export const AddBoletaJornada = () => {
 		<div>
 		{/* Resto de la interfaz */}
 		{showModal && (
-			<div style={{ 
-			position: 'fixed', 
-			top: '50%', 
-			left: '50%', 
-			transform: 'translate(-50%, -50%)', 
-			background: 'rgba(0, 0, 0, 0.5)', 
-			width: '400px',
-			height: '400px',
-			// background: '#fff', 
-			zIndex: 9999, 
-			padding: '20px',
-			borderRadius: '10px',
-			textAlign: 'center'
+			<div style={{
+				position: 'fixed',
+				top: '50%',
+				left: '50%',
+				transform: 'translate(-50%, -50%)',
+				background: '#fff',
+				width: '400px',
+				height: '400px',
+				zIndex: 9999,
+				padding: '20px',
+				borderRadius: '10px',
+				textAlign: 'center'
 			}}>
-			<Typography id="modal-modal-title" variant= "h4"  color="white" align="center" mr={5} ml={5} mb={5}>
-                    ¿Deseas configurar la boleta o prefieres terminar y salir?
+				<Typography id="modal-modal-title" variant="h4" color="black" align="center" mr={5} ml={5} mb={5}>
+					¿Deseas crear las coaliciones o prefieres terminar y salir?
 				</Typography>
 				
 				<Grid
@@ -501,7 +503,7 @@ export const AddBoletaJornada = () => {
 								onClick={handleConfigurar}
 								variant="contained"
 								size="large"
-								endIcon={<SettingsIcon />}
+								endIcon={<HandshakeIcon />}
 								sx={{
 									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
 									transition: "all 0.5s ease",
@@ -515,7 +517,7 @@ export const AddBoletaJornada = () => {
 									},
 								}}
 							>
-								Configurar boleta
+								Crear coaliciones
 							</Button>
 
 
@@ -538,7 +540,7 @@ export const AddBoletaJornada = () => {
 									},
 								}}
 							>
-								Terminar y configurar después
+								Terminar y salir
 							</Button>
 
 					</Grid>

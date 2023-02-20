@@ -550,22 +550,21 @@ export const AddBoletaJornadaGenerica = () => {
 		<div>
 		{/* Resto de la interfaz */}
 		{showModal && (
-			<div style={{ 
-			position: 'fixed', 
-			top: '50%', 
-			left: '50%', 
-			transform: 'translate(-50%, -50%)', 
-			background: 'rgba(0, 0, 0, 0.5)', 
-			width: '400px',
-			height: '400px',
-			// background: '#fff', 
-			zIndex: 9999, 
-			padding: '20px',
-			borderRadius: '10px',
-			textAlign: 'center'
-			}}>
-			<Typography id="modal-modal-title" variant= "h4"  color="white" align="center" mr={5} ml={5} mb={5}>
-                    ¿Deseas configurar la boleta o prefieres terminar y salir?
+			<div style={{
+				position: 'fixed',
+				top: '50%',
+				left: '50%',
+				transform: 'translate(-50%, -50%)',
+				background: '#fff',
+				width: '400px',
+				height: '400px',
+				zIndex: 9999,
+				padding: '20px',
+				borderRadius: '10px',
+				textAlign: 'center'
+			}}>			
+				<Typography id="modal-modal-title" variant="h4" color="black" align="center" mr={5} ml={5} mb={5}>
+				¿Deseas configurar la boleta o prefieres terminar y salir?
 				</Typography>
 				
 				<Grid

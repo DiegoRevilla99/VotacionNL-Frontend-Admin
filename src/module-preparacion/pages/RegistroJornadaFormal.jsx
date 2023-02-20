@@ -147,7 +147,7 @@ export const RegistroJornadaFormal = () => {
 
           <Box sx={{ m: "0.5rem", ml: "2rem" }}>
             <Typography variant="h6" align="left" color="initial">
-              REGISTRO DE UNA JORNADA FORMAL
+              REGISTRO DE UNA JORNADA ELECTORAL
             </Typography>
           </Box>
           <Divider />
@@ -179,7 +179,7 @@ export const RegistroJornadaFormal = () => {
                     },
                   }}
                 >
-                  Registrar Jornada 
+                  Registrar Jornada Electoral
                 </Button>
               </Grid>
             </Grid>
@@ -198,7 +198,7 @@ export const RegistroJornadaFormal = () => {
               }}
             >
 							<Typography variant="h5" color="initial" mb="0.5rem" align="center">
-								JORNADAS
+								JORNADAS ELECTORALES
               </Typography>
               <Divider />
               <Box
