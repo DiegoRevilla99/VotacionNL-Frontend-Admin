@@ -14,6 +14,7 @@ import {
 	getJornadasFormales,
 	getJornadasNoFormales,
 	getJornadaVotos,
+	getJornadaVotosInicio,
 	postImage,
 	updateBoletaData,
 } from "../../../providers/Micro-Preparacion/providerJornada";
@@ -319,6 +320,25 @@ export const onGetJornadaVotos = (idBoleta, idJornada) => {
 		console.log("IDBOLETA", idBoleta);
 
 		const { ok, data } = await getJornadaVotos(idBoleta, idJornada); // PROVIDER
+
+		console.log("DATA OBTENIDA DEL PROVIDER", data);
+		if (ok) {
+			dispatch(onSetJornadasVotosData(data)); // SLICE
+			dispatch(onSuccessOperation());
+		} else {
+			dispatch(onErrorOperation());
+			dispatch(onToastErrorOperation({ errorMessage: "Error al obtener las boletas" }));
+		}
+	};
+};
+
+export const onGetJornadaVotosInicio = (idBoleta, idJornada) => {
+	return async (dispatch) => {
+		dispatch(onCheckingOperation());
+
+		console.log("IDBOLETA", idBoleta);
+
+		const { ok, data } = await getJornadaVotosInicio(idBoleta, idJornada); // PROVIDER
 
 		console.log("DATA OBTENIDA DEL PROVIDER", data);
 		if (ok) {

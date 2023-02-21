@@ -89,7 +89,7 @@ export const ReporteInicialNoFormalHTML = ({
 								pt={2}
 								fontFamily="times"
 							>
-								Reporte final de votación
+								Reporte inicial de votación
 							</Typography>
 						</Box>
 					</Box>

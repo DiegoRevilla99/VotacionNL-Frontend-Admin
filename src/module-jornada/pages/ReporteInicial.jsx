@@ -22,6 +22,7 @@ import { PrivateRoute } from "../../router/PrivateRoute";
 import {
 	onGetBoletas,
 	onGetJornadaVotos,
+	onGetJornadaVotosInicio,
 } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { JornadaFormalChart } from "./JornadaFormalChart";
 // import { VisualizadorDePDF } from "./VisualizadorDePDF";
@@ -41,7 +42,7 @@ export const ReporteInicial = () => {
 
 	useEffect(() => {
 		if (boleta !== null) {
-			dispatch(onGetJornadaVotos(boleta));
+			dispatch(onGetJornadaVotosInicio(boleta, jornadaSelected.id));
 			console.log("BUSCO LA BOLETAAAAA");
 		}
 	}, [boleta]);
@@ -84,7 +85,7 @@ export const ReporteInicial = () => {
 										value={boleta.idEstructuraBoleta}
 										key={boleta.idEstructuraBoleta}
 									>
-										{boleta.nombreEleccion}
+										{boleta.nombreEstructuraBoleta}
 									</MenuItem>
 								);
 							})}
@@ -113,7 +114,10 @@ export const ReporteInicial = () => {
 								) : boleta === null ? (
 									<></>
 								) : (
-									<JornadaFormalChart chartData={jornadaVotosData} />
+									<JornadaFormalChart
+										chartData={jornadaVotosData}
+										tipoReporte={"reporteInicialHTML"}
+									/>
 								)
 							}
 						/>

@@ -123,7 +123,10 @@ export const ReportesFormalesTabs = () => {
 			<Box sx={{ overflowY: "visible" }}>
 				{/* <ReporteInicialHTML jornadaVotosData={jornadaVotosData} /> */}
 				{jornadaVotosData.length !== 0 && status !== "checking" && (
-					<ReporteFinalFormalHTML jornadaVotosData={jornadaVotosData} />
+					<>
+						<ReporteFinalFormalHTML jornadaVotosData={jornadaVotosData} />
+						<ReporteInicialHTML jornadaVotosData={jornadaVotosData} />
+					</>
 				)}
 			</Box>
 		</Box>

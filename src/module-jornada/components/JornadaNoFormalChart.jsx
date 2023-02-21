@@ -56,8 +56,8 @@ export const JornadaNoFormalChart = ({ chartData = { resultados: [] }, tipoRepor
 			},
 			{
 				label: "Votos",
-				// data: total === 0 ? 10 : chartData.resultados.map((data) => 10),
-				data: 100,
+				data: total === 0 ? 10 : chartData.resultados.map((data) => 10),
+				// data: 100,
 				backgroundColor: ["#ededed"],
 				grouped: false,
 				order: 1,

@@ -72,7 +72,7 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 			{
 				label: "Votos",
 
-				data: chartData.resultados.map((data) => total),
+				data: total === 0 ? 10 : chartData.resultados.map((data) => total),
 				backgroundColor: ["#ededed"],
 				grouped: false,
 				order: 1,
@@ -641,7 +641,9 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 										// 	return data.datasetIndex === 0;
 										// },
 										formatter: function (value, context) {
-											return ((value * 100) / total).toFixed(2) + "%";
+											return total !== 0
+												? ((value * 100) / total).toFixed(2) + "%"
+												: "0.00%";
 										},
 										anchor: "end",
 										align: "top",

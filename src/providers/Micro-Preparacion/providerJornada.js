@@ -629,7 +629,7 @@ export const getJornadaVotos = async (idBoleta, idJornada) => {
 			if (resul.id === 99999) return resul;
 		});
 
-		if (nulo !== undefined || nulo !== null) {
+		if (nulo !== undefined) {
 			console.log("NULOOOOOOOOOOOOO", nulo);
 			dataChart.push({
 				id: nulo.id,
@@ -648,6 +648,83 @@ export const getJornadaVotos = async (idBoleta, idJornada) => {
 		};
 
 		console.log("DATA CHART FINAL", dataChart);
+
+		return { ok: true, data: dataFinal };
+	} catch (error) {
+		console.log("ERRORRRRRRRRR", error.message);
+		return { ok: false, errorMessage: error.message };
+	}
+};
+export const getJornadaVotosInicio = async (idBoleta, idJornada) => {
+	try {
+		console.log("ID BOLETA QUE LLEGA", idBoleta);
+		const { data } = await votoFormalAPI.get(
+			`votos_seguros/jornadaelectoral/${idJornada}/resultados`
+		);
+
+		console.log("RESULTADOS FORMALES", data);
+
+		const boleta = data.boletas.find((boleta) => boleta.idBoleta === idBoleta);
+
+		console.log("BOLETA FORMALES", boleta);
+
+		let dataChart = [];
+
+		if (boleta === undefined) {
+			console.log("entr a undefined");
+		} else {
+			boleta.boletaCandidatos.forEach((paquete) => {
+				// const candidatox = boleta.boletaCandidatos.candidatoModels.find(
+				// 	(candidato) => candidato.claveCandidato === paquete.id
+				// );
+
+				// console.log("CANDIDATO BUSCADO", candidatox);
+				if (paquete.id === 99999) {
+				} else
+					dataChart.push({
+						id: paquete.id,
+						candiato:
+							paquete.id === 99999
+								? "Votos nulos"
+								: paquete.id === "NULO"
+								? "Votos nulos"
+								: paquete.name,
+						resultados: 0,
+						fotos:
+							paquete.id === 99999
+								? [
+										"https://cdn.pixabay.com/photo/2013/07/13/01/20/forbidden-155564_1280.png",
+								  ]
+								: paquete.datosCandidato.partidos.map((partido) => partido.logo),
+					});
+			});
+		}
+
+		console.log("DATA CHART PRE", dataChart);
+
+		const nulo = boleta.boletaCandidatos.find((resul) => {
+			if (resul.id === 99999) return resul;
+		});
+
+		if (nulo !== undefined || nulo !== null) {
+			console.log("NULOOOOOOOOOOOOO", nulo);
+			dataChart.push({
+				id: nulo.id,
+				candiato: "Votos nulos",
+				resultados: 0,
+				fotos: ["https://cdn.pixabay.com/photo/2013/07/13/01/20/forbidden-155564_1280.png"],
+			});
+		}
+
+		// if(boleta.candidaturasNoReg)
+
+		const dataFinal = {
+			jornadaModel: {},
+			boleta: boleta || null,
+			resultados: dataChart,
+		};
+
+		console.log("DATA CHART INICIAL", dataChart);
 
 		return { ok: true, data: dataFinal };
 	} catch (error) {
