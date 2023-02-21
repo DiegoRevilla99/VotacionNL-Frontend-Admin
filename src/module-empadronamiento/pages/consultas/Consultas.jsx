@@ -20,8 +20,7 @@ import { getConsultasConfig } from "../../../store/module-empadronamiento/consul
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import { Searcher } from "../../components/Searcher";
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 
 export const Consultas = () => {
   let location = useLocation();
@@ -83,7 +82,7 @@ export const Consultas = () => {
                   color: "#D37A09",
                 }}
               >
-                <HourglassTopIcon />
+                <HourglassTopIcon titleAccess="EMPADRONAMIENTO NO INICIADO" />
               </Box>
             )}
             {row.status === "terminado" && (
@@ -96,7 +95,7 @@ export const Consultas = () => {
                   color: "#D30909",
                 }}
               >
-                <EventBusyIcon />
+                <EventBusyIcon titleAccess="EMPADRONAMIENTO TERMINADO" />
               </Box>
             )}
             {row.status === "activo" && (
@@ -109,7 +108,7 @@ export const Consultas = () => {
                   color: "#099D18",
                 }}
               >
-                <EventAvailableIcon />
+                <EventAvailableIcon titleAccess="EMPADRONAMIENTO ACTIVO" />
               </Box>
             )}
           </Box>
@@ -128,11 +127,22 @@ export const Consultas = () => {
           <Stack spacing={2} direction="row">
             <Button
               disabled={row.status === "noiniciada"}
-              color={row.status === "activo" ? "success": "primary"}
+              color={row.status === "activo" ? "success" : "primary"}
               variant="outlined"
-              sx={{width:"120px"}}
+              sx={{ width: "120px" }}
               onClick={(e) => goTo(row.idJornada)}
-              startIcon={row.status === "activo"?<AppRegistrationIcon/>:<BallotIcon />}
+              startIcon={
+                row.status === "activo" ? (
+                  <AppRegistrationIcon />
+                ) : (
+                  <BallotIcon />
+                )
+              }
+              title={
+                (row.status === "activo") | (row.status === "noiniciada")
+                  ? "REALIZAR EMPADRONAMIENTO"
+                  : row.status === "terminado" && "VISUALIZAR EMPADRONAMIENTO"
+              }
             >
               {(row.status === "activo") | (row.status === "noiniciada")
                 ? "REALIZAR"
@@ -180,7 +190,7 @@ export const Consultas = () => {
             alignItems: "center",
             background: "#fff",
             boxShadow: 1,
-            pl:3,
+            pl: 3,
             borderRadius: "20px",
             mt: 0,
 

@@ -2,9 +2,7 @@ import BallotIcon from "@mui/icons-material/Ballot";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
-import {
-  Box, Button
-} from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -73,7 +71,7 @@ export const JornadasFormales = () => {
                   color: "#D37A09",
                 }}
               >
-                <HourglassTopIcon />
+                <HourglassTopIcon titleAccess="EMPADRONAMIENTO NO INICIADO" />
               </Box>
             )}
             {row.status === "terminado" && (
@@ -86,7 +84,7 @@ export const JornadasFormales = () => {
                   color: "#D30909",
                 }}
               >
-                <EventBusyIcon />
+                <EventBusyIcon titleAccess="EMPADRONAMIENTO TERMINADO" />
               </Box>
             )}
             {row.status === "activo" && (
@@ -99,7 +97,7 @@ export const JornadasFormales = () => {
                   color: "#099D18",
                 }}
               >
-                <EventAvailableIcon />
+                <EventAvailableIcon titleAccess="EMPADRONAMIENTO ACTIVO" />
               </Box>
             )}
           </Box>
@@ -119,9 +117,14 @@ export const JornadasFormales = () => {
             <Button
               disabled={row.status === "noiniciada"}
               variant="outlined"
-              sx={{width:"120px"}}
+              sx={{ width: "120px" }}
               onClick={(e) => goTo(row.idJornada)}
               startIcon={<BallotIcon />}
+              title={
+                (row.status === "activo") | (row.status === "noiniciada")
+                  ? "REALIZAR EMPADRONAMIENTO"
+                  : row.status === "terminado" && "VISUALIZAR EMPADRONAMIENTO"
+              }
             >
               {(row.status === "activo") | (row.status === "noiniciada")
                 ? "REALIZAR"
@@ -172,8 +175,8 @@ export const JornadasFormales = () => {
             boxShadow: 1,
             borderRadius: "20px",
             mt: 2,
-            p:1,
-            pl:3,
+            p: 1,
+            pl: 3,
             width: "95%",
             height: "calc(100% - 100px)",
           }}

@@ -13,7 +13,7 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-
+import { Pie } from "react-chartjs-2";
 import React, { useEffect, useState } from "react";
 import CancelScheduleSendIcon from "@mui/icons-material/CancelScheduleSend";
 import Collapse from "@mui/material/Collapse";
@@ -69,7 +69,12 @@ const registros = {
   height: "calc(100% - 110px)",
 };
 
-export const RegisterVoters = ({ status = "", isLoading, datos,isLoadingVotantes }) => {
+export const RegisterVoters = ({
+  status = "",
+  isLoading,
+  datos,
+  isLoadingVotantes,
+}) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.only("xs"));
   const dispatch = useDispatch();
@@ -159,6 +164,7 @@ export const RegisterVoters = ({ status = "", isLoading, datos,isLoadingVotantes
     { field: "nombreVotante", headerName: "NOMBRE", flex: 3 },
     { field: "apellidoPVotante", headerName: "PRIMER AP.", flex: 3 },
     { field: "apellidoMVotante", headerName: "SEGUNDO AP.", flex: 3 },
+    ,
     // {
     //   field: "nombreCompleto",
     //   headerName: "Nombre completo",
@@ -191,8 +197,7 @@ export const RegisterVoters = ({ status = "", isLoading, datos,isLoadingVotantes
         // return <Typography>Envio exitoso</Typography>;
         return <Typography>Envio fallido</Typography>;
       },
-    } */,
-    {
+    } */ {
       field: "Acciones",
       headerName: "ACCIONES",
       flex: 5,
@@ -207,6 +212,7 @@ export const RegisterVoters = ({ status = "", isLoading, datos,isLoadingVotantes
                   variant="outlined"
                   onClick={() => selectedVoter(params.row)}
                   endIcon={<EditIcon />}
+                  title="EDITAR"
                 >
                   Editar
                 </Button>
@@ -215,6 +221,7 @@ export const RegisterVoters = ({ status = "", isLoading, datos,isLoadingVotantes
                   color="inherit"
                   onClick={() => selectedVoterEnlace(params.row)}
                   endIcon={<AttachEmailIcon />}
+                  title="ENVIAR"
                 >
                   Enviar
                 </Button>
@@ -225,6 +232,7 @@ export const RegisterVoters = ({ status = "", isLoading, datos,isLoadingVotantes
                   variant="outlined"
                   onClick={() => selectedVoterInfo(params.row)}
                   endIcon={<BadgeIcon />}
+                  title="VER"
                 >
                   Ver
                 </Button>
@@ -235,18 +243,31 @@ export const RegisterVoters = ({ status = "", isLoading, datos,isLoadingVotantes
       },
     },
   ];
+  const data = {
+    labels: ["Enviado", "No enviado"],
+    datasets: [
+      {
+        data: [12, 19],
+        backgroundColor: ["#FF6384", "#36A2EB"],
+        hoverBackgroundColor: ["#FF6384", "#36A2EB"],
+      },
+    ],
+  };
+
+  const options = {
+    maintainAspectRatio: false,
+  };
 
   useEffect(() => {
-    const newDatos=datos.filter((dato)=>{
-      if(dato) return dato
-    })
+    const newDatos = datos.filter((dato) => {
+      if (dato) return dato;
+    });
     setDataSearch(newDatos);
-    console.log("datos__:"+newDatos)
+    console.log("datos__:" + newDatos);
   }, [datos]);
 
   return (
     <>
-    
       <Box
         sx={{
           display: "flex",
@@ -284,7 +305,10 @@ export const RegisterVoters = ({ status = "", isLoading, datos,isLoadingVotantes
                 <ListItemIcon>
                   <FileUploadIcon />
                 </ListItemIcon>
-                <ListItemText primary="REGISTRAR VOTANTES" />
+                <ListItemText
+                  primary="REGISTRAR VOTANTES"
+                  title="REGISTRAR VOTANTES"
+                />
                 {open ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
               <Collapse in={open} timeout="auto" unmountOnExit>
@@ -336,6 +360,7 @@ export const RegisterVoters = ({ status = "", isLoading, datos,isLoadingVotantes
               color="info"
               onClick={abrirCerrarModalEnlace}
               endIcon={<AttachEmailIcon />}
+              title="ENVIAR ENLACES"
             >
               ENVIAR ENLACES
             </Button>
@@ -401,9 +426,7 @@ export const RegisterVoters = ({ status = "", isLoading, datos,isLoadingVotantes
               id="nombreVotante"
             ></TextField>
           </Box>
-          {
-
-          }
+          {}
           <GeneralTable
             loading={isLoading}
             data={dataSearch}
@@ -411,7 +434,12 @@ export const RegisterVoters = ({ status = "", isLoading, datos,isLoadingVotantes
             idName={"curp"}
           />
         </Box>
+
+        {/* <Box sx={{ height:'400px'}}>
+          <Pie data={data} options={options} />
+        </Box> */}
       </Box>
+
       <AddVotante
         isOpen={modalVotante}
         abrirCerrarModal={abrirCerrarModalAddVotante}
@@ -425,7 +453,7 @@ export const RegisterVoters = ({ status = "", isLoading, datos,isLoadingVotantes
         abrirCerrarModal={abrirCerrarModalGranel}
       ></ModalAGranel>
       <ModalLink
-      votantesData={datos}
+        votantesData={datos}
         isOpen={modalEnlace}
         abrirCerrarModal={abrirCerrarModalEnlace}
       />

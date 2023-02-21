@@ -73,6 +73,7 @@ export const InicioPage = () => {
                   boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
                 },
               }}
+              title="JORNADAS FORMALES"
             >
               Jornadas formales
             </Button>
@@ -109,6 +110,7 @@ export const InicioPage = () => {
                   boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
                 },
               }}
+              title="JORNADAS NO FORMALES"
             >
               Jornadas no formales
             </Button>
@@ -145,6 +147,7 @@ export const InicioPage = () => {
                   boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
                 },
               }}
+              title="CONSULTAS CIUDADANAS"
             >
               Consultas ciudadanas
             </Button>
