@@ -24,23 +24,12 @@ import { ReporteInicialHTML } from "../components/ReporteInicialHTML";
 
 // ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export const JornadaNoFormalChart = ({ chartData = { resultados: [] } }) => {
+export const JornadaNoFormalChart = ({ chartData = { resultados: [] }, tipoReporte }) => {
 	const total = parseInt(
 		chartData.resultados.reduce((acc, cur) => acc + cur.resultados, 0),
 		10
 	);
 
-	// const labelsAdjusted = chartData.resultados.map((label) => label.respuesta.split(" "));
-	// console.log(labelsAdjusted);
-
-	console.log(
-		"RESULTADOOOOS",
-		chartData.resultados.map((data) => data.resultados)
-	);
-	console.log(
-		"NOMBREEES",
-		chartData.resultados.map((resultado) => resultado.candidato)
-	);
 	const chartRef = useRef(null);
 	const [data, setData] = useState({
 		// labels: chartData.map((data) => data.nombre),
@@ -67,9 +56,8 @@ export const JornadaNoFormalChart = ({ chartData = { resultados: [] } }) => {
 			},
 			{
 				label: "Votos",
-
-				data: chartData.resultados.map((data) => total),
-				// data: total,
+				// data: total === 0 ? 10 : chartData.resultados.map((data) => 10),
+				data: 100,
 				backgroundColor: ["#ededed"],
 				grouped: false,
 				order: 1,
@@ -159,7 +147,7 @@ export const JornadaNoFormalChart = ({ chartData = { resultados: [] } }) => {
 		// console.log("bolll", boleta);
 		// ReporteInicialPDF();
 		// captureScreen();
-		captureCanvas();
+		captureCanvas(tipoReporte);
 		// let doc = new jsPDF("p", "pt", "letter");
 		// let margin = 10;
 		// let scale = (doc.internal.pageSize.width - margin * 2) / document.body.scrollWidth;
@@ -236,7 +224,7 @@ export const JornadaNoFormalChart = ({ chartData = { resultados: [] } }) => {
 								// fontWeight="bold"
 								align="center"
 							>
-								Consulta ciudadana por respuesta{" "}
+								Elecciones populares por
 								{/* {chartData.papeleta.pregunta.tipoRespuesta} */}
 							</Typography>
 						</Grid>
@@ -420,7 +408,9 @@ export const JornadaNoFormalChart = ({ chartData = { resultados: [] } }) => {
 										// 	return data.datasetIndex === 0;
 										// },
 										formatter: function (value, context) {
-											return ((value * 100) / total).toFixed(2) + "%";
+											return total !== 0
+												? ((value * 100) / total).toFixed(2) + "%"
+												: "0%";
 										},
 										anchor: "end",
 										align: "top",

@@ -30,7 +30,7 @@ export const AddPapeletasTable = React.memo(({ handleOpenModal, status, question
 			<Grid item xs={12}>
 				<Box
 					sx={{
-						height: "25rem",
+						height: "15rem",
 						backgroundColor: "#f0f0f0",
 						borderRadius: "2rem",
 						p: "2rem",

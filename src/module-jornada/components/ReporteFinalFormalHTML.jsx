@@ -1,5 +1,5 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
-import React, { useLayoutEffect, useEffect, useState } from "react";
+import React, { useLayoutEffect, useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 
 const imagenes = [
@@ -18,7 +18,7 @@ const imagenes = [
 	"https://upload.wikimedia.org/wikipedia/commons/5/52/Partido_Socialdem%C3%B3crata_%28Mexico%29_Logo.png",
 ];
 
-export const ReporteFinalNoFormalHTML = ({
+export const ReporteFinalFormalHTML = ({
 	jornadaVotosData = { resultados: [], jornadaModel: {}, boleta: null },
 }) => {
 	const { jornadaSelected } = useSelector((state) => state.jornada);
@@ -32,6 +32,9 @@ export const ReporteFinalNoFormalHTML = ({
 		candidatosPlanillas: [],
 		planillas: [],
 	});
+
+	const canvas = useRef(null);
+	console.log("ARRAY DE RESULTADOS", arrayResultado);
 
 	useEffect(() => {
 		if (dataVotos.resultados.length > 0) {
@@ -84,10 +87,13 @@ export const ReporteFinalNoFormalHTML = ({
 								fontWeight="bold"
 								fontFamily="times"
 							>
-								{
-									jornadaVotosData.boleta.boletaCandidatos.boletaModel
-										.encabezadoBoleta
-								}
+								{jornadaSelected.boletas.map((boleta) => {
+									if (
+										jornadaVotosData.boleta.idBoleta ===
+										boleta.idEstructuraBoleta
+									)
+										return boleta.nombreEstructuraBoleta;
+								})}
 							</Typography>
 							<Typography
 								variant="h6"
@@ -165,10 +171,7 @@ export const ReporteFinalNoFormalHTML = ({
 									fontFamily="times"
 									align="center"
 								>
-									{jornadaVotosData.boleta.boletaCandidatos.modalidad
-										.mostrarCandidaturasNoReg
-										? "Si"
-										: "No"}
+									Si
 								</Typography>
 							</Grid>
 							<Grid item xs={6}>
@@ -187,7 +190,7 @@ export const ReporteFinalNoFormalHTML = ({
 									fontFamily="times"
 									align="center"
 								>
-									{jornadaVotosData.boleta.boletaCandidatos.modalidad.modalidad}
+									Partidos políticos y coaliciones
 								</Typography>
 							</Grid>
 							<Grid item xs={6}></Grid>
@@ -300,91 +303,54 @@ export const ReporteFinalNoFormalHTML = ({
 										// borderRight="2px solid"
 										borderBottom="2px solid"
 									>
-										{jornadaVotosData.boleta.boletaCandidatos.modalidad
-											.modalidad === "PLANILLA" ? (
-											<>
-												<Grid item xs={7} borderRight="2px solid">
-													<Box
-														py="0.2rem"
-														display="flex"
-														justifyContent="center"
-														justifyItems="center"
-														alignContent="center"
-														alignItems="center"
-														height="100%"
-														flexDirection="column"
-														// bgcolor={index1}
-													>
-														{resultado?.candiato?.map((candidato) => (
-															<Typography
-																variant="body2"
-																// fontSize="0.9rem"
-																color="initial"
-																fontFamily="times"
-															>
-																{candidato}
-															</Typography>
-														))}
-													</Box>
-												</Grid>
-												<Grid item xs={5}>
-													{resultado?.planillas?.map(
-														(planilla, index, array) => (
-															<Box
-																py="0.2rem"
-																display="flex"
-																justifyContent="center"
-																justifyItems="center"
-																alignContent="center"
-																alignItems="center"
-																height={100 / array.length + "%"}
-																flexDirection="column"
-																// borderBottom="2px solid"
-																borderBottom={
-																	index !== array.length - 1
-																		? "2px solid"
-																		: "0px"
-																}
-															>
-																<Typography
-																	variant="body2"
-																	// fontSize="0.9rem"
-																	color="initial"
-																	fontFamily="times"
-
-																	// align="center"
-																>
-																	{planilla}
-																</Typography>
-															</Box>
-														)
-													)}
-												</Grid>
-											</>
-										) : (
-											<Grid item xs={12}>
-												<Box
-													py="0.2rem"
-													display="flex"
-													justifyContent="center"
-													justifyItems="center"
-													alignContent="center"
-													alignItems="center"
-													height="100%"
-													flexDirection="column"
-													// bgcolor={index1}
+										<Grid item xs={5}>
+											<Box
+												py="0.6rem"
+												display="flex"
+												justifyContent="center"
+												justifyItems="center"
+												alignContent="center"
+												alignItems="center"
+												height="100%"
+												flexDirection="row"
+												borderRight="2px solid"
+												// bgcolor={index1}
+											>
+												{resultado?.fotos?.map((foto) => (
+													<canvas
+														ref={canvas}
+														height="25px"
+														width="25px"
+														src={foto}
+													></canvas>
+												))}
+											</Box>
+										</Grid>
+										<Grid item xs={7}>
+											<Box
+												py="0.2rem"
+												px="0.4rem"
+												display="flex"
+												justifyContent="center"
+												justifyItems="center"
+												alignContent="center"
+												alignItems="center"
+												height="100%"
+												flexDirection="column"
+												// bgcolor={index1}
+											>
+												<Typography
+													variant="body2"
+													// fontSize="0.9rem"
+													color="initial"
+													fontFamily="times"
+													align="center"
 												>
-													<Typography
-														variant="body2"
-														// fontSize="0.9rem"
-														color="initial"
-														fontFamily="times"
-													>
-														{resultado.candiato}
-													</Typography>
-												</Box>
-											</Grid>
-										)}
+													{resultado.candiato}
+												</Typography>
+											</Box>
+										</Grid>
+
 										{/* <Grid item xs={12}>
 											<Box
 												py="0.2rem"
@@ -580,7 +546,7 @@ export const ReporteFinalNoFormalHTML = ({
 										align="center"
 										my={1}
 									>
-										{arrayResultado?.reduce((acc, cur) => acc + cur)}
+										{arrayResultado.reduce((acc, cur) => acc + cur)}
 									</Typography>
 								</Box>
 							</Grid>

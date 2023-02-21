@@ -2,23 +2,7 @@ import { Box, Divider, Grid, Typography } from "@mui/material";
 import React, { useLayoutEffect, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-const imagenes = [
-	"https://www.chartjs.org/img/chartjs-logo.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/5/5c/PAN_logo_%28Mexico%29.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/b/b5/PRI_logo_%28Mexico%29.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/8/8f/PRD_logo_%28Mexico%29.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/e/e7/Worker%27s_Party_logo_%28Mexico%29.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/a/ae/Logo-partido-verde-2020.png",
-	"https://upload.wikimedia.org/wikipedia/commons/3/34/Logo_Partido_Movimiento_Ciudadano_%28M%C3%A9xico%29.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/e/ea/Morena_logo_%28Mexico%29.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/7/7f/Logo_Encuentro_Solidario.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/d/d8/Partido_Nueva_Alianza_%28M%C3%A9xico%29.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/f/fb/PRS_logo_%28Mexico%29.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/e/e8/RSP_logo_%28Mexico%29.svg",
-	"https://upload.wikimedia.org/wikipedia/commons/5/52/Partido_Socialdem%C3%B3crata_%28Mexico%29_Logo.png",
-];
-
-export const ReporteFinalNoFormalHTML = ({
+export const ReporteInicialNoFormalHTML = ({
 	jornadaVotosData = { resultados: [], jornadaModel: {}, boleta: null },
 }) => {
 	const { jornadaSelected } = useSelector((state) => state.jornada);
@@ -61,7 +45,7 @@ export const ReporteFinalNoFormalHTML = ({
 	if (jornadaVotosData.resultados.length === 0) return <></>;
 	else
 		return (
-			<Box id="reporteFinalHTML">
+			<Box id="reporteInicialHTML">
 				<Box width="8.5in" height="11in" bgcolor="white" border="2px solid">
 					<Box height="10rem" px="1in" pt="0.2in">
 						<img
@@ -516,13 +500,23 @@ export const ReporteFinalNoFormalHTML = ({
 												color="initial"
 												fontFamily="times"
 											>
-												{Number.parseFloat(
-													(resultado.resultados /
-														arrayResultado.reduce(
-															(acc, cur) => acc + cur
-														)) *
-														100
-												).toFixed(2)}
+												{isNaN(
+													Number.parseFloat(
+														(resultado.resultados /
+															arrayResultado.reduce(
+																(acc, cur) => acc + cur
+															)) *
+															100
+													).toFixed(2)
+												)
+													? "0.00"
+													: Number.parseFloat(
+															(resultado.resultados /
+																arrayResultado.reduce(
+																	(acc, cur) => acc + cur
+																)) *
+																100
+													  ).toFixed(2)}
 												%
 											</Typography>
 										</Box>
@@ -580,7 +574,7 @@ export const ReporteFinalNoFormalHTML = ({
 										align="center"
 										my={1}
 									>
-										{arrayResultado?.reduce((acc, cur) => acc + cur)}
+										{arrayResultado.reduce((acc, cur) => acc + cur)}
 									</Typography>
 								</Box>
 							</Grid>

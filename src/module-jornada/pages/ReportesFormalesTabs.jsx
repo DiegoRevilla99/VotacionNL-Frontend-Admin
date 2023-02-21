@@ -19,6 +19,7 @@ import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
 import { PrivateRoute } from "../../router/PrivateRoute";
 import { onGetBoletas } from "../../store/module-preparacion/jornada/ThunksJornada";
+import { ReporteFinalFormalHTML } from "../components/ReporteFinalFormalHTML";
 import { ReporteInicialHTML } from "../components/ReporteInicialHTML";
 import { ReporteFinal } from "./ReporteFinal";
 import { ReporteInicial } from "./ReporteInicial";
@@ -40,6 +41,7 @@ function LinkTab(props) {
 
 export const ReportesFormalesTabs = () => {
 	const [value, setValue] = React.useState(0);
+	const { status, jornadaVotosData, jornadaSelected } = useJornadaStore();
 	const params = useParams();
 
 	const handleChange = (event, newValue) => {
@@ -55,7 +57,7 @@ export const ReportesFormalesTabs = () => {
 	// 	);
 	// else
 	return (
-		<Box sx={{ overflow: "hidden" }}>
+		<Box sx={{ overflow: "visible" }}>
 			<Box
 				sx={{
 					height: "100%",
@@ -118,8 +120,11 @@ export const ReportesFormalesTabs = () => {
 					</PrivateRoute>
 				</Box>
 			</Box>
-			<Box sx={{ overflowY: "hidden" }}>
-				<ReporteInicialHTML />
+			<Box sx={{ overflowY: "visible" }}>
+				{/* <ReporteInicialHTML jornadaVotosData={jornadaVotosData} /> */}
+				{jornadaVotosData.length !== 0 && status !== "checking" && (
+					<ReporteFinalFormalHTML jornadaVotosData={jornadaVotosData} />
+				)}
 			</Box>
 		</Box>
 	);

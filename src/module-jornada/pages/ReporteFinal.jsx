@@ -116,8 +116,11 @@ export const ReporteFinal = () => {
 									</Box>
 								) : boleta === null ? (
 									<></>
-								) : jornadaVotosData.resultados.length !== 0 ? (
-									<JornadaFormalChart chartData={jornadaVotosData} />
+								) : jornadaVotosData.length !== 0 ? (
+									<JornadaFormalChart
+										chartData={jornadaVotosData}
+										tipoReporte="reporteFinalHTML"
+									/>
 								) : (
 									// <></>
 									<></>

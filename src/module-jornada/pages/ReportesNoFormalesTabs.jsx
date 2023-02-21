@@ -22,6 +22,8 @@ import { PrivateRoute } from "../../router/PrivateRoute";
 import { onGetBoletas } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { ReporteFinalNoFormalHTML } from "../components/ReporteFinalNoFormalHTML";
 import { ReporteInicialHTML } from "../components/ReporteInicialHTML";
+import { ReporteInicialJornadaNoFormal } from "../components/ReporteInicialJornadaNoFormal";
+import { ReporteInicialNoFormalHTML } from "../components/ReporteInicialJornadaNoFormalHTML";
 import { ReporteFinal } from "./ReporteFinal";
 import { ReporteFinalJornadaNoFormal } from "./ReporteFinalJornadaNoFormal";
 import { ReporteInicial } from "./ReporteInicial";
@@ -59,7 +61,7 @@ export const ReportesNoFormalesTabs = () => {
 	// 	);
 	// else
 	return (
-		<Box sx={{ overflow: "hidden" }}>
+		<Box sx={{ overflow: "visible" }}>
 			<Box
 				sx={{
 					height: "100%",
@@ -111,23 +113,18 @@ export const ReportesNoFormalesTabs = () => {
 					/>
 				</Tabs>
 
-				<Box
-				// ml={"2rem"}
-				// mr={"2rem"}
-				// mb={"2rem"}
-				// sx={{
-				// 	boxShadow: 1,
-				// 	height: "auto",
-				// 	display: "flex",
-				// 	flexDirection: "column",
-				// 	backgroundColor: "white",
-				// 	borderRadius: "2rem",
-				// 	p: "2rem",
-				// }}
-				>
+				<Box>
 					<PrivateRoute>
 						<Routes>
-							<Route path="reporteInicio/*" element={<>Reporte inicial</>} />
+							<Route
+								path="reporteInicio/*"
+								element={
+									<ReporteInicialJornadaNoFormal
+										status={status}
+										jornadaVotosData={jornadaVotosData}
+									/>
+								}
+							/>
 							<Route
 								path="reporteFinal/*"
 								element={
@@ -145,9 +142,12 @@ export const ReportesNoFormalesTabs = () => {
 					</PrivateRoute>
 				</Box>
 			</Box>
-			<Box sx={{ overflowY: "hidden" }}>
+			<Box sx={{ overflowY: "visible" }}>
 				{jornadaVotosData.length !== 0 && status !== "checking" && (
-					<ReporteFinalNoFormalHTML jornadaVotosData={jornadaVotosData} />
+					<>
+						<ReporteFinalNoFormalHTML jornadaVotosData={jornadaVotosData} />
+						<ReporteInicialNoFormalHTML jornadaVotosData={jornadaVotosData} />
+					</>
 					// <></>
 				)}
 			</Box>

@@ -24,7 +24,7 @@ import { ReporteInicialHTML } from "../components/ReporteInicialHTML";
 
 // ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export const JornadaFormalChart = ({ chartData = { resultados: [] } }) => {
+export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte }) => {
 	const total = parseInt(
 		chartData.resultados.reduce((acc, cur) => acc + cur.resultados, 0),
 		10
@@ -51,21 +51,22 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] } }) => {
 					"#89328B",
 					"#8B3252",
 				],
-				image: [
-					"https://www.chartjs.org/img/chartjs-logo.svg",
-					"https://upload.wikimedia.org/wikipedia/commons/5/5c/PAN_logo_%28Mexico%29.svg",
-					"https://upload.wikimedia.org/wikipedia/commons/b/b5/PRI_logo_%28Mexico%29.svg",
-					"https://upload.wikimedia.org/wikipedia/commons/8/8f/PRD_logo_%28Mexico%29.svg",
-					"https://upload.wikimedia.org/wikipedia/commons/e/e7/Worker%27s_Party_logo_%28Mexico%29.svg",
-					"https://upload.wikimedia.org/wikipedia/commons/a/ae/Logo-partido-verde-2020.png",
-					"https://upload.wikimedia.org/wikipedia/commons/3/34/Logo_Partido_Movimiento_Ciudadano_%28M%C3%A9xico%29.svg",
-					"https://upload.wikimedia.org/wikipedia/commons/e/ea/Morena_logo_%28Mexico%29.svg",
-					"https://upload.wikimedia.org/wikipedia/commons/7/7f/Logo_Encuentro_Solidario.svg",
-					"https://upload.wikimedia.org/wikipedia/commons/d/d8/Partido_Nueva_Alianza_%28M%C3%A9xico%29.svg",
-					"https://upload.wikimedia.org/wikipedia/commons/f/fb/PRS_logo_%28Mexico%29.svg",
-					"https://upload.wikimedia.org/wikipedia/commons/e/e8/RSP_logo_%28Mexico%29.svg",
-					"https://upload.wikimedia.org/wikipedia/commons/5/52/Partido_Socialdem%C3%B3crata_%28Mexico%29_Logo.png",
-				],
+				image: chartData.resultados.map((resultado) => resultado.fotos || "none"),
+				// image: [
+				// 	"https://www.chartjs.org/img/chartjs-logo.svg",
+				// 	"https://upload.wikimedia.org/wikipedia/commons/5/5c/PAN_logo_%28Mexico%29.svg",
+				// 	"https://upload.wikimedia.org/wikipedia/commons/b/b5/PRI_logo_%28Mexico%29.svg",
+				// 	"https://upload.wikimedia.org/wikipedia/commons/8/8f/PRD_logo_%28Mexico%29.svg",
+				// 	"https://upload.wikimedia.org/wikipedia/commons/e/e7/Worker%27s_Party_logo_%28Mexico%29.svg",
+				// 	"https://upload.wikimedia.org/wikipedia/commons/a/ae/Logo-partido-verde-2020.png",
+				// 	"https://upload.wikimedia.org/wikipedia/commons/3/34/Logo_Partido_Movimiento_Ciudadano_%28M%C3%A9xico%29.svg",
+				// 	"https://upload.wikimedia.org/wikipedia/commons/e/ea/Morena_logo_%28Mexico%29.svg",
+				// 	"https://upload.wikimedia.org/wikipedia/commons/7/7f/Logo_Encuentro_Solidario.svg",
+				// 	"https://upload.wikimedia.org/wikipedia/commons/d/d8/Partido_Nueva_Alianza_%28M%C3%A9xico%29.svg",
+				// 	"https://upload.wikimedia.org/wikipedia/commons/f/fb/PRS_logo_%28Mexico%29.svg",
+				// 	"https://upload.wikimedia.org/wikipedia/commons/e/e8/RSP_logo_%28Mexico%29.svg",
+				// 	"https://upload.wikimedia.org/wikipedia/commons/5/52/Partido_Socialdem%C3%B3crata_%28Mexico%29_Logo.png",
+				// ],
 				// labels: chartData.map((data) => data.nombre),
 			},
 			{
@@ -92,15 +93,33 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] } }) => {
 			ctx.save();
 			const imageSize = options.layout.padding.bottom;
 			data.datasets[0].image.forEach((imageLink, index) => {
-				const logo = new Image();
-				logo.src = imageLink;
-				ctx.drawImage(
-					logo,
-					x.getPixelForValue(index) - 40 / 2,
-					y.getPixelForValue(0) + 30,
-					30,
-					30
-				);
+				imageLink.forEach((imagen, index2) => {
+					const logo = new Image();
+					logo.src = imagen;
+					ctx.drawImage(
+						logo,
+						// x.getPixelForValue(index) - 90 + 90 / (imageLink.length + (1 / 2) * index2),
+						x.getPixelForValue(index) -
+							90 +
+							(75 /
+								(imageLink.length === 1
+									? 1
+									: imageLink.length === 2
+									? 1.5
+									: imageLink.length === 3
+									? 2
+									: imageLink.length === 4
+									? 2.5
+									: imageLink.length === 5
+									? 3
+									: 1)) *
+								(index2 + 1),
+						// x.getPixelForValue(index) - 80 + 80 / (index2 * index2 + 1),
+						y.getPixelForValue(0) + 30,
+						30,
+						30
+					);
+				});
 			});
 		},
 	};
@@ -161,7 +180,7 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] } }) => {
 		// console.log("bolll", boleta);
 		// ReporteInicialPDF();
 		// captureScreen();
-		captureCanvas();
+		captureCanvas(tipoReporte);
 		// let doc = new jsPDF("p", "pt", "letter");
 		// let margin = 10;
 		// let scale = (doc.internal.pageSize.width - margin * 2) / document.body.scrollWidth;
@@ -579,24 +598,24 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] } }) => {
 									// console.log("TOOLTIPITEM", tooltipItem);
 									return tooltipItem.datasetIndex === 0;
 								},
-								usePointStyle: true,
-								callbacks: {
-									labelPointStyle: (context) => {
-										console.log(context);
-										console.log(
-											"Imagen",
-											context.dataset.image[context.dataIndex]
-										);
-										const image = new Image(15, 15);
-										image.src = context.dataset.image[context.dataIndex];
-										return {
-											pointStyle: image,
-										};
-									},
-									beforeTitle: (context) => {
-										return context[0].dataset.labels[context[0].dataIndex];
-									},
-								},
+								// usePointStyle: true,
+								// callbacks: {
+								// 	labelPointStyle: (context) => {
+								// 		console.log(context);
+								// 		console.log(
+								// 			"Imagen",
+								// 			context.dataset.image[context.dataIndex]
+								// 		);
+								// 		const image = new Image(15, 15);
+								// 		image.src = context.dataset.image[context.dataIndex];
+								// 		return {
+								// 			pointStyle: image,
+								// 		};
+								// 	},
+								// 	beforeTitle: (context) => {
+								// 		return context[0].dataset.labels[context[0].dataIndex];
+								// 	},
+								// },
 							},
 							legend: {
 								display: false,

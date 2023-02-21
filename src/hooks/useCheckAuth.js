@@ -16,7 +16,7 @@ export const useCheckAuth = () => {
 	useEffect(() => {
 		async function cargaUsuario() {
 			if (!getToken()) {
-				// dispatch(onLogout());
+				dispatch(onLogout());
 				return;
 			}
 

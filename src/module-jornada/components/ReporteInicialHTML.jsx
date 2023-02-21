@@ -20,7 +20,9 @@ const imagenes = [
 const cantVotos = [
 	2273849, 1728394, 374865, 37483, 4857, 485, 47, 1, 4345, 345654, 345434, 4543, 1232,
 ];
-export const ReporteInicialHTML = () => {
+export const ReporteInicialHTML = ({
+	jornadaVotosData = { resultados: [], jornadaModel: {}, boleta: null },
+}) => {
 	const [cifrasVotos, setCifrasVotos] = useState(0);
 	useEffect(() => {
 		let max = 0;

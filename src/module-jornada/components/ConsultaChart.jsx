@@ -58,7 +58,7 @@ export const ConsultaChart = ({ chartData = { resultados: [] }, tipoReporte }) =
 			{
 				label: "Votos",
 
-				data: chartData.resultados.map((data) => 10),
+				data: total === 0 ? 10 : chartData.resultados.map((data) => total),
 				// data: total,
 				backgroundColor: ["#ededed"],
 				grouped: false,

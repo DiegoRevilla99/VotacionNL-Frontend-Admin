@@ -37,7 +37,7 @@ export const TiposRespuestas = React.memo(
 		return (
 			<>
 				<FormControl error={Boolean(errorsTipo)} variant="standard">
-					<FormLabel id="tipo">
+					{/* <FormLabel id="tipo">
 						<Typography variant="h6" mt={"1rem"}>
 							TIPO DE RESPUESTA <span style={{ color: "red" }}>*</span>
 						</Typography>
@@ -77,74 +77,74 @@ export const TiposRespuestas = React.memo(
 							}
 							label="CERRADA"
 						/>
-					</RadioGroup>
+					</RadioGroup> */}
 				</FormControl>
-				{isCerrada && (
-					<Box mb={"2rem"} mt={"2rem"}>
-						<FormControl error={Boolean(errorsTipoCerrada)} variant="standard">
-							<FormLabel id="tipoCerrada">
-								<Typography variant="h6" textAlign={"left"}>
-									SELECCIONE EL TIPO DE RESPUESTA CERRADA
-									<span style={{ color: "red" }}>*</span>
-								</Typography>
-							</FormLabel>
-							<RadioGroup
-								name="tipoCerrada"
-								onChange={handleChange}
-								value={valuesTipoCerrada}
-								aria-labelledby="demo-radio-buttons-group-label"
-							>
-								<FormControlLabel
-									value="2respuestas"
-									control={
-										<Radio
-											sx={{
-												"& .MuiSvgIcon-root": {
-													fontSize: 38,
-												},
-											}}
-										/>
-									}
-									label="2 Respuestas:"
-								/>
-								<Box pl={"3rem"}>
-									<RadioGroup
-										row
-										aria-labelledby="demo-radio-buttons-group-label"
-										defaultValue="ABIERTA"
-										name="radio-buttons-group"
-									>
-										<FormControlLabel
-											disabled
-											value="si"
-											control={
-												<Radio
-													sx={{
-														"& .MuiSvgIcon-root": {
-															fontSize: 20,
-														},
-													}}
-												/>
-											}
-											label="Si"
-										/>
-										<FormControlLabel
-											disabled
-											value="no"
-											control={
-												<Radio
-													sx={{
-														"& .MuiSvgIcon-root": {
-															fontSize: 20,
-														},
-													}}
-												/>
-											}
-											label="No"
-										/>
-									</RadioGroup>
-								</Box>
-								<FormControlLabel
+
+				<Box mb={"2rem"} mt={"2rem"}>
+					<FormControl error={Boolean(errorsTipoCerrada)} variant="standard">
+						<FormLabel id="tipoCerrada">
+							<Typography variant="h6" textAlign={"left"}>
+								SELECCIONE EL TIPO DE RESPUESTA CERRADA
+								<span style={{ color: "red" }}>*</span>
+							</Typography>
+						</FormLabel>
+						<RadioGroup
+							name="tipoCerrada"
+							onChange={handleChange}
+							value={valuesTipoCerrada}
+							aria-labelledby="demo-radio-buttons-group-label"
+						>
+							<FormControlLabel
+								value="2respuestas"
+								control={
+									<Radio
+										sx={{
+											"& .MuiSvgIcon-root": {
+												fontSize: 38,
+											},
+										}}
+									/>
+								}
+								label="2 Respuestas:"
+							/>
+							<Box pl={"3rem"}>
+								<RadioGroup
+									row
+									aria-labelledby="demo-radio-buttons-group-label"
+									defaultValue="ABIERTA"
+									name="radio-buttons-group"
+								>
+									<FormControlLabel
+										disabled
+										value="si"
+										control={
+											<Radio
+												sx={{
+													"& .MuiSvgIcon-root": {
+														fontSize: 20,
+													},
+												}}
+											/>
+										}
+										label="Si"
+									/>
+									<FormControlLabel
+										disabled
+										value="no"
+										control={
+											<Radio
+												sx={{
+													"& .MuiSvgIcon-root": {
+														fontSize: 20,
+													},
+												}}
+											/>
+										}
+										label="No"
+									/>
+								</RadioGroup>
+							</Box>
+							{/* <FormControlLabel
 									value="3respuestas"
 									control={
 										<Radio
@@ -299,73 +299,73 @@ export const TiposRespuestas = React.memo(
 											label="Totalmente de acuerdo"
 										/>
 									</RadioGroup>
-								</Box>
-								<FormControlLabel
-									value="personalizado1"
-									control={
-										<Radio
-											sx={{
-												"& .MuiSvgIcon-root": {
-													fontSize: 38,
-												},
-											}}
+								</Box> */}
+							<FormControlLabel
+								value="personalizado1"
+								control={
+									<Radio
+										sx={{
+											"& .MuiSvgIcon-root": {
+												fontSize: 38,
+											},
+										}}
+									/>
+								}
+								label="Personalizado:"
+							/>
+							<Box pl={"3rem"}>
+								<Grid container spacing={1} columns={10}>
+									<Grid item xs={5}>
+										<TextField
+											name={
+												valuesTipoCerrada === "personalizado1"
+													? "respuesta1"
+													: "nulo"
+											}
+											value={
+												valuesTipoCerrada === "personalizado1"
+													? valuesRespuesta1
+													: ""
+											}
+											onChange={handleChange}
+											error={
+												valuesTipoCerrada === "personalizado1" &&
+												Boolean(errorsRespuesta1)
+											}
+											size="small"
+											fullWidth
+											id="outlined-basic"
+											label="Opción 1"
+											variant="outlined"
 										/>
-									}
-									label="Personalizado 1:"
-								/>
-								<Box pl={"3rem"}>
-									<Grid container spacing={1} columns={10}>
-										<Grid item xs={5}>
-											<TextField
-												name={
-													valuesTipoCerrada === "personalizado1"
-														? "respuesta1"
-														: "nulo"
-												}
-												value={
-													valuesTipoCerrada === "personalizado1"
-														? valuesRespuesta1
-														: ""
-												}
-												onChange={handleChange}
-												error={
-													valuesTipoCerrada === "personalizado1" &&
-													Boolean(errorsRespuesta1)
-												}
-												size="small"
-												fullWidth
-												id="outlined-basic"
-												label="Opción 1"
-												variant="outlined"
-											/>
-										</Grid>
-										<Grid item xs={5}>
-											<TextField
-												name={
-													valuesTipoCerrada === "personalizado1"
-														? "respuesta2"
-														: "nulo"
-												}
-												value={
-													valuesTipoCerrada === "personalizado1"
-														? valuesRespuesta2
-														: ""
-												}
-												onChange={handleChange}
-												error={
-													valuesTipoCerrada === "personalizado1" &&
-													Boolean(errorsRespuesta2)
-												}
-												size="small"
-												fullWidth
-												id="outlined-basic"
-												label="Opción 2"
-												variant="outlined"
-											/>
-										</Grid>
 									</Grid>
-								</Box>
-								<FormControlLabel
+									<Grid item xs={5}>
+										<TextField
+											name={
+												valuesTipoCerrada === "personalizado1"
+													? "respuesta2"
+													: "nulo"
+											}
+											value={
+												valuesTipoCerrada === "personalizado1"
+													? valuesRespuesta2
+													: ""
+											}
+											onChange={handleChange}
+											error={
+												valuesTipoCerrada === "personalizado1" &&
+												Boolean(errorsRespuesta2)
+											}
+											size="small"
+											fullWidth
+											id="outlined-basic"
+											label="Opción 2"
+											variant="outlined"
+										/>
+									</Grid>
+								</Grid>
+							</Box>
+							{/* <FormControlLabel
 									value="personalizado2"
 									control={
 										<Radio
@@ -590,11 +590,10 @@ export const TiposRespuestas = React.memo(
 											/>
 										</Grid>
 									</Grid>
-								</Box>
-							</RadioGroup>
-						</FormControl>
-					</Box>
-				)}
+								</Box> */}
+						</RadioGroup>
+					</FormControl>
+				</Box>
 			</>
 		);
 	}

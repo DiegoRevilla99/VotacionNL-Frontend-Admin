@@ -40,8 +40,10 @@ export const captureCanvas = (reporte) => {
 
 	html2canvas(document.getElementById(reporte), {
 		scale: scale2,
-		allowTaint: true,
+		logging: false,
 		useCORS: true,
+		allowTaint: true,
+		imageTimeout: 5000,
 	}).then((canvas) => {
 		let image = canvas.toDataURL("image/jpeg", 1.0);
 		// let img = new Image();

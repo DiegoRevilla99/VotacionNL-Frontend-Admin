@@ -7,6 +7,7 @@ import {
 	getBoletasJornada,
 	getBoletasJornadaNoFormal,
 	getJornadaNoFormalVotos,
+	getJornadaNoFormalVotosInicio,
 	getJornadaRespuestasConsultas,
 	getJornadaRespuestasConsultasInicio,
 	getJornadas,
@@ -373,6 +374,25 @@ export const onGetJornadaNoFormalVotos = (idBoleta, id) => {
 		console.log("IDSSSSSSSSSSSSSSSSSSSSSSS", idBoleta, id);
 
 		const { ok, data } = await getJornadaNoFormalVotos(idBoleta, id); // PROVIDER
+
+		console.log("DATA DE LA BUSQUEDAAAAAAAAAAAAAAAAAAA", data);
+		if (ok) {
+			dispatch(onSetJornadasVotosData(data)); // SLICE
+			dispatch(onSuccessOperation());
+		} else {
+			dispatch(onErrorOperation());
+			dispatch(onToastErrorOperation({ errorMessage: "Error al obtener las boletas" }));
+		}
+	};
+};
+
+export const onGetJornadaNoFormalVotosInicio = (idBoleta, id) => {
+	return async (dispatch) => {
+		dispatch(onCheckingOperation());
+
+		console.log("IDSSSSSSSSSSSSSSSSSSSSSSS", idBoleta, id);
+
+		const { ok, data } = await getJornadaNoFormalVotosInicio(idBoleta, id); // PROVIDER
 
 		console.log("DATA DE LA BUSQUEDAAAAAAAAAAAAAAAAAAA", data);
 		if (ok) {

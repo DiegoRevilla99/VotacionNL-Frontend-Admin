@@ -33,18 +33,6 @@ export const ReporteInicialConsultaHTML = ({ jornadaVotosData = { resultados: []
 		setCifrasVotos(max.toString().length);
 	}, [jornadaVotosData]);
 
-	const cifra = (index1, index2) => {
-		const numeroArray = arrayResultado[index1];
-		const cifras = numeroArray.toString().length;
-
-		if (cifrasVotos - index2 <= cifras) {
-			const invertido = numeroArray.toString().split("").reverse().join("");
-			return invertido.toString().charAt(cifrasVotos - index2 - 1);
-		} else {
-			return "";
-		}
-	};
-
 	if (jornadaVotosData.resultados.length === 0) return <>Reporte no disponible</>;
 	else
 		return (

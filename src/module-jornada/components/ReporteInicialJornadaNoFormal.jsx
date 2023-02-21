@@ -23,15 +23,15 @@ import { PrivateRoute } from "../../router/PrivateRoute";
 import {
 	onGetBoletas,
 	onGetJornadaNoFormalVotos,
+	onGetJornadaNoFormalVotosInicio,
 	onGetJornadaRespuestasConsultas,
 	onGetJornadaVotos,
 } from "../../store/module-preparacion/jornada/ThunksJornada";
-import { ConsultaChart } from "../components/ConsultaChart";
-import { JornadaNoFormalChart } from "../components/JornadaNoFormalChart";
-import { JornadaFormalChart } from "./JornadaFormalChart";
+import { ConsultaChart } from "./ConsultaChart";
+import { JornadaNoFormalChart } from "./JornadaNoFormalChart";
 // import { VisualizadorDePDF } from "./VisualizadorDePDF";
 
-export const ReporteFinalJornadaNoFormal = ({ status, jornadaVotosData }) => {
+export const ReporteInicialJornadaNoFormal = ({ status, jornadaVotosData }) => {
 	const { jornadaSelected } = useJornadaStore();
 	const [boleta, setBoleta] = React.useState(null);
 
@@ -45,14 +45,14 @@ export const ReporteFinalJornadaNoFormal = ({ status, jornadaVotosData }) => {
 		navigate(
 			"/jornada/reportesJornadasNoFormales/reportes/" +
 				params.idJornada +
-				"/reporteFinal/" +
+				"/reporteInicio/" +
 				event.target.value
 		);
 	};
 
 	useEffect(() => {
 		if (boleta !== null) {
-			dispatch(onGetJornadaNoFormalVotos(boleta, jornadaSelected.id));
+			dispatch(onGetJornadaNoFormalVotosInicio(boleta, jornadaSelected.id));
 			console.log("BUSCO LA boleta");
 		}
 	}, [boleta]);
@@ -127,7 +127,7 @@ export const ReporteFinalJornadaNoFormal = ({ status, jornadaVotosData }) => {
 								jornadaVotosData.resultados.length !== 0 ? (
 									<JornadaNoFormalChart
 										chartData={jornadaVotosData}
-										tipoReporte="reporteFinalHTML"
+										tipoReporte="reporteInicialHTML"
 									/>
 								) : (
 									// <></>

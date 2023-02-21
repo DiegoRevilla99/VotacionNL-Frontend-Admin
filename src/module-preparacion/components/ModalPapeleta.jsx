@@ -63,7 +63,7 @@ export const ModalPapeleta = ({ statusModal, handleToggleModal }) => {
 	const { addQuestion, questions, questionSelected, setQuestionsSelectedNull, updateQuestion } =
 		useConsultaCiudadanaStore();
 	const { toastSuccesOperation } = useUiStore();
-	const [isCerrada, setIsCerrada] = useState(false);
+	const [isCerrada, setIsCerrada] = useState(true);
 
 	const onSave = (values) => {
 		setIsCerrada(false);
@@ -128,7 +128,7 @@ export const ModalPapeleta = ({ statusModal, handleToggleModal }) => {
 								Object.values(questionSelected).length === 0
 									? {
 											pregunta: "",
-											tipoDeRespuesta: "",
+											tipoDeRespuesta: "cerrada",
 											tipoCerrada: "",
 											respuesta1: "",
 											respuesta2: "",

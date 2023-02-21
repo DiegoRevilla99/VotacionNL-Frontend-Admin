@@ -593,23 +593,53 @@ export const getJornadaVotos = async (idBoleta, idJornada) => {
 
 		let dataChart = [];
 
-		dataChart = boleta.boletaCandidatos.map((paquete) => {
-			// const candidatox = boleta.boletaCandidatos.candidatoModels.find(
-			// 	(candidato) => candidato.claveCandidato === paquete.id
-			// );
+		if (boleta === undefined) {
+			console.log("entr a undefined");
+		} else {
+			boleta.boletaCandidatos.forEach((paquete) => {
+				// const candidatox = boleta.boletaCandidatos.candidatoModels.find(
+				// 	(candidato) => candidato.claveCandidato === paquete.id
+				// );
 
-			// console.log("CANDIDATO BUSCADO", candidatox);
-			return {
-				id: paquete.id,
-				candiato:
-					paquete.id === 99999
-						? "Votos nulos"
-						: paquete.id === "NULO"
-						? "Votos nulos"
-						: paquete.name,
-				resultados: paquete.candidad,
-			};
+				// console.log("CANDIDATO BUSCADO", candidatox);
+				if (paquete.id === 99999) {
+				} else
+					dataChart.push({
+						id: paquete.id,
+						candiato:
+							paquete.id === 99999
+								? "Votos nulos"
+								: paquete.id === "NULO"
+								? "Votos nulos"
+								: paquete.name,
+						resultados: paquete.candidad,
+						fotos:
+							paquete.id === 99999
+								? [
+										"https://cdn.pixabay.com/photo/2013/07/13/01/20/forbidden-155564_1280.png",
+								  ]
+								: paquete.datosCandidato.partidos.map((partido) => partido.logo),
+					});
+			});
+		}
+
+		console.log("DATA CHART PRE", dataChart);
+
+		const nulo = boleta.boletaCandidatos.find((resul) => {
+			if (resul.id === 99999) return resul;
 		});
+
+		if (nulo !== undefined || nulo !== null) {
+			console.log("NULOOOOOOOOOOOOO", nulo);
+			dataChart.push({
+				id: nulo.id,
+				candiato: "Votos nulos",
+				resultados: nulo.candidad,
+				fotos: ["https://cdn.pixabay.com/photo/2013/07/13/01/20/forbidden-155564_1280.png"],
+			});
+		}
+
+		// if(boleta.candidaturasNoReg)
 
 		const dataFinal = {
 			jornadaModel: {},
@@ -698,6 +728,85 @@ export const getJornadaNoFormalVotos = async (idBoleta, id) => {
 		};
 
 		console.log("DATA CHAAARTS", dataChart);
+		return { ok: true, data: dataFinal };
+	} catch (error) {
+		console.log("ERROR NO FORMALES", error.message);
+		return { ok: false, errorMessage: error.message };
+	}
+};
+
+export const getJornadaNoFormalVotosInicio = async (idBoleta, id) => {
+	try {
+		const { data } = await votosNoFormalesAPI.get(`votos/no/formal/jornada/${id}/resultados`);
+		// votos/no/formal/jornada/546622-EL-DE-PR-ES-ORD-2023/resultados
+		// https://ms-jornada-votos-no-formales.herokuapp.com/votos/no/formal/jornada/546622-EL-DE-PR-ES-ORD-2023/resultados
+
+		console.log("DATA DE NO FORMALES", data);
+
+		const boleta = data.boletas.find((boleta) => boleta.idBoleta === idBoleta);
+
+		console.log("BOLETA ENCONTRADA", boleta);
+
+		let dataChart = [];
+
+		if (boleta.boletaCandidatos.modalidad.modalidad === "PLANILLA") {
+			console.log("ENRTRA AQUI EN PLANILLA");
+			dataChart = boleta.representanteResultado.map((paquete) => {
+				console.log("paso 1", boleta.boletaCandidatos);
+				const planilla = boleta.boletaCandidatos.candidatosAsociaciones.find(
+					(cands) => cands.idCombinacion === paquete.id
+				);
+				console.log("PLANILLA ENCONTRADA", planilla);
+
+				const candidatosDePlanilla = planilla.candidatos.map(
+					(candidato) => candidato.nombreCandidato
+				);
+
+				// candidatosDePlanilla.push(" ");
+
+				const nombresPlanillas = planilla.asociacionModel.map((as) => as.nombreAsociacion);
+
+				// candidatosDePlanilla.push(...nombresPlanillas);
+
+				return {
+					id: paquete.id,
+					candiato: candidatosDePlanilla,
+					planillas: nombresPlanillas,
+					resultados: 0,
+				};
+			});
+		} else {
+			if (boleta === undefined) {
+				console.log("entr a undefined");
+			} else {
+				dataChart = boleta.representanteResultado.map((paquete) => {
+					const candidatox = boleta.boletaCandidatos.candidatoModels.find(
+						(candidato) => candidato.claveCandidato === paquete.id
+					);
+
+					console.log("CANDIDATO BUSCADO", candidatox);
+					return {
+						id: paquete.id,
+						candiato:
+							paquete.id === "CANORE"
+								? "Candidatura no registrada"
+								: paquete.id === "NULO"
+								? "Votos nulos"
+								: candidatox.nombreCandidato +
+								  candidatox.apellidoPCandidato +
+								  candidatox.apellidoMCandidato,
+						resultados: 0,
+					};
+				});
+			}
+		}
+		const dataFinal = {
+			jornadaModel: {},
+			boleta: boleta || null,
+			resultados: dataChart,
+		};
+
+		console.log("DATA CHAAARTS DE INICIOOOOOOOOOOO", dataChart);
 		return { ok: true, data: dataFinal };
 	} catch (error) {
 		console.log("ERROR NO FORMALES", error.message);

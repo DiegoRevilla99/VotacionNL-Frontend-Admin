@@ -1,6 +1,6 @@
 import { setRefreshToken, setToken } from "../../providers/Micro-Auth/configAuth";
 import { loginWithEmailAndPassword, refreshToken } from "../../providers/Micro-Auth/providerAuth";
-import { onChecking, onError, onLogin } from "./authSlice";
+import { onChecking, onError, onLogin, onLogout } from "./authSlice";
 
 export const onLoginWithEmailAndPassword = (email, password, navigate = () => {}) => {
 	return async (dispatch) => {
@@ -44,6 +44,7 @@ export const onRefreshSession = () => {
 			setToken(refreshResponse.accessToken);
 			setRefreshToken(refreshResponse.refreshToken);
 		} else {
+			dispatch(onLogout());
 			dispatch(onError("Error"));
 		}
 	};
