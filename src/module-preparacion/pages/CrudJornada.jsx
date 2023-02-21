@@ -1,22 +1,19 @@
-import SettingsIcon from "@mui/icons-material/Settings";
+import BallotIcon from "@mui/icons-material/Ballot";
+import DeleteIcon from "@mui/icons-material/Delete";
+import HandshakeIcon from '@mui/icons-material/Handshake';
 import { Box, Button, Divider, Grid, IconButton, LinearProgress, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
 import {
 	onGetBoletaData,
 	onGetBoletas
 } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { GeneralTable } from "../components/GeneralTable";
-import { useJornadaStore } from "../hooks/useJornadaStore";
-
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import { useParams } from "react-router-dom";
-import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
 import { ModalEliminarBoletaFormal } from "../components/ModalEliminarBoletaFormal";
-
+import { useJornadaStore } from "../hooks/useJornadaStore";
 export const CrudJornada = () => {
 	const navigate = useNavigate();
 	const [modalDeleteStatus, setModalDeleteStatus] = useState(false);
@@ -45,14 +42,14 @@ export const CrudJornada = () => {
 					<Stack spacing={2} direction="row">
 						<Button
 							variant="outlined"
-							startIcon={<EditIcon />}
+							startIcon={<BallotIcon />}
 							onClick={() => handleEdit(params.id)}
 						>
-							Ver
+							VISUALIZAR
 						</Button>
 						<Button
 							variant="outlined"
-							startIcon={<SettingsIcon />}
+							startIcon={<HandshakeIcon />}
 							onClick={() => handleConfig(params.id)}
 						>
 							Coaliciones

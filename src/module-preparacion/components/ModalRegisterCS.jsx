@@ -637,7 +637,8 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 									{activeStep === steps.length ? (
 										<React.Fragment>
 										<Typography sx={{ mt: 2, mb: 1 }}>
-											Finalizó el registro.
+											Finalizaste el formulario. En caso de existir algún error se te mostrará a continuación.
+											Presiona el botón de GUARDAR Y SALIR para guardar los cambios.
 										</Typography>
 										<Box ml={2} sx={{fontSize: "12px", color: "#791010" }}>
 											{errors.claveElectoralCandidato ? "Verifica el apellido paterno del candidato" : ""}

@@ -6,6 +6,7 @@ export const SliceJornada = createSlice({
 		status: "off",
 		errorMessage: "",
 		successMessage: "",
+		contador: 0,
 		partidos: [],
 		partidoSelected: {},
 		candidatoandSuplentes: [],
@@ -69,10 +70,11 @@ export const SliceJornada = createSlice({
 			});
 		},
 		onAddPartido: (state, { payload }) => {
+			console.log("payload en SLICE aprtido", payload);
 			if (Array.isArray(payload)) {
 				payload.forEach((partido) => {
 					state.partidos.push({
-						id: partido.id,
+						id: state.contador,
 						clavePartido: partido.clavePartido,
 						nameParty: partido.nameParty,
 						siglasParty: partido.siglasParty,
@@ -80,11 +82,11 @@ export const SliceJornada = createSlice({
 						fotografiaParty: partido.fotografiaParty,
 						statusParty: partido.statusParty,
 						candidatosPartido: partido.candidatosPartido || [], // Agregar un arreglo vacío por defecto si no hay candidatos
-					});
+					});state.contador++;
 				});
 			} else {
 				state.partidos.push({
-					id: payload?.id,
+					id: state.contador,
 					clavePartido: payload?.clavePartido,
 					nameParty: payload?.nameParty,
 					siglasParty: payload?.siglasParty,
@@ -92,7 +94,7 @@ export const SliceJornada = createSlice({
 					fotografiaParty: payload?.fotografiaParty,
 					statusParty: payload?.statusParty,
 					candidatosPartido: payload?.candidatosPartido || [], // Agregar un arreglo vacío por defecto si no hay candidatos
-				});
+				});state.contador++;
 			}
 		},
 
@@ -251,6 +253,7 @@ export const SliceJornada = createSlice({
 			state.suplenteSelected = state.suplentes[0];
 		},
 		onEditPartido: (state, { payload }) => {
+			console.log("payload aprtidoooooooo", payload);
 			state.partidoSelected = state.partidos[0];
 			// const index = state.partidos.findIndex(partido => partido.id === state.partidoSelected.id);
 			// state.partidos.splice(index, 1, {
@@ -360,6 +363,7 @@ export const SliceJornada = createSlice({
 		},
 		onSetPartidoNull: (state, { payload }) => {
 			state.partidos = [];
+			state.contador++;
 		},
 		onSetCandidatoAndSuplenteNull: (state, { payload }) => {
 			state.candidatoandSuplentes = [];

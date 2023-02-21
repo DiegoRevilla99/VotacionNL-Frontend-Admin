@@ -231,7 +231,7 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 		}
 		setCandidatosSelectedNull();
 		handleCloseRegisterModal();
-		setFotografia({ name: "Sin Archivo seleccionado" });
+		setFotografiaCandidato({ name: "Sin Archivo seleccionado" });
 		}
 	
 	const onCancel = () => {

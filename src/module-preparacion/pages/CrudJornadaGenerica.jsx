@@ -1,5 +1,5 @@
+import BallotIcon from "@mui/icons-material/Ballot";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Box, Button, Divider, Grid, IconButton, LinearProgress, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
@@ -49,10 +49,10 @@ export const CrudJornadaGenerica = () => {
 					<Stack spacing={2} direction="row">
 						<Button
 							variant="outlined"
-							startIcon={<EditIcon />}
+							startIcon={<BallotIcon />}
 							onClick={() => handleEdit(params.id)}
 						>
-							Editar
+							VISUALIZAR
 						</Button>
 						<Button
 							variant="outlined"
