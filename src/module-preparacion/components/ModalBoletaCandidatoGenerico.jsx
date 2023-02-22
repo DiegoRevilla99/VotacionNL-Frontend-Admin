@@ -267,7 +267,7 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 	  
 		return (
 		  <>
-			<Typography>FECHA NACIMIENTO</Typography>
+			<Typography>FECHA NACIMIENTO DEL CANDIDATO/A</Typography>
 			<DateFieldFechaNacimientoNoFormal
 			  name="fechaNacimientoCandidatos"
 			  value={fechaNacimientoCandidatos}
@@ -410,11 +410,11 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 							{({ values, handleSubmit, handleChange, errors, touched, handleBlur, setFieldValue }) => (
 								<Form onSubmit={handleSubmit}>
 									<Typography variant="h7">
-										CURP DEL CANDIDATO <span style={{ color: "red" }}>*</span>
+										CURP DEL CANDIDATO/A <span style={{ color: "red" }}>*</span>
 									</Typography>
 									<FielTextCustomRegistro
 										disabled={status === "checking"}
-										label="Introduce la CURP del candidato..."
+										label="Introduce la CURP del candidato/a..."
 										name="claveCandidato"
 										placeholder="Ej: CASK0..."
 										value={values.claveCandidato}
@@ -424,11 +424,11 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 										touched = {errors.claveCandidato}
 									/>
 									<Typography variant="h7">
-										PRIMER APELLIDO <span style={{ color: "red" }}>*</span>
+										PRIMER APELLIDO DEL CANDIDATO/A <span style={{ color: "red" }}>*</span>
 									</Typography>
 									<FielTextCustomRegistro
 										disabled={status === "checking"}
-										label="Introduce el primer apellido del candidato..."
+										label="Introduce el primer apellido del candidato/a..."
 										name="apellidoPCandidato"
 										placeholder="Ej: Chavez..."
 										value={values.apellidoPCandidato}
@@ -437,11 +437,11 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 										touched = {errors.apellidoPCandidato}
 									/>
 									<Typography variant="h7" mt={"20rem"}>
-									SEGUNDO APELLIDO <span style={{ color: "red" }}>*</span>
+									SEGUNDO APELLIDO DEL CANDIDATO/A<span style={{ color: "red" }}>*</span>
 									</Typography>
 									<FielTextCustomRegistro
 										disabled={status === "checking"}
-										label="Introduce el segundo apellido del candidato..."
+										label="Introduce el segundo apellido del candidato/a..."
 										name="apellidoMCandidato"
 										placeholder="Ej: Sanchez..."
 										value={values.apellidoMCandidato}
@@ -450,11 +450,11 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 										touched = {errors.apellidoMCandidato}
 									/>
 									<Typography variant="h7" mt={"2rem"}>
-									NOMBRES <span style={{ color: "red" }}>*</span>
+									NOMBRES DEL CANDIDATO/A<span style={{ color: "red" }}>*</span>
 									</Typography>
 									<FielTextCustomRegistro
 										disabled={status === "checking"}
-										label="Introduce el nombre completo del candidato..."
+										label="Introduce el nombre completo del candidato/a..."
 										name="nombreCandidato"
 										placeholder="Ej: Kevin..."
 										value={values.nombreCandidato}
@@ -467,7 +467,7 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 									</Typography>
 									<FielTextCustomRegistro
 										disabled={status === "checking"}
-										label="Introduce el seudónimo del candidato..."
+										label="Introduce el seudónimo del candidato/a..."
 										name="seudonimoCandidato"
 										placeholder="Ej: El Kevin..."
 										value={values.seudonimoCandidato}
@@ -529,7 +529,7 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 										<FechaNacimientoField name="fechaNacimientoCandidatos" />
 									</Grid>
 									<Typography variant="h7" mt={"2rem"}>
-									GENERO DEL CANDIDATO <span style={{ color: "red" }}>*</span>
+									GENERO DEL CANDIDATO/A <span style={{ color: "red" }}>*</span>
 									</Typography>
 									<Box>
 										<GeneroRadioButton

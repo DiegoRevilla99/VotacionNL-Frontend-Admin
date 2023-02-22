@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, Divider, Grid, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Divider, Grid, Tooltip, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { Formik } from 'formik';
 import React, { useState } from "react";
@@ -221,7 +221,7 @@ export const AddBoletaJornada = () => {
 				
 				<Box sx={{ m: "0.5rem", ml: "2rem" }}>
 					<Typography variant="h6" align="left" color="initial">
-						REGISTRO DE BOLETA
+					PASO 3.- REGISTRO DE BOLETA
 					</Typography>
 				</Box>
 				<Divider />
@@ -246,7 +246,7 @@ export const AddBoletaJornada = () => {
 					>
 						<Grid item xs={12} mt="0.5rem">
 							<Typography variant="h6" color="initial">
-								DATOS GENERALES
+							PASO 3.1.- DATOS GENERALES
 							</Typography>
 						</Grid>
 
@@ -264,7 +264,7 @@ export const AddBoletaJornada = () => {
 						</Grid>
 						<Grid item xs={12}>
 							<Typography variant="h6" color="initial">
-								DATOS GEOELECTORALES
+							PASO 3.2.- DATOS GEOELECTORALES
 							</Typography>
 						</Grid>
 
@@ -303,7 +303,7 @@ export const AddBoletaJornada = () => {
 						</Grid>
 						<Grid item xs={12}>
 							<Typography variant="h6" color="initial">
-								FIRMANTES
+							PASO 3.3.- FIRMANTES
 							</Typography>
 						</Grid>
 						<Grid item xs={12}>
@@ -368,6 +368,7 @@ export const AddBoletaJornada = () => {
 						>
 							
 							<Grid item xs={12} md={6} lg={4}>
+							<Tooltip title="Registrar una nuevo partido">
 								<Button
 									// onClick={setShowModal(true)}
 									onClick={handleOpenMatchModal}
@@ -387,8 +388,9 @@ export const AddBoletaJornada = () => {
 										},
 									}}
 								>
-									AGREGAR PARTIDO
+									PASO 3.6.- AGREGAR PARTIDO
 								</Button>
+								</Tooltip>
 							</Grid>
 								<Box
 								sx={{

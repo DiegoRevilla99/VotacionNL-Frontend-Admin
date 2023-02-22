@@ -1,7 +1,8 @@
 import BallotIcon from "@mui/icons-material/Ballot";
 import DeleteIcon from "@mui/icons-material/Delete";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SettingsIcon from "@mui/icons-material/Settings";
-import { Box, Button, Divider, Grid, IconButton, LinearProgress, Typography } from "@mui/material";
+import { Box, Button, Divider, Grid, IconButton, LinearProgress, Tooltip, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -36,7 +37,7 @@ export const CrudJornadaGenerica = () => {
 		{
 			field: "encabezadoBoleta",
 			headerName: "TÍTULO DE LA BOLETA",
-			flex: 10,
+			flex: 6,
 		},
 		{
 			field: "configuracion",
@@ -47,13 +48,16 @@ export const CrudJornadaGenerica = () => {
 			renderCell: (params) => {
 				return (
 					<Stack spacing={2} direction="row">
+						<Tooltip title="Visualizar los datos de la boleta">
 						<Button
 							variant="outlined"
 							startIcon={<BallotIcon />}
 							onClick={() => handleEdit(params.id)}
 						>
-							VISUALIZAR
+							VISUALIZAR BOLETA
 						</Button>
+						</Tooltip>
+						<Tooltip title="Realizar la configuración perteneciente a la boleta">
 						<Button
 							variant="outlined"
 							startIcon={<SettingsIcon />}
@@ -61,12 +65,15 @@ export const CrudJornadaGenerica = () => {
 						>
 							Configuración
 						</Button>
+						</Tooltip>
+						<Tooltip title="Eliminar la boleta">
 						<IconButton
 							sx={{ color: "#511079" }}
 							onClick={() => handleDelete(params.id, params.row.encabezadoBoleta)}
 						>
 							<DeleteIcon />
 						</IconButton>
+						</Tooltip>
 					</Stack>
 				);
 			},
@@ -152,11 +159,20 @@ export const CrudJornadaGenerica = () => {
 						currentRoute={jornadaNoFormalSelected.title}
 					></BreadCrumbsCustom>
 
-					<Box sx={{ m: "0.5rem", ml: "2rem" }}>
-						<Typography variant="h6" align="left" color="initial">
-							{jornadaNoFormalSelected.title}
-						</Typography>
-					</Box>
+<Box sx={{ display: "flex", alignItems: "center", m: "0.5rem", ml: "2rem" }}>
+  <Typography variant="h6" align="left" color="initial" sx={{ flexGrow: 1 }}>
+							 {jornadaNoFormalSelected.title}
+							</Typography>
+  <Tooltip
+    title="En este apartado puedes ver las boletas que existen, así como también las configuraciones de cada boleta."
+    // placement="right"
+  >
+    <IconButton sx={{color: "#8A2BE2"}}>
+      <HelpOutlineIcon fontSize="large" />
+    </IconButton>
+  </Tooltip>
+</Box>
+
 					<Divider />
 					<Box
 						sx={{
@@ -169,6 +185,7 @@ export const CrudJornadaGenerica = () => {
 					>
 						<Grid container>
 							<Grid item lg={3} md={4} sm={12} xs={12}>
+							<Tooltip title="Registrar una nueva boleta">
 								<Button
 									// onClick={handleDelete}
 									onClick={handleAdd}
@@ -187,8 +204,9 @@ export const CrudJornadaGenerica = () => {
 										},
 									}}
 								>
-									REGISTRAR BOLETA
+									PASO 2.- REGISTRAR BOLETA
 								</Button>
+								</Tooltip>
 							</Grid>
 						</Grid>
 

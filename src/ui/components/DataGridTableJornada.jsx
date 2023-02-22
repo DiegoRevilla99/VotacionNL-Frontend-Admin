@@ -17,8 +17,8 @@ export const DataGridTableJornada = ({ handleOpenModal, handleOpenDeleteCandidat
 
 
 	const columns = [
-		{ field: "id", headerName: "ID", width: 80 },
-		{ field: "nombreCandidato", headerName: "Nombres Candidato", width: 140 },
+		{ field: "id", headerName: "ID", width: 60 },
+		{ field: "nombreCandidato", headerName: "Nombres Candidato/a", width: 140 },
 		{ field: "apellidoPCandidato", headerName: "Primer Apellido", width: 120 },
 		{ field: "apellidoMCandidato", headerName: "Segundo Apellido", width: 120 },
         // { field: "seudonimoCandidato", headerName: "Seudonimo", width: 100 },

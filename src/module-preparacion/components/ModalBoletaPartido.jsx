@@ -252,7 +252,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 					</Typography>
 					<FielTextCustomRegistro
 						disabled={status === "checking"}
-						label="Introduce el nombre del partido..."
+						label="Introduce las siglas del partido..."
 						name="siglasParty"
 						placeholder="Ej: DEV-ITO..."
 						value={values.siglasParty}

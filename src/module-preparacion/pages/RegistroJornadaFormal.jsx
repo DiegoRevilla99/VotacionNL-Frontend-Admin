@@ -1,5 +1,6 @@
 import BallotIcon from "@mui/icons-material/Ballot";
 import DeleteIcon from "@mui/icons-material/Delete";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SettingsIcon from "@mui/icons-material/Settings";
 import {
   Box,
@@ -7,8 +8,7 @@ import {
   Divider,
   Grid,
   IconButton,
-  LinearProgress,
-  Typography
+  LinearProgress, Tooltip, Typography
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
@@ -40,7 +40,7 @@ export const RegistroJornadaFormal = () => {
     {
       field: "nombreJornada",
       headerName: "TÍTULO DE LA JORNADA",
-      flex: 10,
+      flex: 7,
     },
     {
       field: "configuracion",
@@ -51,26 +51,33 @@ export const RegistroJornadaFormal = () => {
       renderCell: (params) => {
         return (
           <Stack spacing={2} direction="row">
+            <Tooltip title="Ver boletas pertenecientes a esta jornada">
             <Button
               variant="outlined"
               startIcon={<BallotIcon />}
               onClick={() => handleEdit(params.id, params.row.nombreJornada)}
-            >
-              Ver
+              >
+              Ver boletas
             </Button>
+              </Tooltip>
+              <Tooltip title="Realizar la configuración de la jornada">
             <Button
               variant="outlined"
               startIcon={<SettingsIcon />}
               onClick={() => handleConfig(params.id)}
-            >
+              >
               Configuración
             </Button>
+              </Tooltip>
+              <Tooltip title="Eliminar esta jornada">
+
             <IconButton
               sx={{ color: "#511079" }}
               onClick={() => handleDelete(params.id, params.row.nombreJornada)}
             >
               <DeleteIcon />
             </IconButton>
+              </Tooltip>
           </Stack>
         );
       },
@@ -145,10 +152,18 @@ export const RegistroJornadaFormal = () => {
           currentRoute="JORNADAS ELECTORALES"
         />
 
-          <Box sx={{ m: "0.5rem", ml: "2rem" }}>
-            <Typography variant="h6" align="left" color="initial">
-              REGISTRO DE UNA JORNADA ELECTORAL
+<Box sx={{ display: "flex", alignItems: "center", m: "0.5rem", ml: "2rem" }}>
+  <Typography variant="h6" align="left" color="initial" sx={{ flexGrow: 1 }}>
+              PASO 1.- REGISTRO DE UNA JORNADA ELECTORAL
             </Typography>
+            <Tooltip
+    title="En este apartado puedes ver las jornadas que existen, así como también las configuraciones de cada jornada."
+    // placement="right"
+  >
+    <IconButton sx={{color: "#8A2BE2"}}>
+      <HelpOutlineIcon fontSize="large" />
+    </IconButton>
+  </Tooltip>
           </Box>
           <Divider />
           <Box
@@ -162,6 +177,7 @@ export const RegistroJornadaFormal = () => {
           >
             <Grid container>
               <Grid item lg={3} md={4} sm={12} xs={12}>
+              <Tooltip title="Registrar una nueva jornada electoral">
                 <Button
                   onClick={openModal}
                   variant="contained"
@@ -181,6 +197,7 @@ export const RegistroJornadaFormal = () => {
                 >
                   Registrar Jornada Electoral
                 </Button>
+                  </Tooltip>
               </Grid>
             </Grid>
 

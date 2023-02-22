@@ -1,4 +1,4 @@
-import { Box, Button, Grid } from "@mui/material";
+import { Box, Button, Grid, Tooltip } from "@mui/material";
 import React from "react";
 import { DataGridTableJornada } from "../../ui/components/DataGridTableJornada";
 
@@ -6,6 +6,7 @@ export const AddCandidatoMod = React.memo(({ handleOpenModal,handleOpenDeleteCan
 	return (
 		<>
 			<Grid item xs={12} md={6} lg={4}>
+			<Tooltip title="Registrar una nuevo candidato/a junto con su suplente">
 				<Button
 					
 					onClick={handleOpenModal}
@@ -25,8 +26,9 @@ export const AddCandidatoMod = React.memo(({ handleOpenModal,handleOpenDeleteCan
 						},
 					}}
 				>
-					Registrar candidato y suplente
+					PASO 3.5.- Registrar candidato y suplente
 				</Button>
+				</Tooltip>
 			</Grid>
 			<Grid item xs={12}>
 				<Box

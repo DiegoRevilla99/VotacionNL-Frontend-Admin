@@ -1,7 +1,8 @@
 import BallotIcon from "@mui/icons-material/Ballot";
 import DeleteIcon from "@mui/icons-material/Delete";
 import HandshakeIcon from "@mui/icons-material/Handshake";
-import { Box, Button, Divider, Grid, IconButton, LinearProgress, Typography } from "@mui/material";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import { Box, Button, Divider, Grid, IconButton, LinearProgress, Tooltip, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -9,7 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
 import {
 	onGetBoletaData,
-	onGetBoletas,
+	onGetBoletas
 } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { GeneralTable } from "../components/GeneralTable";
 import { ModalEliminarBoletaFormal } from "../components/ModalEliminarBoletaFormal";
@@ -29,24 +30,27 @@ export const CrudJornada = () => {
 		{
 			field: "nombreEstructuraBoleta",
 			headerName: "TÍTULO DE LA BOLETA",
-			flex: 10,
+			flex: 6,
 		},
 		{
-			field: "CONFIGURACIÓN",
-			headerName: "Configuración",
+			field: "Configuración",
+			headerName: "CONFIGURACIÓN",
 			flex: 5,
 			sortable: false,
 			disableColumnMenu: true,
 			renderCell: (params) => {
 				return (
 					<Stack spacing={2} direction="row">
+						<Tooltip title="Visualizar los datos de la boleta">
 						<Button
 							variant="outlined"
 							startIcon={<BallotIcon />}
 							onClick={() => handleEdit(params.id)}
 						>
-							VISUALIZAR
+							VISUALIZAR BOLETA
 						</Button>
+						</Tooltip>
+						<Tooltip title="Crear coaliciones pertenecientes a la boleta">
 						<Button
 							variant="outlined"
 							startIcon={<HandshakeIcon />}
@@ -54,6 +58,8 @@ export const CrudJornada = () => {
 						>
 							Coaliciones
 						</Button>
+						</Tooltip>
+						<Tooltip title="Eliminar la boleta">
 						<IconButton
 							sx={{ color: "#511079" }}
 							onClick={() =>
@@ -62,6 +68,7 @@ export const CrudJornada = () => {
 						>
 							<DeleteIcon />
 						</IconButton>
+						</Tooltip>
 					</Stack>
 				);
 			},
@@ -141,11 +148,24 @@ export const CrudJornada = () => {
 						currentRoute={jornadaSelected.title}
 					></BreadCrumbsCustom>
 
-					<Box sx={{ m: "0.5rem", ml: "2rem" }}>
-						<Typography variant="h6" align="left" color="initial">
-							{jornadaSelected.title}
-						</Typography>
-					</Box>
+<Box sx={{ display: "flex", alignItems: "center", m: "0.5rem", ml: "2rem" }}>
+  <Typography variant="h6" align="left" color="initial" sx={{ flexGrow: 1 }}>
+    {jornadaSelected.title}
+  </Typography>
+  <Tooltip
+    title="En este apartado puedes ver las boletas que existen, así como también las coaliciones de cada boleta."
+    // placement="right"
+  >
+    <IconButton sx={{color: "#8A2BE2"}}>
+      <HelpOutlineIcon fontSize="large" />
+    </IconButton>
+  </Tooltip>
+</Box>
+
+
+
+
+
 					<Divider />
 					<Box
 						sx={{
@@ -158,6 +178,7 @@ export const CrudJornada = () => {
 					>
 						<Grid container>
 							<Grid item lg={3} md={4} sm={12} xs={12}>
+							<Tooltip title="Registrar una nueva boleta">
 								<Button
 									onClick={handleAdd}
 									variant="contained"
@@ -175,8 +196,9 @@ export const CrudJornada = () => {
 										},
 									}}
 								>
-									REGISTRAR BOLETA
+									PASO 2.- REGISTRAR BOLETA
 								</Button>
+								</Tooltip>
 							</Grid>
 						</Grid>
 
