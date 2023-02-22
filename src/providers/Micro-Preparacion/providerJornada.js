@@ -465,6 +465,16 @@ export const getJornadaVotos = async (idBoleta, idJornada) => {
 			});
 		}
 
+		// !!ELIMINAR
+		dataChart.push({
+			id: 99998,
+			candiato: "Candidaturas no registradas",
+			resultados: 3,
+			fotos: [
+				"https://w7.pngwing.com/pngs/527/663/png-transparent-logo-person-user-person-icon-rectangle-photography-computer-wallpaper.png",
+			],
+		});
+
 		// if(boleta.candidaturasNoReg)
 
 		const dataFinal = {

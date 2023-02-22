@@ -25,16 +25,20 @@ import { ReporteInicialHTML } from "../components/ReporteInicialHTML";
 // ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte }) => {
+	console.log("DATA CHAR QUE OCUPARE", chartData);
 	const total = parseInt(
 		chartData.resultados.reduce((acc, cur) => acc + cur.resultados, 0),
 		10
 	);
+
+	const labelsAdjusted = chartData.resultados.map((label) => label.candiato.split(" "));
 	const { jornadaSelected } = useJornadaStore();
 	const chartRef = useRef(null);
 	const params = useParams();
 	const [data, setData] = useState({
 		// labels: chartData.map((data) => data.nombre),
-		labels: chartData.resultados.map((resultado) => resultado.candiato),
+		// labels: chartData.resultados.map((resultado) => resultado.candiato),
+		labels: labelsAdjusted,
 		datasets: [
 			{
 				label: "Votos",
@@ -115,7 +119,7 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 									: 1)) *
 								(index2 + 1),
 						// x.getPixelForValue(index) - 80 + 80 / (index2 * index2 + 1),
-						y.getPixelForValue(0) + 30,
+						y.getPixelForValue(0) + 90,
 						30,
 						30
 					);
@@ -430,14 +434,25 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 											fontWeight="bold"
 											// sx={{ fontSize: "1rem" }}
 										>
-											0
+											{total -
+												chartData.resultados.find(
+													(resul) => resul.id === 99999
+												).resultados}
 										</Typography>
 										<Typography
 											variant="caption"
 											color="initial"
 											fontWeight="bold"
 										>
-											0.00%
+											{(
+												((total -
+													chartData.resultados.find(
+														(resul) => resul.id === 99999
+													).resultados) *
+													100) /
+												total
+											).toFixed(2)}
+											%
 										</Typography>
 									</Box>
 								</Grid>
@@ -511,14 +526,25 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 											color="initial"
 											fontWeight="bold"
 										>
-											0
+											{
+												chartData.resultados.find(
+													(resul) => resul.id === 99999
+												).resultados
+											}
 										</Typography>
 										<Typography
 											variant="caption"
 											color="initial"
 											fontWeight="bold"
 										>
-											0.00%
+											{(
+												(chartData.resultados.find(
+													(resul) => resul.id === 99999
+												).resultados *
+													100) /
+												total
+											).toFixed(2)}
+											%
 										</Typography>
 									</Box>
 								</Grid>
@@ -551,14 +577,14 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 											color="initial"
 											fontWeight="bold"
 										>
-											0
+											{total}
 										</Typography>
 										<Typography
 											variant="caption"
 											color="initial"
 											fontWeight="bold"
 										>
-											0.00%
+											100%
 										</Typography>
 									</Box>
 								</Grid>

@@ -85,7 +85,7 @@ export const InicioJornadaPage = () => {
 								},
 							}}
 						>
-							Jornadas formales
+							Jornadas electorales
 						</Button>
 					</Grid>
 					<Grid item xs={12} lg={4}>
@@ -121,7 +121,7 @@ export const InicioJornadaPage = () => {
 								},
 							}}
 						>
-							Jornadas no formales
+							Elecciones populares
 						</Button>
 					</Grid>
 					<Grid item xs={12} lg={4}>

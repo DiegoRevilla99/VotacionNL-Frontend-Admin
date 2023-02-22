@@ -49,6 +49,7 @@ export const captureCanvas = (reporte) => {
 		// let img = new Image();
 		// img.src = canvas.toDataURL("image/jpeg", 1.0);
 		doc.addImage(image, "JPEG", 0, 0, canvas.width / 4.08, canvas.height / 4.08);
+		doc.addImage(image, "JPEG", 0, 0, canvas.width / 4.08, canvas.height / 4.08);
 		// doc.save("myPage.pdf"); //Download the rendered PDF.
 		doc.output("dataurlnewwindow", { filename: "fichero.pdf" });
 	});
