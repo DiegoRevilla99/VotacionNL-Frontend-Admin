@@ -261,7 +261,7 @@ export const AddBoletaJornadaGenerica = () => {
 				
 				<Box sx={{ m: "0.5rem", ml: "2rem" }}>
 					<Typography variant="h6" align="left" color="initial">
-						PASO 3.- REGISTRO DE BOLETA NO FORMAL
+						PASO 3.- REGISTRO DE BOLETA PARA UNA ELECCION POPULAR
 					</Typography>
 				</Box>
 				<Divider />
