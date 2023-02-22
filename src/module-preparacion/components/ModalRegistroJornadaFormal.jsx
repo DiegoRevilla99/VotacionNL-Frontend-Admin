@@ -7,7 +7,6 @@ import { object, string } from "yup";
 import { onCreateJornada } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { useJornadaStore } from "../hooks/useJornadaStore";
 import { ButtonsContainer } from "./ButtonsContainer";
-
 const style = {
 	position: "absolute",
 	top: "50%",
@@ -54,8 +53,11 @@ export const ModalRegistroJornadaFormal = ({ modalStatus, closeModal, openModal 
 			<Box sx={style}>
 				<Box sx={{ overflowY: "auto", height: "100%" }}>
 					<Typography id="modal-modal-title" variant="h5" color="initial" align="center">
-						REGISTRO DE JORNADA ELECTORAL
+					PASO 1.1.- REGISTRO DE JORNADA ELECTORAL
 					</Typography>
+
+
+
 					<Box m={"2rem"}>
 						<Formik
 							initialValues={{

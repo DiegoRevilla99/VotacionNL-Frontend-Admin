@@ -26,7 +26,7 @@ export const AddCandidatoMod = React.memo(({ handleOpenModal,handleOpenDeleteCan
 						},
 					}}
 				>
-					Registrar candidato y suplente
+					PASO 3.5.- Registrar candidato y suplente
 				</Button>
 				</Tooltip>
 			</Grid>

@@ -1,5 +1,6 @@
 import BallotIcon from "@mui/icons-material/Ballot";
 import DeleteIcon from "@mui/icons-material/Delete";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SettingsIcon from "@mui/icons-material/Settings";
 import {
   Box,
@@ -151,10 +152,18 @@ export const RegistroJornadaFormal = () => {
           currentRoute="JORNADAS ELECTORALES"
         />
 
-          <Box sx={{ m: "0.5rem", ml: "2rem" }}>
-            <Typography variant="h6" align="left" color="initial">
-              REGISTRO DE UNA JORNADA ELECTORAL
+<Box sx={{ display: "flex", alignItems: "center", m: "0.5rem", ml: "2rem" }}>
+  <Typography variant="h6" align="left" color="initial" sx={{ flexGrow: 1 }}>
+              PASO 1.- REGISTRO DE UNA JORNADA ELECTORAL
             </Typography>
+            <Tooltip
+    title="En este apartado puedes ver las jornadas que existen, así como también las configuraciones de cada jornada."
+    // placement="right"
+  >
+    <IconButton sx={{color: "#8A2BE2"}}>
+      <HelpOutlineIcon fontSize="large" />
+    </IconButton>
+  </Tooltip>
           </Box>
           <Divider />
           <Box

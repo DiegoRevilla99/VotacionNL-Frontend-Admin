@@ -1,5 +1,6 @@
 import BallotIcon from "@mui/icons-material/Ballot";
 import DeleteIcon from "@mui/icons-material/Delete";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Box, Button, Divider, Grid, IconButton, LinearProgress, Tooltip, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
@@ -158,11 +159,20 @@ export const CrudJornadaGenerica = () => {
 						currentRoute={jornadaNoFormalSelected.title}
 					></BreadCrumbsCustom>
 
-					<Box sx={{ m: "0.5rem", ml: "2rem" }}>
-						<Typography variant="h6" align="left" color="initial">
-							{jornadaNoFormalSelected.title}
-						</Typography>
-					</Box>
+<Box sx={{ display: "flex", alignItems: "center", m: "0.5rem", ml: "2rem" }}>
+  <Typography variant="h6" align="left" color="initial" sx={{ flexGrow: 1 }}>
+							 {jornadaNoFormalSelected.title}
+							</Typography>
+  <Tooltip
+    title="En este apartado puedes ver las boletas que existen, así como también las configuraciones de cada boleta."
+    // placement="right"
+  >
+    <IconButton sx={{color: "#8A2BE2"}}>
+      <HelpOutlineIcon fontSize="large" />
+    </IconButton>
+  </Tooltip>
+</Box>
+
 					<Divider />
 					<Box
 						sx={{
@@ -194,7 +204,7 @@ export const CrudJornadaGenerica = () => {
 										},
 									}}
 								>
-									REGISTRAR BOLETA
+									PASO 2.- REGISTRAR BOLETA
 								</Button>
 								</Tooltip>
 							</Grid>

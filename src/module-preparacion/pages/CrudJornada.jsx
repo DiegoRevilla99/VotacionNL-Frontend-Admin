@@ -1,6 +1,7 @@
 import BallotIcon from "@mui/icons-material/Ballot";
 import DeleteIcon from "@mui/icons-material/Delete";
 import HandshakeIcon from "@mui/icons-material/Handshake";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Box, Button, Divider, Grid, IconButton, LinearProgress, Tooltip, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
@@ -147,11 +148,24 @@ export const CrudJornada = () => {
 						currentRoute={jornadaSelected.title}
 					></BreadCrumbsCustom>
 
-					<Box sx={{ m: "0.5rem", ml: "2rem" }}>
-						<Typography variant="h6" align="left" color="initial">
-							{jornadaSelected.title}
-						</Typography>
-					</Box>
+<Box sx={{ display: "flex", alignItems: "center", m: "0.5rem", ml: "2rem" }}>
+  <Typography variant="h6" align="left" color="initial" sx={{ flexGrow: 1 }}>
+    {jornadaSelected.title}
+  </Typography>
+  <Tooltip
+    title="En este apartado puedes ver las boletas que existen, así como también las coaliciones de cada boleta."
+    // placement="right"
+  >
+    <IconButton sx={{color: "#8A2BE2"}}>
+      <HelpOutlineIcon fontSize="large" />
+    </IconButton>
+  </Tooltip>
+</Box>
+
+
+
+
+
 					<Divider />
 					<Box
 						sx={{
@@ -182,7 +196,7 @@ export const CrudJornada = () => {
 										},
 									}}
 								>
-									REGISTRAR BOLETA
+									PASO 2.- REGISTRAR BOLETA
 								</Button>
 								</Tooltip>
 							</Grid>

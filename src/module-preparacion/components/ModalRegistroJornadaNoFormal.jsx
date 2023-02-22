@@ -62,7 +62,7 @@ export const ModalRegistroJornadaNoFormal = ({ modalStatus, closeModal, openModa
 			<Box sx={style}>
 				<Box sx={{ overflowY: "auto", height: "100%" }}>
 					<Typography id="modal-modal-title" variant="h5" color="initial" align="center">
-						REGISTRO DE ELECCIÓN POPULAR
+						PASO 1.1.- REGISTRO DE ELECCIÓN POPULAR
 					</Typography>
 					<Box m={"2rem"}>
 						<Formik

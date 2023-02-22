@@ -261,7 +261,7 @@ export const AddBoletaJornadaGenerica = () => {
 				
 				<Box sx={{ m: "0.5rem", ml: "2rem" }}>
 					<Typography variant="h6" align="left" color="initial">
-						REGISTRO DE BOLETA NO FORMAL
+						PASO 3.- REGISTRO DE BOLETA NO FORMAL
 					</Typography>
 				</Box>
 				<Divider />
@@ -286,7 +286,7 @@ export const AddBoletaJornadaGenerica = () => {
 					>
 						<Grid item xs={12} mt="0.5rem">
 							<Typography variant="h6" color="initial">
-								DATOS GENERALES
+							PASO 3.1.- DATOS GENERALES
 							</Typography>
 						</Grid>
 						<Grid item xs={12}>
@@ -349,7 +349,7 @@ export const AddBoletaJornadaGenerica = () => {
 						</Grid>
 						<Grid item xs={12}>
 							<Typography variant="h6" color="initial">
-								DATOS GEOELECTORALES
+							PASO 3.2.- DATOS GEOELECTORALES
 							</Typography>
 						</Grid>
 						<Grid item xs={12}>
@@ -379,7 +379,7 @@ export const AddBoletaJornadaGenerica = () => {
 
 						<Grid item xs={12}>
 							<Typography variant="h6" color="initial">
-								FIRMANTES
+							PASO 3.3.- FIRMANTES
 							</Typography>
 						</Grid>
 						<Grid item xs={12}>
@@ -464,7 +464,7 @@ export const AddBoletaJornadaGenerica = () => {
 										},
 									}}
 								>
-									AGREGAR ASOCIACIÓN
+									PASO 3.5.- AGREGAR ASOCIACIÓN
 								</Button>
 								</Tooltip>
 							</Grid>

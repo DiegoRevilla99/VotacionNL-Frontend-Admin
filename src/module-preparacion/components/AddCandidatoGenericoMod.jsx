@@ -26,7 +26,7 @@ export const AddCandidatoGenericoMod = React.memo(({ handleOpenModal,handleOpenD
 						},
 					}}
 				>
-					Registrar candidatos
+					PASO 3.4.- Registrar candidatos
 				</Button>
 				</Tooltip>
 			</Grid>
