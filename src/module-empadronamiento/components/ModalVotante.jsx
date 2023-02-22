@@ -86,10 +86,8 @@ export const ModalVotante = ({
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const [errorSend, setErrorSend] = useState("");
-  const { votanteFound } = useSelector(
-    (state) => state.empVotantesSlice
-  );
-  
+  const { votanteFound } = useSelector((state) => state.empVotantesSlice);
+
   const isStepOptional = (step) => {
     return step === 5;
   };
@@ -113,14 +111,11 @@ export const ModalVotante = ({
     handleNext();
   };
 
-  const addVotante=async(datos)=>{
-    console.log("***Entre a addVotante*****")
-    console.log(datos)
+  const addVotante = async (datos) => {
     return dispatch(postVotante(datos));
+  };
 
-  }
-
-  const finalizar = async(valores) => {
+  const finalizar = async (valores) => {
     console.log("Finalizando");
     console.log(valores);
     const contac = valores.contacto;
@@ -129,26 +124,24 @@ export const ModalVotante = ({
       ...data,
       votanteModel: { ...data.votanteModel, ...contac },
     };
-    const dataRelation={
-      idJornada:id,
-      votanteModel:{
+    const dataRelation = {
+      idJornada: id,
+      votanteModel: {
         curp: datos.votanteModel.curp,
-        
-      }
+      },
+    };
+    const resp = await addVotante(datos);
+    console.log("_________________________________", resp);
+    console.log("Erros Post:", resp);
+    if (
+      resp.mensaje !== "El correo proporcionado ya fue registrado" &&
+      resp.mensaje !== "El teléfono proporcionado ya fue registrado"
+    ) {
+      await AddVotanteNext(dataRelation);
+    } else {
+      setErrorSend(resp.mensaje);
     }
-    const resp=await addVotante(datos)
-    console.log("_________________________________",resp)
-    console.log("Erros Post:",resp)
-    if(resp.mensaje!=="El correo proporcionado ya fue registrado"&& resp.mensaje!=="El teléfono proporcionado ya fue registrado"){
-      await AddVotanteNext(dataRelation)
-    }else{
-      setErrorSend(resp.mensaje)
-    }
-    
   };
-
-  
-
 
   const handleNext = () => {
     let newSkipped = skipped;
@@ -162,7 +155,6 @@ export const ModalVotante = ({
   };
 
   const handleBack = () => {
-    
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -189,13 +181,13 @@ export const ModalVotante = ({
     abrirCerrarModal();
   };
 
-  const AddVotanteNext = async(data) => {
-    console.log("*****asociandoo votante jornad:**** ",data)
-    dispatch(postJornadaVotante(data,AddVotanteNextFinal))
+  const AddVotanteNext = async (data) => {
+    console.log("*****asociandoo votante jornad:**** ", data);
+    dispatch(postJornadaVotante(data, AddVotanteNextFinal));
   };
 
   const AddVotanteNextFinal = (data) => {
-    console.log("proceso terminado")
+    console.log("proceso terminado");
     dispatch(getVotantesbyJornada(id));
     abrirCerrarModal();
     setActiveStep(0);
@@ -203,23 +195,21 @@ export const ModalVotante = ({
   };
 
   useEffect(() => {}, []);
-  
 
-const limpiar=()=>{
-  setData({})
-}
+  const limpiar = () => {
+    setData({});
+  };
 
   useEffect(() => {
-    setErrorSend("")
-    dispatch(setVotanteFound({votanteFound:{find:""}}))
-    setData({})
-    setActiveStep(0)
+    setErrorSend("");
+    dispatch(setVotanteFound({ votanteFound: { find: "" } }));
+    setData({});
+    setActiveStep(0);
   }, [isOpen]);
 
   const body = (
     <Box sx={modalResponsive}>
       <Box className={styles.fomi}>
-
         <Stepper
           sx={{
             width: "100%",
@@ -255,7 +245,11 @@ const limpiar=()=>{
         height="100%"
         sx={{ display: activeStep == 0 ? "flex" : "none" }}
       >
-        <FormInfo limpiar={limpiar} data={data} onNext={completarPaso}></FormInfo>
+        <FormInfo
+          limpiar={limpiar}
+          data={data}
+          onNext={completarPaso}
+        ></FormInfo>
       </Box>
 
       <Box width="100%" sx={{ display: activeStep == 1 ? "flex" : "none" }}>
@@ -269,7 +263,7 @@ const limpiar=()=>{
 
       <Box width="100%" sx={{ display: activeStep == 2 ? "flex" : "none" }}>
         <FormContacto
-         errorsSend={errorSend}
+          errorsSend={errorSend}
           data={data}
           limpiar={limpiar}
           onBack={handleBack}

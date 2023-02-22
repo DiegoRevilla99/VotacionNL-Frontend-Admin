@@ -140,6 +140,16 @@ export const JornadasFormales = () => {
     navigate(id);
   };
 
+  const getRowClassName = (params) => {
+    console.log(params);
+    const estado = params.row.status;
+    if (estado === "activo") {
+      return "completado";
+    }
+
+    return "";
+  };
+
   return (
     <>
       <Box

@@ -24,7 +24,7 @@ export const EmpadronamientoNF = () => {
   useEffect(() => {
     dispatch(getEleccionFormal(id));
     dispatch(getVotantesbyJornada(id));
-    dispatch(setType({type:"noformales"}))
+    dispatch(setType({ type: "noformales" }));
   }, []);
 
   return (
@@ -37,6 +37,7 @@ export const EmpadronamientoNF = () => {
           flexDirection: "column",
           justifyContent: "start",
           alignItems: "center",
+          overflowY: "scroll",
           mt: 2,
         }}
       >

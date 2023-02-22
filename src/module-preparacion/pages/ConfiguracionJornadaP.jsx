@@ -27,6 +27,7 @@ import {
   putConfiguracion,
 } from "../../store/module-preparacion/configuracion-jornada/thunksConfigJornada";
 import { ErrorField } from "../components/ErrorField";
+import { borderTop } from "@mui/system";
 
 const validationSchema = object({
   //inicioDisponibilidad: date().required("Este campo es requerido"),
@@ -330,13 +331,14 @@ export const ConfiguracionJornadaP = () => {
                     <br /> */}
                     <Grid item xs={12}>
                       <Typography
-                        sx={{}}
+                        sx={{ fontSize: "15px", mt: 1, fontWeight: "bold" }}
                         variant="subtitle2"
                         textAlign="left"
-                        color="initial"
+                        color="primary"
                       >
-                        PASO 1: EMPADRONAMIENTO
+                        PASO 1.- CONFIGURA LAS FECHAS DE EMPADRONAMIENTO
                       </Typography>
+                      {/* <hr style={{ borderTop: "1px solid gray" }} /> */}
                     </Grid>
                     <Grid item xs={12} md={6} mt="0.5rem" mb="2rem">
                       <DateFieldWithTitle
@@ -392,13 +394,14 @@ export const ConfiguracionJornadaP = () => {
                     </Grid> */}
                     <Grid item xs={12}>
                       <Typography
-                        sx={{}}
+                        sx={{ fontSize: "15px", mt: 5, fontWeight: "bold" }}
                         variant="subtitle2"
                         textAlign="left"
-                        color="initial"
+                        color="primary"
                       >
-                        PASO 2: RECEPCIÓN DE VOTACIÓN
+                        PASO 2: CONFIGURA LAS FECHAS DE RECEPCIÓN DE VOTACIÓN
                       </Typography>
+                      {/* <hr style={{ borderTop: "1px solid gray" }} /> */}
                     </Grid>
                     <Grid item xs={12} md={6} mt="0.5rem" mb="2rem">
                       <DateFieldWithTitle
@@ -439,13 +442,19 @@ export const ConfiguracionJornadaP = () => {
 
                     <Grid item xs={12}>
                       <Typography
-                        sx={{}}
-                        variant="subtitle2"
+                        sx={{
+                          fontSize: "15px",
+                          mt: 5,
+                          mb: 3,
+                          fontWeight: "bold",
+                        }}
                         textAlign="left"
-                        color="initial"
+                        color="primary"
                       >
-                        PASO 3: DURACIÓN DEL VOTO
+                        PASO 3: CONFIGURA LA DURACIÓN DEL VOTO Y LA VERIFICACION
+                        DEL SENTIDO DEL SUFRAGIO
                       </Typography>
+                      {/* <hr style={{ borderTop: "1px solid gray" }} /> */}
                     </Grid>
                     <Grid item xs={6} md={3} mt="0.5rem">
                       <TimeFieldWithTitle
