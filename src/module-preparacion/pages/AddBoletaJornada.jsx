@@ -297,7 +297,7 @@ export const AddBoletaJornada = () => {
 								  }}
 								error={errors.distritoElectoral}
 								touched={touched.distritoElectoral}
-								type="text"
+								type="number"
 							/>
 							{/* {touched.distritoElectoral && errors.distritoElectoral && <Typography className="error" ml={2} style={{ color: "red"}}>{errors.distritoElectoral}</Typography>} */}
 						</Grid>
