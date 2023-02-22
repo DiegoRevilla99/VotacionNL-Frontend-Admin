@@ -15,6 +15,7 @@ import {
 	getJornadasNoFormales,
 	getJornadaVotos,
 	getJornadaVotosInicio,
+	getSesionesActivas,
 	postImage,
 	updateBoletaData,
 } from "../../../providers/Micro-Preparacion/providerJornada";
@@ -32,6 +33,7 @@ import {
 	onCheckingOperation,
 	onDeleteBoletaData,
 	onDeleteJornadaData,
+	onDeleteSesionesActivas,
 	onEditBoleta,
 	onErrorOperation,
 	onFillBoletas,
@@ -43,6 +45,7 @@ import {
 	onSetJornadasVotosData,
 	onSetPartidoNull,
 	onSetPartidoSelectedNull,
+	onSetSesionesActivas,
 	onSuccessOperation,
 } from "./SliceJornada";
 export const onPostImage = (image) => {
@@ -421,6 +424,24 @@ export const onGetJornadaNoFormalVotosInicio = (idBoleta, id) => {
 		} else {
 			dispatch(onErrorOperation());
 			dispatch(onToastErrorOperation({ errorMessage: "Error al obtener las boletas" }));
+		}
+	};
+};
+
+export const onGetSesionesActivas = (idJornada) => {
+	return async (dispatch) => {
+		dispatch(onCheckingOperation());
+
+		const { ok, data } = await getSesionesActivas(idJornada); // PROVIDER
+
+		console.log("DATA DE LA BUSQUEDAAAAAAAAAAAAAAAAAAA", data);
+		if (ok) {
+			dispatch(onSetSesionesActivas(data)); // SLICE
+			dispatch(onSuccessOperation());
+		} else {
+			dispatch(onErrorOperation());
+			dispatch(onDeleteSesionesActivas()); // SLICE
+			dispatch(onToastErrorOperation({ errorMessage: "Error al obtener las sesiones" }));
 		}
 	};
 };

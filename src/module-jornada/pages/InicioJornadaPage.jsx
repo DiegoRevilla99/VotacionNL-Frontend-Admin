@@ -2,7 +2,10 @@ import { Box, Button, Divider, Grid, Stack, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { onDeleteJornadaDataCustom } from "../../store/module-preparacion/jornada/SliceJornada";
+import {
+	onDeleteJornadaDataCustom,
+	onDeleteSesionesActivas,
+} from "../../store/module-preparacion/jornada/SliceJornada";
 
 export const InicioJornadaPage = () => {
 	const navigate = useNavigate();
@@ -22,6 +25,7 @@ export const InicioJornadaPage = () => {
 
 	useEffect(() => {
 		dispatch(onDeleteJornadaDataCustom());
+		dispatch(onDeleteSesionesActivas());
 	}, []);
 
 	return (

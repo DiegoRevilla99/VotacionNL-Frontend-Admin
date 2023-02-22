@@ -4,6 +4,7 @@ import { jornadasAPI } from "./configJornada";
 import { jornadasNoFormalesAPI } from "./configNoFormales";
 import { ImagesAPI } from "./configImage";
 import { votoFormalAPI } from "../Micro-VotoFormal/configVotoFormal";
+import { authAPI } from "../Micro-Auth/configAuth";
 let idJornadas = 0;
 let idBoleta = 0;
 
@@ -1192,6 +1193,18 @@ export const getJornadaRespuestasConsultasInicio = async (idPapeleta, id) => {
 	} catch (error) {
 		console.log("ERRORXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", error.message);
 		return { ok: false, errorMessage: error.message };
+	}
+};
+
+export const getSesionesActivas = async (idJornada) => {
+	try {
+		const { data } = await authAPI.get(`api/auth/sesionCount/active/${idJornada}`);
+
+		// console.log("DATA SESIONES", response);
+		return { ok: true, data: data };
+	} catch (error) {
+		console.log("Error sesiones: ", error);
+		return { ok: false };
 	}
 };
 

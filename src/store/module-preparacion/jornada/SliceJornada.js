@@ -28,8 +28,15 @@ export const SliceJornada = createSlice({
 		jornadaVotosData: {
 			resultados: [],
 		},
+		sesionesActivas: 0,
 	},
 	reducers: {
+		onDeleteSesionesActivas: (state, { payload }) => {
+			state.sesionesActivas = 0;
+		},
+		onSetSesionesActivas: (state, { payload }) => {
+			state.sesionesActivas = payload;
+		},
 		onCheckingOperation: (state) => {
 			state.status = "checking";
 		},
@@ -481,4 +488,6 @@ export const {
 	onOffOperation,
 	onSetJornadasVotosData,
 	onDeleteJornadaDataCustom,
+	onDeleteSesionesActivas,
+	onSetSesionesActivas,
 } = SliceJornada.actions;
