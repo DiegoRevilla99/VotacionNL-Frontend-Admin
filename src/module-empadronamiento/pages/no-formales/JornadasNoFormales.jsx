@@ -175,7 +175,7 @@ export const JornadasNoFormales = () => {
               url: "/empadronamiento/",
             },
           ]}
-          currentRoute="JORNADAS ELECTORALES NO FORMALES"
+          currentRoute="ELECCIONES POPULARES"
         />
 
         <Typography

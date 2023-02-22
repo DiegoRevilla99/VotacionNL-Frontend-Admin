@@ -125,10 +125,13 @@ export const ConfiguracionJornadaNF = () => {
       errors.finEmpadronamiento =
         "La fecha de inicial no puede ser menor o igual que la final";
     }
-
-    if (values.finEmpadronamiento >= values.inicioRecepVoto) {
-      errors.inicioRecepVoto =
-        "La recepción de votos debe ser posterior al empadronamiento";
+    if (values.finEmpadronamiento >= values.inicioDisponibilidad) {
+      errors.inicioDisponibilidad =
+        "La disponibilidad del sistema debe ser posterior al empadronamiento";
+    }
+    if (values.inicioDisponibilidad >= values.finDisponibilidad) {
+      errors.finDisponibilidad =
+        "La fecha de inicial no puede ser menor o igual que la final";
     }
 
     if (values.inicioRecepVoto >= values.finRecepVoto) {
@@ -193,8 +196,8 @@ export const ConfiguracionJornadaNF = () => {
               initialValues={
                 !configJornada?.configuracionVotoModel
                   ? {
-                      inicioDisponibilidad: new Date(),
-                      finDisponibilidad: new Date(),
+                      inicioDisponibilidad: dayjs(null),
+                      finDisponibilidad: dayjs(null),
                       inicioEmpadronamiento: dayjs(null),
                       finEmpadronamiento: dayjs(null),
                       inicioRecepVoto: dayjs(null),
@@ -210,7 +213,9 @@ export const ConfiguracionJornadaNF = () => {
                       inicioDisponibilidad: dayjs(
                         configJornada.configuracionModel?.inicioDisponibilidad
                       ),
-                      finDisponibilidad: dayjs(configJornada.finDisponibilidad),
+                      finDisponibilidad: dayjs(
+                        configJornada.configuracionModel?.finDisponibilidad
+                      ),
                       inicioEmpadronamiento: dayjs(
                         configJornada.configuracionModel?.inicioEmpadronamiento
                       ),
@@ -295,40 +300,14 @@ export const ConfiguracionJornadaNF = () => {
                     pt="1rem"
                     mb="2rem"
                   >
-                    {/* <Grid item xs={12} md={6} mt="0.5rem">
-                      <DateFieldWithTitle
-                        label={"INICIO DE LA DISPONIBILIDAD DEL SISTEMA"}
-                        name={"inicioDisponibilidad"}
-                        value={values.inicioDisponibilidad}
-                        setFieldValue={setFieldValue}
-                        handleChange={handleChange}
-                        error={errors.inicioDisponibilidad}
-                        touched={touched.inicioDisponibilidad}
-                        isDisabled={values.isDisabled}
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={6} mt="0.5rem">
-                      <DateFieldWithTitle
-                        label={"FINALIZACIÓN DE LA DISPONIBILIDAD DEL SISTEMA"}
-                        name={"finDisponibilidad"}
-                        value={values.finDisponibilidad}
-                        setFieldValue={setFieldValue}
-                        handleChange={handleChange}
-                        error={errors.finDisponibilidad}
-                        touched={touched.finDisponibilidad}
-                        minDate={values.inicioDisponibilidad}
-                        isDisabled={values.isDisabled }
-                      />
-                    </Grid>
-                    <br /> */}
                     <Grid item xs={12}>
                       <Typography
-                        sx={{}}
+                        sx={{ fontSize: "15px", mt: 1, fontWeight: "bold" }}
                         variant="subtitle2"
                         textAlign="left"
-                        color="initial"
+                        color="primary"
                       >
-                        1. EMPADRONAMIENTO
+                        PASO 1.- CONFIGURA LAS FECHAS DE EMPADRONAMIENTO
                       </Typography>
                     </Grid>
                     <Grid item xs={12} md={6} mt="0.5rem" mb="2rem">
@@ -358,7 +337,53 @@ export const ConfiguracionJornadaNF = () => {
                         isDisabled={values.isDisabled}
                       />
                     </Grid>
-
+                    <Grid item xs={12}>
+                      <Typography
+                        sx={{ fontSize: "15px", mt: 1, fontWeight: "bold" }}
+                        variant="subtitle2"
+                        textAlign="left"
+                        color="primary"
+                      >
+                        PASO 2.- CONFIGURA LAS FECHAS DE LA DISPONIBILIDAD DEL
+                        SISTEMA
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} md={6} mt="0.5rem">
+                      <DateFieldWithTitle
+                        label={"INICIO DE LA DISPONIBILIDAD DEL SISTEMA"}
+                        name={"inicioDisponibilidad"}
+                        value={values.inicioDisponibilidad}
+                        setFieldValue={setFieldValue}
+                        handleChange={handleChange}
+                        error={errors.inicioDisponibilidad}
+                        touched={touched.inicioDisponibilidad}
+                        isDisabled={
+                          values.isDisabled ||
+                          values.finEmpadronamiento.$d == "Invalid Date"
+                        }
+                        minDate={values.finEmpadronamiento.minute(
+                          values.finEmpadronamiento.minute() + 1
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6} mt="0.5rem">
+                      <DateFieldWithTitle
+                        label={"FINALIZACIÓN DE LA DISPONIBILIDAD DEL SISTEMA"}
+                        name={"finDisponibilidad"}
+                        value={values.finDisponibilidad}
+                        setFieldValue={setFieldValue}
+                        handleChange={handleChange}
+                        error={errors.finDisponibilidad}
+                        touched={touched.finDisponibilidad}
+                        minDate={values.inicioDisponibilidad.minute(
+                          values.inicioDisponibilidad.minute() + 1
+                        )}
+                        isDisabled={
+                          values.isDisabled ||
+                          values.finEmpadronamiento.$d == "Invalid Date"
+                        }
+                      />
+                    </Grid>
                     {/* <Grid item xs={12} md={6} mt="0.5rem">
                       <DateFieldWithTitle
                         label={"INICIO DE ASIGNACIÓN DE CONTRASEÑAS"}
@@ -386,12 +411,12 @@ export const ConfiguracionJornadaNF = () => {
                     </Grid> */}
                     <Grid item xs={12}>
                       <Typography
-                        sx={{}}
+                        sx={{ fontSize: "15px", mt: 5, fontWeight: "bold" }}
                         variant="subtitle2"
                         textAlign="left"
-                        color="initial"
+                        color="primary"
                       >
-                        2. RECEPCIÓN DE VOTACIÓN
+                        PASO 3: CONFIGURA LAS FECHAS DE RECEPCIÓN DE VOTACIÓN
                       </Typography>
                     </Grid>
                     <Grid item xs={12} md={6} mt="0.5rem" mb="2rem">
@@ -405,10 +430,10 @@ export const ConfiguracionJornadaNF = () => {
                         touched={touched.inicioRecepVoto}
                         isDisabled={
                           values.isDisabled ||
-                          values.finEmpadronamiento.$d == "Invalid Date"
+                          values.finDisponibilidad.$d == "Invalid Date"
                         }
-                        minDate={values.finEmpadronamiento.minute(
-                          values.finEmpadronamiento.minute() + 1
+                        minDate={values.inicioDisponibilidad.minute(
+                          values.inicioDisponibilidad.minute()
                         )}
                       />
                     </Grid>
@@ -421,24 +446,30 @@ export const ConfiguracionJornadaNF = () => {
                         handleChange={handleChange}
                         error={errors.finRecepVoto}
                         touched={touched.finRecepVoto}
+                        maxDate={new Date(values.finDisponibilidad)}
                         minDate={values.inicioRecepVoto.minute(
                           values.inicioRecepVoto.minute() + 1
                         )}
                         isDisabled={
                           values.isDisabled ||
-                          values.finEmpadronamiento.$d == "Invalid Date"
+                          values.finDisponibilidad.$d == "Invalid Date"
                         }
                       />
                     </Grid>
 
                     <Grid item xs={12}>
                       <Typography
-                        sx={{}}
-                        variant="subtitle2"
+                        sx={{
+                          fontSize: "15px",
+                          mt: 5,
+                          mb: 3,
+                          fontWeight: "bold",
+                        }}
                         textAlign="left"
-                        color="initial"
+                        color="primary"
                       >
-                        3. DURACIÓN DEL VOTO
+                        PASO 4: CONFIGURA LA DURACIÓN DEL VOTO Y LA VERIFICACION
+                        DEL SENTIDO DEL SUFRAGIO
                       </Typography>
                     </Grid>
                     <Grid item xs={6} md={3} mt="0.5rem">
