@@ -60,7 +60,7 @@ export const ConsultasTabs = () => {
 	// 	);
 	// else
 	return (
-		<Box sx={{ overflow: "visible" }}>
+		<Box sx={{ overflow: "hidden" }}>
 			<Box
 				sx={{
 					height: "100%",
@@ -118,7 +118,7 @@ export const ConsultasTabs = () => {
 					</PrivateRoute>
 				</Box>
 			</Box>
-			<Box sx={{ overflowY: "visible" }}>
+			<Box sx={{ overflowY: "hidden" }}>
 				{jornadaVotosData.resultados.length !== 0 && status !== "checking" && (
 					<>
 						<ReporteFinalConsultaHTML jornadaVotosData={jornadaVotosData} />
