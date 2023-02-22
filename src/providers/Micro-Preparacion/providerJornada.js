@@ -3,7 +3,6 @@ import { votosNoFormalesAPI } from "../Micro-VotosNoFormales/configVotosNoFormal
 import { ImagesAPI } from "./configImage";
 import { jornadasAPI } from "./configJornada";
 import { jornadasNoFormalesAPI } from "./configNoFormales";
-import { ImagesAPI } from "./configImage";
 import { votoFormalAPI } from "../Micro-VotoFormal/configVotoFormal";
 import { authAPI } from "../Micro-Auth/configAuth";
 let idJornadas = 0;
