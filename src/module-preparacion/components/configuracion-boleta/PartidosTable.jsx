@@ -1,6 +1,6 @@
 import EditIcon from "@mui/icons-material/Edit";
 import HighlightOffSharpIcon from "@mui/icons-material/HighlightOffSharp";
-import { IconButton, Typography } from "@mui/material";
+import { IconButton, Tooltip, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { memo } from "react";
 import { useDispatch } from "react-redux";
@@ -62,12 +62,16 @@ export const PartidosTable = memo(({info = {}, handleOpenModal}) => {
             }}
           >
             <legend style={{ textAlign: "right" }}>
+            <Tooltip title="Editar el partido">
               <IconButton aria-label="edit" onClick={editar}>
                 <EditIcon fontSize="large" color="primary" />
               </IconButton>
+              </Tooltip>
+              <Tooltip title="Eliminar el partido">
               <IconButton aria-label="delete" onClick={eliminarbtn}>
                 <HighlightOffSharpIcon fontSize="large" color="primary" />
               </IconButton>
+              </Tooltip>
             </legend>
             <Typography sx={{ fontWeight: "bold" }}>
               {nameParty}

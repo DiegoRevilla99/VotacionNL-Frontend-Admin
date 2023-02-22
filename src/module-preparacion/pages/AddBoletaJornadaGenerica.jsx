@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, Divider, Grid, MenuItem, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Divider, Grid, MenuItem, TextField, Tooltip, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -8,7 +8,6 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SettingsIcon from "@mui/icons-material/Settings";
 import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
 import { Formik } from 'formik';
 import { useNavigate, useParams } from "react-router-dom";
 import { object, string } from "yup";
@@ -444,6 +443,7 @@ export const AddBoletaJornadaGenerica = () => {
 							mt={5}
 						>
 							<Grid item xs={12} md={6} lg={4}>
+							<Tooltip title="Registrar una nueva asociación">
 								<Button
 									
 									// onClick={abrirCerrarModalAsociacion}
@@ -466,6 +466,7 @@ export const AddBoletaJornadaGenerica = () => {
 								>
 									AGREGAR ASOCIACIÓN
 								</Button>
+								</Tooltip>
 							</Grid>
 							<Box
 							  sx={{

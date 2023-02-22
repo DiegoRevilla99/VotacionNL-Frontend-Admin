@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, Divider, Grid, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Divider, Grid, Tooltip, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { Formik } from 'formik';
 import React, { useState } from "react";
@@ -368,6 +368,7 @@ export const AddBoletaJornada = () => {
 						>
 							
 							<Grid item xs={12} md={6} lg={4}>
+							<Tooltip title="Registrar una nuevo partido">
 								<Button
 									// onClick={setShowModal(true)}
 									onClick={handleOpenMatchModal}
@@ -389,6 +390,7 @@ export const AddBoletaJornada = () => {
 								>
 									AGREGAR PARTIDO
 								</Button>
+								</Tooltip>
 							</Grid>
 								<Box
 								sx={{

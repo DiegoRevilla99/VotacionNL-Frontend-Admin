@@ -1,6 +1,6 @@
 import EditIcon from "@mui/icons-material/Edit";
 import HighlightOffSharpIcon from "@mui/icons-material/HighlightOffSharp";
-import { IconButton, Typography } from "@mui/material";
+import { IconButton, Tooltip, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { memo } from "react";
 import { useDispatch } from "react-redux";
@@ -66,12 +66,16 @@ export const AsociacionTabla = memo(({
           }}
         >
           <legend style={{ textAlign: "right" }}>
+          <Tooltip title="Editar la asociación">
             <IconButton aria-label="edit" onClick={editar}>
               <EditIcon fontSize="large" color="primary" />
             </IconButton>
+            </Tooltip>
+              <Tooltip title="Eliminar la asociación">
             <IconButton aria-label="delete" onClick={eliminarbtn}>
               <HighlightOffSharpIcon fontSize="large" color="primary" />
             </IconButton>
+            </Tooltip>
           </legend>
           <Typography sx={{ fontWeight: "bold" }}>
             {nombreAsociacion}

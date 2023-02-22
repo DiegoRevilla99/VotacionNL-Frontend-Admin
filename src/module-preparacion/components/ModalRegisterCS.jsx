@@ -341,7 +341,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 	  
 		return (
 		  <>
-			<Typography>FECHA DE NACIMIENTO</Typography>
+			<Typography>FECHA DE NACIMIENTO DEL CANDIDATO/A</Typography>
 			<DateFieldFechaNacimiento
 			  name="fechaNacimientoCandidatos"
 			  value={fechaNacimientoCandidatos}
@@ -398,7 +398,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		
 		return (
 		  <>
-			<Typography>FECHA DE NACIMIENTO</Typography>
+			<Typography>FECHA DE NACIMIENTO DEL/LA SUPLENTE</Typography>
 			
 			<DateFieldFechaNacimientoSuplente
 			  name="fechaNacimientoSuplentes"
@@ -733,11 +733,11 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 											<>
 											<Box sx={{ mt: 4, mb: 1, ml: 2, mr: 2}}>
 											<Typography variant="h7" mt={"2rem"}>
-												CURP DEL CANDIDATO <span style={{ color: "red" }}>*</span>
+												CURP DEL CANDIDATO/A <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<FielTextCustomRegistro
 														disabled={status === "checking"}
-														label="Introduce la CURP del candidato..."
+														label="Introduce la CURP del candidato/a..."
 														name="claveElectoralCandidato"
 														placeholder="Ej: CASK00..."
 														value={values.claveElectoralCandidato}
@@ -747,11 +747,11 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														maxLength={18} // se agrega el atributo maxLength
 													/>
 											<Typography variant="h7" mt={"2rem"}>
-												PRIMER APELLIDO <span style={{ color: "red" }}>*</span>
+												PRIMER APELLIDO DEL CANDIDATO/A <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<FielTextCustomRegistro
 														disabled={status === "checking"}
-														label="Introduce el primer apellido del candidato..."
+														label="Introduce el primer apellido del candidato/a..."
 														name="apellidoPCandidato"
 														placeholder="Ej: Chavez..."
 														value={values.apellidoPCandidato}
@@ -760,11 +760,11 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														touched = {errors.apellidoPCandidato}
 													/>
 											<Typography variant="h7" mt={"2rem"}>
-												SEGUNDO APELLIDO <span style={{ color: "red" }}>*</span>
+												SEGUNDO APELLIDO DEL CANDIDATO/A <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<FielTextCustomRegistro
 														disabled={status === "checking"}
-														label="Introduce el segundo apellido del candidato..."
+														label="Introduce el segundo apellido del candidato/a..."
 														name="apellidoMCandidato"
 														placeholder="Ej: Sanchez..."
 														value={values.apellidoMCandidato}
@@ -773,11 +773,11 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														touched = {errors.apellidoMCandidato}
 													/>
 												<Typography variant="h7" mt={"2rem"}>
-												NOMBRES <span style={{ color: "red" }}>*</span>
+												NOMBRES DEL CANDIDATO/A <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<FielTextCustomRegistro
 														disabled={status === "checking"}
-														label="Introduce el nombre completo del candidato..."
+														label="Introduce el nombre completo del candidato/a..."
 														name="nombreCandidato"
 														placeholder="Ej: Kevin..."
 														value={values.nombreCandidato}
@@ -837,7 +837,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 												</Typography>
 												<FielTextCustomRegistro
 														disabled={status === "checking"}
-														label="Introduce el seudónimo del candidato..."
+														label="Introduce el seudónimo del candidato/a..."
 														name="seudonimoCandidato"
 														placeholder="Ej: El Kevin..."
 														value={values.seudonimoCandidato}
@@ -866,7 +866,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 													
 												
 														<Typography variant="h7" mt={"2rem"}>
-														GENERO DEL CANDIDATO <span style={{ color: "red" }}>*</span>
+														GÉNERO DEL CANDIDATO/A <span style={{ color: "red" }}>*</span>
 														</Typography>
 													<Box>
 															<RadioButtMod
@@ -892,11 +892,11 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 											<>
 											<Box sx={{ mt: 4, mb: 1, ml: 2, mr: 2}}>
 											<Typography variant="h7" mt={"2rem"}>
-												CURP DEL SUPLENTE <span style={{ color: "red" }}>*</span>
+												CURP DEL/LA SUPLENTE <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<FielTextCustomRegistro
 														disabled={status === "checking"}
-														label="Introduce la CURP del suplente..."
+														label="Introduce la CURP del/la suplente..."
 														name="claveElectoralSuplente"
 														placeholder="Ej: CASK00..."
 														value={values.claveElectoralSuplente}
@@ -906,11 +906,11 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														maxLength={18} // se agrega el atributo maxLength
 													/>
 											<Typography variant="h7" mt={"2rem"}>
-												PRIMER APELLIDO <span style={{ color: "red" }}>*</span>
+												PRIMER APELLIDO DEL/LA SUPLENTE <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<FielTextCustomRegistro
 														disabled={status === "checking"}
-														label="Introduce el primer apellido del suplente..."
+														label="Introduce el primer apellido del/la suplente..."
 														name="apellidoPSuplente"
 														placeholder="Ej: Chavez..."
 														value={values.apellidoPSuplente}
@@ -919,11 +919,11 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														touched = {errors.apellidoPSuplente}
 													/>
 											<Typography variant="h7" mt={"2rem"}>
-												SEGUNDO APELLIDO <span style={{ color: "red" }}>*</span>
+												SEGUNDO APELLIDO DEL/LA SUPLENTE <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<FielTextCustomRegistro
 														disabled={status === "checking"}
-														label="Introduce el segundo apellido del suplente..."
+														label="Introduce el segundo apellido del/la suplente..."
 														name="apellidoMSuplente"
 														placeholder="Ej: Sanchez..."
 														value={values.apellidoMSuplente}
@@ -932,11 +932,11 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														touched = {errors.apellidoMSuplente}
 													/>
 												<Typography variant="h7" mt={"2rem"}>
-												NOMBRES <span style={{ color: "red" }}>*</span>
+												NOMBRES DEL/LA SUPLENTE <span style={{ color: "red" }}>*</span>
 													</Typography>
 													<FielTextCustomRegistro
 														disabled={status === "checking"}
-														label="Introduce el nombre completo del suplente..."
+														label="Introduce el nombre completo del/la suplente..."
 														name="nombreSuplente"
 														placeholder="Ej: Kevin..."
 														value={values.nombreSuplente}
@@ -945,7 +945,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 														touched = {errors.nombreSuplente}
 													/>
 											<Typography variant="h7" mt={"1rem"}>
-											INSERTAR FOTOGRAFÍA DEL SUPLENTE  <span style={{ color: "red" }}>*</span>
+											INSERTAR FOTOGRAFÍA DEL/A SUPLENTE  <span style={{ color: "red" }}>*</span>
 												</Typography>
 												<Box
 													display="flex"
@@ -992,11 +992,11 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 															</Box>
 													)}
 											<Typography variant="h7" mt={"1rem"}>
-											SEUDÓNIMO DEL SUPLENTE <span style={{ color: "gray" }}> (opcional)</span>
+											SEUDÓNIMO DEL/LA SUPLENTE <span style={{ color: "gray" }}> (opcional)</span>
 												</Typography>
 												<FielTextCustomRegistro
 														disabled={status === "checking"}
-														label="Introduce el seudónimo del suplente..."
+														label="Introduce el seudónimo del/la suplente..."
 														name="seudonimoSuplente"
 														placeholder="Ej: El Kevin..."
 														value={values.seudonimoSuplente}
@@ -1022,7 +1022,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 													
 													
 														<Typography variant="h7" mt={"2rem"}>
-														GÉNERO DEL SUPLENTE <span style={{ color: "red" }}>*</span>
+														GÉNERO DEL/LA SUPLENTE <span style={{ color: "red" }}>*</span>
 														</Typography>
 													<Box>
 															<RadioButtModSuplente

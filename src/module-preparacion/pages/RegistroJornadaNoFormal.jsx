@@ -1,7 +1,7 @@
 import BallotIcon from "@mui/icons-material/Ballot";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { Box, Button, Divider, Grid, IconButton, LinearProgress, Typography } from "@mui/material";
+import { Box, Button, Divider, Grid, IconButton, LinearProgress, Tooltip, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -32,7 +32,7 @@ export const RegistroJornadaNoFormal = () => {
 	console.log("RegistroJornadaNoFormal", jornadasNoFormalesData);
 	const dispatch = useDispatch();
 	const columns = [
-		{ field: "nombreEleccion", headerName: "TÍTULO DE LA ELECCIÓN", flex: 10 },
+		{ field: "nombreEleccion", headerName: "TÍTULO DE LA ELECCIÓN", flex: 7 },
 		{
 			field: "configuracion",
 			headerName: "CONFIGURACIÓN",
@@ -42,26 +42,35 @@ export const RegistroJornadaNoFormal = () => {
 			renderCell: (params) => {
 				return (
 					<Stack spacing={2} direction="row">
+						<Tooltip title="Ver boletas pertenecientes a esta elección popular">
+
 						<Button
 							variant="outlined"
 							startIcon={<BallotIcon />}
 							onClick={() => handleEdit(params.id, params.row.nombreEleccion)}
-						>
-							Ver
+							>
+							Ver boletas
 						</Button>
+							</Tooltip>
+						<Tooltip title="Realizar la configuración de la elección popular">
+
 						<Button
 							variant="outlined"
 							startIcon={<SettingsIcon />}
 							onClick={() => handleConfig(params.id)}
-						>
+							>
 							Configuración
 						</Button>
+							</Tooltip>
+						 <Tooltip title="Eliminar esta elección popular">
+
 						<IconButton
 							sx={{ color: "#511079" }}
 							onClick={() => handleDelete(params.id, params.row.nombreEleccion)}
-						>
+							>
 							<DeleteIcon />
 						</IconButton>
+							</Tooltip>
 					</Stack>
 				);
 			},
@@ -153,6 +162,7 @@ export const RegistroJornadaNoFormal = () => {
 					>
 						<Grid container>
 							<Grid item lg={3} md={4} sm={12} xs={12}>
+								<Tooltip title="Registrar una nueva elección popular">
 								<Button
 									onClick={openModal}
 									variant="contained"
@@ -172,6 +182,7 @@ export const RegistroJornadaNoFormal = () => {
 								>
 									Registrar ELECCIÓN POPULAR
 								</Button>
+								</Tooltip>
 							</Grid>
 						</Grid>
 

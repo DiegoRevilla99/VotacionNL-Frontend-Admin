@@ -1,4 +1,4 @@
-import { Box, Button, Grid } from "@mui/material";
+import { Box, Button, Grid, Tooltip } from "@mui/material";
 import React from "react";
 import { DataGridTableJornadaNoFormal } from "../../ui/components/DataGridTableJornadaNoFormal";
 
@@ -6,6 +6,7 @@ export const AddCandidatoGenericoMod = React.memo(({ handleOpenModal,handleOpenD
 	return (
 		<>
 			<Grid item xs={12} md={6} lg={4}>
+			<Tooltip title="Registrar un/una nuevo/a candidato/a">
 				<Button
 					
 					onClick={handleOpenModal}
@@ -27,6 +28,7 @@ export const AddCandidatoGenericoMod = React.memo(({ handleOpenModal,handleOpenD
 				>
 					Registrar candidatos
 				</Button>
+				</Tooltip>
 			</Grid>
 			<Grid item xs={12}>
 				<Box
