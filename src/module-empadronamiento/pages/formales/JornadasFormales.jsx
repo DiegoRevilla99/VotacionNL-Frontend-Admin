@@ -2,7 +2,7 @@ import BallotIcon from "@mui/icons-material/Ballot";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -161,6 +161,7 @@ export const JornadasFormales = () => {
           justifyContent: "start",
           alignItems: "center",
           mt: 2,
+          mb: 1,
         }}
       >
         <BreadCrumbsCustom
@@ -175,6 +176,12 @@ export const JornadasFormales = () => {
         {/* <Typography sx={{ mt: 4 }} textAlign="center">
           LISTA JORNADAS
         </Typography> */}
+        <Typography
+          color={"primary"}
+          sx={{ mt: 1, mb: 1, fontSize: "20px", fontWeight: "bold" }}
+        >
+          Paso 1: Elige la jornada a empadronar
+        </Typography>
         <Box
           sx={{
             display: "flex",
@@ -196,6 +203,7 @@ export const JornadasFormales = () => {
             buscador={buscador}
             handleSearch={handleSearch}
           />
+
           <GeneralTable
             loading={isLoadingFormales}
             data={dataSearch}

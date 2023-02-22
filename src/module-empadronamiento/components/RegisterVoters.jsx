@@ -206,19 +206,23 @@ export const RegisterVoters = ({
     { field: "apellidoMVotante", headerName: "SEGUNDO AP.", flex: 3 },
     {
       field: "status",
-      headerName: "CONTRASEÑA",
-      flex: 5,
+      headerName: "EDO. REGISTRO",
+      flex: 3,
 
       disableColumnMenu: true,
       renderCell: ({ row }) =>
         // console.log(row.status);
         row.status ? (
-          <Typography sx={{ fontWeight: "bold", color: "#048F37" }}>
-            Reestablecida
+          <Typography
+            sx={{ fontSize: "12px", fontWeight: "bold", color: "#048F37" }}
+          >
+            COMPLETADO
           </Typography>
         ) : (
-          <Typography sx={{ fontWeight: "bold", color: "#B50909" }}>
-            Sin reestabler
+          <Typography
+            sx={{ fontSize: "12px", fontWeight: "bold", color: "#B50909" }}
+          >
+            SIN COMPLETAR
           </Typography>
         ),
     },
@@ -303,7 +307,7 @@ export const RegisterVoters = ({
   }, [datos]);
 
   const data = {
-    labels: [["Contraseñas resstablecidas"], ["Contraseñas no resstablecidas"]],
+    labels: [["Registros completados"], ["Registros sin completar"]],
     datasets: [
       {
         data: [contraseniaData.py, contraseniaData.pn],
@@ -327,6 +331,32 @@ export const RegisterVoters = ({
             mb: 3,
           }}
         >
+          {status !== "terminado" && (
+            <Box display={"center"} width="80%" justifyContent="space-between">
+              <Typography
+                color={"primary"}
+                sx={{ mt: 1, mb: 1, fontSize: "15px", fontWeight: "bold" }}
+              >
+                Paso 2: Subir lista de votantes
+              </Typography>
+              <Typography
+                color={"primary"}
+                sx={{ mt: 1, mb: 1, fontSize: "15px", fontWeight: "bold" }}
+              >
+                Paso 3: Enviar enlaces a los votantes
+              </Typography>
+            </Box>
+          )}
+
+          {status === "terminado" && (
+            <Typography
+              color={"primary"}
+              sx={{ mt: 1, mb: 1, fontSize: "18px", fontWeight: "bold" }}
+            >
+              Paso 4: Crear las boletas
+            </Typography>
+          )}
+
           <Box sx={opciones}>
             <Box
               sx={{
@@ -538,15 +568,15 @@ export const RegisterVoters = ({
               sx={{ fontWeight: "bold", fontSize: "25px", mt: 3, mb: 3 }}
               textAlign={"center"}
             >
-              Reestablecimiento de contraseña por parte de los votantes
+              ESTADO DE LOS REGISTROS DE LOS VOTANTES EMPADRONADOS
             </Typography>
             <Typography
               textAlign={"center"}
               sx={{ fontSize: "18px", fontWeight: "bold" }}
-              mt={5}
-              mb={2}
+              mt={1}
+              mb={4}
             >
-              Total votantes: {datos.length}
+              {datos.length} VOTANTES EMPADRONADOS
             </Typography>
 
             <Box
