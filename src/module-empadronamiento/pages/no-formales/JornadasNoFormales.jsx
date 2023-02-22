@@ -19,7 +19,7 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import { Searcher } from "../../components/Searcher";
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 
 export const JornadasNoFormales = () => {
   let location = useLocation();
@@ -38,7 +38,6 @@ export const JornadasNoFormales = () => {
   };
 
   useEffect(() => {
-    
     dispatch(getJornadasNoFormales());
     setDataSearch(jornadasNoFormales);
   }, []);
@@ -46,7 +45,6 @@ export const JornadasNoFormales = () => {
   useEffect(() => {
     setDataSearch(jornadasNoFormales);
   }, [jornadasNoFormales]);
-
 
   const searching = (data, buscador) => {
     const newData = data.filter((jornada) => {
@@ -82,7 +80,7 @@ export const JornadasNoFormales = () => {
                   color: "#D37A09",
                 }}
               >
-                <HourglassTopIcon />
+                <HourglassTopIcon titleAccess="EMPADRONAMIENTO NO INICIADO" />
               </Box>
             )}
             {row.status === "terminado" && (
@@ -95,7 +93,7 @@ export const JornadasNoFormales = () => {
                   color: "#D30909",
                 }}
               >
-                <EventBusyIcon />
+                <EventBusyIcon titleAccess="EMPADRONAMIENTO TERMINADO" />
               </Box>
             )}
             {row.status === "activo" && (
@@ -108,7 +106,7 @@ export const JornadasNoFormales = () => {
                   color: "#099D18",
                 }}
               >
-                <EventAvailableIcon />
+                <EventAvailableIcon titleAccess="EMPADRONAMIENTO ACTIVO" />
               </Box>
             )}
           </Box>
@@ -128,9 +126,20 @@ export const JornadasNoFormales = () => {
             <Button
               disabled={row.status === "noiniciada"}
               variant="outlined"
-              sx={{width:"120px"}}
+              sx={{ width: "120px" }}
               onClick={(e) => goTo(row.idEleccion)}
-              startIcon={row.status === "activo"?<AppRegistrationIcon/>:<BallotIcon />}
+              startIcon={
+                row.status === "activo" ? (
+                  <AppRegistrationIcon />
+                ) : (
+                  <BallotIcon />
+                )
+              }
+              title={
+                (row.status === "activo") | (row.status === "noiniciada")
+                  ? "REALIZAR EMPADRONAMIENTO"
+                  : row.status === "terminado" && "VISUALIZAR EMPADRONAMIENTO"
+              }
             >
               {(row.status === "activo") | (row.status === "noiniciada")
                 ? "REALIZAR"
@@ -179,18 +188,16 @@ export const JornadasNoFormales = () => {
             boxShadow: 1,
             borderRadius: "20px",
             mt: 0,
-            pl:3,
+            pl: 3,
             width: "95%",
             height: "calc(100% - 80px)",
           }}
         >
-
-<Searcher
+          <Searcher
             name="JORNADAS REGISTRADAS"
             buscador={buscador}
             handleSearch={handleSearch}
           />
-
 
           <GeneralTable
             loading={isLoadingJornadasNoFormales}

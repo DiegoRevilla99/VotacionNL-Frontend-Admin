@@ -24,7 +24,7 @@ export const Empadronamiento = () => {
   useEffect(() => {
     dispatch(getEleccionFormal(id));
     dispatch(getVotantesbyJornada(id));
-    dispatch(setType({type:"formales"}))
+    dispatch(setType({ type: "formales" }));
   }, []);
 
   return (
@@ -38,6 +38,8 @@ export const Empadronamiento = () => {
           justifyContent: "start",
           alignItems: "center",
           pt: 2,
+          overflowY: "scroll",
+          overflowX: "hidden",
         }}
       >
         <BreadCrumbsCustom

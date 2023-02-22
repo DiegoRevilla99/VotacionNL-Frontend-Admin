@@ -30,6 +30,7 @@ import { FormContacto } from "./FormContacto";
 import { transformDate } from "../helpers/transformDate";
 import { useParams } from "react-router-dom";
 import { envioLink } from "../../store/module-empadronamiento/votantes/thunksVotantes";
+import { setErrorPost } from "../../store/module-empadronamiento/votantes/empVotantesSlice";
 
 const useStyles = makeStyles({
   textField: {
@@ -53,7 +54,7 @@ const modalResponsive = {
   flexDirection: "column",
   justifyContent: "start",
   position: "fixed",
-  width: { xl: "50%", sm: "70%", xs: "90%" },
+  width: { xl: "55%", sm: "80%", xs: "90%" },
   backgroundColor: "white",
   border: "1px solid rgba(0,0,0,0.0)",
   borderRadius: "20px",
@@ -70,7 +71,7 @@ const modalResponsive = {
 
 const steps = ["INFORMACIÓN", "DIRECCIÓN", "CONTACTO"];
 
-export const ModalLink = ({
+export const ModalCrearBoleta = ({
   isOpen = false,
   abrirCerrarModal = () => {},
   enviar = () => {
@@ -82,14 +83,8 @@ export const ModalLink = ({
   const { id } = useParams();
   const styles = useStyles();
   const dispatch = useDispatch();
-  const [data, setData] = useState({});
-  const [dataNueva, setDataNueva] = useState({});
-
-  const { status } = useSelector((state) => state.empVotantesSlice);
-
-  const finalizar = () => {
-    dispatch(envioLink(dataNueva, AddVotanteNext));
-  };
+  const { status } = useSelector((state) => state.empFormales);
+  const { errorPost } = useSelector((state) => state.empVotantesSlice);
 
   const cerrarM = () => {
     abrirCerrarModal();
@@ -100,19 +95,8 @@ export const ModalLink = ({
   };
 
   useEffect(() => {
-    const dataSend = votantesData.map((voter) => {
-      const votanteemail = {
-        email: voter.correoVotante,
-        userName: voter.curp,
-        subject: "ESTABLECIMIENTO DE CONTRASEÑA - PROCESO ELECTORAL",
-      };
-      return votanteemail;
-    });
-
-    setDataNueva({ emails: dataSend });
-  }, [votantesData]);
-
-  useEffect(() => {}, [isOpen]);
+    dispatch(setErrorPost({ errorPost: "" }));
+  }, [isOpen]);
 
   const body = (
     <Box sx={modalResponsive}>
@@ -121,14 +105,15 @@ export const ModalLink = ({
           textAlign="center"
           sx={{ fontSize: 20, fontWeight: "bold", mb: 3 }}
         >
-          ENVIO DE TOKEN A TODOS LOS VOTANTES
+          ¿DESEA REALIZAR LA CREACIÓN DE BOLETAS PARA LOS VOTANTES DE ESTA
+          JORNADA?
         </Typography>
       </Box>
 
       <Box width="100%">
         <Typography textAlign="center" sx={{}}>
-          Al "Aceptar" se le estará enviando al correo electronico de todos los
-          votantes el token para que inicien sesión.
+          Al "Aceptar" se creará las boletas necesarias para todos los votantes
+          de esta jornada
         </Typography>
         <Typography textAlign="center" sx={{ mt: 2 }}>
           ¿Esta seguro de esta acción?
@@ -144,6 +129,9 @@ export const ModalLink = ({
         >
           <CircularProgress color="primary" />
         </Stack>
+      )}
+      {errorPost !== "" && (
+        <Typography sx={{ color: "#C10E0E" }}>{errorPost}</Typography>
       )}
       <Box
         sx={{ mt: 3 }}
@@ -162,7 +150,7 @@ export const ModalLink = ({
         <Button
           disabled={status === "checking"}
           variant="contained"
-          onClick={finalizar}
+          onClick={enviar}
         >
           Aceptar
         </Button>
