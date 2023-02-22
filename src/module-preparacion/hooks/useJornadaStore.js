@@ -145,7 +145,7 @@ export const useJornadaStore = () => {
 
 	const addPartido = (
 		id, 
-		clavePartido,
+
 		nameParty,
 		siglasParty,
 		emblemParty,
@@ -156,7 +156,7 @@ export const useJornadaStore = () => {
 		dispatch(
 			onAddPartido({
 				id, 
-				clavePartido,
+
 				nameParty,
 				siglasParty,
 				emblemParty,
@@ -211,7 +211,7 @@ export const useJornadaStore = () => {
 
 	const updatePartido = (
 		id, 
-		claveParty, 
+
 		namePartyy, 
 		siglasPartyy, 
 		emblemaPartyy, 
@@ -222,7 +222,7 @@ export const useJornadaStore = () => {
 		dispatch(
 			onUpdatePartido({
 				id, 
-				claveParty, 
+
 				namePartyy, 
 				siglasPartyy, 
 				emblemaPartyy, 

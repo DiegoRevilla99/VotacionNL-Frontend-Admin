@@ -10,6 +10,7 @@ import { useUiStore } from "../../hooks/useUiStore";
 import { DateFieldFechaNacimientoNoFormal } from '../../module-empadronamiento/components/DateFieldFechaNacimientoNoFormal';
 import { onPostImage } from '../../store/module-preparacion/jornada/ThunksJornadaNoFormal';
 import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
+import { FielTextCustomRegistro } from './FielTextCustomRegistro';
 import { GeneroRadioButton } from "./GeneroRadioButton";
 
 const style = {
@@ -411,81 +412,68 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 									<Typography variant="h7">
 										CURP DEL CANDIDATO <span style={{ color: "red" }}>*</span>
 									</Typography>
-									<TextField
+									<FielTextCustomRegistro
+										disabled={status === "checking"}
+										label="Introduce la CURP del candidato..."
 										name="claveCandidato"
-										fullWidth
-										size="small"
-										// id="titulo"
-										label=""
-										variant="outlined"
-										onChange={handleChange}
+										placeholder="Ej: CASK0..."
 										value={values.claveCandidato}
-										error={touched.claveCandidato && Boolean(errors.claveCandidato)}
-										helperText={touched.claveCandidato && errors.claveCandidato}
-										onBlur={handleBlur}
-										maxLength={18} // se agrega el atributo maxLength
+										handleChange={handleChange}
+										error = {errors.claveCandidato}
+										maxLength={18}
+										touched = {errors.claveCandidato}
 									/>
 									<Typography variant="h7">
 										PRIMER APELLIDO <span style={{ color: "red" }}>*</span>
 									</Typography>
-									<TextField
+									<FielTextCustomRegistro
+										disabled={status === "checking"}
+										label="Introduce el primer apellido del candidato..."
 										name="apellidoPCandidato"
-										fullWidth
-										size="small"
-										// id="titulo"
-										label=""
-										variant="outlined"
-										onChange={handleChange}
+										placeholder="Ej: Chavez..."
 										value={values.apellidoPCandidato}
-										error={touched.apellidoPCandidato && Boolean(errors.apellidoPCandidato)}
-										helperText={touched.apellidoPCandidato && errors.apellidoPCandidato}
-										onBlur={handleBlur}
+										handleChange={handleChange}
+										error = {errors.apellidoPCandidato}
+										touched = {errors.apellidoPCandidato}
 									/>
 									<Typography variant="h7" mt={"20rem"}>
 									SEGUNDO APELLIDO <span style={{ color: "red" }}>*</span>
 									</Typography>
-									<TextField
-										fullWidth
-										size="small"
-										id="outlined-basic" 
-										variant="outlined"
-										label=""
+									<FielTextCustomRegistro
+										disabled={status === "checking"}
+										label="Introduce el segundo apellido del candidato..."
 										name="apellidoMCandidato"
+										placeholder="Ej: Sanchez..."
 										value={values.apellidoMCandidato}
-										error = {touched.apellidoMCandidato && errors.apellidoMCandidato}
-										helperText={touched.apellidoMCandidato && errors.apellidoMCandidato}
-										onChange={handleChange}
-										onBlur={handleBlur}
+										handleChange={handleChange}
+										error = {errors.apellidoMCandidato}
+										touched = {errors.apellidoMCandidato}
 									/>
 									<Typography variant="h7" mt={"2rem"}>
 									NOMBRES <span style={{ color: "red" }}>*</span>
 									</Typography>
-									<TextField
-										fullWidth
-										size="small"
-										id="outlined-basic" 
-										variant="outlined"
-										label=""
+									<FielTextCustomRegistro
+										disabled={status === "checking"}
+										label="Introduce el nombre completo del candidato..."
 										name="nombreCandidato"
+										placeholder="Ej: Kevin..."
 										value={values.nombreCandidato}
-										error = {touched.nombreCandidato && errors.nombreCandidato}
-										helperText={touched.nombreCandidato && errors.nombreCandidato}
-										onChange={handleChange}
-										onBlur={handleBlur}
+										handleChange={handleChange}
+										error = {errors.nombreCandidato}
+										touched = {errors.nombreCandidato}
 									/>
 									<Typography variant="h7" mt={"1rem"}>
 									SEUDÓNIMO DEL CANDIDATO/A <span style={{ color: "gray" }}> (opcional)</span>
 									</Typography>
-									<TextField
+									<FielTextCustomRegistro
+										disabled={status === "checking"}
+										label="Introduce el seudónimo del candidato..."
 										name="seudonimoCandidato"
-										fullWidth
-										size="small"
-										id="outlined-basic" 
-										variant="outlined"
-										label=""
+										placeholder="Ej: El Kevin..."
 										value={values.seudonimoCandidato}
-										onChange={handleChange}
-										onBlur={handleBlur}
+										handleChange={handleChange}
+										// error = {errors.seudonimoCandidato}
+										// touched = {errors.seudonimoCandidato}
 									/>
 									<Typography variant="h7" mt={"1rem"}>
 									INSERTAR FOTOGRAFÍA DEL CANDIDATO/A  <span style={{ color: "red" }}>*</span>

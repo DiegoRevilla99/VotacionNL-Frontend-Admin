@@ -24,6 +24,7 @@ import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
 import { DateFieldFechaNacimiento } from '../../module-empadronamiento/components/DateFieldFechaNacimiento';
 import { DateFieldFechaNacimientoSuplente } from '../../module-empadronamiento/components/DateFieldFechaNacimientoSuplente';
+import { FielTextCustomRegistro } from './FielTextCustomRegistro';
 const steps = ['Registrar al candidato', 'Registrar al suplente'];
 const style = {
 	position: "absolute",
@@ -734,67 +735,55 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 											<Typography variant="h7" mt={"2rem"}>
 												CURP DEL CANDIDATO <span style={{ color: "red" }}>*</span>
 													</Typography>
-													<TextField
-														fullWidth
-														size="small"
-														id="outlined-basic" 
-														variant="outlined"
-														label=""
+													<FielTextCustomRegistro
+														disabled={status === "checking"}
+														label="Introduce la CURP del candidato..."
 														name="claveElectoralCandidato"
+														placeholder="Ej: CASK00..."
 														value={values.claveElectoralCandidato}
-														error = {touched.claveElectoralCandidato && errors.claveElectoralCandidato}
-														helperText={touched.claveElectoralCandidato && errors.claveElectoralCandidato}
-														onChange={handleChange}
-														onBlur={handleBlur}
+														handleChange={handleChange}
+														error = {errors.claveElectoralCandidato}
+														touched = {errors.claveElectoralCandidato}
 														maxLength={18} // se agrega el atributo maxLength
 													/>
 											<Typography variant="h7" mt={"2rem"}>
 												PRIMER APELLIDO <span style={{ color: "red" }}>*</span>
 													</Typography>
-													<TextField
-														fullWidth
-														size="small"
-														id="outlined-basic" 
-														variant="outlined"
-														label=""
+													<FielTextCustomRegistro
+														disabled={status === "checking"}
+														label="Introduce el primer apellido del candidato..."
 														name="apellidoPCandidato"
+														placeholder="Ej: Chavez..."
 														value={values.apellidoPCandidato}
-														error = {touched.apellidoPCandidato && errors.apellidoPCandidato}
-														helperText={touched.apellidoPCandidato && errors.apellidoPCandidato}
-														onChange={handleChange}
-														onBlur={handleBlur}
+														handleChange={handleChange}
+														error = {errors.apellidoPCandidato}
+														touched = {errors.apellidoPCandidato}
 													/>
 											<Typography variant="h7" mt={"2rem"}>
 												SEGUNDO APELLIDO <span style={{ color: "red" }}>*</span>
 													</Typography>
-													<TextField
-														fullWidth
-														size="small"
-														id="outlined-basic" 
-														variant="outlined"
-														label=""
+													<FielTextCustomRegistro
+														disabled={status === "checking"}
+														label="Introduce el segundo apellido del candidato..."
 														name="apellidoMCandidato"
+														placeholder="Ej: Sanchez..."
 														value={values.apellidoMCandidato}
-														error = {touched.apellidoMCandidato && errors.apellidoMCandidato}
-														helperText={touched.apellidoMCandidato && errors.apellidoMCandidato}
-														onChange={handleChange}
-														onBlur={handleBlur}
+														handleChange={handleChange}
+														error = {errors.apellidoMCandidato}
+														touched = {errors.apellidoMCandidato}
 													/>
 												<Typography variant="h7" mt={"2rem"}>
 												NOMBRES <span style={{ color: "red" }}>*</span>
 													</Typography>
-													<TextField
-														fullWidth
-														size="small"
-														id="outlined-basic" 
-														variant="outlined"
-														label=""
+													<FielTextCustomRegistro
+														disabled={status === "checking"}
+														label="Introduce el nombre completo del candidato..."
 														name="nombreCandidato"
+														placeholder="Ej: Kevin..."
 														value={values.nombreCandidato}
-														error = {touched.nombreCandidato && errors.nombreCandidato}
-														helperText={touched.nombreCandidato && errors.nombreCandidato}
-														onChange={handleChange}
-														onBlur={handleBlur}
+														handleChange={handleChange}
+														error = {errors.nombreCandidato}
+														touched = {errors.nombreCandidato}
 													/>
 											<Typography variant="h7" mt={"1rem"}>
 											INSERTAR FOTOGRAFÍA DEL CANDIDATO/A  <span style={{ color: "red" }}>*</span>
@@ -846,16 +835,15 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 											<Typography variant="h7" mt={"1rem"}>
 											SEUDÓNIMO DEL CANDIDATO/A <span style={{ color: "gray" }}> (opcional)</span>
 												</Typography>
-												<TextField
-													name="seudonimoCandidato"
-													fullWidth
-													size="small"
-													id="outlined-basic" 
-													variant="outlined"
-													label=""
-													value={values.seudonimoCandidato}
-													onChange={handleChange}
-													onBlur={handleBlur}
+												<FielTextCustomRegistro
+														disabled={status === "checking"}
+														label="Introduce el seudónimo del candidato..."
+														name="seudonimoCandidato"
+														placeholder="Ej: El Kevin..."
+														value={values.seudonimoCandidato}
+														handleChange={handleChange}
+														// error = {errors.seudonimoCandidato}
+														// touched = {errors.seudonimoCandidato}
 												/>
 													{/* <Typography variant="h7" mt={"2rem"}>
 													FECHA DE NACIMIENTO<span style={{ color: "red" }}>*</span>
@@ -906,67 +894,55 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 											<Typography variant="h7" mt={"2rem"}>
 												CURP DEL SUPLENTE <span style={{ color: "red" }}>*</span>
 													</Typography>
-													<TextField
-														fullWidth
-														size="small"
-														id="outlined-basic" 
-														variant="outlined"
-														label=""
+													<FielTextCustomRegistro
+														disabled={status === "checking"}
+														label="Introduce la CURP del suplente..."
 														name="claveElectoralSuplente"
+														placeholder="Ej: CASK00..."
 														value={values.claveElectoralSuplente}
-														error = {touched.claveElectoralSuplente && errors.claveElectoralSuplente}
-														helperText={touched.claveElectoralSuplente && errors.claveElectoralSuplente}
-														onChange={handleChange}
-														onBlur={handleBlur}
+														handleChange={handleChange}
+														error = {errors.claveElectoralSuplente}
+														touched = {errors.claveElectoralSuplente}
 														maxLength={18} // se agrega el atributo maxLength
 													/>
 											<Typography variant="h7" mt={"2rem"}>
 												PRIMER APELLIDO <span style={{ color: "red" }}>*</span>
 													</Typography>
-													<TextField
-														fullWidth
-														size="small"
-														id="outlined-basic" 
-														variant="outlined"
-														label=""
+													<FielTextCustomRegistro
+														disabled={status === "checking"}
+														label="Introduce el primer apellido del suplente..."
 														name="apellidoPSuplente"
+														placeholder="Ej: Chavez..."
 														value={values.apellidoPSuplente}
-														error = {touched.apellidoPSuplente && errors.apellidoPSuplente}
-														helperText={touched.apellidoPSuplente && errors.apellidoPSuplente}
-														onChange={handleChange}
-														onBlur={handleBlur}
+														handleChange={handleChange}
+														error = {errors.apellidoPSuplente}
+														touched = {errors.apellidoPSuplente}
 													/>
 											<Typography variant="h7" mt={"2rem"}>
 												SEGUNDO APELLIDO <span style={{ color: "red" }}>*</span>
 													</Typography>
-													<TextField
-														fullWidth
-														size="small"
-														id="outlined-basic" 
-														variant="outlined"
-														label=""
+													<FielTextCustomRegistro
+														disabled={status === "checking"}
+														label="Introduce el segundo apellido del suplente..."
 														name="apellidoMSuplente"
+														placeholder="Ej: Sanchez..."
 														value={values.apellidoMSuplente}
-														error = {touched.apellidoMSuplente && errors.apellidoMSuplente}
-														helperText={touched.apellidoMSuplente && errors.apellidoMSuplente}
-														onChange={handleChange}
-														onBlur={handleBlur}
+														handleChange={handleChange}
+														error = {errors.apellidoMSuplente}
+														touched = {errors.apellidoMSuplente}
 													/>
 												<Typography variant="h7" mt={"2rem"}>
 												NOMBRES <span style={{ color: "red" }}>*</span>
 													</Typography>
-													<TextField
-														fullWidth
-														size="small"
-														id="outlined-basic" 
-														variant="outlined"
-														label=""
+													<FielTextCustomRegistro
+														disabled={status === "checking"}
+														label="Introduce el nombre completo del suplente..."
 														name="nombreSuplente"
+														placeholder="Ej: Kevin..."
 														value={values.nombreSuplente}
-														error = {touched.nombreSuplente && errors.nombreSuplente}
-														helperText={touched.nombreSuplente && errors.nombreSuplente}
-														onChange={handleChange}
-														onBlur={handleBlur}
+														handleChange={handleChange}
+														error = {errors.nombreSuplente}
+														touched = {errors.nombreSuplente}
 													/>
 											<Typography variant="h7" mt={"1rem"}>
 											INSERTAR FOTOGRAFÍA DEL SUPLENTE  <span style={{ color: "red" }}>*</span>
@@ -1018,16 +994,15 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 											<Typography variant="h7" mt={"1rem"}>
 											SEUDÓNIMO DEL SUPLENTE <span style={{ color: "gray" }}> (opcional)</span>
 												</Typography>
-												<TextField
-													name="seudonimoSuplente"
-													fullWidth
-													size="small"
-													id="outlined-basic" 
-													variant="outlined"
-													label=""
-													value={values.seudonimoSuplente}
-													onChange={handleChange}
-													onBlur={handleBlur}
+												<FielTextCustomRegistro
+														disabled={status === "checking"}
+														label="Introduce el seudónimo del suplente..."
+														name="seudonimoSuplente"
+														placeholder="Ej: El Kevin..."
+														value={values.seudonimoSuplente}
+														handleChange={handleChange}
+														// error = {errors.seudonimoSuplente}
+														// touched = {errors.seudonimoSuplente}
 												/>
 
 													<Grid

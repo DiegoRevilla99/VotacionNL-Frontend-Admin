@@ -75,7 +75,7 @@ export const SliceJornada = createSlice({
 				payload.forEach((partido) => {
 					state.partidos.push({
 						id: state.contador,
-						clavePartido: partido.clavePartido,
+						// clavePartido: partido.clavePartido,
 						nameParty: partido.nameParty,
 						siglasParty: partido.siglasParty,
 						emblemParty: partido.emblemParty,
@@ -87,7 +87,7 @@ export const SliceJornada = createSlice({
 			} else {
 				state.partidos.push({
 					id: state.contador,
-					clavePartido: payload?.clavePartido,
+					// clavePartido: payload?.clavePartido,
 					nameParty: payload?.nameParty,
 					siglasParty: payload?.siglasParty,
 					emblemParty: payload?.emblemParty,
@@ -300,7 +300,7 @@ export const SliceJornada = createSlice({
 				(partido) => partido.id === state.partidoSelected.id
 			);
 			partido.id = payload?.id;
-			partido.clavePartido = payload?.claveParty;
+			// partido.clavePartido = payload?.claveParty;
 			partido.nameParty = payload?.namePartyy;
 			partido.siglasParty = payload?.siglasPartyy;
 			partido.emblemParty = payload?.emblemaPartyy;

@@ -35,27 +35,27 @@ const modalidadNoFormal = [ {
 // 8 ES DE PLANILLA, 7 COMITE Y 6 REPRESENTANTE
 const validationSchema = object({
 	encabezado: string("").required(
-		"Por favor, ingresa un encabezado"
+		"Por favor, ingresa el nombre del encabezado de la boleta"
 		),
 	modalidadVotacion: string("").required(
 		"Por favor, elige una modalidad de votación"),
 	entidadFederativa: string("").required(
-		"Por favor, ingresa un municipio"
+		"Por favor, ingresa el nombre de la entidad federativa"
 		),
 	municipio: string("").required(
-		"Por favor, ingresa un municipio"
+		"Por favor, ingresa el nombre del municipio"
 		),
 	primerFirmante: string("").required(
-		"Por favor, ingresa el nombre del Primer Firmante"
+		"Por favor, ingresa el nombre del primer firmante"
 		),
 	cargoPrimerFirmante: string("").required(
-		"Por favor, ingresa un segundo Firmante"
+		"Por favor, ingresa el cargo del primer firmante"
 		),
 	segundoFirmante: string("").required(
-		"Por favor, ingresa el nombre de Segundo Firmante"
+		"Por favor, ingresa el nombre del segundo firmante"
 		),
 	cargoSegundoFirmante: string("").required(
-		"Por favor, ingresa el cargo de Segundo Firmante"
+		"Por favor, ingresa el cargo del segundo firmante"
 		),
 });
 
@@ -450,7 +450,7 @@ export const AddBoletaJornadaGenerica = () => {
 									onClick={handleOpenRegisterAsociacionModal}
 									variant="contained"
 									size="large"
-									disabled={status === "checking"}
+									disabled={status === "checking" || candidatos.length === 0 ? true : false}
 									sx={{
 										boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
 										transition: "all 0.5s ease",
