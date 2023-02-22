@@ -12,6 +12,7 @@ import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import Tooltip from '@mui/material/Tooltip';
 import { onPostImage } from '../../store/module-preparacion/jornada/ThunksJornadaNoFormal';
+import { FielTextCustomRegistro } from './FielTextCustomRegistro';
 
 const style = {
 	position: "absolute",
@@ -163,34 +164,29 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 									<Typography variant="h7">
 										NOMBRE DE LA ASOCIACIÓN <span style={{ color: "red" }}>*</span>
 									</Typography>
-									<TextField
-										name="nombreAsociacion"
-										fullWidth
-										size="small"
-										// id="titulo"
-										label=""
-										variant="outlined"
-										onChange={handleChange}
-										value={values.nombreAsociacion}
-										error={touched.nombreAsociacion && Boolean(errors.nombreAsociacion)}
-										helperText={touched.nombreAsociacion && errors.nombreAsociacion}
-										onBlur={handleBlur}
-									/>
+									<FielTextCustomRegistro
+									disabled={status === "checking"}
+									label="Introduce el nombre de la asociación..."
+									name="nombreAsociacion"
+									placeholder="Ej: Asociación..."
+									value={values.nombreAsociacion}
+									handleChange={handleChange}
+									error = {errors.nombreAsociacion}
+									touched = {errors.nombreAsociacion}
+								/>
+
 									<Typography variant="h7" mt={"20rem"}>
 									EMBLEMA <span style={{ color: "red" }}>*</span>
 									</Typography>
-									<TextField
-										name="emblema"
-										fullWidth
-										size="small"
-										// id="titulo"
-										label=""
-										variant="outlined"
-										onChange={handleChange}
-										value={values.emblema}
-										error={touched.emblema && Boolean(errors.emblema)}
-										helperText={touched.emblema && errors.emblema}
-										onBlur={handleBlur}
+									<FielTextCustomRegistro
+									disabled={status === "checking"}
+									label="Introduce el emblema de la asociación..."
+									name="emblema"
+									placeholder="Ej: Somos una asociación..."
+									value={values.emblema}
+									handleChange={handleChange}
+									error = {errors.emblema}
+									touched = {errors.emblema}
 									/>
 									<Typography variant="h7" mt={"1rem"}>
 									INSERTAR LOGO DE LA ASOCIACIÓN  <span style={{ color: "red" }}>*</span>
@@ -208,7 +204,7 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 										value={logo.name}
 										variant="outlined"
 										size="small"
-										></TextField>
+										/>
 										<IconButton
 											disabled={status === "checking"}
 											color="primary"
@@ -239,7 +235,8 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 											{errors.logo}
 										</Box>
 										)}
-
+{candidatosDisponibles.length > 0 ? (
+	<>
 										{/* Esto es del recuadrod el componente de lso candidatos */}
 										<Box
 										id="candidato"
@@ -347,7 +344,12 @@ export const ModalAsociacionGenerico = ({ statusRegisterAsociacionModal, handleC
 													   </Box>
 											   )}
 									<br />
-
+						</>
+						) : (
+							<Typography style={{ textAlign: "center", fontWeight: "bold", fontSize: 18, color: "#ff0000" }}>
+							No existen candidatos ahora mismo. Por favor, agregue uno para mostrarlo aquí.
+						</Typography>
+						)}
 									{/* Esto es del los botones */}
 									<Grid
 										container

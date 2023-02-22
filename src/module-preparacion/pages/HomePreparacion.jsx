@@ -1,8 +1,8 @@
 import React from "react";
 
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 
@@ -80,7 +80,7 @@ export const HomePreparacion = () => {
 									},
 								}}
 							>
-								FORMALES
+								JORNADAS ELECTORALES
 							</Button>
 							<Button
 								onClick={plantilla2}
@@ -114,7 +114,7 @@ export const HomePreparacion = () => {
 									},
 								}}
 							>
-								NO FORMALES
+								ELECCIONES POPULARES
 							</Button>
 							<Button
 								onClick={plantilla3}

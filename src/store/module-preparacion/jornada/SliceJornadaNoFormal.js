@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-
 export const SliceJornadaNoFormal = createSlice({
     name: 'jornadaNoFormal',
     initialState: {
       status: 'off',
       errorMessage: '',
       successMessage: '',
+      contador: 0,
         candidatos:[],
         candidatoSelected: {},
         asociaciones: [],
@@ -38,34 +38,37 @@ export const SliceJornadaNoFormal = createSlice({
         onAddCandidato: (state, { payload }) => {
             console.log("candidatos en mi payload", payload);
             if (!Array.isArray(payload)) {
-                state.candidatos.push({
-                    id: payload?.id,
-                    claveCandidato: payload?.claveCandidato,
-                    nombreCandidato: payload?.nombreCandidato,
-                    apellidoPCandidato: payload?.apellidoPCandidato,
-                    apellidoMCandidato: payload?.apellidoMCandidato,
-                    fotografiaCandidato: payload?.fotografiaCandidato,
-                    seudonimoCandidato: payload?.seudonimoCandidato,
-                    fechaNacimientoCandidato: payload?.fechaNacimientoCandidato,
-                    generoCandidato: payload?.generoCandidato,
-                });
-                return;
+              state.candidatos.push({
+                id: state.contador, // Asigna el valor del contador al ID del nuevo candidato
+                claveCandidato: payload?.claveCandidato,
+                nombreCandidato: payload?.nombreCandidato,
+                apellidoPCandidato: payload?.apellidoPCandidato,
+                apellidoMCandidato: payload?.apellidoMCandidato,
+                fotografiaCandidato: payload?.fotografiaCandidato,
+                seudonimoCandidato: payload?.seudonimoCandidato,
+                fechaNacimientoCandidato: payload?.fechaNacimientoCandidato,
+                generoCandidato: payload?.generoCandidato,
+              });
+              state.contador++; // Incrementa el contador
+              return;
             }
             payload.forEach((candidato) => {
-                state.candidatos.push({
-                    id: candidato?.id,
-                    claveCandidato: candidato?.claveCandidato,
-                    nombreCandidato: candidato?.nombreCandidato,
-                    apellidoPCandidato: candidato?.apellidoPCandidato,
-                    apellidoMCandidato: candidato?.apellidoMCandidato,
-                    fotografiaCandidato: candidato?.fotografiaCandidato,
-                    seudonimoCandidato: candidato?.seudonimoCandidato,
-                    fechaNacimientoCandidato: candidato?.fechaNacimientoCandidato,
-                    generoCandidato: candidato?.generoCandidato,
-                });
+              state.candidatos.push({
+                id: state.contador, // Asigna el valor del contador al ID del nuevo candidato
+                claveCandidato: candidato?.claveCandidato,
+                nombreCandidato: candidato?.nombreCandidato,
+                apellidoPCandidato: candidato?.apellidoPCandidato,
+                apellidoMCandidato: candidato?.apellidoMCandidato,
+                fotografiaCandidato: candidato?.fotografiaCandidato,
+                seudonimoCandidato: candidato?.seudonimoCandidato,
+                fechaNacimientoCandidato: candidato?.fechaNacimientoCandidato,
+                generoCandidato: candidato?.generoCandidato,
+              });
+              state.contador++; // Incrementa el contador
             });
             console.log("candidatos en mi state", state.candidatos);
-        },
+          },
+          
 
         onDeleteCandidato: (state, { payload }) => {
             const candidatoFound = state.candidatos.find((candidato) => candidato.id === payload?.id);
@@ -94,10 +97,12 @@ export const SliceJornadaNoFormal = createSlice({
 
         onSetCandidatoSelectedNull: (state, { payload }) => {
             state.candidatoSelected = {};
+            // state.contador= 0;
         },
 
         onSetCandidatoNull: (state, { payload }) => {
             state.candidatos = [];
+            state.contador= 0;
         },
 
         onFillCandidatosNoFormalesData: (state, { payload }) => {

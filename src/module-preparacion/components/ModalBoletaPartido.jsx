@@ -4,7 +4,8 @@ import {
 	Button,
 	Checkbox,
 	Grid,
-	Modal, Stack, TextField,
+	Modal, Stack,
+	TextField,
 	Typography
 } from "@mui/material";
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -18,6 +19,7 @@ import { array, object, string } from "yup";
 import { useUiStore } from "../../hooks/useUiStore";
 import { onPostImage } from '../../store/module-preparacion/jornada/ThunksJornada';
 import { useJornadaStore } from "../hooks/useJornadaStore";
+import { FielTextCustomRegistro } from './FielTextCustomRegistro';
 
 const style = {
 	position: "absolute",
@@ -45,9 +47,6 @@ const validationSchema = object({
 	emblemParty: string("").required(
 		"Por favor, ingresa el emblema del partido"
 		),
-	clavePartido: string("").required(
-		"Por favor, ingresa la clave del partido"
-		),
 	candidatosPartido: array().min(1, "Es necesario que el partido cuente con un candidato"),
 });
 export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
@@ -73,7 +72,6 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 			const urll = await getURLImage();
 			addPartido(
 				partidos.length,
-				values.clavePartido,
 				values.nameParty,
 				values.siglasParty,
 				values.emblemParty,
@@ -94,7 +92,6 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
                 }
 			updatePartido(
 				partidoSelected.id,
-				values.clavePartido,
 				values.nameParty,
 				values.siglasParty,
 				values.emblemParty,
@@ -159,19 +156,18 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 				nameParty: "",	//Text
 				siglasParty: "",//Text
 				emblemParty: "",
-				fotografiaParty: "partido.jpg",
-				clavePartido: "",
+				fotografiaParty: "",
 				statusParty: switchValue,
 				candidatosPartido: [],
 			} : {
-				clavePartido: partidoSelected.clavePartido,
+
 				nameParty: partidoSelected.nameParty,
 				siglasParty: partidoSelected.siglasParty,
 				emblemParty: partidoSelected.emblemParty,
 				fotografiaParty: partidoSelected.fotografiaParty,
 				statusParty: partidoSelected.statusParty,
 				candidatosPartido: partidoSelected.candidatosPartido,
-				// clavePartido: partidoSelected.clavePartido["clavePartido"],
+
 				// nameParty: partidoSelected.nameParty["nameParty"],
 				// siglasParty: partidoSelected.siglasParty["siglasParty"],
 				// emblemParty: partidoSelected.emblemParty["emblemParty"],
@@ -238,69 +234,44 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						overflowY: "auto",
 					}}>
 					<form  onSubmit={handleSubmit} >
-					<Typography variant= {{ xl: "2rem", lg: "1.5rem", sm: "1rem", xs: "0.8rem" }}>
-						CLAVE PARTIDO <span style={{ color: "red" }}>*</span>
-					</Typography>
-					<TextField
-						fullWidth
-						size="small"
-						id="outlined-basic" 
-						variant="outlined"
-						label=""
-						name="clavePartido"
-						value={values.clavePartido}
-						error = {touched.clavePartido && errors.clavePartido}
-						helperText={touched.clavePartido && errors.clavePartido}
-						onChange={handleChange}
-						onBlur={handleBlur}
-					/>
-					<Typography variant= {{ xl: "2rem", lg: "1.5rem", sm: "1rem", xs: "0.8rem" }}>
+					<Typography variant= {{ xl: "2rem", lg: "1.5rem", sm: "1rem", xs: "0.8rem" }} >
 						NOMBRE DEL PARTIDO <span style={{ color: "red" }}>*</span>
 					</Typography>
-					<TextField
-						fullWidth
-						size="small"
-						id="outlined-basic" 
-						variant="outlined"
-						label="Ingrese el nombre de un partido..."
+					<FielTextCustomRegistro
+						disabled={status === "checking"}
+						label="Introduce el nombre del partido..."
 						name="nameParty"
+						placeholder="Ej: PARTIDO..."
 						value={values.nameParty}
-						error = {touched.nameParty && errors.nameParty}
-						helperText={touched.nameParty && errors.nameParty}
-						onChange={handleChange}
-						onBlur={handleBlur}
+						handleChange={handleChange}
+						error = {errors.nameParty}
+						touched = {errors.nameParty}
 					/>				
 					<Typography variant="h7" mt={"1rem"}>
 						SIGLAS DEL PARTIDO <span style={{ color: "red" }}>*</span>
 					</Typography>
-					<TextField
-						fullWidth
-						size="small"
-						id="outlined-basic" 
-						variant="outlined"
-						label="Ingrese las siglas del partido..."
+					<FielTextCustomRegistro
+						disabled={status === "checking"}
+						label="Introduce el nombre del partido..."
 						name="siglasParty"
+						placeholder="Ej: DEV-ITO..."
 						value={values.siglasParty}
-						error = {touched.siglasParty && errors.siglasParty}
-						helperText={touched.siglasParty && errors.siglasParty}
-						onChange={handleChange}
-						onBlur={handleBlur}
+						handleChange={handleChange}
+						error = {errors.siglasParty}
+						touched = {errors.siglasParty}
 					/>
 					<Typography variant="h7" mt={"1rem"}>
 					EMBLEMA DEL PARTIDO <span style={{ color: "red" }}>*</span>
 					</Typography>
-					<TextField
-						fullWidth
-						size="small"
-						id="outlined-basic" 
-						variant="outlined"
-						label="Ingrese el emblema del partido..."
+					<FielTextCustomRegistro
+						disabled={status === "checking"}
+						label="Introduce el emblema del partido..."
 						name="emblemParty"
+						placeholder="Ej: Somos un equipo..."
 						value={values.emblemParty}
-						error = {touched.emblemParty && errors.emblemParty}
-						helperText={touched.emblemParty && errors.emblemParty}
-						onChange={handleChange}
-						onBlur={handleBlur}
+						handleChange={handleChange}
+						error = {errors.emblemParty}
+						touched = {errors.emblemParty}
 					/>
 					<Typography variant="h7" mt={"1rem"}>
 						INSERTAR FOTOGRAFÍA DEL PARTIDO <span style={{ color: "red" }}>*</span>
@@ -318,7 +289,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						disabled
 						variant="outlined"
 						size="small"
-						></TextField>
+						/>
 						<IconButton
 							disabled={status === "checking"}
 							color="primary"
@@ -365,8 +336,19 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 							/>
 						<Typography>Sí</Typography>
 					</Stack>
-
+					{/* {touched.statusParty && (
+							<Box ml={2} 
+							sx={{
+							fontSize: "12px",
+								color: "#791010" }}
+							>
+							{errors.statusParty}
+						  </Box>
+						)} */}
+			{candidatoandSuplentes.length > 0 ? (
+				<>
 					{/* AQUI VA LO DE CANDIDATOS */}
+					
 					<Box
 						id="candidato"
 						name="candidato"
@@ -473,7 +455,14 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 								)}
 						</Box>
 						<br />
-					{/* AQUI TERMINA LO DE CANDIDATOS */}
+						{/* AQUI TERMINA LO DE CANDIDATOS */}
+					</>
+				) : (
+					<Typography style={{ textAlign: "center", fontWeight: "bold", fontSize: 18, color: "#ff0000" }}>
+						No existen candidatos ahora mismo. Por favor, agregue uno para mostrarlo aquí.
+					</Typography>
+			
+					)} 
 					<Grid
 						container
 						direction="row"

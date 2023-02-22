@@ -23,26 +23,26 @@ import { AgrupaPartido } from "../components/configuracion-boleta/AgrupaPartido"
 const validationSchema = object({
 
 	nombreCandidatura: string("").required(
-		"Por favor, ingresa un nombre de Candidatura"
+		"Por favor, ingresa un nombre de la candidatura"
 		),
 
 	municipio: string("").required(
-		"Por favor, ingresa un municipio"
+		"Por favor, ingresa el nombre del municipio"
 		),
 	distritoElectoral: number("").required(
-		"Por favor, ingresa un distrito Electoral"
+		"Por favor, ingresa el número del distrito electoral"
 		).max("300").positive("Solo números positivos, por favor.").typeError("Debes ingresar un número").moreThan(1, "Debes ingresar un número mayor a 1"),
 	primerFirmante: string("").required(
-		"Por favor, ingresa el nombre del Primer Firmante"
+		"Por favor, ingresa el nombre del primer firmante"
 		),
 	cargoPrimerFirmante: string("").required(
-		"Por favor, ingresa un segundo Firmante"
+		"Por favor, ingresa el cargo del primer firmante"
 		),
 	segundoFirmante: string("").required(
-		"Por favor, ingresa el nombre de Segundo Firmante"
+		"Por favor, ingresa el nombre de segundo firmante"
 		),
 	cargoSegundoFirmante: string("").required(
-		"Por favor, ingresa el cargo de Segundo Firmante"
+		"Por favor, ingresa el cargo de segundo firmante"
 		),
 });
 
@@ -373,7 +373,7 @@ export const AddBoletaJornada = () => {
 									onClick={handleOpenMatchModal}
 									variant="contained"
 									size="large"
-									disabled={status === "checking"}
+									disabled={status === "checking" || candidatoandSuplentes.length === 0 ? true : false}
 									sx={{
 										boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
 										transition: "all 0.5s ease",
