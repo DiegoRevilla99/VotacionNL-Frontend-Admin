@@ -1,7 +1,7 @@
 import { Box, InputAdornment, TextField, Typography } from "@mui/material";
 import React from "react";
 
-import ScreenSearchDesktopIcon from '@mui/icons-material/ScreenSearchDesktop';
+import ScreenSearchDesktopIcon from "@mui/icons-material/ScreenSearchDesktop";
 
 export const Searcher = ({
   name = "",
@@ -33,7 +33,7 @@ export const Searcher = ({
           fontWeight: "bold",
           width: "calc(100% - 250px)",
           height: "100%",
-          fontSize: { lg: "22px", sm: "15px" },
+          fontSize: { lg: "18px", sm: "12px" },
         }}
       >
         {name}

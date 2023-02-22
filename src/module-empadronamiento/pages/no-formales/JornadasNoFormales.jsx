@@ -175,9 +175,15 @@ export const JornadasNoFormales = () => {
               url: "/empadronamiento/",
             },
           ]}
-          currentRoute="JORNADAS ELECTORALES NO FORMALES"
+          currentRoute="ELECCIONES POPULARES"
         />
 
+        <Typography
+          color={"primary"}
+          sx={{ mt: 1, mb: 1, fontSize: "20px", fontWeight: "bold" }}
+        >
+          Paso 1: Elige la jornada a empadronar
+        </Typography>
         <Box
           sx={{
             display: "flex",

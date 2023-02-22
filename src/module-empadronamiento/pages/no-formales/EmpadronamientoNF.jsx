@@ -48,7 +48,7 @@ export const EmpadronamientoNF = () => {
               url: "/empadronamiento/",
             },
             {
-              name: "JORANDAS NO FORMALES",
+              name: "ELECCIONES POPULARES",
               url: "/empadronamiento/noformal",
             },
           ]}
