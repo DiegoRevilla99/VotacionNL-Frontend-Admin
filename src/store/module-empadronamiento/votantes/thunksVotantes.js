@@ -4,7 +4,11 @@ import { transformDate } from "../../../module-empadronamiento/helpers/transform
 import { uploadImagesProvider } from "../../../providers/Micro-Images/provider";
 import { getJornadasNoFormalesProvider } from "../../../providers/Micro-NoFormales/providerNoFormales";
 import {
+  sendEmailConsultasProvider,
+  sendEmailMasivoConsultasProvider,
+  sendEmailMasivoNoFormalProvider,
   sendEmailMasivoProvider,
+  sendEmailNoFormalProvider,
   sendEmailProvider,
 } from "../../../providers/Micro-TokeEmail/provider";
 import {
@@ -240,13 +244,112 @@ export const envioLink = (datan, funcion = () => {}) => {
   };
 };
 
-//CAMBIAR A PROVIDER
+export const envioLinkNoFormal = (datan, funcion = () => {}) => {
+  return async (dispatch, getState) => {
+    dispatch(onToastCheckingOperation("Eviando enlaces..."));
+    dispatch(onCheckingOperation());
+
+    const { ok, data, errorMessage } = await sendEmailMasivoNoFormalProvider(
+      datan
+    );
+    if (ok) {
+      dispatch(onSuccessOperation());
+      dispatch(
+        onToastSuccessOperation({ successMessage: "Se han enviado con exito" })
+      );
+
+      setTimeout(() => {
+        funcion();
+      }, 500);
+    } else {
+      dispatch(onErrorOperation());
+      dispatch(onToastErrorOperation({ errorMessage: "No se pudo enviar" }));
+    }
+  };
+};
+
+export const envioLinkConsultas = (datan, funcion = () => {}) => {
+  return async (dispatch, getState) => {
+    dispatch(onToastCheckingOperation("Eviando enlaces..."));
+    dispatch(onCheckingOperation());
+
+    const { ok, data, errorMessage } = await sendEmailMasivoConsultasProvider(
+      datan
+    );
+    if (ok) {
+      dispatch(onSuccessOperation());
+      dispatch(
+        onToastSuccessOperation({ successMessage: "Se han enviado con exito" })
+      );
+
+      setTimeout(() => {
+        funcion();
+      }, 500);
+    } else {
+      dispatch(onErrorOperation());
+      dispatch(onToastErrorOperation({ errorMessage: "No se pudo enviar" }));
+    }
+  };
+};
+
 export const envioLinkPersonal = (senddata, funcion = () => {}) => {
   return async (dispatch, getState) => {
     dispatch(onToastCheckingOperation("Eviando enlace..."));
     dispatch(onCheckingOperation());
 
     const { ok, data, errorMessage } = await sendEmailProvider(senddata);
+
+    if (ok) {
+      dispatch(onSuccessOperation());
+      dispatch(
+        onToastSuccessOperation({ successMessage: "Se han enviado con exito" })
+      );
+
+      setTimeout(() => {
+        funcion();
+      }, 500);
+    } else {
+      dispatch(onErrorOperation());
+      dispatch(onToastErrorOperation({ errorMessage: "No se pudo enviar" }));
+    }
+  };
+};
+
+//cambiar link
+export const envioLinkPersonalNoFormal = (senddata, funcion = () => {}) => {
+  return async (dispatch, getState) => {
+    dispatch(onToastCheckingOperation("Eviando enlace..."));
+    dispatch(onCheckingOperation());
+
+    const { ok, data, errorMessage } = await sendEmailNoFormalProvider(
+      senddata
+    );
+
+    if (ok) {
+      dispatch(onSuccessOperation());
+      dispatch(
+        onToastSuccessOperation({ successMessage: "Se han enviado con exito" })
+      );
+
+      setTimeout(() => {
+        funcion();
+      }, 500);
+    } else {
+      dispatch(onErrorOperation());
+      dispatch(onToastErrorOperation({ errorMessage: "No se pudo enviar" }));
+    }
+  };
+};
+
+//cambiar link
+export const envioLinkPersonalConsultas = (senddata, funcion = () => {}) => {
+  return async (dispatch, getState) => {
+    dispatch(onToastCheckingOperation("Eviando enlace..."));
+    dispatch(onCheckingOperation());
+
+    const { ok, data, errorMessage } = await sendEmailConsultasProvider(
+      senddata
+    );
 
     if (ok) {
       dispatch(onSuccessOperation());

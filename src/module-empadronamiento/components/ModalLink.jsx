@@ -29,7 +29,11 @@ import { FormContacto } from "./FormContacto";
 
 import { transformDate } from "../helpers/transformDate";
 import { useParams } from "react-router-dom";
-import { envioLink } from "../../store/module-empadronamiento/votantes/thunksVotantes";
+import {
+  envioLink,
+  envioLinkConsultas,
+  envioLinkNoFormal,
+} from "../../store/module-empadronamiento/votantes/thunksVotantes";
 
 const useStyles = makeStyles({
   textField: {
@@ -86,9 +90,19 @@ export const ModalLink = ({
   const [dataNueva, setDataNueva] = useState({});
 
   const { status } = useSelector((state) => state.empVotantesSlice);
+  let { type } = useSelector((state) => state.empVotantesSlice);
 
   const finalizar = () => {
-    dispatch(envioLink(dataNueva, AddVotanteNext));
+    if (type === "formales") {
+      console.log("formales");
+      dispatch(envioLink(dataNueva, AddVotanteNext));
+    } else if (type === "noformales") {
+      console.log("noformales");
+      dispatch(envioLinkNoFormal(dataNueva, AddVotanteNext));
+    } else {
+      console.log("consultas");
+      dispatch(envioLinkConsultas(dataNueva, AddVotanteNext));
+    }
   };
 
   const cerrarM = () => {

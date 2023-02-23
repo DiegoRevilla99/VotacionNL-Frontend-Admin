@@ -40,8 +40,14 @@ export const InicioPage = () => {
         <Typography variant="h5" color="initial" gutterBottom align="center">
           Selecciona el tipo de jornada que quieres empadronar
         </Typography>
-        <Grid container spacing={{ xs: 5, lg: 9 }} height="100%" py={"2rem"}>
-          <Grid item xs={12} lg={4}>
+        <Grid
+          container
+          spacing={{ xs: 5, lg: 9 }}
+          justifyContent="center"
+          height="100%"
+          py={"2rem"}
+        >
+          {/* <Grid item xs={12} lg={4}>
             <Button
               onClick={goFormales}
               variant="contained"
@@ -77,7 +83,7 @@ export const InicioPage = () => {
             >
               Jornadas formales
             </Button>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12} lg={4}>
             <Button
               onClick={goNoFormales}
@@ -115,7 +121,7 @@ export const InicioPage = () => {
               ELECCIONES POPULARES
             </Button>
           </Grid>
-          <Grid item xs={12} lg={4}>
+          {/* <Grid item xs={12} lg={4}>
             <Button
               onClick={goConsultas}
               variant="contained"
@@ -151,7 +157,7 @@ export const InicioPage = () => {
             >
               Consultas ciudadanas
             </Button>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Box>
       {/* <ModalEliminarPregunta statusDeleteModal={statusDeleteModal} handleToggleModal={handleCloseDeleteModal} /> */}
