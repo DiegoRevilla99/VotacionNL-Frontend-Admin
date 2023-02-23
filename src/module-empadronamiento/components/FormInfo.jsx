@@ -676,7 +676,7 @@ export const FormInfo = ({
                   className={styles.textField}
                   value={values.curp.toUpperCase()}
                   onChange={(e) => {
-                    e.target.value = e.target.value.trim();
+                    e.target.value = e.target.value.trim().toUpperCase();
                     handleChange(e);
                   }}
                   onPaste={handleChangeD}
@@ -735,7 +735,10 @@ export const FormInfo = ({
               id="nombreVotante"
               className={styles.textField}
               value={values.nombreVotante.toUpperCase()}
-              onChange={handleChange}
+              onChange={(e) => {
+                e.target.value = e.target.value.trim().toUpperCase();
+                handleChange(e);
+              }}
               onBlur={handleBlur}
               onPaste={handleChangeD}
             ></TextField>
@@ -759,7 +762,10 @@ export const FormInfo = ({
               id="apellidoPVotante"
               className={styles.textField}
               value={values.apellidoPVotante.toUpperCase()}
-              onChange={handleChange}
+              onChange={(e) => {
+                e.target.value = e.target.value.trim().toUpperCase();
+                handleChange(e);
+              }}
               onBlur={handleBlur}
               onPaste={handleChangeD}
             ></TextField>
@@ -785,7 +791,10 @@ export const FormInfo = ({
               id="apellidoMVotante"
               className={styles.textField}
               value={values.apellidoMVotante.toUpperCase()}
-              onChange={handleChange}
+              onChange={(e) => {
+                e.target.value = e.target.value.trim().toUpperCase();
+                handleChange(e);
+              }}
               onBlur={handleBlur}
               onPaste={handleChangeD}
             ></TextField>

@@ -6,8 +6,8 @@ import { Navigate } from "react-router-dom";
 import { useCheckAuth } from "../hooks/useCheckAuth";
 
 export const PublicRoute = ({ children }) => {
-	// const { status } = useCheckAuth();
-	const { status } = useSelector((state) => state.auth);
-
-	return status === "notLogged" ? children : <Navigate to="/preparacion/inicio"></Navigate>;
+  // const { status } = useCheckAuth();
+  const { status } = useSelector((state) => state.auth);
+  let ruta = sessionStorage.getItem("Location");
+  return status !== "logged" ? children : <Navigate to={ruta}></Navigate>;
 };

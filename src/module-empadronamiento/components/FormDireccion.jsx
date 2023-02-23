@@ -24,10 +24,12 @@ let schema = yup.object().shape({
     .number()
     .typeError("Debe ser un número")
     .required("El número es necesario"),
-  cp: yup.string().matches(/^[0-9]+$/, "Solo numeros")
-.min(5, 'Deben ser 5 digitos')
-.max(5, 'Deben ser 5 digitos')
-.required("El código postas es necesario"),
+  cp: yup
+    .string()
+    .matches(/^[0-9]+$/, "Solo numeros")
+    .min(5, "Deben ser 5 digitos")
+    .max(5, "Deben ser 5 digitos")
+    .required("El código postas es necesario"),
 
   municipio: yup.string().required("Municipio es necesario"),
 });
@@ -74,35 +76,39 @@ export const FormDireccion = ({
   const handleChangeD = (e) => {
     e.preventDefault();
   };
-  const { votanteFound } = useSelector(
-    (state) => state.empVotantesSlice
-  );
+  const { votanteFound } = useSelector((state) => state.empVotantesSlice);
 
   const SearchV = () => {
     const {
-      values: {
-       
-      },
-      
+      values: {},
+
       setFieldValue,
     } = useFormikContext();
-  
+
     useEffect(() => {
       // setFieldValue("calle", votanteFound?votanteFound.calle:"");
-      if(!data.votanteModel){
-      setFieldValue("calle", votanteFound.find==="si"?votanteFound.calle:"");
-      setFieldValue("colonia", votanteFound.find==="si"?votanteFound.colonia:"");
-      setFieldValue("numero", votanteFound.find==="si"?votanteFound.numero:"");
-      setFieldValue("cp", votanteFound.find==="si"?votanteFound.cp:"");
-      setFieldValue("municipio", votanteFound.find==="si"?votanteFound.municipio:"");
+      if (!data.votanteModel) {
+        setFieldValue(
+          "calle",
+          votanteFound.find === "si" ? votanteFound.calle : ""
+        );
+        setFieldValue(
+          "colonia",
+          votanteFound.find === "si" ? votanteFound.colonia : ""
+        );
+        setFieldValue(
+          "numero",
+          votanteFound.find === "si" ? votanteFound.numero : ""
+        );
+        setFieldValue("cp", votanteFound.find === "si" ? votanteFound.cp : "");
+        setFieldValue(
+          "municipio",
+          votanteFound.find === "si" ? votanteFound.municipio : ""
+        );
       }
-      
     }, [votanteFound]);
-  
-    return (
-      <>
-      </>
-    );
+
+    return <></>;
   };
   return (
     <Formik
@@ -138,12 +144,12 @@ export const FormDireccion = ({
                 DIRECCIÓN DEL VOTANTE
               </Typography>
             </div>
-            <SearchV/>
+            <SearchV />
             <Box display={"flex"}>
-            <Typography>ESTADO</Typography>
-                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
-              </Box>
-            
+              <Typography>ESTADO</Typography>
+              <Typography sx={{ ml: 1, color: "#D80F0F" }}>*</Typography>
+            </Box>
+
             <TextField
               disabled
               required
@@ -157,12 +163,12 @@ export const FormDireccion = ({
             <br />
             <br />
             <Box display={"flex"}>
-            <Typography>MUNICIPIO</Typography>
-                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
-              </Box>
-            
+              <Typography>MUNICIPIO</Typography>
+              <Typography sx={{ ml: 1, color: "#D80F0F" }}>*</Typography>
+            </Box>
+
             <TextField
-            disabled={!votanteFound||votanteFound?.find==="si"}
+              disabled={!votanteFound || votanteFound?.find === "si"}
               required
               label=""
               variant="filled"
@@ -170,7 +176,10 @@ export const FormDireccion = ({
               id="municipio"
               className={styles.textField}
               value={values.municipio}
-              onChange={handleChange}
+              onChange={(e) => {
+                e.target.value = e.target.value.trim().toUpperCase();
+                handleChange(e);
+              }}
               onBlur={handleBlur}
               onPaste={handleChangeD}
             ></TextField>
@@ -197,20 +206,23 @@ export const FormDireccion = ({
             <br />
             <br />
             <Box display={"flex"}>
-            <Typography>COLONIA</Typography>
-                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
-              </Box>
-            
+              <Typography>COLONIA</Typography>
+              <Typography sx={{ ml: 1, color: "#D80F0F" }}>*</Typography>
+            </Box>
+
             <TextField
               required
-              disabled={!votanteFound||votanteFound?.find==="si"}
+              disabled={!votanteFound || votanteFound?.find === "si"}
               label=""
               variant="filled"
               name="colonia"
               id="colonia"
               className={styles.textField}
               value={values.colonia}
-              onChange={handleChange}
+              onChange={(e) => {
+                e.target.value = e.target.value.trim().toUpperCase();
+                handleChange(e);
+              }}
               onBlur={handleBlur}
               onPaste={handleChangeD}
             ></TextField>
@@ -222,13 +234,13 @@ export const FormDireccion = ({
             />
             <br />
             <Box display={"flex"}>
-            <Typography>CÓDIGO POSTAL</Typography>
-                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
-              </Box>
-            
+              <Typography>CÓDIGO POSTAL</Typography>
+              <Typography sx={{ ml: 1, color: "#D80F0F" }}>*</Typography>
+            </Box>
+
             <TextField
               required
-              disabled={!votanteFound||votanteFound?.find==="si"}
+              disabled={!votanteFound || votanteFound?.find === "si"}
               label=""
               variant="filled"
               name="cp"
@@ -247,20 +259,23 @@ export const FormDireccion = ({
             />
             <br />
             <Box display={"flex"}>
-            <Typography>CALLE</Typography>
-                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
-              </Box>
-            
+              <Typography>CALLE</Typography>
+              <Typography sx={{ ml: 1, color: "#D80F0F" }}>*</Typography>
+            </Box>
+
             <TextField
               required
-              disabled={!votanteFound||votanteFound?.find==="si"}
+              disabled={!votanteFound || votanteFound?.find === "si"}
               label=""
               variant="filled"
               name="calle"
               id="calle"
               className={styles.textField}
               value={values.calle}
-              onChange={handleChange}
+              onChange={(e) => {
+                e.target.value = e.target.value.trim().toUpperCase();
+                handleChange(e);
+              }}
               onBlur={handleBlur}
               onPaste={handleChangeD}
             ></TextField>
@@ -268,13 +283,13 @@ export const FormDireccion = ({
             <br />
             <br />
             <Box display={"flex"}>
-            <Typography>NÚMERO</Typography>
-                  <Typography sx={{ml:1, color:"#D80F0F" }}>*</Typography> 
-              </Box>
-            
+              <Typography>NÚMERO</Typography>
+              <Typography sx={{ ml: 1, color: "#D80F0F" }}>*</Typography>
+            </Box>
+
             <TextField
               required
-              disabled={!votanteFound||votanteFound?.find==="si"}
+              disabled={!votanteFound || votanteFound?.find === "si"}
               label=""
               variant="filled"
               name="numero"
