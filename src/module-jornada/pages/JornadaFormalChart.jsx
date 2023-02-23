@@ -435,20 +435,21 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 											fontWeight="bold"
 											// sx={{ fontSize: "1rem" }}
 										>
-											{total -
+											{/* {total -
 												chartData.resultados.find(
 													(resul) => resul.id === 99999
 												).resultados -
 												chartData.resultados.find(
 													(resul) => resul.id === 99998
-												).resultados}
+												).resultados} */}
+											0
 										</Typography>
 										<Typography
 											variant="caption"
 											color="initial"
 											fontWeight="bold"
 										>
-											{(
+											{/* {(
 												((total -
 													chartData.resultados.find(
 														(resul) => resul.id === 99999
@@ -458,8 +459,8 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 													).resultados) *
 													100) /
 												total
-											).toFixed(2)}
-											%
+											).toFixed(2)} */}
+											0 %
 										</Typography>
 									</Box>
 								</Grid>
@@ -493,25 +494,26 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 											color="initial"
 											fontWeight="bold"
 										>
-											{
+											{/* {
 												chartData.resultados.find(
 													(resul) => resul.id === 99998
 												).resultados
-											}
+											} */}
+											0
 										</Typography>
 										<Typography
 											variant="caption"
 											color="initial"
 											fontWeight="bold"
 										>
-											{(
+											{/* {(
 												(chartData.resultados.find(
 													(resul) => resul.id === 99998
 												).resultados *
 													100) /
 												total
-											).toFixed(2)}
-											%
+											).toFixed(2)} */}
+											0 %
 										</Typography>
 									</Box>
 								</Grid>
@@ -544,25 +546,26 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 											color="initial"
 											fontWeight="bold"
 										>
-											{
+											{/* {
 												chartData.resultados.find(
 													(resul) => resul.id === 99999
 												).resultados
-											}
+											} */}
+											0
 										</Typography>
 										<Typography
 											variant="caption"
 											color="initial"
 											fontWeight="bold"
 										>
-											{(
+											{/* {(
 												(chartData.resultados.find(
 													(resul) => resul.id === 99999
 												).resultados *
 													100) /
 												total
-											).toFixed(2)}
-											%
+											).toFixed(2)} */}
+											0 %
 										</Typography>
 									</Box>
 								</Grid>
