@@ -26,9 +26,9 @@ export const DataGridTable = ({ handleOpenModal }) => {
 		{ field: "subtipo", headerName: "Subtipo", flex: 3 },
 		{ field: "respuesta1", headerName: "Respuesta 1", flex: 3 },
 		{ field: "respuesta2", headerName: "Respuesta 2", flex: 3 },
-		{ field: "respuesta3", headerName: "Respuesta 3", flex: 3 },
-		{ field: "respuesta4", headerName: "Respuesta 4", flex: 3 },
-		{ field: "respuesta5", headerName: "Respuesta 5", flex: 3 },
+		// { field: "respuesta3", headerName: "Respuesta 3", flex: 3 },
+		// { field: "respuesta4", headerName: "Respuesta 4", flex: 3 },
+		// { field: "respuesta5", headerName: "Respuesta 5", flex: 3 },
 		{
 			field: "actions",
 			headerName: "Acciones",
