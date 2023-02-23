@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, Button, IconButton, Typography } from "@mui/material";
 import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
@@ -11,11 +11,15 @@ import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { Item } from "./Item";
 import { DividerItem } from "./DividerItem";
+import { useDispatch } from "react-redux";
+import { onLogout } from "../../store/auth/authSlice";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { deleteToken } from "../../providers/Micro-Auth/configAuth";
 
 export const SidebarCustom = ({ selected, setSelected }) => {
 	const [isCollapsed, setisCollapsed] = useState(false);
 	console.log(selected);
-
+	const dispatch = useDispatch();
 	const getSize = () => {
 		const width = window.innerWidth;
 		if (width < 1200 && !isCollapsed) {
@@ -33,6 +37,12 @@ export const SidebarCustom = ({ selected, setSelected }) => {
 			window.removeEventListener("resize", getSize);
 		};
 	}, [window.innerWidth]);
+
+	const logout = () => {
+		console.log("logout....");
+		deleteToken();
+		dispatch(onLogout());
+	};
 
 	return (
 		<Box
@@ -123,12 +133,21 @@ export const SidebarCustom = ({ selected, setSelected }) => {
 								to={"jornada/inicio"}
 							></Item>
 							<DividerItem isCollapsed={isCollapsed} title={"Otros"}></DividerItem>
-							<Item
-								title="Configuración"
-								icon={<SettingsOutlinedIcon />}
-								selected={selected}
-								setSelected={setSelected}
-							></Item>
+							{/* <Item
+                title="Configuración"
+                icon={<SettingsOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              ></Item> */}
+
+							<Button
+								endIcon={<LogoutIcon />}
+								justifyContent="left"
+								sx={{ width: "70%", color: "#fff" }}
+								onClick={logout}
+							>
+								{!isCollapsed ? "Cerrar sesión" : ""}
+							</Button>
 						</Box>
 
 						<Box
