@@ -184,6 +184,7 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 		// console.log("bolll", boleta);
 		// ReporteInicialPDF();
 		// captureScreen();
+		// const chartImage = chartRef.current.chartInstance.toBase64Image();
 		captureCanvas(tipoReporte);
 		// let doc = new jsPDF("p", "pt", "letter");
 		// let margin = 10;
@@ -233,7 +234,7 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 							alignContent="center"
 							alignItems="center"
 						>
-							<Box
+							{/* <Box
 								borderRight="1px solid"
 								pr={4}
 								display="flex"
@@ -250,7 +251,7 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 								<Typography variant="body2" color="initial" align="center">
 									Mayoría relativa
 								</Typography>
-							</Box>
+							</Box> */}
 						</Grid>
 						<Grid
 							item
@@ -274,8 +275,8 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 				</Grid>
 				<Divider sx={{ paddingTop: "1.5rem" }} />
 				<Grid container spacing={2} pb={3}>
-					<Grid item container xs={12} md={6}>
-						<Grid
+					{/* <Grid item container xs={12} md={6}> */}
+					{/* <Grid
 							item
 							xs={6}
 							display="flex"
@@ -295,8 +296,8 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 							>
 								0.0%
 							</Typography>
-						</Grid>
-						<Grid
+						</Grid> */}
+					{/* <Grid
 							item
 							xs={6}
 							display="flex"
@@ -316,9 +317,9 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 							>
 								20 Enero 2023
 							</Typography>
-						</Grid>
-					</Grid>
-					<Grid item container xs={12} md={6}>
+						</Grid> */}
+					{/* </Grid> */}
+					<Grid item container xs={12} md={12}>
 						<Box bgcolor="#f2f2f2" border="1px solid" width="100%" p={1}>
 							<Typography variant="h6" color="#543884" sx={{ fontSize: "1rem" }}>
 								Resumen de la votación
@@ -437,6 +438,9 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 											{total -
 												chartData.resultados.find(
 													(resul) => resul.id === 99999
+												).resultados -
+												chartData.resultados.find(
+													(resul) => resul.id === 99998
 												).resultados}
 										</Typography>
 										<Typography
@@ -448,6 +452,9 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 												((total -
 													chartData.resultados.find(
 														(resul) => resul.id === 99999
+													).resultados -
+													chartData.resultados.find(
+														(resul) => resul.id === 99998
 													).resultados) *
 													100) /
 												total
@@ -486,14 +493,25 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 											color="initial"
 											fontWeight="bold"
 										>
-											0
+											{
+												chartData.resultados.find(
+													(resul) => resul.id === 99998
+												).resultados
+											}
 										</Typography>
 										<Typography
 											variant="caption"
 											color="initial"
 											fontWeight="bold"
 										>
-											0.00%
+											{(
+												(chartData.resultados.find(
+													(resul) => resul.id === 99998
+												).resultados *
+													100) /
+												total
+											).toFixed(2)}
+											%
 										</Typography>
 									</Box>
 								</Grid>

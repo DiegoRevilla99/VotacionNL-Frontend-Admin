@@ -40,16 +40,20 @@ export const captureCanvas = (reporte) => {
 
 	html2canvas(document.getElementById(reporte), {
 		scale: scale2,
-		logging: false,
+		// logging: false,
 		useCORS: true,
-		allowTaint: true,
-		imageTimeout: 5000,
+		// allowTaint: true,
+		// imageTimeout: 5000,
 	}).then((canvas) => {
-		let image = canvas.toDataURL("image/jpeg", 1.0);
+		let image = canvas.toDataURL("image/JPEG", 1.0);
+		// const canvasG = document.getElementById("ejemplo23").getContext("2d");
+		// const dataUrl = canvasG.toDataURL("image/JPEG", 1.0);
 		// let img = new Image();
 		// img.src = canvas.toDataURL("image/jpeg", 1.0);
 		doc.addImage(image, "JPEG", 0, 0, canvas.width / 4.08, canvas.height / 4.08);
-		doc.addImage(image, "JPEG", 0, 0, canvas.width / 4.08, canvas.height / 4.08);
+		// doc.addImage(image, "JPEG", 0, 0, canvas.width / 4.08, canvas.height / 4.08);
+		// doc.addPage().addImage();
+		// doc.addPage().addImage(chartRef, "JPEG", 0, 0, canvas.width / 4.08, canvas.height / 4.08);
 		// doc.save("myPage.pdf"); //Download the rendered PDF.
 		doc.output("dataurlnewwindow", { filename: "fichero.pdf" });
 	});

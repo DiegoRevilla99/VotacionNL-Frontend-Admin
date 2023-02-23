@@ -317,12 +317,12 @@ export const ReporteFinalFormalHTML = ({
 												// bgcolor={index1}
 											>
 												{resultado?.fotos?.map((foto) => (
-													<canvas
+													<img
 														ref={canvas}
 														height="25px"
 														width="25px"
 														src={foto}
-													></canvas>
+													></img>
 												))}
 											</Box>
 										</Grid>

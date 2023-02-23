@@ -179,12 +179,13 @@ export const JornadaNoFormalChart = ({ chartData = { resultados: [] }, tipoRepor
 							alignItems="center"
 						>
 							<Typography
-								variant="h6"
+								variant="body1"
 								color="initial"
 								align="center"
 								sx={{ wordBreak: "break-word" }}
 							>
-								{/* {chartData.jornadaModel.entidad} */}
+								Contabilización{" "}
+								{chartData?.boleta?.boletaCandidatos?.modalidad?.contabilizacion}
 							</Typography>
 						</Grid>
 						<Grid
@@ -224,8 +225,8 @@ export const JornadaNoFormalChart = ({ chartData = { resultados: [] }, tipoRepor
 								// fontWeight="bold"
 								align="center"
 							>
-								Elecciones populares por
-								{/* {chartData.papeleta.pregunta.tipoRespuesta} */}
+								Elecciones populares de{" "}
+								{chartData?.boleta?.boletaCandidatos?.modalidad.modalidad}
 							</Typography>
 						</Grid>
 					</Grid>
@@ -234,7 +235,7 @@ export const JornadaNoFormalChart = ({ chartData = { resultados: [] }, tipoRepor
 				<Divider sx={{ paddingTop: "1.5rem" }} />
 				<Grid container spacing={2} pb={3}>
 					<Grid item container xs={12} md={6}>
-						<Grid
+						{/* <Grid
 							item
 							xs={6}
 							display="flex"
@@ -254,8 +255,8 @@ export const JornadaNoFormalChart = ({ chartData = { resultados: [] }, tipoRepor
 							>
 								0.0%
 							</Typography>
-						</Grid>
-						<Grid
+						</Grid> */}
+						{/* <Grid
 							item
 							xs={6}
 							display="flex"
@@ -275,7 +276,7 @@ export const JornadaNoFormalChart = ({ chartData = { resultados: [] }, tipoRepor
 							>
 								20 Enero 2023
 							</Typography>
-						</Grid>
+						</Grid> */}
 					</Grid>
 					<Grid item container xs={12} md={6}>
 						<Box bgcolor="#f2f2f2" border="1px solid" width="100%" p={1}>
