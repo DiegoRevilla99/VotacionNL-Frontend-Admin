@@ -736,7 +736,7 @@ export const FormInfo = ({
               className={styles.textField}
               value={values.nombreVotante.toUpperCase()}
               onChange={(e) => {
-                e.target.value = e.target.value.trim().toUpperCase();
+                e.target.value = e.target.value.toUpperCase();
                 handleChange(e);
               }}
               onBlur={handleBlur}
@@ -763,7 +763,7 @@ export const FormInfo = ({
               className={styles.textField}
               value={values.apellidoPVotante.toUpperCase()}
               onChange={(e) => {
-                e.target.value = e.target.value.trim().toUpperCase();
+                e.target.value = e.target.value.toUpperCase();
                 handleChange(e);
               }}
               onBlur={handleBlur}
@@ -792,7 +792,7 @@ export const FormInfo = ({
               className={styles.textField}
               value={values.apellidoMVotante.toUpperCase()}
               onChange={(e) => {
-                e.target.value = e.target.value.trim().toUpperCase();
+                e.target.value = e.target.value.toUpperCase();
                 handleChange(e);
               }}
               onBlur={handleBlur}

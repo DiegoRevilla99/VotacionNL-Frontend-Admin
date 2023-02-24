@@ -31,7 +31,7 @@ export const Login = () => {
   const onSubmit = (values) => {
     dispatch(
       onLoginWithEmailAndPassword(values.curp, values.contrasenia, () => {
-        navigate("/preparacion/inicio");
+        navigate("/preparacion/inicioPage");
       })
     );
   };

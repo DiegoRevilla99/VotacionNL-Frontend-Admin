@@ -177,7 +177,7 @@ export const FormDireccion = ({
               className={styles.textField}
               value={values.municipio}
               onChange={(e) => {
-                e.target.value = e.target.value.trim().toUpperCase();
+                e.target.value = e.target.value.toUpperCase();
                 handleChange(e);
               }}
               onBlur={handleBlur}
@@ -220,7 +220,7 @@ export const FormDireccion = ({
               className={styles.textField}
               value={values.colonia}
               onChange={(e) => {
-                e.target.value = e.target.value.trim().toUpperCase();
+                e.target.value = e.target.value.toUpperCase();
                 handleChange(e);
               }}
               onBlur={handleBlur}
@@ -273,7 +273,7 @@ export const FormDireccion = ({
               className={styles.textField}
               value={values.calle}
               onChange={(e) => {
-                e.target.value = e.target.value.trim().toUpperCase();
+                e.target.value = e.target.value.toUpperCase();
                 handleChange(e);
               }}
               onBlur={handleBlur}
