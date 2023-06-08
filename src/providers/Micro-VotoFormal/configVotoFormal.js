@@ -1,12 +1,12 @@
 import axios from "axios";
 
 export const votoFormalAPI = axios.create({
-  baseURL: "https://ms-jornada-voto-seguro.herokuapp.com/",
+  baseURL: "https://ms-jornada-voto-seguro-2.herokuapp.com/",
 });
 
 export const votoNoFormalAPI = axios.create({
-  baseURL: "https://ms-jornada-votos-no-formales.herokuapp.com7",
+  baseURL: "https://ms-jornada-votos-no-formales-2.herokuapp.com7",
 });
 export const votoconsultaAPI = axios.create({
-  baseURL: "https://ms-jornada-voto-consulta.herokuapp.com/",
+  baseURL: "https://ms-jornada-voto-consulta-2.herokuapp.com/",
 });
