@@ -25,7 +25,7 @@ export const getJornadasNoFormales = () => {
     dispatch(startLoadingJornadasNoFormales());
     const { ok, data, errorMessage } = await getJornadasNoFormalesProvider();
 
-    if (ok) {
+    if (ok && data) {
       let newData = data.map((eleccion) => {
         let ne = {
           ...eleccion.eleccionModel,
@@ -40,6 +40,8 @@ export const getJornadasNoFormales = () => {
         return ne;
       });
       dispatch(setJornadasNoFormales({ jornadasNoFormales: newData }));
+    } else {
+      dispatch(setJornadasNoFormales({ jornadasNoFormales: [] }));
     }
   };
 };

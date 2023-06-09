@@ -33,7 +33,12 @@ export const JornadasFormales = () => {
   }, []);
 
   useEffect(() => {
-    setDataSearch(jornadasFormales);
+    if (jornadasFormales) {
+      console.log("hay datos:", jornadasFormales);
+      setDataSearch(jornadasFormales);
+    } else {
+      setDataSearch([]);
+    }
   }, [jornadasFormales]);
 
   const searching = (data, buscador) => {

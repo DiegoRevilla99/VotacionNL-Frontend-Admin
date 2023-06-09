@@ -35,19 +35,26 @@ export const getJornadasFormales = () => {
   return async (dispatch, getState) => {
     dispatch(startLoadingFormales());
     const { ok, data, errorMessage } = await getJornadasFormalesProvider();
-    let newData = data.map((eleccion) => {
-      let ne = {
-        ...eleccion.eleccionModel,
-        ...eleccion.configuracionModel,
-      };
-      ne.status = getStatusEmp(ne.inicioEmpadronamiento, ne.finEmpadronamiento);
-      ne.inicioEmpadronamiento = transformDate(ne.inicioEmpadronamiento);
-      ne.finEmpadronamiento = transformDate(ne.finEmpadronamiento);
-      return ne;
-    });
+    console.log("Jornadas forales: ", data);
 
-    if (ok) {
+    if (ok && data) {
+      console.log(" TODO BIENN ");
+      let newData = data.map((eleccion) => {
+        let ne = {
+          ...eleccion.eleccionModel,
+          ...eleccion.configuracionModel,
+        };
+        ne.status = getStatusEmp(
+          ne.inicioEmpadronamiento,
+          ne.finEmpadronamiento
+        );
+        ne.inicioEmpadronamiento = transformDate(ne.inicioEmpadronamiento);
+        ne.finEmpadronamiento = transformDate(ne.finEmpadronamiento);
+        return ne;
+      });
       dispatch(setJornadasFormales({ jornadasFormales: newData }));
+    } else {
+      dispatch(setJornadasFormales({ jornadasFormales: [] }));
     }
   };
 };
