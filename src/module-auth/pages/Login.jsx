@@ -1,8 +1,15 @@
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
 import {
   Alert,
   Button,
+  FormControl,
   Grid,
   Hidden,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
   TextField,
   Typography,
 } from "@mui/material";
@@ -20,14 +27,19 @@ import { onLoginWithEmailAndPassword } from "../../store/auth/authThunks";
 const validationSchema = object({
   // correo: string("Ingresa tu correo").email().required("Este campo es requerido"),
   curp: string("Ingresa tu correo").required("Este campo es requerido"),
-  contrasenia: string("Ingresa tu contraseña").required(
-    "Este campo es requerido"
-  ),
+  contrasenia: string("Ingresa tu contraseña").required("Este campo es requerido"),
 });
 
 export const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [visible, setVisible] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   const onSubmit = (values) => {
     dispatch(
       onLoginWithEmailAndPassword(values.curp, values.contrasenia, () => {
@@ -129,12 +141,7 @@ export const Login = () => {
               sx={{ padding: "2rem", width: "100%" }}
             >
               <Box display={"flex"} flexDirection="column" px={"2rem"}>
-                <Typography
-                  variant="h5"
-                  color="initial"
-                  textAlign={"center"}
-                  mb={"2rem"}
-                >
+                <Typography variant="h5" color="initial" textAlign={"center"} mb={"2rem"}>
                   BIENVENIDO AL PROTOTIPO DE SISTEMA DE VOTACIONES
                 </Typography>
 
@@ -146,13 +153,7 @@ export const Login = () => {
                     onSubmit(values);
                   }}
                 >
-                  {({
-                    handleChange,
-                    values,
-                    errors,
-                    touched,
-                    handleSubmit,
-                  }) => (
+                  {({ handleChange, values, errors, touched, handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
                       <TextField
                         name="curp"
@@ -174,26 +175,39 @@ export const Login = () => {
                         id="contrasenia"
                         label="Contraseña"
                         variant="standard"
-                        type="password"
+                        type={visible ? "text" : "password"}
                         onChange={handleChange}
                         value={values.contrasenia}
-                        error={
-                          touched.contrasenia && Boolean(errors.contrasenia)
-                        }
+                        error={touched.contrasenia && Boolean(errors.contrasenia)}
                         helperText={touched.contrasenia && errors.contrasenia}
                         sx={{ marginBottom: "2rem" }}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <Box
+                                display="flex"
+                                flexDirection="row"
+                                alignItems="center"
+                                justifyContent="center"
+                              >
+                                <IconButton onClick={() => setVisible(!visible)} edge="end">
+                                  {visible ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                              </Box>
+                            </InputAdornment>
+                          ),
+                        }}
                       />
+
                       <Box textAlign={"center"} mb={"2rem"}>
-                        <Link to="/auth/recuperacion">
-                          ¿Olvidaste tu contraseña?
-                        </Link>
+                        <Link to="/auth/recuperacion">¿Olvidaste tu contraseña?</Link>
                       </Box>
 
-                      <Button
+                      <LoadingButton
                         type="submit"
                         variant="contained"
                         size="large"
-                        // disabled={status === "checking"}
+                        disabled={status === "checking"}
                         sx={{
                           boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
                           transition: "all 0.5s ease",
@@ -208,7 +222,7 @@ export const Login = () => {
                         }}
                       >
                         Acceder
-                      </Button>
+                      </LoadingButton>
                     </form>
                   )}
                 </Formik>
