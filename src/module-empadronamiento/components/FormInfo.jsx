@@ -18,11 +18,7 @@ import * as yup from "yup";
 import { ErrorField } from "../../module-preparacion/components/ErrorField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-import {
-  DateTimePicker,
-  DesktopDatePicker,
-  LocalizationProvider,
-} from "@mui/x-date-pickers";
+import { DateTimePicker, DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import es from "date-fns/locale/es";
 import { format, formatDistance, formatRelative, subDays } from "date-fns";
@@ -43,12 +39,8 @@ import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 let schema = yup.object().shape({
   curp: yup.string().required("CURP del votante es necesario"),
   nombreVotante: yup.string().required("Nombre del votante es necesario"),
-  apellidoMVotante: yup
-    .string()
-    .required("Segundo apellido del votante es necesario"),
-  apellidoPVotante: yup
-    .string()
-    .required("Primer apellido del votante es necesario"),
+  apellidoMVotante: yup.string().required("Segundo apellido del votante es necesario"),
+  apellidoPVotante: yup.string().required("Primer apellido del votante es necesario"),
   fechaNacimiento: yup.string().required("Fecha de nacimiento es necesario"),
   genero: yup.string().required("Genero necesario"),
 });
@@ -248,8 +240,7 @@ const validando = (values, type) => {
       const edad = getAge(fecha);
       console.log("edad", edad);
       if (edad < 18)
-        errors.edad =
-          "Esta persona no puede ser registrada a esta jornada ya que es menor de edad";
+        errors.edad = "Esta persona no puede ser registrada a esta jornada ya que es menor de edad";
     }
   }
 
@@ -263,10 +254,7 @@ const validando = (values, type) => {
       }
   } */
 
-  if (
-    validationCurp.test(values.curp.toUpperCase()) &&
-    values.nombreVotante.trim().length > 0
-  ) {
+  if (validationCurp.test(values.curp.toUpperCase()) && values.nombreVotante.trim().length > 0) {
     if (
       errorNombreCFuntion(
         values.nombreVotante.trim().toUpperCase(),
@@ -274,91 +262,46 @@ const validando = (values, type) => {
       )
     ) {
       errors.nombreVotante =
-        "La segunda consonante debe ser '" +
-        values.curp.toUpperCase().charAt(15) +
-        "'";
+        "La segunda consonante debe ser '" + values.curp.toUpperCase().charAt(15) + "'";
     }
   }
 
-  if (
-    validationCurp.test(values.curp.toUpperCase()) &&
-    values.nombreVotante.trim().length > 0
-  ) {
+  if (validationCurp.test(values.curp.toUpperCase()) && values.nombreVotante.trim().length > 0) {
     if (
       errorNombreInitFuntion(
         values.nombreVotante.trim().toUpperCase(),
         values.curp.toUpperCase().charAt(3)
       )
     )
-      errors.nombreVotante =
-        "La inical debe ser '" + values.curp.charAt(3) + "'";
+      errors.nombreVotante = "La inical debe ser '" + values.curp.charAt(3) + "'";
   }
 
-  if (
-    validationCurp.test(values.curp.toUpperCase()) &&
-    values.apellidoPVotante.trim().length > 0
-  ) {
-    if (
-      !isSecondApPCons(
-        values.apellidoPVotante,
-        values.curp.toUpperCase().charAt(13)
-      )
-    ) {
-      errors.apellidoPVotante =
-        "La segunda consonante debe ser '" + values.curp.charAt(13) + "'";
+  if (validationCurp.test(values.curp.toUpperCase()) && values.apellidoPVotante.trim().length > 0) {
+    if (!isSecondApPCons(values.apellidoPVotante, values.curp.toUpperCase().charAt(13))) {
+      errors.apellidoPVotante = "La segunda consonante debe ser '" + values.curp.charAt(13) + "'";
     }
   }
 
-  if (
-    validationCurp.test(values.curp.toUpperCase()) &&
-    values.apellidoPVotante.trim().length > 0
-  ) {
-    if (
-      !isFirstVocal(
-        values.apellidoPVotante,
-        values.curp.toUpperCase().charAt(1)
-      )
-    ) {
-      errors.apellidoPVotante =
-        "La siguiente vocal debe ser '" + values.curp.charAt(1) + "'";
+  if (validationCurp.test(values.curp.toUpperCase()) && values.apellidoPVotante.trim().length > 0) {
+    if (!isFirstVocal(values.apellidoPVotante, values.curp.toUpperCase().charAt(1))) {
+      errors.apellidoPVotante = "La siguiente vocal debe ser '" + values.curp.charAt(1) + "'";
     }
   }
 
-  if (
-    validationCurp.test(values.curp.toUpperCase()) &&
-    values.apellidoPVotante.trim().length > 0
-  ) {
-    if (
-      values.apellidoPVotante.toUpperCase().charAt(0) !== values.curp.charAt(0)
-    )
-      errors.apellidoPVotante =
-        "La inical debe ser '" + values.curp.charAt(0) + "'";
+  if (validationCurp.test(values.curp.toUpperCase()) && values.apellidoPVotante.trim().length > 0) {
+    if (values.apellidoPVotante.toUpperCase().charAt(0) !== values.curp.charAt(0))
+      errors.apellidoPVotante = "La inical debe ser '" + values.curp.charAt(0) + "'";
   }
 
-  if (
-    validationCurp.test(values.curp.toUpperCase()) &&
-    values.apellidoMVotante.trim().length > 0
-  ) {
-    if (
-      !isSecondAMCons(
-        values.apellidoMVotante,
-        values.curp.toUpperCase().charAt(14)
-      )
-    ) {
-      errors.apellidoMVotante =
-        "La segunda consonante debe ser '" + values.curp.charAt(14) + "'";
+  if (validationCurp.test(values.curp.toUpperCase()) && values.apellidoMVotante.trim().length > 0) {
+    if (!isSecondAMCons(values.apellidoMVotante, values.curp.toUpperCase().charAt(14))) {
+      errors.apellidoMVotante = "La segunda consonante debe ser '" + values.curp.charAt(14) + "'";
     }
   }
 
-  if (
-    validationCurp.test(values.curp.toUpperCase()) &&
-    values.apellidoMVotante.trim().length > 0
-  ) {
-    if (
-      values.apellidoMVotante.toUpperCase().charAt(0) !== values.curp.charAt(2)
-    )
-      errors.apellidoMVotante =
-        "La inicial debe ser '" + values.curp.charAt(2) + "'";
+  if (validationCurp.test(values.curp.toUpperCase()) && values.apellidoMVotante.trim().length > 0) {
+    if (values.apellidoMVotante.toUpperCase().charAt(0) !== values.curp.charAt(2))
+      errors.apellidoMVotante = "La inicial debe ser '" + values.curp.charAt(2) + "'";
   }
 
   return errors;
@@ -396,17 +339,14 @@ const getGender = (curp = "") => {
 const getAge = (fecha) => {
   const birth = new Date(fecha);
   const current = new Date();
-  let anios =
-    parseInt(current.getFullYear(), 10) - parseInt(birth.getFullYear(), 10);
-  const difmonths =
-    parseInt(current.getMonth(), 10) - parseInt(birth.getMonth(), 10);
+  let anios = parseInt(current.getFullYear(), 10) - parseInt(birth.getFullYear(), 10);
+  const difmonths = parseInt(current.getMonth(), 10) - parseInt(birth.getMonth(), 10);
   // console.log("dif",difmonths)
   if (difmonths < 0) {
     anios = anios - 1;
   } else {
     if (difmonths === 0) {
-      const difdays =
-        parseInt(current.getDate(), 10) - parseInt(birth.getDate(), 10);
+      const difdays = parseInt(current.getDate(), 10) - parseInt(birth.getDate(), 10);
       if (difdays < 0) anios = anios - 1;
     }
   }
@@ -415,13 +355,7 @@ const getAge = (fecha) => {
 
 const FechaNacimientoField = ({ name }) => {
   const {
-    values: {
-      curp,
-      nombreVotante,
-      apellidoMVotante,
-      apellidoPVotante,
-      fechaNacimiento,
-    },
+    values: { curp, nombreVotante, apellidoMVotante, apellidoPVotante, fechaNacimiento },
     genero,
     touched,
     setFieldValue,
@@ -453,13 +387,7 @@ const FechaNacimientoField = ({ name }) => {
 
 const NombreField = ({ name }) => {
   const {
-    values: {
-      curp,
-      nombreVotante,
-      apellidoMVotante,
-      apellidoPVotante,
-      fechaNacimiento,
-    },
+    values: { curp, nombreVotante, apellidoMVotante, apellidoPVotante, fechaNacimiento },
     genero,
     touched,
     setFieldValue,
@@ -489,11 +417,7 @@ const NombreField = ({ name }) => {
   );
 };
 
-export const FormInfo = ({
-  data = {},
-  onNext = () => {},
-  limpiar = () => {},
-}) => {
+export const FormInfo = ({ data = {}, onNext = () => {}, limpiar = () => {} }) => {
   const fecha = new Date();
   const styles = useStyles();
   const dispatch = useDispatch();
@@ -519,13 +443,7 @@ export const FormInfo = ({
 
   const SearchV = ({ curp2 }) => {
     const {
-      values: {
-        curp,
-        nombreVotante,
-        apellidoMVotante,
-        apellidoPVotante,
-        fechaNacimiento,
-      },
+      values: { curp, nombreVotante, apellidoMVotante, apellidoPVotante, fechaNacimiento },
       genero,
       touched,
       setFieldValue,
@@ -545,10 +463,7 @@ export const FormInfo = ({
           "apellidoPVotante",
           votanteFound.find === "si" ? votanteFound.apellidoPVotante : ""
         );
-        setFieldValue(
-          "genero",
-          votanteFound.find === "si" ? votanteFound.genero : ""
-        );
+        setFieldValue("genero", votanteFound.find === "si" ? votanteFound.genero : "");
       }
       // setFieldValue("fechaNacimiento", votanteFound.find==="si"?new Date(votanteFound.fechaNacimiento).toISOString():"");
       //setFieldValue("genero", votanteFound?votanteFound.genero:"");
@@ -571,17 +486,14 @@ export const FormInfo = ({
   }, []);
 
   const onBuscar = async (curp) => {
-    console.log("ente;", curp);
     if (validationCurp.test(curp)) {
       setLoading(true);
       const respu = await getAllVotantes();
-      const vot = respu.find((v) => {
+      const vot = respu?.find((v) => {
         if (v.curp === curp) return v;
       });
-      if (vot === undefined) {
-        setIsFound(
-          "Este votante nunca ha sido registrado, favor de rellenar a mano"
-        );
+      if (vot === undefined || null) {
+        setIsFound("Este votante nunca ha sido registrado, favor de rellenar a mano");
         dispatch(setVotanteFound({ votanteFound: { find: "no" } }));
         setLoading(false);
         limpiar();
@@ -604,9 +516,7 @@ export const FormInfo = ({
     <Formik
       initialValues={{
         curp: data.votanteModel?.curp ? data.votanteModel.curp : "",
-        nombreVotante: data.votanteModel?.nombreVotante
-          ? data.votanteModel.nombreVotante
-          : "",
+        nombreVotante: data.votanteModel?.nombreVotante ? data.votanteModel.nombreVotante : "",
         apellidoMVotante: data.votanteModel?.apellidoMVotante
           ? data.votanteModel.apellidoMVotante
           : "",
@@ -708,12 +618,8 @@ export const FormInfo = ({
             </Box>
 
             <br />
-            <ErrorMessage
-              name="curp"
-              component={() => <ErrorField>{errors.curp}</ErrorField>}
-            />
-            {isFound ===
-              "Este votante nunca ha sido registrado, favor de rellenar a mano" && (
+            <ErrorMessage name="curp" component={() => <ErrorField>{errors.curp}</ErrorField>} />
+            {isFound === "Este votante nunca ha sido registrado, favor de rellenar a mano" && (
               <Alert severity="warning">{isFound}</Alert>
             )}
             {votanteFound?.find === "si" && (
@@ -771,9 +677,7 @@ export const FormInfo = ({
             ></TextField>
             <ErrorMessage
               name="apellidoPVotante"
-              component={() => (
-                <ErrorField>{errors.apellidoPVotante}</ErrorField>
-              )}
+              component={() => <ErrorField>{errors.apellidoPVotante}</ErrorField>}
             />
             <br />
             <br />
@@ -800,9 +704,7 @@ export const FormInfo = ({
             ></TextField>
             <ErrorMessage
               name="apellidoMVotante"
-              component={() => (
-                <ErrorField>{errors.apellidoMVotante}</ErrorField>
-              )}
+              component={() => <ErrorField>{errors.apellidoMVotante}</ErrorField>}
             />
             <br />
             <br />
@@ -828,18 +730,11 @@ export const FormInfo = ({
 
               <ErrorMessage
                 name="fechaNacimiento"
-                component={() => (
-                  <ErrorField>{errors.fechaNacimiento}</ErrorField>
-                )}
+                component={() => <ErrorField>{errors.fechaNacimiento}</ErrorField>}
               />
               <br />
 
-              <Box
-                display={"flex"}
-                flexDirection="column"
-                sx={{ pl: 5 }}
-                width={"100%"}
-              >
+              <Box display={"flex"} flexDirection="column" sx={{ pl: 5 }} width={"100%"}>
                 <Box width={"100%"} display={"flex"}>
                   <Typography textAlign={"center"} sx={{ mb: 1, ml: "50px" }}>
                     GENERO
@@ -847,11 +742,7 @@ export const FormInfo = ({
                   <Typography sx={{ ml: 1, color: "#D80F0F" }}>*</Typography>
                 </Box>
 
-                <FormControl
-                  disabled={
-                    votanteFound.find === "si" || votanteFound.find === ""
-                  }
-                >
+                <FormControl disabled={votanteFound.find === "si" || votanteFound.find === ""}>
                   <RadioGroup
                     aria-labelledby="demo-controlled-radio-buttons-group"
                     name="genero"
@@ -860,21 +751,9 @@ export const FormInfo = ({
                     onBlur={handleBlur}
                     sx={{ display: "flex", flexDirection: "row" }}
                   >
-                    <FormControlLabel
-                      value="HOMBRE"
-                      control={<Radio />}
-                      label="HOMBRE"
-                    />
-                    <FormControlLabel
-                      value="MUJER"
-                      control={<Radio />}
-                      label="MUJER"
-                    />
-                    <FormControlLabel
-                      value="OTRO"
-                      control={<Radio />}
-                      label="OTRO"
-                    />
+                    <FormControlLabel value="HOMBRE" control={<Radio />} label="HOMBRE" />
+                    <FormControlLabel value="MUJER" control={<Radio />} label="MUJER" />
+                    <FormControlLabel value="OTRO" control={<Radio />} label="OTRO" />
                   </RadioGroup>
                 </FormControl>
                 <br />
