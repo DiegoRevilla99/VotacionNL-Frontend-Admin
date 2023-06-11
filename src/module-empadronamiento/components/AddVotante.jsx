@@ -5,7 +5,7 @@ import { ModalVotante } from "./ModalVotante";
 export const AddVotante = ({ isOpen = false, abrirCerrarModal = () => {} }) => {
   const dispatch = useDispatch();
   const enviar = (data) => {
-    console.log("Añadiendo votante");
+    // console.log("Añadiendo votante");
     // dispatch(postCoalición(data, abrirCerrarModal));
   };
   return (

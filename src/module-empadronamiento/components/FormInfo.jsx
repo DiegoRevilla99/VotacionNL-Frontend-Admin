@@ -488,8 +488,11 @@ export const FormInfo = ({ data = {}, onNext = () => {}, limpiar = () => {} }) =
   const onBuscar = async (curp) => {
     if (validationCurp.test(curp)) {
       setLoading(true);
-      const respu = await getAllVotantes();
-      const vot = respu?.find((v) => {
+      let respu = await getAllVotantes();
+      if (!respu) {
+        respu = [];
+      }
+      const vot = respu.find((v) => {
         if (v.curp === curp) return v;
       });
       if (vot === undefined || null) {
