@@ -7,8 +7,8 @@ import { useSelector } from "react-redux";
 export const PrivateRoute = ({ children }) => {
   //   const { status } = useCheckAuth();
 
-  // const { status } = useSelector((state) => state.auth);
-  const status = "logged";
+  const { status } = useSelector((state) => state.auth);
+  //const status = "logged";
 
   const logged = true;
   const { pathname, search } = useLocation();
