@@ -574,7 +574,10 @@ export const FormInfo = ({
     console.log("ente;", curp);
     if (validationCurp.test(curp)) {
       setLoading(true);
-      const respu = await getAllVotantes();
+      let respu = await getAllVotantes();
+      if (!respu) {
+        respu = [];
+      }
       const vot = respu.find((v) => {
         if (v.curp === curp) return v;
       });
