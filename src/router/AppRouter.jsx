@@ -1,15 +1,13 @@
-import { useEffect } from "react";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Route, Routes } from "react-router-dom";
 import { useCheckAuth } from "../hooks/useCheckAuth";
 import { AuthRoutes } from "../module-auth/routes/AuthRoutes";
 // import { VisualizadorDePDF } from "../module-jornada/pages/VisualizadorDePDF";
 
 import { AdminRoutes } from "../routes/AdminRoutes";
 import {
-  onToastErrorOperation,
-  onToastSuccessOperation,
+  onToastErrorOperation
 } from "../store/ui/uiSlice";
 
 import { PrivateRoute } from "./PrivateRoute";
@@ -62,9 +60,11 @@ export const AppRouter = () => {
         <Route
           path="/*"
           element={
+            // <PrivateRoute>
             <PrivateRoute>
               <AdminRoutes />
-            </PrivateRoute>
+              </PrivateRoute>
+            // </PrivateRoute>
           }
         ></Route>
 

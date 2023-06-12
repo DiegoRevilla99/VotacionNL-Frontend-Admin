@@ -1,10 +1,10 @@
+import { authAPI } from "../Micro-Auth/configAuth";
 import { votoConsultaAPI } from "../Micro-VotoConsultas/configVotoConsultas";
+import { votoFormalAPI } from "../Micro-VotoFormal/configVotoFormal";
 import { votosNoFormalesAPI } from "../Micro-VotosNoFormales/configVotosNoFormales";
 import { ImagesAPI } from "./configImage";
 import { jornadasAPI } from "./configJornada";
 import { jornadasNoFormalesAPI } from "./configNoFormales";
-import { votoFormalAPI } from "../Micro-VotoFormal/configVotoFormal";
-import { authAPI } from "../Micro-Auth/configAuth";
 let idJornadas = 0;
 let idBoleta = 0;
 
@@ -34,7 +34,7 @@ export const getJornadasFormales = async () => {
   try {
     const { data } = await jornadasAPI.get("jornada/electoral/");
     console.log("DATA JORNADAS", data);
-    return { ok: true, data: data.data, errorMessage: "" };
+    return { ok: true, data: data, errorMessage: "" };
   } catch (error) {
     return { ok: false, errorMessage: error.message };
   }

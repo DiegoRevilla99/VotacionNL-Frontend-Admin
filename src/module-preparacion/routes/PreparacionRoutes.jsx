@@ -6,7 +6,6 @@ import { AddBoletaJornada } from "../pages/AddBoletaJornada";
 import { AddBoletaJornadaGenerica } from "../pages/AddBoletaJornadaGenerica";
 import { AddPapeleta } from "../pages/AddPapeleta";
 import { ConfiguracionConsulta } from "../pages/ConfiguracionConsulta";
-import { ConfiguracionJornada } from "../pages/ConfiguracionJornada";
 import { ConfiguracionJornadaNF } from "../pages/ConfiguracionJornadaNF";
 import { ConfiguracionJornadaP } from "../pages/ConfiguracionJornadaP";
 import { CrudComite } from "../pages/CrudComite";

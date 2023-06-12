@@ -376,7 +376,7 @@ export const SliceJornada = createSlice({
 			state.candidatoandSuplentes = [];
 		},
 		onFillJornadasData: (state, { payload }) => {
-			state.jornadasData = payload;
+			state.jornadasData = payload || [];
 		},
 		onAddJornadas: (state, { payload }) => {
 			state.jornadasData.push(payload);
@@ -407,7 +407,7 @@ export const SliceJornada = createSlice({
 		},
 		onFillBoletas: (state, { payload }) => {
 			console.log("fill boletas", payload);
-			state.jornadaSelected.boletas = payload; //!DEJA ESTE
+			state.jornadaSelected.boletas = payload || []; //!DEJA ESTE
 			// state.jornadaSelected.boletas = []; //!BORRA ESTE
 
 			// state.jornadaSelected.boletas.push({

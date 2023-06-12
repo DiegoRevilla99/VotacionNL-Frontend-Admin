@@ -124,6 +124,10 @@ export const RegistroJornadaFormal = () => {
 	const openModalDelete = () => {
 		setModalDeleteStatus(true);
 	};
+
+  console.log('Jorndas', jornadasData);
+
+  
   if (status === "checking")
     return (
       <Box sx={{ width: "100%" }}>
