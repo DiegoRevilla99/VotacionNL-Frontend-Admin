@@ -18,7 +18,7 @@ import { Formik } from "formik";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { object, string } from "yup";
 import { onLogin } from "../../store/auth/authSlice";
@@ -34,6 +34,9 @@ export const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
+  const { status, errorMessage } = useSelector((state) => state.auth);
+
+  console.log("status", status);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
@@ -135,6 +138,7 @@ export const Login = () => {
               item
               sm={6}
               display="flex"
+              height="100%"
               flexDirection="column"
               justifyContent="center"
               alignItems={"stretch"}
@@ -229,6 +233,11 @@ export const Login = () => {
                 {!isOnline && (
                   <Alert sx={{ mt: 3, mb: 3 }} severity="error">
                     Error en la conexión a internet
+                  </Alert>
+                )}
+                {errorMessage && (
+                  <Alert sx={{ mt: 3, mb: 3 }} severity="error">
+                    {errorMessage}
                   </Alert>
                 )}
               </Box>
