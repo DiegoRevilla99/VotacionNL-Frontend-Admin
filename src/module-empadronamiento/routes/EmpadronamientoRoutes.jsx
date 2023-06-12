@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { PrivateRoute } from "../../router/PrivateRoute";

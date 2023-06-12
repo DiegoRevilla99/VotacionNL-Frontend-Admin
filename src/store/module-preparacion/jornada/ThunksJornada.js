@@ -17,12 +17,12 @@ import {
   getJornadaVotosInicio,
   getSesionesActivas,
   postImage,
-  updateBoletaData,
+  updateBoletaData
 } from "../../../providers/Micro-Preparacion/providerJornada";
 import {
   onToastCheckingOperation,
   onToastErrorOperation,
-  onToastSuccessOperation,
+  onToastSuccessOperation
 } from "../../ui/uiSlice";
 
 import {
@@ -46,7 +46,7 @@ import {
   onSetPartidoNull,
   onSetPartidoSelectedNull,
   onSetSesionesActivas,
-  onSuccessOperation,
+  onSuccessOperation
 } from "./SliceJornada";
 export const onPostImage = (image) => {
   return async (dispatch) => {
@@ -83,21 +83,22 @@ export const onGetAlljornadas = () => {
 };
 
 export const onGetjornadas = () => {
-  return async (dispatch) => {
-    dispatch(onCheckingOperation());
-    const { ok, data, errorMessage } = await getJornadasFormales(); // PROVIDER
-    if (ok) {
-      dispatch(onSuccessOperation());
-      dispatch(onFillJornadasData(data)); // SLICE
-    } else {
-      dispatch(onErrorOperation());
-      dispatch(
-        onToastErrorOperation({
-          errorMessage: errorMessage || "No se pudo obtener las jornadas",
-        })
-      );
-    }
-  };
+	return async (dispatch) => {
+		dispatch(onCheckingOperation());
+		const { ok, data, errorMessage } = await getJornadasFormales(); // PROVIDER
+		if (ok) {
+			console.log("DATA DE JORNADAS en el thunks", data);
+			dispatch(onSuccessOperation());
+			dispatch(onFillJornadasData(data)); // SLICE
+		} else {
+			dispatch(onErrorOperation());
+			dispatch(
+				onToastErrorOperation({
+					errorMessage: errorMessage || "No se pudo obtener las jornadas",
+				})
+			);
+		}
+	};
 };
 
 export const onGetjornadasNoFormales = () => {

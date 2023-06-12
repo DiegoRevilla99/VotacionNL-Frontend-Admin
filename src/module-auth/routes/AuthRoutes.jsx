@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { PublicRoute } from "../../router/PublicRoute";
+import { PrivateRoute } from "../../router/PrivateRoute";
 import { Login } from "../pages/Login";
 import { Recuperacion } from "../pages/Recuperacion";
 import { Registro } from "../pages/Registro";
@@ -8,7 +8,7 @@ import { Registro } from "../pages/Registro";
 export const AuthRoutes = () => {
 	console.log("ME EJECUTO AUTH");
 	return (
-		<PublicRoute>
+		<PrivateRoute>
 			<Routes>
 				<Route path="login" element={<Login />} />
 				<Route path="registro" element={<Registro />} />
@@ -16,6 +16,6 @@ export const AuthRoutes = () => {
 
 				<Route path="/*" element={<Navigate to="/auth/login" />} />
 			</Routes>
-		</PublicRoute>
+		</PrivateRoute>
 	);
 };
