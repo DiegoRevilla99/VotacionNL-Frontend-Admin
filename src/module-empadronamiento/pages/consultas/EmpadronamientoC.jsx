@@ -24,7 +24,7 @@ export const EmpadronamientoC = () => {
   useEffect(() => {
     dispatch(getEleccionFormal(id));
     dispatch(getVotantesbyJornada(id));
-    dispatch(setType({type:"consultas"}))
+    dispatch(setType({ type: "consultas" }));
   }, []);
 
   return (
@@ -32,7 +32,8 @@ export const EmpadronamientoC = () => {
       <Box
         sx={{
           width: "100%",
-          height: "100%",
+          height: "99%",
+          overflowY: "scroll",
           display: "flex",
           flexDirection: "column",
           justifyContent: "start",
@@ -65,13 +66,11 @@ export const EmpadronamientoC = () => {
           </Stack>
         ) : (
           <Box sx={{ pl: 2, pr: 2, mt: 0, width: "100%", height: "100%" }}>
-           
-              <RegisterVoters
-                status={eleccion.status}
-                isLoading={isLoadingVotantes}
-                datos={votantes}
-              ></RegisterVoters>
-            
+            <RegisterVoters
+              status={eleccion.status}
+              isLoading={isLoadingVotantes}
+              datos={votantes}
+            ></RegisterVoters>
           </Box>
         )}
       </Box>
