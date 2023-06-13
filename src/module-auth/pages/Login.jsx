@@ -1,27 +1,16 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import {
-  Alert,
-  Button,
-  FormControl,
-  Grid,
-  Hidden,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-  Typography,
+  Alert, Grid, IconButton,
+  InputAdornment, TextField,
+  Typography
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { Formik } from "formik";
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { object, string } from "yup";
-import { onLogin } from "../../store/auth/authSlice";
 import { onLoginWithEmailAndPassword } from "../../store/auth/authThunks";
 
 const validationSchema = object({
