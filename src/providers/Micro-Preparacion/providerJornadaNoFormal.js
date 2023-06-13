@@ -182,8 +182,8 @@ export const createBoleta = async (data, idJornadaElectoral, candidatos) => {
       segundoFirmanteNombre: data.segundoFirmante,
       segundoFirmanteCargo: data.cargoSegundoFirmante,
       modalidadVotacionModel: {
-        idModalidadVotacion: 1,
-        // idModalidadVotacion: data.modalidadVotacion,
+        // idModalidadVotacion: 1,
+        idModalidadVotacion: data.modalidadVotacion,
       },
       eleccionModel: {
         idEleccion: idJornadaElectoral,

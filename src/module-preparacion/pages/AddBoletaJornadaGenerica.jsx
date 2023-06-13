@@ -226,7 +226,10 @@ export const AddBoletaJornadaGenerica = () => {
 	  navigate("/preparacion/jornada/noFormal/"+params.id);
 	};
 	const handleConfigurar = () => {
-		navigate("/preparacion/jornadaNoFormal/configboleta/" + estructuraBoletaId);
+		// navigate("/preparacion/jornadaNoFormal/configboleta/" + estructuraBoletaId);
+		// navigate("/preparacion/jornadaNoFormal/configboleta/" + estructuraBoletaId);
+
+		navigate("/preparacion/jornadaNoFormal/configboleta/" + params.id + "/" + estructuraBoletaId);
 	};
 	// INICIO DEL RETURN
 
