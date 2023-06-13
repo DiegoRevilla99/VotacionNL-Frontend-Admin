@@ -11,6 +11,7 @@ import {
 } from "../store/ui/uiSlice";
 
 import { PrivateRoute } from "./PrivateRoute";
+// import { PrivateRoute } from "./PrivateRoute";
 
 export const AppRouter = () => {
   // const { status: userStatus } = useSelector((state) => state.auth);

@@ -13,20 +13,20 @@ import { useNavigate, useParams } from "react-router-dom";
 import { object, string } from "yup";
 import { onCreateBoleta, onCreateBoletaAsociaciones, onUpdateBoletaData } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
 import { AddCandidatoGenericoMod } from "../components/AddCandidatoGenericoMod";
-import { AgrupaAsociacion } from "../components/configuracion-boleta/AgrupaAsociacion";
 import { ModalAsociacionGenerico } from "../components/ModalAsociacionGenerico";
 import { ModalBoletaCandidatoGenerico } from "../components/ModalBoletaCandidatoGenerico";
+import { AgrupaAsociacion } from "../components/configuracion-boleta/AgrupaAsociacion";
 import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 const modalidadNoFormal = [ {
     value: 1,
     label: 'REPRESENTANTE',
   },
   {
-    value: 2,
+    value: 7,
     label: 'COMITÉ',
   },
   {
-    value: 3,
+    value: 8,
     label: 'PLANILLA',
   },
 ];
@@ -435,7 +435,7 @@ export const AddBoletaJornadaGenerica = () => {
 							handleOpenDeleteCandidatoModal={handleOpenDeleteCandidatoModal}
 							status={status}
 						/> 
-						{values.modalidadVotacion === 3 && 
+						{values.modalidadVotacion === 8 && 
 						<>
 						<Box
 							pl={3}

@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { PrivateRoute } from "../../router/PrivateRoute";
+// import { PrivateRoute } from "../../router/PrivateRoute";
 import { AddBoletaComite } from "../pages/AddBoletaComite";
 import { AddBoletaJornada } from "../pages/AddBoletaJornada";
 import { AddBoletaJornadaGenerica } from "../pages/AddBoletaJornadaGenerica";
