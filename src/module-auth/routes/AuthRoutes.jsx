@@ -5,7 +5,6 @@ import { Login } from "../pages/Login";
 import { Recuperacion } from "../pages/Recuperacion";
 import { Registro } from "../pages/Registro";
 
-import { PublicRoute } from "../../router/PublicRoute";
 export const AuthRoutes = () => {
   console.log("ME EJECUTO AUTH");
   return (
