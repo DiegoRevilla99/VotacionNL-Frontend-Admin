@@ -245,7 +245,7 @@ export const onSaveConfig = (id, data, navigate = () => {}) => {
     }
   };
 };
-export const onGetConfig = (id) => {
+export const onGetConfig = (id, titulo) => {
   return async (dispatch) => {
     // dispatch(onToastCheckingOperation("Guardando configuracion..."));
     dispatch(onCheckingOperation());
@@ -254,11 +254,8 @@ export const onGetConfig = (id) => {
 
     if (ok) {
       dispatch(onSuccessOperation());
-      // dispatch(
-      // 	onToastSuccessOperation({ successMessage: "Configuración guardada con éxito" })
-      // );
       dispatch(onSetConfigSelected(data));
-      console.log("CONFIGURACION: ", data);
+      dispatch(onSetConsultaSelected({ id, title: titulo }));
       // navigate();
     } else {
       dispatch(onErrorOperation());

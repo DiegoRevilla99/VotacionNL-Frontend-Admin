@@ -6,16 +6,16 @@ import { Recuperacion } from "../pages/Recuperacion";
 import { Registro } from "../pages/Registro";
 
 export const AuthRoutes = () => {
-	console.log("ME EJECUTO AUTH");
-	return (
-		<PublicRoute>
-			<Routes>
-				<Route path="login" element={<Login />} />
-				<Route path="registro" element={<Registro />} />
-				<Route path="recuperacion" element={<Recuperacion />} />
+  console.log("ME EJECUTO AUTH");
+  return (
+    <PublicRoute>
+      <Routes>
+        <Route path="login" element={<Login />} />
+        <Route path="registro" element={<Registro />} />
+        <Route path="recuperacion" element={<Recuperacion />} />
 
-				<Route path="/*" element={<Navigate to="/auth/login" />} />
-			</Routes>
-		</PublicRoute>
-	);
+        <Route path="/*" element={<Navigate to="/auth/login" />} />
+      </Routes>
+    </PublicRoute>
+  );
 };

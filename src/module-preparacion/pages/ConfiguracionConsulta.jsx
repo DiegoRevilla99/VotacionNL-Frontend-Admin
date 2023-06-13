@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertTitle,
   Box,
   CircularProgress,
   Divider,
@@ -30,7 +32,7 @@ const validationSchema = object({
   // inicioAsignacionContrasenia: date().required("Este campo es requerido"),
   // finAsignacionContrasenia: date().required("Este campo es requerido"),
   tiempoDuracionRespuesta: date().required("Este campo es requerido"),
-  tiempoExtra: date().required("Este campo es requerido"),
+  // tiempoExtra: date().required("Este campo es requerido"),
 });
 
 export const ConfiguracionConsulta = () => {
@@ -39,6 +41,8 @@ export const ConfiguracionConsulta = () => {
   const params = useParams();
   const { consultaSelected } = useConsultaCiudadanaStore();
   const { status, configSelected } = useSelector((state) => state.consultaCiudadana);
+
+  console.log("selected", consultaSelected);
 
   const onCancel = () => {
     navigate("/preparacion/registroConsultaCiudadana");
@@ -57,9 +61,11 @@ export const ConfiguracionConsulta = () => {
       tiempoDuracionRespuesta: new Date(values.tiempoDuracionRespuesta)
         .toTimeString()
         .substring(0, 8),
-      tiempoExtra: new Date(values.tiempoExtra).toTimeString().substring(0, 8),
+      // tiempoExtra: new Date(values.tiempoExtra).toTimeString().substring(0, 8),
+      tiempoExtra: "00:10:00",
       habilitarVerificacion: values.habilitarVerificacion,
     };
+    console.log("datafinal", data);
 
     dispatch(
       onSaveConfig(params.idConsulta, data, () => {
@@ -169,12 +175,18 @@ export const ConfiguracionConsulta = () => {
           >
             {({ values, handleSubmit, handleChange, errors, touched, setFieldValue }) => (
               <form onSubmit={handleSubmit}>
-                {values.isDisabled && (
+                {/* {values.isDisabled && (
                   <Typography variant="h6" color="red" justifyContent={"center"} textAlign="center">
                     ESTA CONFIGURACIÓN YA NO SE PUEDE MODIFICAR
                   </Typography>
+                )} */}
+                {values.isDisabled && (
+                  <Alert severity="info">
+                    <AlertTitle>JORNADA CONFIGURADA</AlertTitle>
+                    No se permiten modificaciones una vez que la jornada haya sido configurada.
+                  </Alert>
                 )}
-
+                {/* {console.log("values", values)} */}
                 <Grid container spacing={6} pt="1rem">
                   {/* <Grid item xs={12} md={6} mt="0.5rem">
 										<DateFieldWithTitle
@@ -205,7 +217,17 @@ export const ConfiguracionConsulta = () => {
 											isDisabled={values.isDisabled}
 										/>
 									</Grid> */}
-                  <Grid item xs={12} md={6} mt="0.5rem">
+                  <Grid item xs={12}>
+                    <Typography
+                      sx={{ fontSize: "15px", mt: 1, fontWeight: "bold" }}
+                      variant="subtitle2"
+                      textAlign="left"
+                      color="primary"
+                    >
+                      PASO 1.- CONFIGURA LAS FECHAS DE EMPADRONAMIENTO
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
                     <DateFieldWithTitle
                       label={"FECHA Y HORA DE INICIO DE RECEPCIÓN DE EMPADRONAMIENTO"}
                       name={"inicioEmpadronamiento"}
@@ -217,7 +239,7 @@ export const ConfiguracionConsulta = () => {
                       isDisabled={values.isDisabled}
                     />
                   </Grid>
-                  <Grid item xs={12} md={6} mt="0.5rem">
+                  <Grid item xs={12} md={6}>
                     <DateFieldWithTitle
                       label={"FECHA Y HORA DE FINALIZACIÓN DE RECEPCIÓN DE EMPADRONAMIENTO"}
                       name={"finEmpadronamiento"}
@@ -229,10 +251,21 @@ export const ConfiguracionConsulta = () => {
                       minDate={values.inicioEmpadronamiento.minute(
                         values.inicioEmpadronamiento.minute() + 1
                       )}
-                      isDisabled={values.isDisabled}
+                      isDisabled={values.isDisabled || isNaN(values.inicioEmpadronamiento.$D)}
                     />
                   </Grid>
-                  <Grid item xs={12} md={6} mt="0.5rem">
+                  <Grid item xs={12}>
+                    <Typography
+                      sx={{ fontSize: "15px", mt: 1, fontWeight: "bold" }}
+                      variant="subtitle2"
+                      textAlign="left"
+                      color="primary"
+                    >
+                      PASO 2.- CONFIGURA LAS FECHAS DE RECEPCIÓN DE VOTOS
+                    </Typography>
+                  </Grid>
+
+                  <Grid item xs={12} md={6}>
                     <DateFieldWithTitle
                       label={"FECHA Y HORA DE INICIO DE RECEPCIÓN DE VOTACIÓN"}
                       name={"inicioRecepcionVotos"}
@@ -241,13 +274,13 @@ export const ConfiguracionConsulta = () => {
                       handleChange={handleChange}
                       error={errors.inicioRecepcionVotos}
                       touched={touched.inicioRecepcionVotos}
-                      isDisabled={values.isDisabled}
+                      isDisabled={values.isDisabled || isNaN(values.finEmpadronamiento.$D)}
                       minDate={values.finEmpadronamiento.minute(
                         values.finEmpadronamiento.minute() + 1
                       )}
                     />
                   </Grid>
-                  <Grid item xs={12} md={6} mt="0.5rem">
+                  <Grid item xs={12} md={6}>
                     <DateFieldWithTitle
                       label={"FECHA Y HORA DE FINALIZACIÓN DE RECEPCIÓN DE VOTACIÓN"}
                       name={"finRecepcionVotos"}
@@ -257,7 +290,7 @@ export const ConfiguracionConsulta = () => {
                       error={errors.finRecepcionVotos}
                       touched={touched.finRecepcionVotos}
                       minDate={values.inicioRecepcionVotos.minute(1)}
-                      isDisabled={values.isDisabled}
+                      isDisabled={values.isDisabled || isNaN(values.inicioRecepcionVotos.$D)}
                     />
                   </Grid>
                   {/* <Grid item xs={12} md={6} mt="0.5rem">
@@ -289,7 +322,18 @@ export const ConfiguracionConsulta = () => {
 											isDisabled={values.isDisabled}
 										/>
 									</Grid> */}
-                  <Grid item xs={6} md={3} mt="0.5rem">
+                  <Grid item xs={12}>
+                    <Typography
+                      sx={{ fontSize: "15px", mt: 1, fontWeight: "bold" }}
+                      variant="subtitle2"
+                      textAlign="left"
+                      color="primary"
+                    >
+                      PASO 3.- CONFIGURA LA DURACIÓN DEL VOTO Y LA VERIFICACION DEL SENTIDO DEL
+                      SUFRAGIO
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} md={6} mt="0.5rem">
                     <TimeFieldWithTitle
                       label={"TIEMPO DE DURACIÓN DEL VOTO (mm:ss)"}
                       name={"tiempoDuracionRespuesta"}
@@ -301,7 +345,7 @@ export const ConfiguracionConsulta = () => {
                       isDisabled={values.isDisabled}
                     />
                   </Grid>
-                  <Grid item xs={6} md={3} mt="0.5rem">
+                  {/* <Grid item xs={6} md={3} mt="0.5rem">
                     <TimeFieldWithTitle
                       label={"TIEMPO EXTRA PARA EL VOTANTE (mm:ss)"}
                       name={"tiempoExtra"}
@@ -312,7 +356,7 @@ export const ConfiguracionConsulta = () => {
                       touched={touched.tiempoExtra}
                       isDisabled={values.isDisabled}
                     />
-                  </Grid>
+                  </Grid> */}
                   <Grid item xs={12} md={6} mt="0.5rem" textAlign="center">
                     <Typography variant="subtitle2" color="initial">
                       HABILITAR VERIFICACIÓN DEL SENTIDO DEL SUFRAGIO POR PARTE DEL VOTANTE

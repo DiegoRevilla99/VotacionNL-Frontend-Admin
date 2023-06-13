@@ -120,7 +120,7 @@ export const AddPapeleta = () => {
     >
       <Box sx={{ m: "0.5rem", ml: "2rem" }}>
         <Typography variant="h6" align="left" color="initial">
-          REGISTRO DE PAPELETA
+          PASO 3.- REGISTRO DE PAPELETA
         </Typography>
       </Box>
       <Divider />
@@ -204,6 +204,7 @@ export const AddPapeleta = () => {
                     error={errors.distritoElectoral}
                     touched={touched.distritoElectoral}
                     type="number"
+                    min={0}
                   />
                 </Grid>
                 <Grid item xs={12}>
