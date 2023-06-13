@@ -1,5 +1,14 @@
 import React, { useEffect } from "react";
-import { Box, Button, Divider, Grid, IconButton, LinearProgress, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Grid,
+  IconButton,
+  LinearProgress,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useConsultaCiudadanaStore } from "../hooks/useConsultaCiudadanaStore";
@@ -13,6 +22,8 @@ import {
   onGetPapeletas,
 } from "../../store/module-preparacion/consulta-ciudadana/thunks";
 import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
+
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 export const CrudPapeletas = () => {
   const { consultaSelected, status } = useConsultaCiudadanaStore();
@@ -95,11 +106,27 @@ export const CrudPapeletas = () => {
             ]}
             currentRoute={consultaSelected.title}
           ></BreadCrumbsCustom>
-          <Box sx={{ m: "0.5rem", ml: "2rem" }}>
+          <Box
+            sx={{ display: "flex", alignItems: "center", m: "0.5rem", ml: "2rem" }}
+            justifyContent="space-between"
+          >
             <Typography variant="h6" align="left" color="initial">
               {consultaSelected.title}
             </Typography>
+            <Tooltip
+              title="En este apartado puedes ver o crear las papeletas que una consulta ciudadanas puede tener."
+              // placement="right"
+            >
+              <IconButton color="primary">
+                <HelpOutlineIcon fontSize="large" />
+              </IconButton>
+            </Tooltip>
           </Box>
+          {/* <Box sx={{ m: "0.5rem", ml: "2rem" }}>
+            <Typography variant="h6" align="left" color="initial">
+              {consultaSelected.title}
+            </Typography>
+          </Box> */}
           <Divider />
           <Box
             sx={{
@@ -129,7 +156,7 @@ export const CrudPapeletas = () => {
                     },
                   }}
                 >
-                  Registrar Papeletas
+                  Paso 2 .- Registrar Papeletas
                 </Button>
               </Grid>
             </Grid>

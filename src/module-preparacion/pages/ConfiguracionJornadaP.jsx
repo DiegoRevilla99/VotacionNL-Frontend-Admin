@@ -39,20 +39,16 @@ const validationSchema = object({
   //inicioAssignPass: date().required("Este campo es requerido"),
   //finAssignPass: date().required("Este campo es requerido"),
   tiempoDuracionRespuesta: date().required("Este campo es requerido"),
-  tiempoExtra: date().required("Este campo es requerido"),
+  // tiempoExtra: date().required("Este campo es requerido"),
 });
 
 export const ConfiguracionJornadaP = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const {
-    status,
-    configJornada,
-    jornada,
-    errorJornada,
-    isLoadingConfigJornada,
-  } = useSelector((state) => state.configJornada);
+  const { status, configJornada, jornada, errorJornada, isLoadingConfigJornada } = useSelector(
+    (state) => state.configJornada
+  );
 
   const onCancel = () => {
     navigate("/preparacion/registroJornadaFormal");
@@ -73,27 +69,20 @@ export const ConfiguracionJornadaP = () => {
         tipoJornada: jornada.tipoJornada,
       },
       configuracionModel: {
-        inicioDisponibilidad: new Date(
-          values.inicioDisponibilidad
-        ).toISOString(),
-        finDisponibilidad: new Date(values.finDisponibilidad).toISOString(),
+        // inicioDisponibilidad: new Date(values.inicioDisponibilidad).toISOString(),
+        // finDisponibilidad: new Date(values.finDisponibilidad).toISOString(),
 
-        inicioEmpadronamiento: new Date(
-          values.inicioEmpadronamiento
-        ).toISOString(),
+        inicioEmpadronamiento: new Date(values.inicioEmpadronamiento).toISOString(),
         finEmpadronamiento: new Date(values.finEmpadronamiento).toISOString(),
         inicioRecepVoto: new Date(values.inicioRecepVoto).toISOString(),
         finRecepVoto: new Date(values.finRecepVoto).toISOString(),
-        inicioAssignPass: new Date(values.inicioAssignPass).toISOString(),
-        finAssignPass: new Date(values.finAssignPass).toISOString(),
+        // inicioAssignPass: new Date(values.inicioAssignPass).toISOString(),
+        // finAssignPass: new Date(values.finAssignPass).toISOString(),
       },
       configVotoModel: {
-        tiempoDuracionVoto: new Date(values.tiempoDuracionRespuesta)
-          .toTimeString()
-          .substring(0, 8),
-        tiempoExtraVoto: new Date(values.tiempoExtra)
-          .toTimeString()
-          .substring(0, 8),
+        tiempoDuracionVoto: new Date(values.tiempoDuracionRespuesta).toTimeString().substring(0, 8),
+        // tiempoExtraVoto: new Date(values.tiempoExtra).toTimeString().substring(0, 8),
+        tiempoExtraVoto: "00:10:00",
         dispVerificacion: values.habilitarVerificacion,
       },
     };
@@ -130,21 +119,18 @@ export const ConfiguracionJornadaP = () => {
     } */
 
     if (values.inicioEmpadronamiento >= values.finEmpadronamiento) {
-      errors.finEmpadronamiento =
-        "La fecha de inicial no puede ser menor o igual que la final";
+      errors.finEmpadronamiento = "La fecha de inicial no puede ser menor o igual que la final";
     }
     if (values.finEmpadronamiento >= values.inicioDisponibilidad) {
       errors.inicioDisponibilidad =
         "La disponibilidad del sistema debe ser posterior al empadronamiento";
     }
     if (values.inicioDisponibilidad >= values.finDisponibilidad) {
-      errors.finDisponibilidad =
-        "La fecha de inicial no puede ser menor o igual que la final";
+      errors.finDisponibilidad = "La fecha de inicial no puede ser menor o igual que la final";
     }
 
     if (values.inicioRecepVoto >= values.finRecepVoto) {
-      errors.finRecepVoto =
-        "La fecha de inicial no puede ser menor o igual que la final";
+      errors.finRecepVoto = "La fecha de inicial no puede ser menor o igual que la final";
     }
 
     /* if (values.inicioAssignPass >= values.finAssignPass) {
@@ -168,8 +154,6 @@ export const ConfiguracionJornadaP = () => {
           <Typography variant="h6" sx={{ mr: 2 }} align="left" color="initial">
             CONFIGURACIONES
           </Typography>
-
-          <SettingsSuggestIcon fontSize="large" />
         </Box>
         <Divider />
         <Box
@@ -181,13 +165,11 @@ export const ConfiguracionJornadaP = () => {
           <Box
             m={"2rem"}
             sx={{
-              width: { md: "75%", xs: "100%" },
               boxShadow: 1,
               backgroundColor: "white",
-              height: "auto",
               mt: "2rem",
               borderRadius: "2rem",
-              p: "4rem",
+              p: "2rem",
               pt: "1rem",
             }}
           >
@@ -221,41 +203,25 @@ export const ConfiguracionJornadaP = () => {
                       inicioDisponibilidad: dayjs(
                         configJornada.configuracionModel?.inicioDisponibilidad
                       ),
-                      finDisponibilidad: dayjs(
-                        configJornada.configuracionModel?.finDisponibilidad
-                      ),
+                      finDisponibilidad: dayjs(configJornada.configuracionModel?.finDisponibilidad),
                       inicioEmpadronamiento: dayjs(
                         configJornada.configuracionModel?.inicioEmpadronamiento
                       ),
                       finEmpadronamiento: dayjs(
                         configJornada.configuracionModel?.finEmpadronamiento
                       ),
-                      inicioRecepVoto: dayjs(
-                        configJornada.configuracionModel?.inicioRecepVoto
-                      ),
-                      finRecepVoto: dayjs(
-                        configJornada.configuracionModel?.finRecepVoto
-                      ),
-                      inicioAssignPass: dayjs(
-                        configJornada.configuracionModel?.inicioAssignPass
-                      ),
-                      finAssignPass: dayjs(
-                        configJornada.configuracionModel?.finAssignPass
-                      ),
+                      inicioRecepVoto: dayjs(configJornada.configuracionModel?.inicioRecepVoto),
+                      finRecepVoto: dayjs(configJornada.configuracionModel?.finRecepVoto),
+                      inicioAssignPass: dayjs(configJornada.configuracionModel?.inicioAssignPass),
+                      finAssignPass: dayjs(configJornada.configuracionModel?.finAssignPass),
                       tiempoDuracionRespuesta: dayjs(
                         new Date(
                           0,
                           0,
                           0,
                           0,
-                          configJornada.configVotoModel?.tiempoDuracionVoto?.substring(
-                            3,
-                            5
-                          ),
-                          configJornada.configVotoModel?.tiempoDuracionVoto?.substring(
-                            6,
-                            8
-                          )
+                          configJornada.configVotoModel?.tiempoDuracionVoto?.substring(3, 5),
+                          configJornada.configVotoModel?.tiempoDuracionVoto?.substring(6, 8)
                         )
                       ),
                       tiempoExtra: new Date(
@@ -263,17 +229,10 @@ export const ConfiguracionJornadaP = () => {
                         0,
                         0,
                         0,
-                        configJornada.configVotoModel?.tiempoExtraVoto?.substring(
-                          3,
-                          5
-                        ),
-                        configJornada.configVotoModel?.tiempoExtraVoto?.substring(
-                          6,
-                          8
-                        )
+                        configJornada.configVotoModel?.tiempoExtraVoto?.substring(3, 5),
+                        configJornada.configVotoModel?.tiempoExtraVoto?.substring(6, 8)
                       ),
-                      habilitarVerificacion:
-                        configJornada.configVotoModel?.dispVerificacion,
+                      habilitarVerificacion: configJornada.configVotoModel?.dispVerificacion,
                       isDisabled: true,
                     }
               }
@@ -297,18 +256,11 @@ export const ConfiguracionJornadaP = () => {
                   {values.isDisabled && (
                     <Alert severity="warning">
                       <AlertTitle>JORNADA CONFIGURADA</AlertTitle>
-                      No se permiten modificaciones una vez la jornada haya sido
-                      configurada.
+                      No se permiten modificaciones una vez la jornada haya sido configurada.
                     </Alert>
                   )}
 
-                  <Grid
-                    container
-                    rowSpacing={0}
-                    columnSpacing={{ md: 6 }}
-                    pt="1rem"
-                    mb="2rem"
-                  >
+                  <Grid container rowSpacing={0} columnSpacing={{ md: 6 }} pt="1rem" mb="2rem">
                     <Grid item xs={12}>
                       <Typography
                         sx={{ fontSize: "15px", mt: 1, fontWeight: "bold" }}
@@ -347,17 +299,15 @@ export const ConfiguracionJornadaP = () => {
                         isDisabled={values.isDisabled}
                       />
                     </Grid>
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                       <Typography
                         sx={{ fontSize: "15px", mt: 1, fontWeight: "bold" }}
                         variant="subtitle2"
                         textAlign="left"
                         color="primary"
                       >
-                        PASO 2.- CONFIGURA LAS FECHAS DE LA DISPONIBILIDAD DEL
-                        SISTEMA
+                        PASO 2.- CONFIGURA LAS FECHAS DE LA DISPONIBILIDAD DEL SISTEMA
                       </Typography>
-                      {/* <hr style={{ borderTop: "1px solid gray" }} /> */}
                     </Grid>
                     <Grid item xs={12} md={6} mt="0.5rem">
                       <DateFieldWithTitle
@@ -369,8 +319,7 @@ export const ConfiguracionJornadaP = () => {
                         error={errors.inicioDisponibilidad}
                         touched={touched.inicioDisponibilidad}
                         isDisabled={
-                          values.isDisabled ||
-                          values.finEmpadronamiento.$d == "Invalid Date"
+                          values.isDisabled || values.finEmpadronamiento.$d == "Invalid Date"
                         }
                         minDate={values.finEmpadronamiento.minute(
                           values.finEmpadronamiento.minute() + 1
@@ -390,11 +339,10 @@ export const ConfiguracionJornadaP = () => {
                           values.inicioDisponibilidad.minute() + 1
                         )}
                         isDisabled={
-                          values.isDisabled ||
-                          values.finEmpadronamiento.$d == "Invalid Date"
+                          values.isDisabled || values.finEmpadronamiento.$d == "Invalid Date"
                         }
                       />
-                    </Grid>
+                    </Grid> */}
 
                     {/* <Grid item xs={12} md={6} mt="0.5rem">
                       <DateFieldWithTitle
@@ -428,7 +376,7 @@ export const ConfiguracionJornadaP = () => {
                         textAlign="left"
                         color="primary"
                       >
-                        PASO 3: CONFIGURA LAS FECHAS DE RECEPCIÓN DE VOTACIÓN
+                        PASO 2: CONFIGURA LAS FECHAS DE RECEPCIÓN DE VOTACIÓN
                       </Typography>
                       {/* <hr style={{ borderTop: "1px solid gray" }} /> */}
                     </Grid>
@@ -442,8 +390,7 @@ export const ConfiguracionJornadaP = () => {
                         error={errors.inicioRecepVoto}
                         touched={touched.inicioRecepVoto}
                         isDisabled={
-                          values.isDisabled ||
-                          values.finDisponibilidad.$d == "Invalid Date"
+                          values.isDisabled || values.finEmpadronamiento.$d == "Invalid Date"
                         }
                         minDate={values.inicioDisponibilidad.minute(
                           values.inicioDisponibilidad.minute()
@@ -460,12 +407,9 @@ export const ConfiguracionJornadaP = () => {
                         error={errors.finRecepVoto}
                         touched={touched.finRecepVoto}
                         maxDate={new Date(values.finDisponibilidad)}
-                        minDate={values.inicioRecepVoto.minute(
-                          values.inicioRecepVoto.minute() + 1
-                        )}
+                        minDate={values.inicioRecepVoto.minute(values.inicioRecepVoto.minute() + 1)}
                         isDisabled={
-                          values.isDisabled ||
-                          values.finDisponibilidad.$d == "Invalid Date"
+                          values.isDisabled || values.finEmpadronamiento.$d == "Invalid Date"
                         }
                       />
                     </Grid>
@@ -481,12 +425,12 @@ export const ConfiguracionJornadaP = () => {
                         textAlign="left"
                         color="primary"
                       >
-                        PASO 4: CONFIGURA LA DURACIÓN DEL VOTO Y LA VERIFICACION
-                        DEL SENTIDO DEL SUFRAGIO
+                        PASO 3: CONFIGURA LA DURACIÓN DEL VOTO Y LA VERIFICACION DEL SENTIDO DEL
+                        SUFRAGIO
                       </Typography>
                       {/* <hr style={{ borderTop: "1px solid gray" }} /> */}
                     </Grid>
-                    <Grid item xs={6} md={3} mt="0.5rem">
+                    <Grid item xs={12} md={6} mt="0.5rem">
                       <TimeFieldWithTitle
                         label={"DURACIÓN DEL VOTO"}
                         name={"tiempoDuracionRespuesta"}
@@ -495,13 +439,10 @@ export const ConfiguracionJornadaP = () => {
                         handleChange={handleChange}
                         error={errors.tiempoDuracionRespuesta}
                         touched={touched.tiempoDuracionRespuesta}
-                        isDisabled={
-                          values.isDisabled ||
-                          values.finRecepVoto.$d == "Invalid Date"
-                        }
+                        isDisabled={values.isDisabled || values.finRecepVoto.$d == "Invalid Date"}
                       />
                     </Grid>
-                    <Grid item xs={6} md={3} mt="0.5rem">
+                    {/* <Grid item xs={6} md={3} mt="0.5rem">
                       <TimeFieldWithTitle
                         label={"TIEMPO EXTRA"}
                         name={"tiempoExtra"}
@@ -510,41 +451,27 @@ export const ConfiguracionJornadaP = () => {
                         handleChange={handleChange}
                         error={errors.tiempoExtra}
                         touched={touched.tiempoExtra}
-                        isDisabled={
-                          values.isDisabled ||
-                          values.finRecepVoto.$d == "Invalid Date"
-                        }
+                        isDisabled={values.isDisabled || values.finRecepVoto.$d == "Invalid Date"}
                       />
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={12} md={6} mt="0.5rem" textAlign="center">
                       <Typography variant="subtitle2" color="initial">
-                        VERIFICACIÓN DEL SENTIDO DEL SUFRAGIO POR PARTE DEL
-                        VOTANTE
+                        VERIFICACIÓN DEL SENTIDO DEL SUFRAGIO POR PARTE DEL VOTANTE
                       </Typography>
                       <Switch
                         name="habilitarVerificacion"
                         onChange={(event) =>
-                          setFieldValue(
-                            "habilitarVerificacion",
-                            event.target.checked,
-                            true
-                          )
+                          setFieldValue("habilitarVerificacion", event.target.checked, true)
                         }
                         checked={values.habilitarVerificacion}
                         value={values.habilitarVerificacion}
-                        disabled={
-                          values.isDisabled ||
-                          values.finRecepVoto.$d == "Invalid Date"
-                        }
+                        disabled={values.isDisabled || values.finRecepVoto.$d == "Invalid Date"}
                       />
                     </Grid>
                   </Grid>
                   <ButtonsContainer
                     onCancel={onCancel}
-                    isDisabled={
-                      values.isDisabled ||
-                      values.finRecepVoto.$d == "Invalid Date"
-                    }
+                    isDisabled={values.isDisabled || values.finRecepVoto.$d == "Invalid Date"}
                   />
                 </form>
               )}

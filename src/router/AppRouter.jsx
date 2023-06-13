@@ -6,9 +6,7 @@ import { AuthRoutes } from "../module-auth/routes/AuthRoutes";
 // import { VisualizadorDePDF } from "../module-jornada/pages/VisualizadorDePDF";
 
 import { AdminRoutes } from "../routes/AdminRoutes";
-import {
-  onToastErrorOperation
-} from "../store/ui/uiSlice";
+import { onToastErrorOperation } from "../store/ui/uiSlice";
 
 import { PrivateRoute } from "./PrivateRoute";
 
@@ -36,9 +34,7 @@ export const AppRouter = () => {
     }
 
     function handleOffline() {
-      dispatch(
-        onToastErrorOperation({ errorMessage: "Sin conexión a internet" })
-      );
+      dispatch(onToastErrorOperation({ errorMessage: "Sin conexión a internet" }));
       setIsOnline(false);
     }
 
@@ -63,7 +59,7 @@ export const AppRouter = () => {
             // <PrivateRoute>
             <PrivateRoute>
               <AdminRoutes />
-              </PrivateRoute>
+            </PrivateRoute>
             // </PrivateRoute>
           }
         ></Route>

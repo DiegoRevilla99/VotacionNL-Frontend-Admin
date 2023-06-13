@@ -4,6 +4,24 @@ import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 // import { DatePicker } from "@mui/x-date-pickers";
 import React from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles({
+  disabledInput: {
+    "& .MuiInputBase-root": {
+      color: "inherit", // Conserva el color de texto heredado
+    },
+    "& .MuiInput-underline:before": {
+      borderBottom: "none", // Elimina la línea de debajo del TextField
+    },
+    "& .MuiInput-underline:after": {
+      borderBottom: "none", // Elimina la línea de debajo del TextField al enfocarlo
+    },
+    "& .MuiInput-underline:hover:before": {
+      borderBottom: "none", // Elimina la línea de debajo del TextField al pasar el cursor sobre él
+    },
+  },
+});
 
 export const DateFieldWithTitle = React.memo(
   ({
@@ -18,8 +36,9 @@ export const DateFieldWithTitle = React.memo(
     isDisabled,
     maxDate,
   }) => {
-    // console.log("MIN DATE: ", minDate);
-
+    const onKeyDown = (e) => {
+      e.preventDefault();
+    };
     if (minDate === undefined) {
       return (
         <Box
@@ -39,14 +58,13 @@ export const DateFieldWithTitle = React.memo(
                 <TextField
                   {...params}
                   name={name}
+                  // onKeyDown={onKeyDown}
                   helperText={touched && error}
                   error={Boolean(touched && error)}
                   variant="standard"
                   fullWidth
                 />
               )}
-
-              // value={values}
             />
           </LocalizationProvider>
         </Box>
@@ -71,6 +89,7 @@ export const DateFieldWithTitle = React.memo(
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  // onKeyDown={onKeyDown}
                   name={name}
                   helperText={touched && error}
                   error={Boolean(touched && error)}
@@ -78,8 +97,6 @@ export const DateFieldWithTitle = React.memo(
                   fullWidth
                 />
               )}
-
-              // value={values}
             />
           </LocalizationProvider>
         </Box>
