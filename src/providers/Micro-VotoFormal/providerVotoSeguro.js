@@ -73,3 +73,37 @@ export const getFlagBoletasConsultasProvider = async (idBoleta) => {
       return { ok: false, data: "", errorMessage: error.message };
     });
 };
+
+export const getFlagBoletasFormalesProvider = async (idBoleta) => {
+  return votoFormalAPI
+    .get(`votos_seguros/verificar/boletas/jornada/` + idBoleta)
+    .then((response) => {
+      return {
+        ok: true,
+        mensaje: response.data.mensaje,
+        data: response.data,
+        errorMessage: "",
+      };
+    })
+    .catch((error) => {
+      console.log(error);
+      return { ok: false, data: "", errorMessage: error.message };
+    });
+};
+
+export const getFlagBoletasNoFormalesProvider = async (idBoleta) => {
+  return votoNoFormalAPI
+    .get(`votos/no/formal/verificar/boletas/jornada/` + idBoleta)
+    .then((response) => {
+      return {
+        ok: true,
+        mensaje: response.data.mensaje,
+        data: response.data,
+        errorMessage: "",
+      };
+    })
+    .catch((error) => {
+      console.log(error);
+      return { ok: false, data: "", errorMessage: error.message };
+    });
+};

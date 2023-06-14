@@ -52,7 +52,11 @@ import {
 import { useParams } from "react-router-dom";
 import { ModalCrearBoleta } from "./ModalCreateBoletas";
 import AdfScannerIcon from "@mui/icons-material/AdfScanner";
-import { getFlagBoletasConsultasProvider } from "../../providers/Micro-VotoFormal/providerVotoSeguro";
+import {
+  getFlagBoletasConsultasProvider,
+  getFlagBoletasFormalesProvider,
+  getFlagBoletasNoFormalesProvider,
+} from "../../providers/Micro-VotoFormal/providerVotoSeguro";
 
 const opciones = {
   display: "flex",
@@ -211,7 +215,7 @@ export const RegisterVoters = ({
         })
       );
     } else if (tipo === "noformales") {
-      console.log("noformales");
+      console.log("Es noformales");
       dispatch(
         crearBoletasNoFormal(info, () => {
           getFlagBoletas();
@@ -222,8 +226,18 @@ export const RegisterVoters = ({
   };
 
   const getFlagBoletas = async () => {
-    console.log("getFlagBoletas");
-    const rep = await getFlagBoletasConsultasProvider(id);
+    let rep = null;
+
+    if (tipo === "formales") {
+      console.log("GF Es formales");
+      rep = await getFlagBoletasFormalesProvider(id);
+    } else if (tipo === "consultas") {
+      console.log("GF consultas");
+      rep = await getFlagBoletasConsultasProvider(id);
+    } else if (tipo === "noformales") {
+      console.log("GF Es noformales");
+      rep = await getFlagBoletasNoFormalesProvider(id);
+    }
     setFlagLoading(false);
     setFlagBoletas(rep.data.status);
     return rep;
