@@ -56,3 +56,20 @@ export const crearBoletasConsultaProvider = async (data) => {
       return { ok: false, data: "", errorMessage: error.message };
     });
 };
+
+export const getFlagBoletasConsultasProvider = async (idBoleta) => {
+  return votoconsultaAPI
+    .get(`votos/consulta/verificar/boletas/jornada/` + idBoleta)
+    .then((response) => {
+      return {
+        ok: true,
+        mensaje: response.data.mensaje,
+        data: response.data,
+        errorMessage: "",
+      };
+    })
+    .catch((error) => {
+      console.log(error);
+      return { ok: false, data: "", errorMessage: error.message };
+    });
+};

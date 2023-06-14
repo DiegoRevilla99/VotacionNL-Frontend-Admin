@@ -79,6 +79,7 @@ export const Empadronamiento = () => {
                 status={eleccion.status}
                 isLoading={isLoadingVotantes}
                 datos={votantes}
+                tipo="formales"
               ></RegisterVoters>
             ) : (
               <Typography>...</Typography>

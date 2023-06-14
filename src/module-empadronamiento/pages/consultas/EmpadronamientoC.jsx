@@ -70,6 +70,7 @@ export const EmpadronamientoC = () => {
               status={eleccion.status}
               isLoading={isLoadingVotantes}
               datos={votantes}
+              tipo="consultas"
             ></RegisterVoters>
           </Box>
         )}
