@@ -708,15 +708,13 @@ export const getJornadaRespuestasConsultas = async (idPapeleta, id) => {
   try {
     const { data } = await votoConsultaAPI.get(`votos/consulta/jornada/${id}/resultados`);
 
-    console.log("DATA PAPALETA XXXX", data);
+    console.log("dataaaaaaaaaaaa", data);
 
     const papeleta = data.papeletas.find(
       (papeleta) => papeleta.estructuraPapeleta.idPapeleta === idPapeleta
     );
 
     let dataChart = [];
-
-    console.log("PAPELETA ENCONTRADAAAAAAAA", papeleta);
 
     if (papeleta === undefined) {
       console.log("entr a undefined");
@@ -844,6 +842,7 @@ export const getJornadaRespuestasConsultas = async (idPapeleta, id) => {
       jornadaModel: data.jornadaModel,
       papeleta: papeleta || null,
       resultados: dataChart,
+      participacion: data.participacion,
     };
 
     data.resultados = dataChart;
