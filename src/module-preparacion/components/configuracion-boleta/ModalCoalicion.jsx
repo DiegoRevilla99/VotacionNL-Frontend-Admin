@@ -243,7 +243,7 @@ export const ModalCoalicion = memo(
                 </div>
                 <Typography>NOMBRE DE LA COALICIÓN</Typography>
                 <TextField
-                  disabled={status === "checking"}
+                  disabled={loandingUP || status === "checking"}
                   required
                   label=""
                   variant="outlined"
@@ -263,7 +263,7 @@ export const ModalCoalicion = memo(
                 <br />
                 <Typography>EMBLEMA</Typography>
                 <TextField
-                  disabled={status === "checking"}
+                  disabled={loandingUP || status === "checking"}
                   required
                   label=""
                   variant="outlined"
@@ -396,6 +396,7 @@ export const ModalCoalicion = memo(
                 justifyContent="end"
               >
                 <Button
+                  disabled={loandingUP || status === "checking"}
                   type="submit"
                   variant="contained"
                   sx={{
@@ -406,6 +407,7 @@ export const ModalCoalicion = memo(
                   {coalicion ? "ACTUALIZAR" : "CREAR"}
                 </Button>
                 <Button
+                  disabled={loandingUP || status === "checking"}
                   variant="contained"
                   onClick={cerrarM}
                   sx={{

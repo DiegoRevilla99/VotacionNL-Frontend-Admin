@@ -5,7 +5,7 @@ export const votoFormalAPI = axios.create({
 });
 
 export const votoNoFormalAPI = axios.create({
-  baseURL: "https://ms-jornada-votos-no-formales-2.herokuapp.com7",
+  baseURL: "https://ms-jornada-votos-no-formales-2.herokuapp.com/",
 });
 export const votoconsultaAPI = axios.create({
   baseURL: "https://ms-jornada-voto-consulta-2.herokuapp.com/",

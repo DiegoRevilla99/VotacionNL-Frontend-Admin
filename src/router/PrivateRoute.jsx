@@ -15,7 +15,7 @@ export const PrivateRoute = ({ children }) => {
   const lastpath = pathname + search;
   localStorage.setItem("lastpath", lastpath);
   const location = useLocation();
-  console.log(location);
+  // console.log(location);
   sessionStorage.setItem("Location", location.pathname);
 
   return status !== "notLogged" ? (

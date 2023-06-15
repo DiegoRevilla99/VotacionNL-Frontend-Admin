@@ -71,6 +71,7 @@ export const EmpadronamientoNF = () => {
                 status={eleccion.status}
                 isLoading={isLoadingVotantes}
                 datos={votantes}
+                tipo="noformales"
               ></RegisterVoters>
             ) : (
               <Typography></Typography>
