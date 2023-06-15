@@ -1,6 +1,6 @@
 import { Box, Button, CircularProgress, Divider, Grid, MenuItem, TextField, Tooltip, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { FielTextCustomJornadas } from "../components/FielTextCustomJornadas";
 // import { ModalEliminarPC } from "../components/ModalEliminarPC";
@@ -17,19 +17,8 @@ import { ModalAsociacionGenerico } from "../components/ModalAsociacionGenerico";
 import { ModalBoletaCandidatoGenerico } from "../components/ModalBoletaCandidatoGenerico";
 import { AgrupaAsociacion } from "../components/configuracion-boleta/AgrupaAsociacion";
 import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
-const modalidadNoFormal = [ {
-    value: 1,
-    label: 'REPRESENTANTE',
-  },
-  {
-    value: 7,
-    label: 'COMITÉ',
-  },
-  {
-    value: 8,
-    label: 'PLANILLA',
-  },
-];
+
+import { onGetModalidades } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
 
 // 8 ES DE PLANILLA, 7 COMITE Y 6 REPRESENTANTE
 const validationSchema = object({
@@ -58,9 +47,25 @@ const validationSchema = object({
 		),
 });
 
-export const AddBoletaJornadaGenerica = () => {
 
+
+
+
+export const AddBoletaJornadaGenerica = () => {
+	const [modalidades, setModalidades] = useState([]);
 	const dispatch = useDispatch();
+  
+	useEffect(() => {
+	  const getData = async () => {
+		const data = await dispatch(onGetModalidades());
+		setModalidades(data);
+	  };
+	  getData();
+	}, [dispatch]);
+
+	console.log("modalidades", modalidades);
+
+	// const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const params = useParams();
 	
@@ -169,9 +174,9 @@ export const AddBoletaJornadaGenerica = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [estructuraBoletaId, setEstructuraBoletaId] = useState(null);
 	const onSubmit = (values) => {
-
+		console.log("valuesssssssssssssssssss",values);
 		if (Object.values(jornadaNoFormalSelected.boletaNoFormalSelected).length === 0) {
-			if (candidatos.length > 0 && asociaciones.length > 0 && values.modalidadVotacion === 3) {
+			if (candidatos.length > 0 && asociaciones.length > 0 && values.modalidadVotacion === 8) {
 
 				dispatch(onCreateBoletaAsociaciones(values, params.id, candidatos, asociaciones, (idEstructuraBoleta) => {
 				//   navigate("/preparacion/jornada/noFormal/" + params.id);
@@ -336,9 +341,9 @@ export const AddBoletaJornadaGenerica = () => {
 									});
 								}}
 								>
-								{modalidadNoFormal.map((option) => (
-								<MenuItem key={option.value} value={option.value}>
-									{option.label}
+								{modalidades.map((option) => (
+								<MenuItem key={option.idModalidadVotacion} value={option.idModalidadVotacion}>
+									{option.modalidad}
 								</MenuItem>
 								))}
 							</TextField>
@@ -496,7 +501,9 @@ export const AddBoletaJornadaGenerica = () => {
 								type="submit"
 								variant="contained"
 								size="large"
-								disabled={status === "checking"}
+								// disabled={status === "checking"}
+								disabled={candidatos.length === 0  || status === "checking"}
+
 								sx={{
 									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
 									transition: "all 0.5s ease",
@@ -580,6 +587,7 @@ export const AddBoletaJornadaGenerica = () => {
 				>
 							<Button
 								onClick={handleConfigurar}
+								disabled={status === "checking"}
 								variant="contained"
 								size="large"
 								endIcon={<SettingsIcon />}
@@ -602,6 +610,7 @@ export const AddBoletaJornadaGenerica = () => {
 
 							<Button
 								onClick={handleTerminar}
+								disabled={status === "checking"}
 								variant="contained"
 								size="large"
 								endIcon={<ExitToAppIcon />}
