@@ -438,7 +438,7 @@ export const getJornadaVotos = async (idBoleta, idJornada) => {
       if (resul.id === 99999) return resul;
     });
 
-    if (nulo !== undefined) {
+    if (nulo !== undefined && nulo !== null) {
       console.log("NULOOOOOOOOOOOOO", nulo);
       dataChart.push({
         id: nulo.id,
@@ -449,14 +449,14 @@ export const getJornadaVotos = async (idBoleta, idJornada) => {
     }
 
     // !!ELIMINAR
-    dataChart.push({
-      id: 99998,
-      candiato: "Candidaturas no registradas",
-      resultados: 3,
-      fotos: [
-        "https://w7.pngwing.com/pngs/527/663/png-transparent-logo-person-user-person-icon-rectangle-photography-computer-wallpaper.png",
-      ],
-    });
+    // dataChart.push({
+    //   id: 99998,
+    //   candiato: "Candidaturas no registradas",
+    //   resultados: 3,
+    //   fotos: [
+    //     "https://w7.pngwing.com/pngs/527/663/png-transparent-logo-person-user-person-icon-rectangle-photography-computer-wallpaper.png",
+    //   ],
+    // });
 
     // if(boleta.candidaturasNoReg)
 
@@ -464,6 +464,7 @@ export const getJornadaVotos = async (idBoleta, idJornada) => {
       jornadaModel: {},
       boleta: boleta || null,
       resultados: dataChart,
+      participacion: data.participacion,
     };
 
     console.log("DATA CHART FINAL", dataChart);
@@ -474,9 +475,10 @@ export const getJornadaVotos = async (idBoleta, idJornada) => {
     return { ok: false, errorMessage: error.message };
   }
 };
+
 export const getJornadaVotosInicio = async (idBoleta, idJornada) => {
   try {
-    console.log("ID BOLETA QUE LLEGA", idBoleta);
+    console.log("ID BOLETA QUE LLEGA", idBoleta, idJornada);
     const { data } = await votoFormalAPI.get(
       `votos_seguros/jornadaelectoral/${idJornada}/resultados`
     );
@@ -493,11 +495,6 @@ export const getJornadaVotosInicio = async (idBoleta, idJornada) => {
       console.log("entr a undefined");
     } else {
       boleta.boletaCandidatos.forEach((paquete) => {
-        // const candidatox = boleta.boletaCandidatos.candidatoModels.find(
-        // 	(candidato) => candidato.claveCandidato === paquete.id
-        // );
-
-        // console.log("CANDIDATO BUSCADO", candidatox);
         if (paquete.id === 99999) {
         } else
           dataChart.push({
@@ -523,10 +520,10 @@ export const getJornadaVotosInicio = async (idBoleta, idJornada) => {
       if (resul.id === 99999) return resul;
     });
 
-    if (nulo !== undefined || nulo !== null) {
+    if (nulo !== undefined && nulo !== null) {
       console.log("NULOOOOOOOOOOOOO", nulo);
       dataChart.push({
-        id: nulo.id,
+        id: nulo?.id,
         candiato: "Votos nulos",
         resultados: 0,
         fotos: ["https://cdn.pixabay.com/photo/2013/07/13/01/20/forbidden-155564_1280.png"],
@@ -539,6 +536,7 @@ export const getJornadaVotosInicio = async (idBoleta, idJornada) => {
       jornadaModel: {},
       boleta: boleta || null,
       resultados: dataChart,
+      participacion: data.participacion,
     };
 
     console.log("DATA CHART INICIAL", dataChart);
@@ -994,6 +992,7 @@ export const getJornadaRespuestasConsultasInicio = async (idPapeleta, id) => {
       jornadaModel: data.jornadaModel,
       papeleta: papeleta || null,
       resultados: dataChart,
+      participacion: { cantidadVotaron: 0, totalEmpadronados: 1 },
     };
 
     // data.resultados = dataChart;

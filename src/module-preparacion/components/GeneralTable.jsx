@@ -27,11 +27,11 @@ export const GeneralTable = ({
         sx={{
           border: "0px",
           "& .MuiDataGrid-columnHeaderTitleContainer": {
-            justifyContent: "left",
+            justifyContent: "center",
           },
           "& .MuiDataGrid-cell--textLeft": {
-            justifyContent: "left",
-            align: "left",
+            justifyContent: "center",
+            align: "center",
           },
           "& .MuiDataGrid-cell": {
             outline: "none !important",

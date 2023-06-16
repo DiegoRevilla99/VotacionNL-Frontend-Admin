@@ -30,13 +30,61 @@ import {
 } from "../../store/module-preparacion/consulta-ciudadana/consultaCiudadanaSlice";
 import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
 
+import AbcIcon from "@mui/icons-material/Abc";
+
+const iconStatus = {
+  nombreConsulta: true,
+  boletas: true,
+  configuracion: false,
+};
+
 export const RegistroConsultaCiudadana = () => {
   const navigate = useNavigate();
   const [modalStatus, setModalStatus] = useState(false);
   const { consultasData, status } = useConsultaCiudadanaStore();
   const dispatch = useDispatch();
   const columns = [
-    { field: "nombreJornada", headerName: "Título de la consulta ciudadana", flex: 10 },
+    { field: "nombreJornada", headerName: "Título de la consulta ciudadana", flex: 6 },
+    {
+      field: "status",
+      headerName: "Estatus de la consulta ciudadana",
+      flex: 5,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => {
+        return (
+          <Box width="100%" display="flex" justifyContent="space-evenly">
+            <Tooltip
+              title={
+                iconStatus.nombreConsulta
+                  ? "La consulta fue creada con exito"
+                  : "La consulta no ha sido creada"
+              }
+            >
+              <AbcIcon htmlColor={iconStatus.nombreConsulta ? "#2e7d32" : "#757575"} />
+            </Tooltip>
+            <Tooltip
+              title={
+                iconStatus.boletas
+                  ? "La consulta ya cuenta con una o más papeletas creadas"
+                  : "La consulta aun no cuenta con papeletas creadas"
+              }
+            >
+              <BallotIcon htmlColor={iconStatus.boletas ? "#2e7d32" : "#757575"} />
+            </Tooltip>
+            <Tooltip
+              title={
+                iconStatus.configuracion
+                  ? "La consulta ya ha sido configurada"
+                  : "La consulta aun no ha sido configurada"
+              }
+            >
+              <SettingsIcon htmlColor={iconStatus.configuracion ? "#2e7d32" : "#757575"} />
+            </Tooltip>
+          </Box>
+        );
+      },
+    },
     {
       field: "configuracion",
       headerName: "Configuración",
