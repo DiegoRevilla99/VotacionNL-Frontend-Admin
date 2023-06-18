@@ -16,9 +16,8 @@ import { ModalRegisterCS } from "../components/ModalRegisterCS";
 import { AddCandidatoMod } from "../components/AddCandidatoMod";
 import { ModalEliminarCandidato } from "../components/ModalEliminarCandidato";
 import { ModalEliminarPartido } from "../components/ModalEliminarPartido";
-import { useJornadaStore } from "../hooks/useJornadaStore";
-
 import { AgrupaPartido } from "../components/configuracion-boleta/AgrupaPartido";
+import { useJornadaStore } from "../hooks/useJornadaStore";
 
 const validationSchema = object({
 
@@ -411,11 +410,13 @@ export const AddBoletaJornada = () => {
 					</Grid>
 					<Grid mt={"1rem"} container direction="row" justifyContent="flex-end" spacing={2}>
 						<Grid item xs={12} md={6} lg={3}>
+						<Tooltip title="Es importante tener candidatos y partidos para guardar la boleta">
+							
 							<Button
 								type="submit"
 								variant="contained"
 								size="large"
-								disabled={status === "checking"}
+								disabled={candidatoandSuplentes.length === 0 && partidos.length === 0 || status === "checking"}
 								sx={{
 									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
 									transition: "all 0.5s ease",
@@ -431,9 +432,11 @@ export const AddBoletaJornada = () => {
 							>
 								Guardar
 							</Button>
+							</Tooltip>
 						</Grid>
 						
 						<Grid item xs={12} md={6} lg={3}>
+						<Tooltip title="Botón para cancelar la creación de boleta">
 							<Button
 								onClick={onCancel}
 								variant="contained"
@@ -454,6 +457,7 @@ export const AddBoletaJornada = () => {
 							>
 								Cancelar
 							</Button>
+							</Tooltip>
 						</Grid>
 						
 					</Grid>
@@ -506,6 +510,7 @@ export const AddBoletaJornada = () => {
 								variant="contained"
 								size="large"
 								endIcon={<HandshakeIcon />}
+								disabled={status === "checking"}
 								sx={{
 									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
 									transition: "all 0.5s ease",
@@ -528,6 +533,7 @@ export const AddBoletaJornada = () => {
 								variant="contained"
 								size="large"
 								endIcon={<ExitToAppIcon />}
+								disabled={status === "checking"}
 								sx={{
 									margin: '10px 0 0 0',
 									boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",

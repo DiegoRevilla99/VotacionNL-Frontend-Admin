@@ -1,5 +1,7 @@
 import {
-    createBoleta, createBoletaAsociaciones, createJornada, deleteBoleta, deleteJornada, getBoletaData, getBoletasJornadaNoFormal, getCandidatoBoletaNoFormal, getJornadasNoFormales, postImage, updateBoletaData
+    createBoleta, createBoletaAsociaciones, createJornada, deleteBoleta, deleteJornada, getBoletaData, getBoletasJornadaNoFormal, getCandidatoBoletaNoFormal, getJornadasNoFormales,
+    getModalidades,
+    postImage, updateBoletaData
 } from "../../../providers/Micro-Preparacion/providerJornadaNoFormal";
 import {
     onToastCheckingOperation,
@@ -25,6 +27,23 @@ export const onPostImage = (image) => {
         }
     }
 };
+
+export const onGetModalidades = () => {
+    return async (dispatch) => {
+        dispatch(onCheckingOperation());
+        const {ok, data, errorMessage } = await getModalidades(); // PROVIDER
+        if (ok) {
+            dispatch(onSuccessOperation());
+            return data;
+        } else {
+            dispatch(onErrorOperation());
+            dispatch(onToastErrorOperation({ 
+                errorMessage: errorMessage || "No se pudo obtener las modalidades" }));
+        }
+    }
+};
+
+
 export const onGetJornadasNoFormales = () => {
     return async (dispatch) => {
         dispatch(onCheckingOperation());

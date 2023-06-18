@@ -156,6 +156,7 @@ export const SliceJornadaNoFormal = createSlice({
         onFillAsociacionesData: (state, { payload }) => {
             state.asociaciones = payload;
         },
+        
 
             // Jornadas
         onFillJornadasNoFormalesData: (state, { payload }) => {
