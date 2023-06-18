@@ -352,6 +352,7 @@ export const RegisterVoters = ({
 
   useEffect(() => {
     getFlagBoletas();
+    console.log("Voatntes:", datos);
   }, []);
 
   const data = {
