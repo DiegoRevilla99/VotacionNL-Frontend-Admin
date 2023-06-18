@@ -31,6 +31,7 @@ import {
 import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
 
 import AbcIcon from "@mui/icons-material/Abc";
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 
 const iconStatus = {
   nombreConsulta: true,
@@ -52,34 +53,41 @@ export const RegistroConsultaCiudadana = () => {
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) => {
+        console.log("params", params.row.estatus);
         return (
           <Box width="100%" display="flex" justifyContent="space-evenly">
-            <Tooltip
+            {/* <Tooltip
               title={
                 iconStatus.nombreConsulta
                   ? "La consulta fue creada con exito"
                   : "La consulta no ha sido creada"
               }
             >
-              <AbcIcon htmlColor={iconStatus.nombreConsulta ? "#2e7d32" : "#757575"} />
-            </Tooltip>
+              <AssignmentTurnedInIcon
+                htmlColor={iconStatus.nombreConsulta ? "#2e7d32" : "#757575"}
+              />
+            </Tooltip> */}
             <Tooltip
               title={
-                iconStatus.boletas
+                params.row.estatus.estructuraPapeleta.estatus
                   ? "La consulta ya cuenta con una o más papeletas creadas"
                   : "La consulta aun no cuenta con papeletas creadas"
               }
             >
-              <BallotIcon htmlColor={iconStatus.boletas ? "#2e7d32" : "#757575"} />
+              <BallotIcon
+                htmlColor={params.row.estatus.estructuraPapeleta.estatus ? "#2e7d32" : "#757575"}
+              />
             </Tooltip>
             <Tooltip
               title={
-                iconStatus.configuracion
+                params.row.estatus.configuracion.estatus
                   ? "La consulta ya ha sido configurada"
                   : "La consulta aun no ha sido configurada"
               }
             >
-              <SettingsIcon htmlColor={iconStatus.configuracion ? "#2e7d32" : "#757575"} />
+              <SettingsIcon
+                htmlColor={params.row.estatus.configuracion.estatus ? "#2e7d32" : "#757575"}
+              />
             </Tooltip>
           </Box>
         );
@@ -118,7 +126,7 @@ export const RegistroConsultaCiudadana = () => {
   ];
 
   useEffect(() => {
-    if (consultasData.length === 0) dispatch(onGetConsultasCiudadanas());
+    dispatch(onGetConsultasCiudadanas());
   }, []);
 
   const handleDelete = (id) => {

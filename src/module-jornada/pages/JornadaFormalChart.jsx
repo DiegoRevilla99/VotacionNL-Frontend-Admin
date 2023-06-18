@@ -35,12 +35,20 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
     10
   );
 
-  console.log("total", total);
+  const votosNormales =
+    chartData?.resultados
+      ?.map((resul) => {
+        if (resul.id !== 99999 && resul.id !== 99998) return resul.resultados;
+        return 0;
+      })
+      ?.reduce((a, b) => {
+        return a + b;
+      }, 0) || 0;
 
   const labelsAdjusted = chartData.resultados.map((label) => label.candiato.split(" "));
   const { jornadaSelected } = useJornadaStore();
   const chartRef = useRef(null);
-  const params = useParams();
+  console.log("model", jornadaSelected);
   const [data, setData] = useState({
     // labels: chartData.map((data) => data.nombre),
     // labels: chartData.resultados.map((resultado) => resultado.candiato),
@@ -62,22 +70,6 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
           "#8B3252",
         ],
         image: chartData.resultados.map((resultado) => resultado.fotos || "none"),
-        // image: [
-        // 	"https://www.chartjs.org/img/chartjs-logo.svg",
-        // 	"https://upload.wikimedia.org/wikipedia/commons/5/5c/PAN_logo_%28Mexico%29.svg",
-        // 	"https://upload.wikimedia.org/wikipedia/commons/b/b5/PRI_logo_%28Mexico%29.svg",
-        // 	"https://upload.wikimedia.org/wikipedia/commons/8/8f/PRD_logo_%28Mexico%29.svg",
-        // 	"https://upload.wikimedia.org/wikipedia/commons/e/e7/Worker%27s_Party_logo_%28Mexico%29.svg",
-        // 	"https://upload.wikimedia.org/wikipedia/commons/a/ae/Logo-partido-verde-2020.png",
-        // 	"https://upload.wikimedia.org/wikipedia/commons/3/34/Logo_Partido_Movimiento_Ciudadano_%28M%C3%A9xico%29.svg",
-        // 	"https://upload.wikimedia.org/wikipedia/commons/e/ea/Morena_logo_%28Mexico%29.svg",
-        // 	"https://upload.wikimedia.org/wikipedia/commons/7/7f/Logo_Encuentro_Solidario.svg",
-        // 	"https://upload.wikimedia.org/wikipedia/commons/d/d8/Partido_Nueva_Alianza_%28M%C3%A9xico%29.svg",
-        // 	"https://upload.wikimedia.org/wikipedia/commons/f/fb/PRS_logo_%28Mexico%29.svg",
-        // 	"https://upload.wikimedia.org/wikipedia/commons/e/e8/RSP_logo_%28Mexico%29.svg",
-        // 	"https://upload.wikimedia.org/wikipedia/commons/5/52/Partido_Socialdem%C3%B3crata_%28Mexico%29_Logo.png",
-        // ],
-        // labels: chartData.map((data) => data.nombre),
       },
       {
         label: "Votos",
@@ -243,7 +235,7 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
           <Grid item container xs={12} md={6}>
             <Grid
               item
-              xs={6}
+              xs={4}
               display="flex"
               flexDirection="column"
               justifyContent="center"
@@ -263,7 +255,7 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
             </Grid>
             <Grid
               item
-              xs={6}
+              xs={4}
               display="flex"
               flexDirection="column"
               justifyContent="center"
@@ -274,7 +266,23 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
                 Inicio
               </Typography>
               <Typography variant="body2" color="initial" fontWeight="bold" align="center">
-                {dayjs(chartData.jornadaModel.dateTimeCreation).format("DD [de] MMMM YYYY")}
+                {dayjs(chartData.configDates.inicioRecepVoto).format("DD [de] MMMM YYYY")}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              xs={4}
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignContent="center"
+              alignItems="center"
+            >
+              <Typography variant="body1" color="initial" align="center">
+                Fin
+              </Typography>
+              <Typography variant="body2" color="initial" fontWeight="bold" align="center">
+                {dayjs(chartData.configDates.finRecepVoto).format("DD [de] MMMM YYYY")}
               </Typography>
             </Grid>
           </Grid>
@@ -384,8 +392,9 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
                       fontWeight="bold"
                       // sx={{ fontSize: "1rem" }}
                     >
-                      {total -
-                        chartData?.resultados?.find((resul) => resul.id === 99999)?.resultados ||
+                      {votosNormales ||
+                        0 -
+                          chartData?.resultados?.find((resul) => resul.id === 99999)?.resultados ||
                         0 -
                           chartData?.resultados?.find((resul) => resul.id === 99998)?.resultados ||
                         0}
@@ -403,7 +412,19 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
 													100) /
 												total
 											).toFixed(2)} */}
-                      0 %
+                      {(
+                        ((votosNormales ||
+                          0 -
+                            chartData?.resultados?.find((resul) => resul.id === 99999)
+                              ?.resultados ||
+                          0 -
+                            chartData?.resultados?.find((resul) => resul.id === 99998)
+                              ?.resultados ||
+                          0) *
+                          100) /
+                          votosNormales || 0
+                      ).toFixed(2)}
+                      %
                     </Typography>
                   </Box>
                 </Grid>
@@ -427,22 +448,14 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
                 <Grid item xs={3} display="flex" flexDirection="column" alignItems="center">
                   <Box display="flex" flexDirection="column">
                     <Typography variant="body1" color="initial" fontWeight="bold">
-                      {/* {
-												chartData.resultados.find(
-													(resul) => resul.id === 99998
-												).resultados
-											} */}
-                      0
+                      {chartData?.resultados?.find((resul) => resul.id === 99998)?.resultados || 0}
                     </Typography>
                     <Typography variant="caption" color="initial" fontWeight="bold">
-                      {/* {(
-												(chartData.resultados.find(
-													(resul) => resul.id === 99998
-												).resultados *
-													100) /
-												total
-											).toFixed(2)} */}
-                      0 %
+                      {(
+                        (chartData?.resultados?.find((resul) => resul.id === 99998)?.resultados ||
+                          0 * 100) / total || 0
+                      ).toFixed(2)}
+                      %
                     </Typography>
                   </Box>
                 </Grid>
@@ -459,22 +472,14 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
                 <Grid item xs={3} display="flex" flexDirection="column" alignItems="center">
                   <Box display="flex" flexDirection="column">
                     <Typography variant="body1" color="initial" fontWeight="bold">
-                      {/* {
-												chartData.resultados.find(
-													(resul) => resul.id === 99999
-												).resultados
-											} */}
-                      0
+                      {chartData?.resultados?.find((resul) => resul.id === 99999)?.resultados || 0}
                     </Typography>
                     <Typography variant="caption" color="initial" fontWeight="bold">
-                      {/* {(
-												(chartData.resultados.find(
-													(resul) => resul.id === 99999
-												).resultados *
-													100) /
-												total
-											).toFixed(2)} */}
-                      0 %
+                      {(
+                        (chartData?.resultados?.find((resul) => resul.id === 99999)?.resultados ||
+                          0 * 100) / total || 0
+                      ).toFixed(2)}
+                      %
                     </Typography>
                   </Box>
                 </Grid>
