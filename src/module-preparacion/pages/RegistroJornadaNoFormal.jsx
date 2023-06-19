@@ -1,7 +1,9 @@
 import BallotIcon from "@mui/icons-material/Ballot";
 import DeleteIcon from "@mui/icons-material/Delete";
+import GroupsIcon from '@mui/icons-material/Groups';
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import SettingsIcon from "@mui/icons-material/Settings";
+
 import {
   Box,
   Button,
@@ -38,11 +40,61 @@ export const RegistroJornadaNoFormal = () => {
   console.log("RegistroJornadaNoFormal", jornadasNoFormalesData);
   const dispatch = useDispatch();
   const columns = [
-    { field: "nombreEleccion", headerName: "TÍTULO DE LA ELECCIÓN", flex: 7 },
-    {
-      field: "configuracion",
-      headerName: "CONFIGURACIÓN",
-      flex: 5,
+    { field: "nombreEleccion", 
+    headerName: "Título de la elección popular",
+    flex: 4,
+  },
+  {
+    field: "status",
+    headerName: "Estatus de la elección popular",
+    flex: 3,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params) => {
+      console.log("params", params.row.estatus);
+      return (
+        <Box width="100%" display="flex" justifyContent="space-evenly">
+          <Tooltip
+            title={
+              params.row.estatus.estructuraBoleta.estatus
+                ? "La elección popular ya cuenta con una o más boletas creadas"
+                : "La elección popular aún no cuenta con boletas creadas"
+            }
+          >
+            <BallotIcon
+              htmlColor={params.row.estatus.estructuraBoleta.estatus ? "#2e7d32" : "#757575"}
+            />
+          </Tooltip>
+          <Tooltip
+            title={
+              params.row.estatus.configuracion.estatus
+                ? "La elección popular ya ha sido configurada"
+                : "La elección popular aún no ha sido configurada"
+            }
+          >
+            <SettingsIcon
+              htmlColor={params.row.estatus.configuracion.estatus ? "#2e7d32" : "#757575"}
+            />
+          </Tooltip>
+          <Tooltip
+            title={
+              params.row.estatus.candidatosAsociaciones.estatus
+                ? "La elección popular ya contiene candidatos o asociaciones registrados"
+                : "La elección popular aún no contiene candidatos o asociaciones registrados"
+            }
+          >
+            <GroupsIcon
+              htmlColor={params.row.estatus.candidatosAsociaciones.estatus ? "#2e7d32" : "#757575"}
+            />
+          </Tooltip>
+        </Box>
+      );
+    },
+  },
+  {
+    field: "configuracion",
+    headerName: "Configuración",
+    flex: 5,
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) => {
@@ -54,7 +106,7 @@ export const RegistroJornadaNoFormal = () => {
                 startIcon={<BallotIcon />}
                 onClick={() => handleEdit(params.id, params.row.nombreEleccion)}
               >
-                Ver boletas
+                Boletas
               </Button>
             </Tooltip>
             <Tooltip title="Realizar la configuración de la elección popular">
