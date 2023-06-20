@@ -237,7 +237,7 @@ export const ConsultaChart = ({ chartData = { resultados: [] }, tipoReporte }) =
           <Grid item container xs={12} md={6}>
             <Grid
               item
-              xs={6}
+              xs={4}
               display="flex"
               flexDirection="column"
               justifyContent="center"
@@ -257,7 +257,7 @@ export const ConsultaChart = ({ chartData = { resultados: [] }, tipoReporte }) =
             </Grid>
             <Grid
               item
-              xs={6}
+              xs={4}
               display="flex"
               flexDirection="column"
               justifyContent="center"
@@ -268,7 +268,23 @@ export const ConsultaChart = ({ chartData = { resultados: [] }, tipoReporte }) =
                 Inicio
               </Typography>
               <Typography variant="body2" color="initial" fontWeight="bold" align="center">
-                {dayjs(chartData.jornadaModel.dateTimeCreation).format("DD [de] MMMM YYYY")}
+                {dayjs(chartData.configDates.inicioRecepVoto).format("DD [de] MMMM YYYY")}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              xs={4}
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignContent="center"
+              alignItems="center"
+            >
+              <Typography variant="body1" color="initial" align="center">
+                Fin
+              </Typography>
+              <Typography variant="body2" color="initial" fontWeight="bold" align="center">
+                {dayjs(chartData.configDates.finRecepVoto).format("DD [de] MMMM YYYY")}
               </Typography>
             </Grid>
           </Grid>

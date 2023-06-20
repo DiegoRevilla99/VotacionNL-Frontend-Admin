@@ -104,10 +104,10 @@ export const ReporteInicialHTML = ({
                   fontFamily="times"
                   fontWeight="bold"
                 >
-                  Fecha y hora de inicio de votación
+                  Fecha de inicio de votación
                 </Typography>
                 <Typography variant="body2" color="initial" fontFamily="times" align="center">
-                  {dayjs(jornadaVotosData.configDates.inicioRecepVoto).format("DD MM YYYY")}
+                  {dayjs(jornadaVotosData.configDates.inicioRecepVoto).format("DD[/]MM[/]YYYY")}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -262,7 +262,7 @@ export const ReporteInicialHTML = ({
                     // borderRight="2px solid"
                     borderBottom="2px solid"
                   >
-                    <Grid item xs={5}>
+                    {/* <Grid item xs={5}>
                       <Box
                         py="0.6rem"
                         display="flex"
@@ -279,8 +279,8 @@ export const ReporteInicialHTML = ({
                           <canvas ref={canvas} height="25px" width="25px" src={foto}></canvas>
                         ))}
                       </Box>
-                    </Grid>
-                    <Grid item xs={7}>
+                    </Grid> */}
+                    <Grid item xs={12}>
                       <Box
                         py="0.2rem"
                         px="0.4rem"

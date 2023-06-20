@@ -45,7 +45,13 @@ export const JornadaNoFormalChart = ({ chartData = { resultados: [] }, tipoRepor
         return a + b;
       }) || 0;
 
-  const labelsAdjusted = chartData.resultados.map((label) => label.candiato.split(" "));
+  const labelsAdjusted = chartData.resultados.map((label) => {
+    const stringFinal = "";
+    if (typeof label.candiato === "string") return label.candiato.split(" ");
+    else {
+      return label.candiato;
+    }
+  });
 
   const chartRef = useRef(null);
   const [data, setData] = useState({
@@ -274,7 +280,7 @@ export const JornadaNoFormalChart = ({ chartData = { resultados: [] }, tipoRepor
                 Inicio
               </Typography>
               <Typography variant="body2" color="initial" fontWeight="bold" align="center">
-                {dayjs(chartData.jornadaModel.dateTimeCreation).format("DD [de] MMMM YYYY")}
+                {dayjs(chartData.configDates.inicioRecepVoto).format("DD [de] MMMM YYYY")}
               </Typography>
             </Grid>
             <Grid
@@ -290,7 +296,7 @@ export const JornadaNoFormalChart = ({ chartData = { resultados: [] }, tipoRepor
                 Fin
               </Typography>
               <Typography variant="body2" color="initial" fontWeight="bold" align="center">
-                {dayjs(chartData.jornadaModel.dateTimeCreation).format("DD [de] MMMM YYYY")}
+                {dayjs(chartData.configDates.finRecepVoto).format("DD [de] MMMM YYYY")}
               </Typography>
             </Grid>
           </Grid>

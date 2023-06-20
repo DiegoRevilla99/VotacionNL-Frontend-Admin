@@ -53,7 +53,6 @@ export const ReporteInicialJornadaNoFormal = ({ status, jornadaVotosData }) => {
   useEffect(() => {
     if (boleta !== null) {
       dispatch(onGetJornadaNoFormalVotosInicio(boleta, jornadaSelected.id));
-      console.log("BUSCO LA boleta");
     }
   }, [boleta]);
 

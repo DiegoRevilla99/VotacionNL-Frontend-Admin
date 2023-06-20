@@ -105,7 +105,7 @@ export const ReporteFinalFormalHTML = ({
                   fontFamily="times"
                   fontWeight="bold"
                 >
-                  Fecha y hora de inicio de votación
+                  Fecha de inicio de votación
                 </Typography>
                 <Typography variant="body2" color="initial" fontFamily="times" align="center">
                   {dayjs(jornadaVotosData.configDates.inicioRecepVoto).format("DD[/]MM[/]YYYY")}

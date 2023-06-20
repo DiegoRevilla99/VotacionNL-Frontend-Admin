@@ -568,13 +568,22 @@ export const getJornadaNoFormalVotos = async (idBoleta, id) => {
           (cands) => cands.idCombinacion === paquete.id
         );
 
+        console.log("planilla", planilla);
+
         const candidatosDePlanilla = planilla.candidatos.map(
-          (candidato) => candidato.nombreCandidato
+          (candidato) =>
+            candidato.nombreCandidato +
+            " " +
+            candidato.apellidoPCandidato +
+            " " +
+            candidato.apellidoMCandidato
         );
 
-        // candidatosDePlanilla.push(" ");
-
         const nombresPlanillas = planilla.asociacionModel.map((as) => as.nombreAsociacion);
+
+        candidatosDePlanilla.push("-", `"${nombresPlanillas[0]}"`);
+
+        console.log("nombresPlanilla", nombresPlanillas);
 
         // candidatosDePlanilla.push(...nombresPlanillas);
 
@@ -583,6 +592,7 @@ export const getJornadaNoFormalVotos = async (idBoleta, id) => {
           candiato: candidatosDePlanilla,
           planillas: nombresPlanillas,
           resultados: paquete.candidad,
+          fotos: planilla.asociacionModel[0].logo,
           participacion: data.participacion,
         };
       });
@@ -622,6 +632,7 @@ export const getJornadaNoFormalVotos = async (idBoleta, id) => {
       boleta: boleta || null,
       resultados: dataChart,
       participacion: data.participacion,
+      configDates: data.configuracion,
     };
 
     console.log("DATA CHAAARTS", dataChart);
@@ -654,7 +665,12 @@ export const getJornadaNoFormalVotosInicio = async (idBoleta, id) => {
         console.log("PLANILLA ENCONTRADA", planilla);
 
         const candidatosDePlanilla = planilla.candidatos.map(
-          (candidato) => candidato.nombreCandidato
+          (candidato) =>
+            candidato.nombreCandidato +
+            " " +
+            candidato.apellidoPCandidato +
+            " " +
+            candidato.apellidoMCandidato
         );
 
         // candidatosDePlanilla.push(" ");
@@ -662,12 +678,15 @@ export const getJornadaNoFormalVotosInicio = async (idBoleta, id) => {
         const nombresPlanillas = planilla.asociacionModel.map((as) => as.nombreAsociacion);
 
         // candidatosDePlanilla.push(...nombresPlanillas);
+        candidatosDePlanilla.push("-", `"${nombresPlanillas[0]}"`);
 
         return {
           id: paquete.id,
           candiato: candidatosDePlanilla,
           planillas: nombresPlanillas,
           resultados: 0,
+          fotos: planilla.asociacionModel[0].logo,
+          participacion: data.participacion,
         };
       });
     } else {
@@ -688,7 +707,9 @@ export const getJornadaNoFormalVotosInicio = async (idBoleta, id) => {
                 : paquete.id === "NULO"
                 ? "Votos nulos"
                 : candidatox.nombreCandidato +
+                  " " +
                   candidatox.apellidoPCandidato +
+                  " " +
                   candidatox.apellidoMCandidato,
             resultados: 0,
           };
@@ -706,6 +727,7 @@ export const getJornadaNoFormalVotosInicio = async (idBoleta, id) => {
         porcentajeParticipacion: 0,
         totalEmpadronados: 1,
       },
+      configDates: data.configuracion,
     };
 
     console.log("DATA CHAAARTS DE INICIOOOOOOOOOOO", dataChart);
@@ -855,6 +877,7 @@ export const getJornadaRespuestasConsultas = async (idPapeleta, id) => {
       papeleta: papeleta || null,
       resultados: dataChart,
       participacion: data.participacion,
+      configDates: data.configuracion,
     };
 
     data.resultados = dataChart;
@@ -1007,6 +1030,7 @@ export const getJornadaRespuestasConsultasInicio = async (idPapeleta, id) => {
       papeleta: papeleta || null,
       resultados: dataChart,
       participacion: { cantidadVotaron: 0, totalEmpadronados: 1 },
+      configDates: data.configuracion,
     };
 
     // data.resultados = dataChart;
