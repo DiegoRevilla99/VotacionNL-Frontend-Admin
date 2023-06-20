@@ -1,5 +1,6 @@
 import BallotIcon from "@mui/icons-material/Ballot";
 import DeleteIcon from "@mui/icons-material/Delete";
+import GroupsIcon from '@mui/icons-material/Groups';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SettingsIcon from "@mui/icons-material/Settings";
 import {
@@ -39,17 +40,66 @@ export const RegistroJornadaFormal = () => {
   const columns = [
     {
       field: "nombreJornada",
-      headerName: "TÍTULO DE LA JORNADA",
-      flex: 7,
+      headerName: "Título de la jornada electoral",
+      flex: 4,
+    },
+    {
+      field: "status",
+      headerName: "Estatus de la jornada electoral",
+      flex: 3,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => {
+        console.log("params", params.row.estatus);
+        return (
+          <Box width="100%" display="flex" justifyContent="space-evenly">
+            <Tooltip
+              title={
+                params.row.estatus.estructuraBoleta.estatus
+                  ? "La jornada ya cuenta con una o más boletas creadas"
+                  : "La jornada aún no cuenta con boletas creadas"
+              }
+            >
+              <BallotIcon
+                htmlColor={params.row.estatus.estructuraBoleta.estatus ? "#2e7d32" : "#757575"}
+              />
+            </Tooltip>
+            <Tooltip
+              title={
+                params.row.estatus.configuracion.estatus
+                  ? "La jornada ya ha sido configurada"
+                  : "La jornada aún no ha sido configurada"
+              }
+            >
+              <SettingsIcon
+                htmlColor={params.row.estatus.configuracion.estatus ? "#2e7d32" : "#757575"}
+              />
+            </Tooltip>
+            <Tooltip
+              title={
+                params.row.estatus.candidatosPartidos.estatus
+                  ? "La jornada ya contiene partidos o candidatos registrados"
+                  : "La jornada aún no contiene partidos o candidatos registrados"
+              }
+            >
+              <GroupsIcon
+                htmlColor={params.row.estatus.candidatosPartidos.estatus ? "#2e7d32" : "#757575"}
+              />
+            </Tooltip>
+          </Box>
+        );
+      },
     },
     {
       field: "configuracion",
-      headerName: "CONFIGURACIÓN",
+      headerName: "Configuración",
       flex: 5,
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) => {
+        console.log("params", params.row.estatus);
         return (
+          
           <Stack spacing={2} direction="row">
             <Tooltip title="Ver boletas pertenecientes a esta jornada">
             <Button
@@ -57,7 +107,7 @@ export const RegistroJornadaFormal = () => {
               startIcon={<BallotIcon />}
               onClick={() => handleEdit(params.id, params.row.nombreJornada)}
               >
-              Ver boletas
+              Boletas
             </Button>
               </Tooltip>
               <Tooltip title="Realizar la configuración de la jornada">
