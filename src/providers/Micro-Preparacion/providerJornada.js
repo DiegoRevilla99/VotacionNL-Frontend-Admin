@@ -391,7 +391,6 @@ export const deleteBoleta = async (id) => {
 
 export const getJornadaVotos = async (idBoleta, idJornada) => {
   try {
-    console.log("ID BOLETA QUE LLEGA", idBoleta);
     const { data } = await votoFormalAPI.get(
       `votos_seguros/jornadaelectoral/${idJornada}/resultadosv2`
     );
@@ -399,8 +398,6 @@ export const getJornadaVotos = async (idBoleta, idJornada) => {
     console.log("RESULTADOS FORMALES", data);
 
     const boleta = data.boletas.find((boleta) => boleta.idBoleta === idBoleta);
-
-    console.log("BOLETA FORMALES", boleta);
 
     let dataChart = [];
 
@@ -432,33 +429,26 @@ export const getJornadaVotos = async (idBoleta, idJornada) => {
       });
     }
 
-    console.log("DATA CHART PRE", dataChart);
+    const candidaturasNoRegistradas = boleta?.candidaturasNoReg?.reduce((a, b) => {
+      console.log("a y b", a, b);
+      return a + b.candidad;
+    }, 0);
 
-    const nulo = boleta.boletaCandidatos.find((resul) => {
-      if (resul.id === 99999) return resul;
+    dataChart.push({
+      id: 99998,
+      candiato: "Candidaturas no registradas",
+      resultados: candidaturasNoRegistradas || 0,
+      fotos: [
+        "https://w7.pngwing.com/pngs/527/663/png-transparent-logo-person-user-person-icon-rectangle-photography-computer-wallpaper.png",
+      ],
     });
 
-    if (nulo !== undefined && nulo !== null) {
-      console.log("NULOOOOOOOOOOOOO", nulo);
-      dataChart.push({
-        id: nulo.id,
-        candiato: "Votos nulos",
-        resultados: nulo.candidad,
-        fotos: ["https://cdn.pixabay.com/photo/2013/07/13/01/20/forbidden-155564_1280.png"],
-      });
-    }
-
-    // !!ELIMINAR
-    // dataChart.push({
-    //   id: 99998,
-    //   candiato: "Candidaturas no registradas",
-    //   resultados: 3,
-    //   fotos: [
-    //     "https://w7.pngwing.com/pngs/527/663/png-transparent-logo-person-user-person-icon-rectangle-photography-computer-wallpaper.png",
-    //   ],
-    // });
-
-    // if(boleta.candidaturasNoReg)
+    dataChart.push({
+      id: 99999,
+      candiato: "Votos nulos",
+      resultados: boleta.votosNulos || 0,
+      fotos: ["https://cdn.pixabay.com/photo/2013/07/13/01/20/forbidden-155564_1280.png"],
+    });
 
     const dataFinal = {
       jornadaModel: {},
@@ -515,29 +505,33 @@ export const getJornadaVotosInicio = async (idBoleta, idJornada) => {
       });
     }
 
-    console.log("DATA CHART PRE", dataChart);
-
-    const nulo = boleta.boletaCandidatos.find((resul) => {
-      if (resul.id === 99999) return resul;
+    dataChart.push({
+      id: 99998,
+      candiato: "Candidaturas no registradas",
+      resultados: 0,
+      fotos: [
+        "https://w7.pngwing.com/pngs/527/663/png-transparent-logo-person-user-person-icon-rectangle-photography-computer-wallpaper.png",
+      ],
     });
 
-    if (nulo !== undefined && nulo !== null) {
-      console.log("NULOOOOOOOOOOOOO", nulo);
-      dataChart.push({
-        id: nulo?.id,
-        candiato: "Votos nulos",
-        resultados: 0,
-        fotos: ["https://cdn.pixabay.com/photo/2013/07/13/01/20/forbidden-155564_1280.png"],
-      });
-    }
-
-    // if(boleta.candidaturasNoReg)
+    dataChart.push({
+      id: 99999,
+      candiato: "Votos nulos",
+      resultados: 0,
+      fotos: ["https://cdn.pixabay.com/photo/2013/07/13/01/20/forbidden-155564_1280.png"],
+    });
 
     const dataFinal = {
       jornadaModel: {},
       boleta: boleta || null,
       resultados: dataChart,
-      participacion: data.participacion,
+      participacion: {
+        cantidadNoVotaron: 1,
+        cantidadVotaron: 0,
+        porcentajeAbstencion: 100,
+        porcentajeParticipacion: 0,
+        totalEmpadronados: 1,
+      },
       configDates: data.config,
     };
 
@@ -627,6 +621,27 @@ export const getJornadaNoFormalVotos = async (idBoleta, id) => {
         });
       }
     }
+
+    const candidaturasNoRegistradas = boleta?.candidaturasNoRegistradas?.reduce((a, b) => {
+      console.log("a y b", a, b);
+      return a + b.candidad;
+    }, 0);
+
+    dataChart.push({
+      id: 99998,
+      candiato: "Candidaturas no registradas",
+      resultados: candidaturasNoRegistradas || 0,
+      fotos: [
+        "https://w7.pngwing.com/pngs/527/663/png-transparent-logo-person-user-person-icon-rectangle-photography-computer-wallpaper.png",
+      ],
+    });
+
+    dataChart.push({
+      id: 99999,
+      candiato: "Votos nulos",
+      resultados: boleta.nulos || 0,
+      fotos: ["https://cdn.pixabay.com/photo/2013/07/13/01/20/forbidden-155564_1280.png"],
+    });
     const dataFinal = {
       jornadaModel: {},
       boleta: boleta || null,
@@ -716,6 +731,23 @@ export const getJornadaNoFormalVotosInicio = async (idBoleta, id) => {
         });
       }
     }
+
+    dataChart.push({
+      id: 99998,
+      candiato: "Candidaturas no registradas",
+      resultados: 0,
+      fotos: [
+        "https://w7.pngwing.com/pngs/527/663/png-transparent-logo-person-user-person-icon-rectangle-photography-computer-wallpaper.png",
+      ],
+    });
+
+    dataChart.push({
+      id: 99999,
+      candiato: "Votos nulos",
+      resultados: 0,
+      fotos: ["https://cdn.pixabay.com/photo/2013/07/13/01/20/forbidden-155564_1280.png"],
+    });
+
     const dataFinal = {
       jornadaModel: {},
       boleta: boleta || null,

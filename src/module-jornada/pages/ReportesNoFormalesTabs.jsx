@@ -81,7 +81,7 @@ export const ReportesNoFormalesTabs = () => {
               url: "/jornada/inicio",
             },
             {
-              name: "REPORTES DE JORNADA",
+              name: "REPORTES DE JORNADAS POPULARES",
               url: "/jornada/reportesJornadasNoFormales",
             },
           ]}

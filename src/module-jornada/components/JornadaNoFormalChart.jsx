@@ -425,7 +425,7 @@ export const JornadaNoFormalChart = ({ chartData = { resultados: [] }, tipoRepor
                               ?.resultados ||
                           0) *
                           100) /
-                          votosNormales || 0
+                          total || 0
                       ).toFixed(2)}
                       %
                     </Typography>
@@ -455,8 +455,10 @@ export const JornadaNoFormalChart = ({ chartData = { resultados: [] }, tipoRepor
                     </Typography>
                     <Typography variant="caption" color="initial" fontWeight="bold">
                       {(
-                        (chartData?.resultados?.find((resul) => resul.id === 99998)?.resultados ||
-                          0 * 100) / total || 0
+                        ((chartData?.resultados?.find((resul) => resul.id === 99998)?.resultados ||
+                          0) *
+                          100) /
+                          total || 0
                       ).toFixed(2)}
                       %
                     </Typography>
@@ -479,8 +481,10 @@ export const JornadaNoFormalChart = ({ chartData = { resultados: [] }, tipoRepor
                     </Typography>
                     <Typography variant="caption" color="initial" fontWeight="bold">
                       {(
-                        (chartData?.resultados?.find((resul) => resul.id === 99999)?.resultados ||
-                          0 * 100) / total || 0
+                        ((chartData?.resultados?.find((resul) => resul.id === 99999)?.resultados ||
+                          0) *
+                          100) /
+                          total || 0
                       ).toFixed(2)}
                       %
                     </Typography>
