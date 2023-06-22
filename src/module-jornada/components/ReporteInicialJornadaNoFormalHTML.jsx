@@ -261,36 +261,64 @@ export const ReporteInicialNoFormalHTML = ({
                     {jornadaVotosData.boleta.boletaCandidatos.modalidad.modalidad === "PLANILLA" ? (
                       <>
                         <Grid container item xs={7} borderRight="2px solid">
-                          {resultado?.candiato?.map((candidato, index, array) => {
-                            if (index === array.length - 1 || index === array.length - 2) return;
-                            return (
-                              <Grid item xs={12}>
-                                <Box
-                                  py="0.2rem"
-                                  // display="flex"
-                                  justifyContent="center"
-                                  justifyItems="center"
-                                  alignContent="center"
-                                  alignItems="center"
-                                  // height="100%"
-                                  // flexDirection="column"
-                                  // width="100%"
-                                  // bgcolor={index1}
+                          {typeof resultado?.candiato === "string" ? (
+                            <Grid item xs={12}>
+                              <Box
+                                py="0.2rem"
+                                // display="flex"
+                                justifyContent="center"
+                                justifyItems="center"
+                                alignContent="center"
+                                alignItems="center"
+                                // height="100%"
+                                // flexDirection="column"
+                                // width="100%"
+                                // bgcolor={index1}
+                              >
+                                <Typography
+                                  variant="body2"
+                                  // fontSize="0.9rem"
+                                  align="center"
+                                  color="initial"
+                                  fontFamily="times"
                                 >
-                                  <Typography
-                                    variant="body2"
-                                    // fontSize="0.9rem"
-                                    align="center"
-                                    color="initial"
-                                    fontFamily="times"
+                                  {resultado.candiato}
+                                </Typography>
+                              </Box>
+                              <Divider />
+                            </Grid>
+                          ) : (
+                            resultado?.candiato?.map((candidato, index, array) => {
+                              if (index === array.length - 1 || index === array.length - 2) return;
+                              return (
+                                <Grid item xs={12}>
+                                  <Box
+                                    py="0.2rem"
+                                    // display="flex"
+                                    justifyContent="center"
+                                    justifyItems="center"
+                                    alignContent="center"
+                                    alignItems="center"
+                                    // height="100%"
+                                    // flexDirection="column"
+                                    // width="100%"
+                                    // bgcolor={index1}
                                   >
-                                    {candidato}
-                                  </Typography>
-                                </Box>
-                                <Divider />
-                              </Grid>
-                            );
-                          })}
+                                    <Typography
+                                      variant="body2"
+                                      // fontSize="0.9rem"
+                                      align="center"
+                                      color="initial"
+                                      fontFamily="times"
+                                    >
+                                      {candidato}
+                                    </Typography>
+                                  </Box>
+                                  <Divider />
+                                </Grid>
+                              );
+                            })
+                          )}
                         </Grid>
                         <Grid item xs={5}>
                           {resultado?.planillas?.map((planilla, index, array) => (
