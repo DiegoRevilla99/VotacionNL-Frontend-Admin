@@ -56,8 +56,6 @@ export const VerJornadasFormales = () => {
   }, []);
 
   const handleWatch = (id, titulo) => {
-    // dispatch(onSetConsultaSelected({ id, titulo, ballots: [] }));
-
     dispatch(
       onGetBoletasParaJornada(id, titulo, () =>
         navigate("/jornada/reportes/" + id + "/reporteInicio/")
