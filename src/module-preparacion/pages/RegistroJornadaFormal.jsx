@@ -134,7 +134,8 @@ export const RegistroJornadaFormal = () => {
   // USEEFFECT QUE PUEDES USAR PARA HACER UN GET DE LAS JORNADAS AL RENDERIZAR LA PAGINA
   useEffect(() => {
     // if (jornadasData.length === 0) dispatch(onGetjornadas());
-    if (jornadasData.length === 0) dispatch(onGetjornadas());
+     
+    dispatch(onGetjornadas());
   }, []);
 
   // METODO PARA BORRAR UN REGISTRO

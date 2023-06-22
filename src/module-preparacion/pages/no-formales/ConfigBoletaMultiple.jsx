@@ -47,7 +47,7 @@ export const ConfigBoletaMultiple = () => {
         ></Representante>
       );
 
-    if (type === "COMITÉ") return <Comite boletaInfo={boletaInfo}></Comite>;
+    if (type === "COMITE") return <Comite boletaInfo={boletaInfo}></Comite>;
 
     if (type === "PLANILLA")
       return (

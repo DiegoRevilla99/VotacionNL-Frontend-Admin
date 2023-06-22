@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { PrivateRoute } from "../../router/PrivateRoute";
+import { PublicRoute } from "../../router/PublicRoute";
 // import { PrivateRoute } from "../../router/PrivateRoute";
 import { AddBoletaComite } from "../pages/AddBoletaComite";
 import { AddBoletaJornada } from "../pages/AddBoletaJornada";
@@ -24,7 +24,7 @@ import { RegistroJornadaNoFormal } from "../pages/RegistroJornadaNoFormal";
 
 export const PreparacionRoutes = () => {
   return (
-    <PrivateRoute>
+    <PublicRoute>
       <Routes>
         <Route path="inicio" element={<HomePreparacion></HomePreparacion>} />
 
@@ -119,6 +119,6 @@ export const PreparacionRoutes = () => {
 
         <Route path="/*" element={<Navigate to="/preparacion/inicio" />} />
       </Routes>
-    </PrivateRoute>
+    </PublicRoute>
   );
 };
