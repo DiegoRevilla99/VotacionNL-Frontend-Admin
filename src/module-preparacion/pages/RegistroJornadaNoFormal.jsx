@@ -56,7 +56,7 @@ export const RegistroJornadaNoFormal = () => {
         <Box width="100%" display="flex" justifyContent="space-evenly">
           <Tooltip
             title={
-              params.row.estatus.estructuraBoleta.estatus
+              params.row.estatus.estructuraBoleta
                 ? "La elección popular ya cuenta con una o más boletas creadas"
                 : "La elección popular aún no cuenta con boletas creadas"
             }
@@ -135,7 +135,8 @@ export const RegistroJornadaNoFormal = () => {
   // USEEFFECT QUE PUEDES USAR PARA HACER UN GET DE LAS JORNADAS AL RENDERIZAR LA PAGINA
   useEffect(() => {
     //     if (jornadasData.length === 0) dispatch(onGetjornadas());
-    if (jornadasNoFormalesData.length === 0) dispatch(onGetJornadasNoFormales());
+    // if (jornadasNoFormalesData.length === 0) 
+    dispatch(onGetJornadasNoFormales());
   }, []);
 
   // METODO PARA BORRAR UN REGISTRO
