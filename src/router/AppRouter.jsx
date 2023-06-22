@@ -8,7 +8,7 @@ import { AuthRoutes } from "../module-auth/routes/AuthRoutes";
 import { AdminRoutes } from "../routes/AdminRoutes";
 import { onToastErrorOperation } from "../store/ui/uiSlice";
 
-import { PublicRoute } from "./PublicRoute";
+import { PrivateRoute } from "./PrivateRoute";
 // import { PrivateRoute } from "./PrivateRoute";
 
 export const AppRouter = () => {
@@ -58,9 +58,9 @@ export const AppRouter = () => {
           path="/*"
           element={
             // <PrivateRoute>
-            <PublicRoute>
+            <PrivateRoute>
               <AdminRoutes />
-            </PublicRoute>
+            </PrivateRoute>
             // </PrivateRoute>
           }
         ></Route>
