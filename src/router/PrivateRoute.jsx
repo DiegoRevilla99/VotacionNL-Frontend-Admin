@@ -12,15 +12,11 @@ export const PrivateRoute = ({ children }) => {
 
   const logged = true;
   const { pathname, search } = useLocation();
-  const lastpath = pathname + search;
-  localStorage.setItem("lastpath", lastpath);
+  // const lastpath = pathname + search;
+  // localStorage.setItem("lastpath", lastpath);
   const location = useLocation();
   // console.log(location);
   sessionStorage.setItem("Location", location.pathname);
 
-  return status !== "notLogged" ? (
-    children
-  ) : (
-    <Navigate to="/auth/login"></Navigate>
-  );
+  return status !== "notLogged" ? children : <Navigate to="/auth/login"></Navigate>;
 };

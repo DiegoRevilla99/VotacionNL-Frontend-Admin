@@ -7,6 +7,8 @@ import { Registro } from "../pages/Registro";
 
 export const AuthRoutes = () => {
   console.log("ME EJECUTO AUTH");
+  sessionStorage.setItem("Location", "/home");
+  // localStorage.setItem("lastpath", "/home");
   return (
     <PublicRoute>
       <Routes>
