@@ -9,7 +9,7 @@ import { PreparacionRoutes } from "../module-preparacion/routes/PreparacionRoute
 import { SidebarCustom } from "../ui/components/SidebarCustom";
 import { Topbar } from "../ui/components/Topbar";
 
-export const AdminRoutes = React.memo(() => {
+export const AdminRoutes = () => {
   const {
     status,
     toastCheckingMessage,
@@ -85,7 +85,7 @@ export const AdminRoutes = React.memo(() => {
 
             {/* PREPARACION */}
             <Route path="/preparacion/*" element={<PreparacionRoutes />}></Route>
-            <Route path="/*" element={<Navigate to="/home" />} />
+            {/* <Route path="/*" element={<Navigate to="/home" />} /> */}
             {/* CONFIGURACION */}
             {/* <Route path="/configuracion/*" element={< CONFIG />}></Route> */}
 
@@ -97,4 +97,4 @@ export const AdminRoutes = React.memo(() => {
       </div>
     </>
   );
-});
+};

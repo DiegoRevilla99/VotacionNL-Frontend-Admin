@@ -25,7 +25,7 @@ export const AppRouter = () => {
   const logged = true;
   // if (status === "checking") return <>Cargando</>;
   // else
-  // const { status } = useCheckAuth();
+  const { status } = useCheckAuth();
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const dispatch = useDispatch();
 
