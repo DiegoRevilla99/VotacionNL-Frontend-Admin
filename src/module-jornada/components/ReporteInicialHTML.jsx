@@ -49,7 +49,15 @@ export const ReporteInicialHTML = ({
     }
   }, [dataVotos]);
 
-  if (jornadaVotosData.resultados.length === 0) return <></>;
+  if (
+    jornadaVotosData.resultados.length === 0 ||
+    !jornadaVotosData.resultados ||
+    jornadaVotosData.boleta === null ||
+    jornadaVotosData.boleta === undefined ||
+    jornadaVotosData.configDates === null ||
+    jornadaVotosData.configDates === undefined
+  )
+    return <></>;
   else
     return (
       <Box id="reporteInicialHTML">

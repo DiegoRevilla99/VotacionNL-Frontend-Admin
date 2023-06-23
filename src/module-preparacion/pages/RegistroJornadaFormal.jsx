@@ -1,7 +1,7 @@
 import BallotIcon from "@mui/icons-material/Ballot";
 import DeleteIcon from "@mui/icons-material/Delete";
-import GroupsIcon from '@mui/icons-material/Groups';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import GroupsIcon from "@mui/icons-material/Groups";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import SettingsIcon from "@mui/icons-material/Settings";
 import {
   Box,
@@ -9,7 +9,9 @@ import {
   Divider,
   Grid,
   IconButton,
-  LinearProgress, Tooltip, Typography
+  LinearProgress,
+  Tooltip,
+  Typography,
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
@@ -17,21 +19,18 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
 import { onSetJornadaSelected } from "../../store/module-preparacion/jornada/SliceJornada";
-import {
-  onGetjornadas
-} from "../../store/module-preparacion/jornada/ThunksJornada";
+import { onGetjornadas } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { GeneralTable } from "../components/GeneralTable";
 import { ModalDeleteJornada } from "../components/ModalDeleteJornada";
 import { ModalRegistroJornadaFormal } from "../components/ModalRegistroJornadaFormal";
 import { useJornadaStore } from "../hooks/useJornadaStore";
 
-
 export const RegistroJornadaFormal = () => {
   const navigate = useNavigate();
   const [modalStatus, setModalStatus] = useState(false);
   const [modalDeleteStatus, setModalDeleteStatus] = useState(false);
-	const [id, setId] = useState(null);
-	const [nombreEleccion, setNombreEleccion] = useState(null);
+  const [id, setId] = useState(null);
+  const [nombreEleccion, setNombreEleccion] = useState(null);
   // ToDo:AQUI OBTENGAN LAS VARIABLES STATUS Y DATA DE SUS ESTADOS GLOBALES
   // const { jornadasData, status } = useJornadaStore();
   const { jornadasData, status } = useJornadaStore();
@@ -99,35 +98,33 @@ export const RegistroJornadaFormal = () => {
       renderCell: (params) => {
         console.log("params", params.row.estatus);
         return (
-          
           <Stack spacing={2} direction="row">
             <Tooltip title="Ver boletas pertenecientes a esta jornada">
-            <Button
-              variant="outlined"
-              startIcon={<BallotIcon />}
-              onClick={() => handleEdit(params.id, params.row.nombreJornada)}
+              <Button
+                variant="outlined"
+                startIcon={<BallotIcon />}
+                onClick={() => handleEdit(params.id, params.row.nombreJornada)}
               >
-              Boletas
-            </Button>
-              </Tooltip>
-              <Tooltip title="Realizar la configuración de la jornada">
-            <Button
-              variant="outlined"
-              startIcon={<SettingsIcon />}
-              onClick={() => handleConfig(params.id)}
+                Boletas
+              </Button>
+            </Tooltip>
+            <Tooltip title="Realizar la configuración de la jornada">
+              <Button
+                variant="outlined"
+                startIcon={<SettingsIcon />}
+                onClick={() => handleConfig(params.id)}
               >
-              Configuración
-            </Button>
-              </Tooltip>
-              <Tooltip title="Eliminar esta jornada">
-
-            <IconButton
-              sx={{ color: "#511079" }}
-              onClick={() => handleDelete(params.id, params.row.nombreJornada)}
-            >
-              <DeleteIcon />
-            </IconButton>
-              </Tooltip>
+                Configuración
+              </Button>
+            </Tooltip>
+            <Tooltip title="Eliminar esta jornada">
+              <IconButton
+                sx={{ color: "#511079" }}
+                onClick={() => handleDelete(params.id, params.row.nombreJornada)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
           </Stack>
         );
       },
@@ -137,14 +134,15 @@ export const RegistroJornadaFormal = () => {
   // USEEFFECT QUE PUEDES USAR PARA HACER UN GET DE LAS JORNADAS AL RENDERIZAR LA PAGINA
   useEffect(() => {
     // if (jornadasData.length === 0) dispatch(onGetjornadas());
-    if (jornadasData.length === 0) dispatch(onGetjornadas());
+
+    dispatch(onGetjornadas());
   }, []);
 
   // METODO PARA BORRAR UN REGISTRO
   const handleDelete = (id, title) => {
     setId(id);
-		setNombreEleccion(title);
-		openModalDelete();
+    setNombreEleccion(title);
+    openModalDelete();
     // dispatch(onDeleteJornada(id));
   };
 
@@ -167,17 +165,16 @@ export const RegistroJornadaFormal = () => {
   const openModal = () => {
     setModalStatus(true);
   };
-	const closeModalDelete = () => {
-		setModalDeleteStatus(false);
-	};
+  const closeModalDelete = () => {
+    setModalDeleteStatus(false);
+  };
 
-	const openModalDelete = () => {
-		setModalDeleteStatus(true);
-	};
+  const openModalDelete = () => {
+    setModalDeleteStatus(true);
+  };
 
-  console.log('Jorndas', jornadasData);
+  console.log("Jorndas", jornadasData);
 
-  
   if (status === "checking")
     return (
       <Box sx={{ width: "100%" }}>
@@ -195,29 +192,28 @@ export const RegistroJornadaFormal = () => {
         }}
       >
         <Grid item xs={12} sx={{ display: "flex", flexDirection: "column" }} mt={2}>
+          <BreadCrumbsCustom
+            routes={[
+              {
+                name: "PREPARACIÓN",
+                url: "/preparacion/inicio",
+              },
+            ]}
+            currentRoute="JORNADAS ELECTORALES"
+          />
 
-        <BreadCrumbsCustom
-          routes={[
-            {
-              name: "PREPARACIÓN",
-              url: "/preparacion/inicio",
-            },
-          ]}
-          currentRoute="JORNADAS ELECTORALES"
-        />
-
-<Box sx={{ display: "flex", alignItems: "center", m: "0.5rem", ml: "2rem" }}>
-  <Typography variant="h6" align="left" color="initial" sx={{ flexGrow: 1 }}>
+          <Box sx={{ display: "flex", alignItems: "center", m: "0.5rem", ml: "2rem" }}>
+            <Typography variant="h6" align="left" color="initial" sx={{ flexGrow: 1 }}>
               PASO 1.- REGISTRO DE UNA JORNADA ELECTORAL
             </Typography>
             <Tooltip
-    title="En este apartado puedes ver las jornadas que existen, así como también las configuraciones de cada jornada."
-    // placement="right"
-  >
-    <IconButton sx={{color: "#8A2BE2"}}>
-      <HelpOutlineIcon fontSize="large" />
-    </IconButton>
-  </Tooltip>
+              title="En este apartado puedes ver las jornadas que existen, así como también las configuraciones de cada jornada."
+              // placement="right"
+            >
+              <IconButton sx={{ color: "#8A2BE2" }}>
+                <HelpOutlineIcon fontSize="large" />
+              </IconButton>
+            </Tooltip>
           </Box>
           <Divider />
           <Box
@@ -231,27 +227,27 @@ export const RegistroJornadaFormal = () => {
           >
             <Grid container>
               <Grid item lg={3} md={4} sm={12} xs={12}>
-              <Tooltip title="Registrar una nueva jornada electoral">
-                <Button
-                  onClick={openModal}
-                  variant="contained"
-                  size="large"
-                  sx={{
-                    boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
-                    transition: "all 0.5s ease",
-                    backgroundColor: "#511079",
-                    width: "100%",
-                    borderRadius: "2rem 2rem 2rem 2rem",
-                    "&:hover": {
-                      backgroundColor: "#7E328B !important",
-                      transform: "translate(-5px, -5px)",
-                      boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
-                    },
-                  }}
-                >
-                  Registrar Jornada Electoral
-                </Button>
-                  </Tooltip>
+                <Tooltip title="Registrar una nueva jornada electoral">
+                  <Button
+                    onClick={openModal}
+                    variant="contained"
+                    size="large"
+                    sx={{
+                      boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
+                      transition: "all 0.5s ease",
+                      backgroundColor: "#511079",
+                      width: "100%",
+                      borderRadius: "2rem 2rem 2rem 2rem",
+                      "&:hover": {
+                        backgroundColor: "#7E328B !important",
+                        transform: "translate(-5px, -5px)",
+                        boxShadow: "5px 5px 1px rgba(0, 0, 0, 0.3)",
+                      },
+                    }}
+                  >
+                    Registrar Jornada Electoral
+                  </Button>
+                </Tooltip>
               </Grid>
             </Grid>
 
@@ -268,8 +264,8 @@ export const RegistroJornadaFormal = () => {
                 pt: "1rem",
               }}
             >
-							<Typography variant="h5" color="initial" mb="0.5rem" align="center">
-								JORNADAS ELECTORALES
+              <Typography variant="h5" color="initial" mb="0.5rem" align="center">
+                JORNADAS ELECTORALES
               </Typography>
               <Divider />
               <Box
@@ -284,7 +280,7 @@ export const RegistroJornadaFormal = () => {
                                 CADA REGISTRO SE DEBE LLAMAR "idJornada" o si el id de cada registro 
                                 tiene otro nombre, cambien el atributo idName al nombre que quieran */}
                 <GeneralTable
-                // data = {jornadasData}
+                  // data = {jornadasData}
                   data={jornadasData}
                   columns={columns}
                   idName={"idJornada"}
@@ -302,10 +298,10 @@ export const RegistroJornadaFormal = () => {
         />
         {/* MODAL DONDE SE REGISTRA LA JORNADA NO FORMAL */}
         <ModalDeleteJornada
-					modalDeleteStatus={modalDeleteStatus} 
-					closeModalDelete={closeModalDelete} 
-					id={id}
-					nombreEleccion={nombreEleccion}
+          modalDeleteStatus={modalDeleteStatus}
+          closeModalDelete={closeModalDelete}
+          id={id}
+          nombreEleccion={nombreEleccion}
         />
       </Grid>
     );
