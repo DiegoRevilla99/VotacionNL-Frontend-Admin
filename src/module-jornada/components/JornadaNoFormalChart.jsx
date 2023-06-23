@@ -191,7 +191,15 @@ export const JornadaNoFormalChart = ({ chartData = { resultados: [] }, tipoRepor
     // });
   };
 
-  if (chartData.resultados.length === 0) return <>Reporte no disponible</>;
+  if (
+    chartData.resultados.length === 0 ||
+    !chartData.resultados ||
+    chartData.boleta === null ||
+    chartData.boleta === undefined ||
+    chartData.configDates === null ||
+    chartData.configDates === undefined
+  )
+    return <>Reporte no disponible</>;
   else
     return (
       <>
