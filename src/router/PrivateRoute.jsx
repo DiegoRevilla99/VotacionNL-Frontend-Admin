@@ -8,12 +8,14 @@ export const PrivateRoute = ({ children }) => {
   //   const { status } = useCheckAuth();
 
   const { status } = useSelector((state) => state.auth);
+  console.log("Status de Privet " + status);
   //const status = "logged";
 
   const logged = true;
   const { pathname, search } = useLocation();
-  // const lastpath = pathname + search;
-  // localStorage.setItem("lastpath", lastpath);
+  const lastpath = pathname + search;
+  console.log("lastPath::" + lastpath);
+  localStorage.setItem("lastpath", lastpath);
   const location = useLocation();
   // console.log(location);
   sessionStorage.setItem("Location", location.pathname);
