@@ -12,7 +12,9 @@ import {
   getJornadaRespuestasConsultasInicio,
   getJornadas,
   getJornadasFormales,
+  getJornadasFormalesJornada,
   getJornadasNoFormales,
+  getJornadasNoFormalesJornada,
   getJornadaVotos,
   getJornadaVotosInicio,
   getSesionesActivas,
@@ -101,10 +103,29 @@ export const onGetjornadas = () => {
   };
 };
 
-export const onGetjornadasNoFormales = () => {
+export const onGetjornadasJornada = () => {
   return async (dispatch) => {
     dispatch(onCheckingOperation());
-    const { ok, data, errorMessage } = await getJornadasNoFormales(); // PROVIDER
+    const { ok, data, errorMessage } = await getJornadasFormalesJornada(); // PROVIDER
+    if (ok) {
+      console.log("DATA DE JORNADAS en el thunks", data);
+      dispatch(onSuccessOperation());
+      dispatch(onFillJornadasData(data)); // SLICE
+    } else {
+      dispatch(onErrorOperation());
+      dispatch(
+        onToastErrorOperation({
+          errorMessage: errorMessage || "No se pudo obtener las jornadas",
+        })
+      );
+    }
+  };
+};
+
+export const onGetjornadasNoFormalesJornada = () => {
+  return async (dispatch) => {
+    dispatch(onCheckingOperation());
+    const { ok, data, errorMessage } = await getJornadasNoFormalesJornada(); // PROVIDER
     if (ok) {
       dispatch(onSuccessOperation());
       dispatch(onFillJornadasData(data)); // SLICE

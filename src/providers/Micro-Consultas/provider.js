@@ -13,6 +13,21 @@ export const getConsultasCiudadanas = async () => {
   }
 };
 
+export const getConsultasCiudadanasJornada = async () => {
+  try {
+    const { data } = await consultasAPI.get("jornada/consulta/");
+
+    const dataFinal = data.data.filter((consulta) => {
+      if (consulta.estatus.configuracion.estatus) return consulta;
+    });
+
+    return { ok: true, data: dataFinal, errorMessage: "" };
+  } catch (error) {
+    console.log(error);
+    return { ok: false, errorMessage: error.message };
+  }
+};
+
 export const getConsultasCiudadanasConfig = async () => {
   try {
     const { data } = await consultasAPI.get("jornada/consulta/informacion");
@@ -26,9 +41,7 @@ export const getConsultasCiudadanasConfig = async () => {
 
 export const getConsultaConfigbyID = async (idJornada) => {
   try {
-    const { data } = await consultasAPI.get(
-      `jornada/consulta/${idJornada}/informacion`
-    );
+    const { data } = await consultasAPI.get(`jornada/consulta/${idJornada}/informacion`);
 
     return { ok: true, data: data, errorMessage: "" };
   } catch (error) {
@@ -84,31 +97,25 @@ export const getPapeletas = async (idConsulta) => {
 
 export const saveConfig = async (id, data) => {
   try {
-    const resp = await consultasAPI.post(
-      "jornada/consulta/" + id + "/configuracion",
-      {
-        inicioDisponibilidad: data.inicioDisponibilidad,
-        inicioEmpadronamiento: data.inicioEmpadronamiento,
-        inicioRecepVoto: data.inicioRecepcionVotos,
-        inicioAssignPass: data.inicioAsignacionContrasenia,
-        finDisponibilidad: data.finDisponibilidad,
-        finEmpadronamiento: data.finEmpadronamiento,
-        finRecepVoto: data.finRecepcionVotos,
-        finAssignPass: data.finAsignacionContrasenia,
+    const resp = await consultasAPI.post("jornada/consulta/" + id + "/configuracion", {
+      inicioDisponibilidad: data.inicioDisponibilidad,
+      inicioEmpadronamiento: data.inicioEmpadronamiento,
+      inicioRecepVoto: data.inicioRecepcionVotos,
+      inicioAssignPass: data.inicioAsignacionContrasenia,
+      finDisponibilidad: data.finDisponibilidad,
+      finEmpadronamiento: data.finEmpadronamiento,
+      finRecepVoto: data.finRecepcionVotos,
+      finAssignPass: data.finAsignacionContrasenia,
+      idJornada: id,
+    });
+    const resp1 = await consultasAPI.post("jornada/consulta/" + id + "/configuracionvoto", {
+      tiempoDuracionVoto: data.tiempoDuracionRespuesta,
+      tiempoExtraVoto: data.tiempoExtra,
+      dispVerificacion: data.habilitarVerificacion,
+      jornadaModel: {
         idJornada: id,
-      }
-    );
-    const resp1 = await consultasAPI.post(
-      "jornada/consulta/" + id + "/configuracionvoto",
-      {
-        tiempoDuracionVoto: data.tiempoDuracionRespuesta,
-        tiempoExtraVoto: data.tiempoExtra,
-        dispVerificacion: data.habilitarVerificacion,
-        jornadaModel: {
-          idJornada: id,
-        },
-      }
-    );
+      },
+    });
 
     console.log("RESPUESTA PAPELETAS: ", resp, resp1);
 
@@ -120,9 +127,7 @@ export const saveConfig = async (id, data) => {
 };
 export const getConfig = async (id) => {
   try {
-    const { data } = await consultasAPI.get(
-      "jornada/consulta/consulta/" + id + "/data"
-    );
+    const { data } = await consultasAPI.get("jornada/consulta/consulta/" + id + "/data");
     let dataFull = {};
     const data1 = data.data[1];
     const data2 = data.data[2];
@@ -139,9 +144,7 @@ export const getBallotData = async (idBallot) => {
   try {
     // **FETCH
 
-    const { data } = await consultasAPI.get(
-      "jornada/consulta/estructurapapeleta/" + idBallot
-    );
+    const { data } = await consultasAPI.get("jornada/consulta/estructurapapeleta/" + idBallot);
 
     // **Fetch de preguntas
     const { data: data1 } = await consultasAPI.get(
@@ -154,7 +157,7 @@ export const getBallotData = async (idBallot) => {
       id: data1.data.idPregunta,
       pregunta: data1.data.descPregunta,
       tipoDeRespuesta: data1.data.tipoRespuesta,
-      tipoCerrada: "",
+      tipoCerrada: data1.data.subtipo,
       respuesta1: data1.data.opcion1,
       respuesta2: data1.data.opcion2,
       respuesta3: data1.data.opcion3,
@@ -181,21 +184,18 @@ export const getBallotData = async (idBallot) => {
 export const createPapeleta = async (data, idConsulta, questions) => {
   try {
     console.log("DATA QUE LLEGA", questions);
-    const { data: data1 } = await consultasAPI.post(
-      "jornada/consulta/estructurapapeleta",
-      {
-        nombre: data.encabezadoConsulta,
-        distrito: data.distritoElectoral,
-        municipio: data.municipio,
-        primerFirmanteNombre: data.nombrePrimerFirmante,
-        primerFirmanteCargo: data.cargoPrimerFirmante,
-        segundoFirmanteNombre: data.nombreSegundoFirmante,
-        segundoFirmanteCargo: data.cargoSegundoFirmante,
-        jornadaModel: {
-          idJornada: idConsulta,
-        },
-      }
-    );
+    const { data: data1 } = await consultasAPI.post("jornada/consulta/estructurapapeleta", {
+      nombre: data.encabezadoConsulta,
+      distrito: data.distritoElectoral,
+      municipio: data.municipio,
+      primerFirmanteNombre: data.nombrePrimerFirmante,
+      primerFirmanteCargo: data.cargoPrimerFirmante,
+      segundoFirmanteNombre: data.nombreSegundoFirmante,
+      segundoFirmanteCargo: data.cargoSegundoFirmante,
+      jornadaModel: {
+        idJornada: idConsulta,
+      },
+    });
 
     const { data: questionRespData } = await consultasAPI.post(
       "jornada/consulta/papeleta/" + data1.data.idPapeleta + "/pregunta",
@@ -220,12 +220,7 @@ export const createPapeleta = async (data, idConsulta, questions) => {
   }
 };
 
-export const updateBallotData = async (
-  data,
-  questions,
-  idConsulta,
-  idPapeleta
-) => {
+export const updateBallotData = async (data, questions, idConsulta, idPapeleta) => {
   try {
     console.log("DATA QUE LLEGA UPDATE", questions);
     const { data: data1 } = await consultasAPI.put(
@@ -271,9 +266,7 @@ export const updateBallotData = async (
 
 export const deleteBallot = async (id) => {
   try {
-    const resp = await consultasAPI.delete(
-      "jornada/consulta/estructurapapeleta/" + id
-    );
+    const resp = await consultasAPI.delete("jornada/consulta/estructurapapeleta/" + id);
     return { ok: true };
   } catch (error) {
     return { ok: false, errorMessage: error.message };

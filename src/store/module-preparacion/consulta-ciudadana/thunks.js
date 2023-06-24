@@ -7,6 +7,7 @@ import {
   getBallotData,
   getConfig,
   getConsultasCiudadanas,
+  getConsultasCiudadanasJornada,
   getPapeletas,
   saveConfig,
   updateBallotData,
@@ -62,6 +63,25 @@ export const onGetConsultasCiudadanas = () => {
     dispatch(onCheckingOperation());
 
     const { ok, data, errorMessage } = await getConsultasCiudadanas();
+
+    if (ok) {
+      dispatch(onSuccessOperation());
+      dispatch(onFillConsultasData(data));
+    } else {
+      dispatch(onErrorOperation());
+      dispatch(
+        onToastErrorOperation({
+          errorMessage: errorMessage || "La consulta no se pudo guardar",
+        })
+      );
+    }
+  };
+};
+export const onGetConsultasCiudadanasJornada = () => {
+  return async (dispatch) => {
+    dispatch(onCheckingOperation());
+
+    const { ok, data, errorMessage } = await getConsultasCiudadanasJornada();
 
     if (ok) {
       dispatch(onSuccessOperation());

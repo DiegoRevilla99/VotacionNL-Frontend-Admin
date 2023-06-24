@@ -88,7 +88,7 @@ export const SidebarCustom = ({ selected, setSelected }) => {
                 <img
                   alt="logo"
                   // src="/../../CEE600x321.png"
-                  src="/CEE600x321.png"
+                  src="./CEE600x321.png"
                   crossOrigin="anonymous"
                   style={{
                     transition: "width 0.5s, height 0.5s",

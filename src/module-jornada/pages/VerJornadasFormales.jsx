@@ -18,6 +18,7 @@ import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore"
 import {
   onGetBoletasParaJornada,
   onGetjornadas,
+  onGetjornadasJornada,
 } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
@@ -52,7 +53,7 @@ export const VerJornadasFormales = () => {
   ];
 
   useEffect(() => {
-    dispatch(onGetjornadas());
+    dispatch(onGetjornadasJornada());
   }, []);
 
   const handleWatch = (id, titulo) => {

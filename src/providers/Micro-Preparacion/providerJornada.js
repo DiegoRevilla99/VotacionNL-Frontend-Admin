@@ -34,7 +34,28 @@ export const getJornadasFormales = async () => {
   try {
     const { data } = await jornadasAPI.get("jornada/electoral/");
     console.log("DATA JORNADAS", data);
+
     return { ok: true, data: data, errorMessage: "" };
+  } catch (error) {
+    return { ok: false, errorMessage: error.message };
+  }
+};
+
+export const getJornadasFormalesJornada = async () => {
+  try {
+    let { data } = await jornadasAPI.get("jornada/electoral/");
+    console.log("DATA JORNADAS", data);
+
+    let dataFinal = [];
+
+    if (data) {
+      dataFinal =
+        data?.filter((jornada) => {
+          if (jornada.estatus.configuracion.estatus) return jornada;
+        }) || [];
+    }
+
+    return { ok: true, data: dataFinal, errorMessage: "" };
   } catch (error) {
     return { ok: false, errorMessage: error.message };
   }
@@ -43,7 +64,20 @@ export const getJornadasFormales = async () => {
 export const getJornadasNoFormales = async () => {
   try {
     const { data } = await jornadasNoFormalesAPI.get("jornada/no_formal/elecciones");
+
     return { ok: true, data: data, errorMessage: "" };
+  } catch (error) {
+    return { ok: false, errorMessage: error.message };
+  }
+};
+
+export const getJornadasNoFormalesJornada = async () => {
+  try {
+    const { data } = await jornadasNoFormalesAPI.get("jornada/no_formal/elecciones");
+    const dataFinal = data.filter((jornada) => {
+      if (jornada.estatus.configuracion.estatus) return jornada;
+    });
+    return { ok: true, data: dataFinal, errorMessage: "" };
   } catch (error) {
     return { ok: false, errorMessage: error.message };
   }
@@ -556,7 +590,7 @@ export const getJornadaNoFormalVotos = async (idBoleta, id) => {
 
     let dataChart = [];
 
-    if (boleta.boletaCandidatos.modalidad.modalidad === "PLANILLA") {
+    if (boleta?.boletaCandidatos?.modalidad?.modalidad === "PLANILLA") {
       dataChart = boleta.representanteResultado.map((paquete) => {
         const planilla = boleta.boletaCandidatos.candidatosAsociaciones.find(
           (cands) => cands.idCombinacion === paquete.id
@@ -670,7 +704,7 @@ export const getJornadaNoFormalVotosInicio = async (idBoleta, id) => {
 
     let dataChart = [];
 
-    if (boleta.boletaCandidatos.modalidad.modalidad === "PLANILLA") {
+    if (boleta?.boletaCandidatos?.modalidad?.modalidad === "PLANILLA") {
       console.log("ENRTRA AQUI EN PLANILLA");
       dataChart = boleta.representanteResultado.map((paquete) => {
         console.log("paso 1", boleta.boletaCandidatos);
@@ -938,6 +972,7 @@ export const getJornadaRespuestasConsultasInicio = async (idPapeleta, id) => {
     if (papeleta === undefined) {
       console.log("entr a undefined");
     } else if (papeleta.pregunta.subtipo === "2respuestas") {
+      console.log("entra subtipo 2respuestas");
       dataChart = [
         {
           id: 0,
@@ -1064,6 +1099,8 @@ export const getJornadaRespuestasConsultasInicio = async (idPapeleta, id) => {
       participacion: { cantidadVotaron: 0, totalEmpadronados: 1 },
       configDates: data.configuracion,
     };
+
+    console.log("dataFinal que se envia", dataFinal);
 
     // data.resultados = dataChart;
 

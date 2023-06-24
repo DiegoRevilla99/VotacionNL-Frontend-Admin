@@ -112,23 +112,13 @@ export const ReporteInicialJornadaNoFormal = ({ status, jornadaVotosData }) => {
                   <Box display="flex" justifyContent="center" alignContent="center" py={5}>
                     <CircularProgress size={80} />
                   </Box>
-                ) : jornadaVotosData.resultados.length === 0 ||
-                  !jornadaVotosData.resultados ||
-                  jornadaVotosData.boleta === null ||
-                  jornadaVotosData.boleta === undefined ||
-                  jornadaVotosData.configDates === null ||
-                  jornadaVotosData.configDates === undefined ? (
+                ) : boleta === null ? (
                   <>Reporte no disponible</>
-                ) : // ) : jornadaVotosData.length !== 0 ? (
-                jornadaVotosData.resultados.length !== 0 ? (
+                ) : (
                   <JornadaNoFormalChart
                     chartData={jornadaVotosData}
                     tipoReporte="reporteInicialHTML"
                   />
-                ) : (
-                  // <></>
-                  // <></>
-                  <></>
                 )
               }
             />
