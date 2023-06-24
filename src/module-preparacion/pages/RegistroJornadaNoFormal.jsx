@@ -1,6 +1,5 @@
 import BallotIcon from "@mui/icons-material/Ballot";
 import DeleteIcon from "@mui/icons-material/Delete";
-import GroupsIcon from "@mui/icons-material/Groups";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import SettingsIcon from "@mui/icons-material/Settings";
 
@@ -73,7 +72,7 @@ export const RegistroJornadaNoFormal = () => {
                 htmlColor={params.row.estatus.configuracion.estatus ? "#2e7d32" : "#757575"}
               />
             </Tooltip>
-            <Tooltip
+            {/* <Tooltip
               title={
                 params.row.estatus.candidatosAsociaciones.estatus
                   ? "La elección popular ya contiene candidatos o asociaciones registrados"
@@ -85,7 +84,7 @@ export const RegistroJornadaNoFormal = () => {
                   params.row.estatus.candidatosAsociaciones.estatus ? "#2e7d32" : "#757575"
                 }
               />
-            </Tooltip>
+            </Tooltip> */}
           </Box>
         );
       },

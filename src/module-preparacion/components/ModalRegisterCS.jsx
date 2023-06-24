@@ -223,6 +223,8 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		updateCandidatoAndSuplente,
 	} = useJornadaStore();
 
+	// console.log("candidatoandSuplenteSelected:",candidatoandSuplenteSelected)
+	// console.log("setCandidatoAndSuplenteSelectedNull:",setCandidatoAndSuplenteSelectedNull)
 	const onSubmit = async(values) => {
 
 		
@@ -518,8 +520,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 		return errors;
 	  };
 	  // imagenes
-	  	// lo de fotografia
-	 const [fotografiaCandidato, setFotografia] = useState(candidatoandSuplentes
+	  const [fotografiaCandidato, setFotografia] = useState(candidatoandSuplentes
         ? {
             name: candidatoandSuplentes.fotografiaCandidato
               ? candidatoandSuplentes.fotografiaCandidato
@@ -533,7 +534,7 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
               : "Sin Archivo seleccionado",
           }
         : { name: "Sin Archivo seleccionado" });
-
+			
 		const getURLImageCandidato = async () => {
 			const urlCandidato = await dispatch(onPostImage(fotografiaCandidato));
 			return urlCandidato;
@@ -798,7 +799,8 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 													fullWidth
 													label=""
 													disabled
-													value={fotografiaCandidato.name}
+													value={fotografiaCandidato ? candidatoandSuplenteSelected.fotografiaCandidato : "Sin Archivo seleccionado"}
+													// value={fotografiaCandidato.name}
 													variant="outlined"
 													size="small"
 													></TextField>
@@ -957,7 +959,9 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 													fullWidth
 													label=""
 													disabled
-													value={fotografiaSuplente.name}
+													value={fotografiaSuplente ? candidatoandSuplenteSelected.fotografiaSuplente : "Sin Archivo seleccionado"}
+													placeholder="Sin Archivo seleccionado"
+													// value={fotografiaSuplente.name}
 													variant="outlined"
 													size="small"
 													></TextField>

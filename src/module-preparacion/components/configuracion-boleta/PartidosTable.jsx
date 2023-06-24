@@ -15,7 +15,7 @@ export const PartidosTable = memo(({info = {}, handleOpenModal}) => {
     const dispatch = useDispatch();
     // console.log("INFOR EN TABLE",info);
     const { id, nameParty, fotografiaParty, candidatosPartido } = info;
-    console.log("candidatos",info);
+    // console.log("candidatos",info);
 
     const editar = () => {
       handleOpenModal();
