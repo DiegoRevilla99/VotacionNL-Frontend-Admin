@@ -12,6 +12,7 @@ import {
   sendEmailProvider,
 } from "../../../providers/Micro-TokeEmail/provider";
 import {
+  deleteVotanteFromJornadaProvider,
   getVotanteDireccionProvider,
   getVotantesPorJornadaProvider,
   getVotantesProvider,
@@ -181,6 +182,37 @@ export const putVotante = (curp, info, funcion = () => {}) => {
       dispatch(onErrorOperation());
       dispatch(
         onToastErrorOperation({ errorMessage: "No se pudo editar el votante" })
+      );
+    }
+  };
+};
+
+//ELIMANR VOTANTE DE UNA JORNADA
+export const deleteVotante = (curp, info, funcion = () => {}) => {
+  return async (dispatch, getState) => {
+    dispatch(onToastCheckingOperation("Eliminando votante..."));
+    dispatch(onCheckingOperation());
+
+    const { ok, data, errorMessage } = await deleteVotanteFromJornadaProvider(
+      curp,
+      info
+    );
+    if (ok) {
+      dispatch(onSuccessOperation());
+      dispatch(
+        onToastSuccessOperation({
+          successMessage: "El votante se ha eliminado con éxito",
+        })
+      );
+      // console.log("Actualizando votante");
+      // getVotantesbyJornada();
+      setTimeout(() => {
+        funcion();
+      }, 800);
+    } else {
+      dispatch(onErrorOperation());
+      dispatch(
+        onToastErrorOperation({ errorMessage: "No se pudo elimnar el votante" })
       );
     }
   };
