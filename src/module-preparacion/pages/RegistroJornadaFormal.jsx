@@ -1,6 +1,5 @@
 import BallotIcon from "@mui/icons-material/Ballot";
 import DeleteIcon from "@mui/icons-material/Delete";
-import GroupsIcon from "@mui/icons-material/Groups";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import SettingsIcon from "@mui/icons-material/Settings";
 import {
@@ -49,7 +48,7 @@ export const RegistroJornadaFormal = () => {
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) => {
-        console.log("params", params.row.estatus);
+        // console.log("params", params.row.estatus);
         return (
           <Box width="100%" display="flex" justifyContent="space-evenly">
             <Tooltip
@@ -74,7 +73,7 @@ export const RegistroJornadaFormal = () => {
                 htmlColor={params.row.estatus.configuracion.estatus ? "#2e7d32" : "#757575"}
               />
             </Tooltip>
-            <Tooltip
+            {/* <Tooltip
               title={
                 params.row.estatus.candidatosPartidos.estatus
                   ? "La jornada ya contiene partidos o candidatos registrados"
@@ -84,7 +83,7 @@ export const RegistroJornadaFormal = () => {
               <GroupsIcon
                 htmlColor={params.row.estatus.candidatosPartidos.estatus ? "#2e7d32" : "#757575"}
               />
-            </Tooltip>
+            </Tooltip> */}
           </Box>
         );
       },
@@ -96,7 +95,7 @@ export const RegistroJornadaFormal = () => {
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) => {
-        console.log("params", params.row.estatus);
+        // console.log("params", params.row.estatus);
         return (
           <Stack spacing={2} direction="row">
             <Tooltip title="Ver boletas pertenecientes a esta jornada">
@@ -173,7 +172,7 @@ export const RegistroJornadaFormal = () => {
     setModalDeleteStatus(true);
   };
 
-  console.log("Jorndas", jornadasData);
+  // console.log("Jorndas", jornadasData);
 
   if (status === "checking")
     return (

@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-	onAddCandidatoAndSuplente, onAddJornadas, onAddPartido, onCheckingOperation, onDeleteCandidato, onDeleteCandidatoAndSuplente, onDeletePartido, onDeleteSuplente, onEditBoleta, onEditCandidato, onEditCandidatoAndSuplente, onEditPartido, onEditSuplente, onErrorOperation, onFillJornadasData, onOffOperation, onSetCandidatoAndSuplenteNull, onSetCandidatoAndSuplenteSelectedNull,
+	onAddCandidatoAndSuplente, onAddJornadas, onAddPartido, onCheckingOperation, onDeleteCandidato, onDeleteCandidatoAndSuplente, onDeletePartido, onDeleteSuplente, onEditBoleta, onEditCandidato, onEditCandidatoAndSuplente, onEditPartido, onEditSuplente, onErrorOperation, onFillJornadasData,
+	onFillboletaStatusAll,
+	onOffOperation, onSetCandidatoAndSuplenteNull, onSetCandidatoAndSuplenteSelectedNull,
 	onSetCandidatoNull, onSetCandidatoSelectedNull, onSetPartidoNull, onSetPartidoSelectedNull, onSetSuplenteNull, onSetSuplenteSelectedNull, onSuccessOperation, onUpdateBoleta, onUpdateCandidatoAndSuplente,
 	onUpdatePartido
 } from "../../store/module-preparacion/jornada/SliceJornada";
@@ -282,6 +284,9 @@ export const useJornadaStore = () => {
 	const fillJornadasData = () => {
 		dispatch(onFillJornadasData());
 	};
+	const fillboletasAll = () => {
+		dispatch(onFillboletaStatusAll());
+	};
 
 	const addJornada = (jornadaData) => {
 		dispatch(onAddJornadas(jornadaData));
@@ -323,7 +328,7 @@ export const useJornadaStore = () => {
 		editPartido,
 		editCandidatoAndSuplente,
 		deletePartido,
-
+		fillboletasAll,
 		deleteCandidatoAndSuplente,
 		fillJornadasData,
 		setBoletasSelectedNull,

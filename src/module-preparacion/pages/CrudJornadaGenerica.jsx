@@ -1,3 +1,4 @@
+import { Handshake, PeopleAlt } from "@mui/icons-material";
 import BallotIcon from "@mui/icons-material/Ballot";
 import DeleteIcon from "@mui/icons-material/Delete";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
@@ -46,7 +47,43 @@ export const CrudJornadaGenerica = () => {
     {
       field: "encabezadoBoleta",
       headerName: "TÍTULO DE LA BOLETA",
-      flex: 6,
+      flex: 4,
+    },
+    {
+      field: "status",
+      headerName: "Estatus de la boleta",
+      flex: 2,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: ({row}) => {
+        console.log("dentro deeee",row);
+        return (
+          <Box width="100%" display="flex" justifyContent="space-evenly">
+            <Tooltip
+              title={
+                row.estatusBoleta.candidatos.estatus
+                  ? "La boleta ya cuenta con una o más candidatos creadas"
+                  : "La boleta aún no cuenta con candidatos creadas"
+              }
+            >
+              <PeopleAlt
+                htmlColor={row.estatusBoleta.candidatos.estatus ? "#2e7d32" : "#757575"}
+              />
+            </Tooltip>
+            <Tooltip
+              title={
+                row.estatusBoleta.asociaciones.estatus
+                  ? "La boleta ya contiene asociaciones creadas"
+                  : "La boleta aún no contiene asociaciones creadas"
+              }
+            >
+              <Handshake
+                htmlColor={row.estatusBoleta.asociaciones.estatus? "#2e7d32" : "#757575"}
+              />
+            </Tooltip>
+          </Box>
+        );
+      },
     },
     {
       field: "configuracion",

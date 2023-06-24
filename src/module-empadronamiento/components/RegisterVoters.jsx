@@ -43,7 +43,11 @@ import { useTheme } from "@mui/material/styles";
 import { ModalInfo } from "./ModalInfo";
 
 import { setVotanteSelected } from "../../store/module-empadronamiento/votantes/empVotantesSlice";
-import { getVotanteDireccion } from "../../store/module-empadronamiento/votantes/thunksVotantes";
+import {
+  deleteVotante,
+  getVotanteDireccion,
+  getVotantesbyJornada,
+} from "../../store/module-empadronamiento/votantes/thunksVotantes";
 import {
   crearBoletasConsulta,
   crearBoletasNoFormal,
@@ -57,6 +61,8 @@ import {
   getFlagBoletasFormalesProvider,
   getFlagBoletasNoFormalesProvider,
 } from "../../providers/Micro-VotoFormal/providerVotoSeguro";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import { ModalDelete } from "./ModalDelete";
 
 const opciones = {
   display: "flex",
@@ -99,9 +105,11 @@ export const RegisterVoters = ({
 
   const [flagBoletas, setFlagBoletas] = useState(false);
   const [flagLoading, setFlagLoading] = useState(true);
+  const [votanteSelectedLocal, setVotanteSelectedLocal] = useState(null);
 
   const [modalGranel, setModalGranel] = useState(false);
   const [modalEdit, setModalEdit] = useState(false);
+  const [modalDelete, setModalDelete] = useState(false);
   const [modalEnlace, setModalEnlace] = useState(false);
   const [modalEnlacePersonal, setModalEnlacePersonal] = useState(false);
   const [modalInfoV, setModalInfoV] = useState(false);
@@ -111,6 +119,7 @@ export const RegisterVoters = ({
   const [dataSearch, setDataSearch] = useState();
   const [contraseniaData, setContraseniaData] = useState({ py: 0, pn: 0 });
   let { type } = useSelector((state) => state.empVotantesSlice);
+  const { votanteSelected } = useSelector((state) => state.empVotantesSlice);
 
   const abrirCerrarModalAddVotante = () => {
     setModalVotante(!modalVotante);
@@ -120,6 +129,10 @@ export const RegisterVoters = ({
   };
   const abrirCerrarModalEdit = () => {
     setModalEdit(!modalEdit);
+  };
+
+  const abrirCerrarModalDelete = () => {
+    setModalDelete(!modalDelete);
   };
 
   const abrirCerrarModalEnlace = () => {
@@ -140,6 +153,13 @@ export const RegisterVoters = ({
   const selectedVoter = (votante = {}) => {
     dispatch(setVotanteSelected({ votanteSelected: votante }));
     abrirCerrarModalEdit();
+  };
+
+  const selectedVoterDelete = (votante = {}) => {
+    console.log("Eliminado el votante: ", votante);
+    setVotanteSelectedLocal(votante);
+    dispatch(setVotanteSelected({ votanteSelected: votante }));
+    abrirCerrarModalDelete();
   };
 
   const selectedVoterInfo = (votante = {}) => {
@@ -225,6 +245,16 @@ export const RegisterVoters = ({
     }
   };
 
+  const eliminarVotante = () => {
+    dispatch(deleteVotante(votanteSelected.curp, id, DeleteVotanteNext));
+  };
+
+  const DeleteVotanteNext = () => {
+    console.log("actualizando info");
+    dispatch(getVotantesbyJornada(id));
+    setModalDelete(false);
+  };
+
   const getFlagBoletas = async () => {
     let rep = null;
 
@@ -274,7 +304,7 @@ export const RegisterVoters = ({
     {
       field: "Acciones",
       headerName: "ACCIONES",
-      flex: 5,
+      width: 250,
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) => {
@@ -285,19 +315,25 @@ export const RegisterVoters = ({
                 <Button
                   variant="outlined"
                   onClick={() => selectedVoter(params.row)}
-                  endIcon={<EditIcon />}
                   title="EDITAR"
                 >
-                  Editar
+                  <EditIcon />
                 </Button>
                 <Button
                   variant="outlined"
                   color="inherit"
                   onClick={() => selectedVoterEnlace(params.row)}
-                  endIcon={<AttachEmailIcon />}
-                  title="ENVIAR"
+                  title="ENVIAR ENLACE"
                 >
-                  Enviar
+                  <AttachEmailIcon />
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={() => selectedVoterDelete(params.row)}
+                  title="ELIMINAR"
+                >
+                  <PersonRemoveIcon />
                 </Button>
               </>
             ) : (
@@ -693,6 +729,20 @@ export const RegisterVoters = ({
         isOpen={modalCBoletas}
         abrirCerrarModal={abrirCerrarModalCBoletas}
         enviar={crearBoletas}
+      />
+      <ModalDelete
+        abrirCerrarModal={abrirCerrarModalDelete}
+        isOpen={modalDelete}
+        action={eliminarVotante}
+        mensaje={
+          "Se eliminara al votante: " +
+          votanteSelectedLocal?.nombreVotante +
+          " " +
+          votanteSelectedLocal?.apellidoPVotante +
+          " " +
+          votanteSelectedLocal?.apellidoMVotante
+        }
+        titulo="Eliminar votante"
       />
     </>
   );

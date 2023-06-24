@@ -4,12 +4,15 @@ import {
   deleteBoleta,
   deleteJornada,
   getBoletaData,
+  getBoletasAllJornada,
   getBoletasJornada,
   getBoletasJornadaNoFormal,
   getJornadaNoFormalVotos,
   getJornadaNoFormalVotosInicio,
   getJornadaRespuestasConsultas,
   getJornadaRespuestasConsultasInicio,
+  getJornadaVotos,
+  getJornadaVotosInicio,
   getJornadas,
   getJornadasFormales,
   getJornadasFormalesJornada,
@@ -40,6 +43,7 @@ import {
   onErrorOperation,
   onFillBoletas,
   onFillJornadasData,
+  onFillboletaStatusAll,
   onSetBoletasSelectedNull,
   onSetCandidatoAndSuplenteNull,
   onSetCandidatoAndSuplenteSelectedNull,
@@ -193,7 +197,20 @@ export const onGetBoletas = (idJornada, navigate = () => {}) => {
     }
   };
 };
-
+export const onGetBoletasAll = (navigate = () => {}) => {
+  return async (dispatch) => {
+    dispatch(onCheckingOperation());
+    const { ok, data } = await getBoletasAllJornada(); // PROVIDER
+    // console.log("info de la peticion",data);
+    if (ok) {
+      dispatch(onFillboletaStatusAll(data)); // SLICE
+      // return data;
+    } else {
+      dispatch(onErrorOperation());
+      dispatch(onToastErrorOperation({ errorMessage: "No se pudo obtener las boletas" }));
+    }
+  };
+};
 export const onGetBoletasParaJornada = (idJornada, title, navigate = () => {}) => {
   return async (dispatch) => {
     dispatch(onCheckingOperation());
@@ -299,8 +316,8 @@ export const onUpdateBoletaData = (
   navigate = () => {}
 ) => {
   return async (dispatch) => {
-    console.log("VALUES THUNKS", values);
-    console.log("idJornada THUNKS", idJornada);
+    // console.log("VALUES THUNKS", values); // YA QUEDO
+    // console.log("idJornada THUNKS", idJornada); /// si llega
     console.log("candidatoandSuplentes THUNKS", candidatoandSuplentes);
     console.log("idBoleta THUNKS", idBoleta);
     dispatch(onCheckingOperation());
@@ -317,7 +334,9 @@ export const onUpdateBoletaData = (
       navigate();
     } else {
       dispatch(onErrorOperation());
-      // dispatch(onToastErrorOperation({ errorMessage: errorMessage || "No se pudo actualizar la boleta" }));
+      dispatch(
+        onToastErrorOperation({ errorMessage: errorMessage || "No se pudo actualizar la boleta" })
+      );
     }
   };
 };
