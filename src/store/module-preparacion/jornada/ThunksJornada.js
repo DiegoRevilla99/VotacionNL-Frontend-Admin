@@ -11,8 +11,6 @@ import {
   getJornadaNoFormalVotosInicio,
   getJornadaRespuestasConsultas,
   getJornadaRespuestasConsultasInicio,
-  getJornadaVotos,
-  getJornadaVotosInicio,
   getJornadas,
   getJornadasFormales,
   getJornadasFormalesJornada,
@@ -61,11 +59,15 @@ export const onPostImage = (image) => {
     const { ok, data, errorMessage } = await postImage(image); // PROVIDER
     if (ok) {
       dispatch(onSuccessOperation());
-      dispatch(onToastSuccessOperation({ successMessage: "Imagen subida con éxito" }));
+      dispatch(
+        onToastSuccessOperation({ successMessage: "Imagen subida con éxito" })
+      );
       return data;
     } else {
       dispatch(onErrorOperation());
-      dispatch(onToastErrorOperation({ errorMessage: "No se pudo subir la imagen" }));
+      dispatch(
+        onToastErrorOperation({ errorMessage: "No se pudo subir la imagen" })
+      );
       return false;
     }
   };
@@ -152,12 +154,16 @@ export const onCreateJornada = (title, entidad, navigate = (id) => {}) => {
     if (ok) {
       dispatch(onAddJornadas({ idJornada: id, nombreJornada: title })); // SLICE
       dispatch(onSuccessOperation());
-      dispatch(onToastSuccessOperation({ successMessage: "Jornada creada con éxito" }));
+      dispatch(
+        onToastSuccessOperation({ successMessage: "Jornada creada con éxito" })
+      );
       dispatch(onSetJornadaSelected({ id, title, boletas: [] }));
       navigate(id);
     } else {
       dispatch(onErrorOperation());
-      dispatch(onToastErrorOperation({ errorMessage: "No se pudo crear la jornada" }));
+      dispatch(
+        onToastErrorOperation({ errorMessage: "No se pudo crear la jornada" })
+      );
     }
   };
 };
@@ -170,10 +176,18 @@ export const onDeleteJornada = (id) => {
     if (ok) {
       dispatch(onDeleteJornadaData(id)); // SLICE
       dispatch(onSuccessOperation());
-      dispatch(onToastSuccessOperation({ successMessage: "Jornada eliminada con éxito" }));
+      dispatch(
+        onToastSuccessOperation({
+          successMessage: "Jornada eliminada con éxito",
+        })
+      );
     } else {
       dispatch(onErrorOperation());
-      dispatch(onToastErrorOperation({ errorMessage: "No se pudo eliminar la jornada" }));
+      dispatch(
+        onToastErrorOperation({
+          errorMessage: "No se pudo eliminar la jornada",
+        })
+      );
     }
   };
 };
@@ -193,7 +207,11 @@ export const onGetBoletas = (idJornada, navigate = () => {}) => {
       dispatch(onFillBoletas(data)); // SLICE
     } else {
       dispatch(onErrorOperation());
-      dispatch(onToastErrorOperation({ errorMessage: "No se pudo obtener las boletas" }));
+      dispatch(
+        onToastErrorOperation({
+          errorMessage: "No se pudo obtener las boletas",
+        })
+      );
     }
   };
 };
@@ -207,11 +225,19 @@ export const onGetBoletasAll = (navigate = () => {}) => {
       // return data;
     } else {
       dispatch(onErrorOperation());
-      dispatch(onToastErrorOperation({ errorMessage: "No se pudo obtener las boletas" }));
+      dispatch(
+        onToastErrorOperation({
+          errorMessage: "No se pudo obtener las boletas",
+        })
+      );
     }
   };
 };
-export const onGetBoletasParaJornada = (idJornada, title, navigate = () => {}) => {
+export const onGetBoletasParaJornada = (
+  idJornada,
+  title,
+  navigate = () => {}
+) => {
   return async (dispatch) => {
     dispatch(onCheckingOperation());
     const { ok, data } = await getBoletasJornada(idJornada);
@@ -224,12 +250,20 @@ export const onGetBoletasParaJornada = (idJornada, title, navigate = () => {}) =
       navigate();
     } else {
       dispatch(onErrorOperation());
-      dispatch(onToastErrorOperation({ errorMessage: "No se pudo obtener las boletas" }));
+      dispatch(
+        onToastErrorOperation({
+          errorMessage: "No se pudo obtener las boletas",
+        })
+      );
     }
   };
 };
 
-export const onGetBoletasParaJornadaNoFormal = (idJornada, title, navigate = () => {}) => {
+export const onGetBoletasParaJornadaNoFormal = (
+  idJornada,
+  title,
+  navigate = () => {}
+) => {
   return async (dispatch) => {
     dispatch(onCheckingOperation());
 
@@ -246,7 +280,11 @@ export const onGetBoletasParaJornadaNoFormal = (idJornada, title, navigate = () 
       navigate();
     } else {
       dispatch(onErrorOperation());
-      dispatch(onToastErrorOperation({ errorMessage: "No se pudo obtener las boletas" }));
+      dispatch(
+        onToastErrorOperation({
+          errorMessage: "No se pudo obtener las boletas",
+        })
+      );
     }
   };
 };
@@ -275,13 +313,19 @@ export const onCreateBoleta = (
     ); // PROVIDER
     if (ok) {
       dispatch(onSuccessOperation());
-      dispatch(onToastSuccessOperation({ successMessage: "Boleta creada con éxito" }));
-      dispatch(onAddBoleta({ idEstructuraBoleta, encabezado: data.nombreCandidatura })); // SLICE
+      dispatch(
+        onToastSuccessOperation({ successMessage: "Boleta creada con éxito" })
+      );
+      dispatch(
+        onAddBoleta({ idEstructuraBoleta, encabezado: data.nombreCandidatura })
+      ); // SLICE
       onBoletaCreated(idEstructuraBoleta); // ejecutar la función de devolución de llamada con el idEstructuraBoleta como argumento
       navigate();
     } else {
       dispatch(onErrorOperation());
-      dispatch(onToastErrorOperation({ errorMessage: "No se pudo crear la boleta" }));
+      dispatch(
+        onToastErrorOperation({ errorMessage: "No se pudo crear la boleta" })
+      );
     }
   };
 };
@@ -289,7 +333,8 @@ export const onCreateBoleta = (
 export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
   return async (dispatch) => {
     dispatch(onCheckingOperation());
-    const { ok, data, dataCandidatoSuplente, dataPartido } = await getBoletaData(idBoleta); // PROVIDER
+    const { ok, data, dataCandidatoSuplente, dataPartido } =
+      await getBoletaData(idBoleta); // PROVIDER
     console.log("DATA PROVIDER", data);
     console.log("candidatosuplente PROVIDER", dataCandidatoSuplente);
     console.log("partido PROVIDER", dataPartido);
@@ -335,7 +380,9 @@ export const onUpdateBoletaData = (
     } else {
       dispatch(onErrorOperation());
       dispatch(
-        onToastErrorOperation({ errorMessage: errorMessage || "No se pudo actualizar la boleta" })
+        onToastErrorOperation({
+          errorMessage: errorMessage || "No se pudo actualizar la boleta",
+        })
       );
     }
   };
@@ -349,10 +396,16 @@ export const onDeleteBoleta = (idBoleta) => {
     if (ok) {
       // dispatch(onSuccessOperation());
       dispatch(onDeleteBoletaData(idBoleta)); // SLICE
-      dispatch(onToastSuccessOperation({ successMessage: "Boleta eliminada con éxito" }));
+      dispatch(
+        onToastSuccessOperation({
+          successMessage: "Boleta eliminada con éxito",
+        })
+      );
     } else {
       dispatch(onErrorOperation());
-      dispatch(onToastErrorOperation({ errorMessage: "No se pudo eliminar la boleta" }));
+      dispatch(
+        onToastErrorOperation({ errorMessage: "No se pudo eliminar la boleta" })
+      );
     }
   };
 };
@@ -371,7 +424,9 @@ export const onGetJornadaVotos = (idBoleta, idJornada) => {
       dispatch(onSuccessOperation());
     } else {
       dispatch(onErrorOperation());
-      dispatch(onToastErrorOperation({ errorMessage: "Error al obtener las boletas" }));
+      dispatch(
+        onToastErrorOperation({ errorMessage: "Error al obtener las boletas" })
+      );
     }
   };
 };
@@ -388,7 +443,9 @@ export const onGetJornadaVotosInicio = (idBoleta, idJornada) => {
       dispatch(onSuccessOperation());
     } else {
       dispatch(onErrorOperation());
-      dispatch(onToastErrorOperation({ errorMessage: "Error al obtener las boletas" }));
+      dispatch(
+        onToastErrorOperation({ errorMessage: "Error al obtener las boletas" })
+      );
     }
   };
 };
@@ -405,7 +462,9 @@ export const onGetJornadaRespuestasConsultas = (idPapeleta, id) => {
       dispatch(onSuccessOperation());
     } else {
       dispatch(onErrorOperation());
-      dispatch(onToastErrorOperation({ errorMessage: "Reporte no disponible" }));
+      dispatch(
+        onToastErrorOperation({ errorMessage: "Reporte no disponible" })
+      );
     }
   };
 };
@@ -416,7 +475,10 @@ export const onGetJornadaRespuestasConsultasInicio = (idPapeleta, id) => {
 
     console.log("ENTRA A TUUUUUUNK");
 
-    const { ok, data } = await getJornadaRespuestasConsultasInicio(idPapeleta, id); // PROVIDER
+    const { ok, data } = await getJornadaRespuestasConsultasInicio(
+      idPapeleta,
+      id
+    ); // PROVIDER
 
     console.log("DATA DE LA BUSQUEDAAA INICIAL", data);
     if (ok) {
@@ -424,7 +486,9 @@ export const onGetJornadaRespuestasConsultasInicio = (idPapeleta, id) => {
       dispatch(onSuccessOperation());
     } else {
       dispatch(onErrorOperation());
-      dispatch(onToastErrorOperation({ errorMessage: "Reporte no disponible" }));
+      dispatch(
+        onToastErrorOperation({ errorMessage: "Reporte no disponible" })
+      );
     }
   };
 };
@@ -443,7 +507,9 @@ export const onGetJornadaNoFormalVotos = (idBoleta, id) => {
       dispatch(onSuccessOperation());
     } else {
       dispatch(onErrorOperation());
-      dispatch(onToastErrorOperation({ errorMessage: "Error al obtener las boletas" }));
+      dispatch(
+        onToastErrorOperation({ errorMessage: "Error al obtener las boletas" })
+      );
     }
   };
 };
@@ -462,7 +528,9 @@ export const onGetJornadaNoFormalVotosInicio = (idBoleta, id) => {
       dispatch(onSuccessOperation());
     } else {
       dispatch(onErrorOperation());
-      dispatch(onToastErrorOperation({ errorMessage: "Error al obtener las boletas" }));
+      dispatch(
+        onToastErrorOperation({ errorMessage: "Error al obtener las boletas" })
+      );
     }
   };
 };
@@ -480,7 +548,9 @@ export const onGetSesionesActivas = (idJornada) => {
     } else {
       dispatch(onErrorOperation());
       dispatch(onDeleteSesionesActivas()); // SLICE
-      dispatch(onToastErrorOperation({ errorMessage: "Error al obtener las sesiones" }));
+      dispatch(
+        onToastErrorOperation({ errorMessage: "Error al obtener las sesiones" })
+      );
     }
   };
 };
