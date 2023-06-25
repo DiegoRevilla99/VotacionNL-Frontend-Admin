@@ -27,6 +27,10 @@ export const Empadronamiento = () => {
     dispatch(setType({ type: "formales" }));
   }, []);
 
+  useEffect(() => {
+    console.log("votantes", votantes);
+  }, [votantes]);
+
   return (
     <>
       <Box
