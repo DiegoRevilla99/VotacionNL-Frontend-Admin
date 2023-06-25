@@ -14,18 +14,22 @@ import {
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch } from 'react-redux';
+import { PeopleAlt, ThreeP } from "@mui/icons-material";
 import { useNavigate, useParams } from "react-router-dom";
 import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
 import {
   onGetBoletaData,
   onGetBoletas,
+  onGetBoletasAll
 } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { GeneralTable } from "../components/GeneralTable";
 import { ModalEliminarBoletaFormal } from "../components/ModalEliminarBoletaFormal";
 import { useJornadaStore } from "../hooks/useJornadaStore";
 export const CrudJornada = () => {
   const navigate = useNavigate();
+  
   const [modalDeleteStatus, setModalDeleteStatus] = useState(false);
   const [idBoleta, setIdBoleta] = useState(null);
   const [nombreEstructuraBoleta, setNombreBoleta] = useState(null);
@@ -33,13 +37,78 @@ export const CrudJornada = () => {
   const { jornadaSelected, status } = useJornadaStore();
   const params = useParams();
   const dispatch = useDispatch();
-  // console.log("AQUI VA LA JORNADA",jornadaSelected);
-  const columns = [
-    // field: Debe de ir la variable que se va a mostrar en la tabla
-    {
+
+  // USEEFFECT QUE PUEDES USAR PARA HACER UN GET DE LAS JORNADAS AL RENDERIZAR LA PAGINA
+  useEffect(() => {
+    dispatch(onGetBoletas(params.id));
+    dispatch(onGetBoletasAll());
+  }, []);
+
+  const { boletaStatusAll } = useSelector(
+    (state) => state.jornada
+  );
+
+
+      const filteredBoletas = boletaStatusAll.filter((boleta) => {
+        return jornadaSelected.boletas.some(
+          (selectedBoleta) => selectedBoleta.idEstructuraBoleta === boleta.idEstructuraBoleta
+        );
+      });
+
+      console.log("filteredBoletas", filteredBoletas);
+
+    const columns = [
+        {
       field: "nombreEstructuraBoleta",
       headerName: "TÍTULO DE LA BOLETA",
-      flex: 6,
+      flex: 4,
+    },
+    {
+      field: "status",
+      headerName: "Estatus de la boleta",
+      flex: 2,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: ({row}) => {
+        console.log("dentro deeee",row);
+        return (
+          <Box width="100%" display="flex" justifyContent="space-evenly">
+            <Tooltip
+              title={
+                row.estatus.candidatos.estatus
+                  ? "La boleta ya cuenta con una o más candidatos creadas"
+                  : "La boleta aún no cuenta con candidatos creadas"
+              }
+            >
+              <PeopleAlt
+                htmlColor={row.estatus.candidatos.estatus ? "#2e7d32" : "#757575"}
+              />
+            </Tooltip>
+            <Tooltip
+              title={
+                row.estatus.partidos.estatus
+                  ? "La boleta ya cuenta con una o más partidos creadas"
+                  : "La boleta aún no ha sido configurada"
+              }
+            >
+              <ThreeP
+                htmlColor={row.estatus.partidos.estatus? "#2e7d32" : "#757575"}
+              />
+            </Tooltip>
+            <Tooltip
+              title={
+                row.estatus.coaliciones.estatus
+                  ? "La boleta ya contiene coaliciones configuradas"
+                  : "La boleta aún no contiene coaliciones configuradas"
+              }
+            >
+              <HandshakeIcon
+                htmlColor={row.estatus.coaliciones.estatus? "#2e7d32" : "#757575"}
+              />
+            </Tooltip>
+          </Box>
+        );
+      },
     },
     {
       field: "Configuración",
@@ -48,6 +117,7 @@ export const CrudJornada = () => {
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) => {
+        // console.log(params);
         return (
           <Stack spacing={2} direction="row">
             <Tooltip title="Visualizar los datos de la boleta">
@@ -82,10 +152,7 @@ export const CrudJornada = () => {
     },
   ];
 
-  // USEEFFECT QUE PUEDES USAR PARA HACER UN GET DE LAS JORNADAS AL RENDERIZAR LA PAGINA
-  useEffect(() => {
-    dispatch(onGetBoletas(params.id));
-  }, []);
+  
 
   // METODO PARA BORRAR UN REGISTRO
   const handleDelete = (id, title) => {
@@ -234,7 +301,7 @@ export const CrudJornada = () => {
                                 CADA REGISTRO SE DEBE LLAMAR "idJornada" o si el id de cada registro 
                                 tiene otro nombre, cambien el atributo idName al nombre que quieran */}
                 <GeneralTable
-                  data={jornadaSelected.boletas} // DATA DE LOS REGISTROS
+                  data={filteredBoletas} // DATA DE LOS REGISTROS
                   columns={columns}
                   idName={"idEstructuraBoleta"} // NOMBRE DEL ID DE CADA REGISTRO
                 />

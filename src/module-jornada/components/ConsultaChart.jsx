@@ -165,8 +165,58 @@ export const ConsultaChart = ({ chartData = { resultados: [] }, tipoReporte }) =
 
   console.log("data", chartData);
 
-  if (chartData.resultados.length === 0) return <>Reporte no disponible</>;
-  else
+  if (
+    (chartData.configDates !== undefined || chartData.configDates !== null) &&
+    (chartData.resultados.length === 0 ||
+      !chartData.resultados ||
+      chartData.papeleta === null ||
+      chartData.papeleta === undefined)
+  )
+    return (
+      <Box>
+        {tipoReporte === "reporteInicialHTML" ? (
+          <Typography variant="h6" color="initial">
+            Reporte no disponible
+            {/* {dayjs(chartData?.configDates?.inicioRecepVoto).format(
+              "DD [de] MMMM [de] YYYY [a las] HH[:]mm [horas]"
+            )} */}
+          </Typography>
+        ) : (
+          <Typography variant="h6" color="initial">
+            Reporte no disponible
+            {/* {dayjs(chartData?.configDates?.finRecepVoto).format(
+              "DD [de] MMMM [de] YYYY [a las] HH[:]mm [horas]"
+            )} */}
+          </Typography>
+        )}
+      </Box>
+    );
+  else {
+    if (
+      new Date(chartData?.configDates?.finRecepVoto) > new Date() &&
+      tipoReporte === "reporteInicialHTMLBUENO"
+    )
+      return (
+        <Typography variant="h6" color="initial">
+          Reporte final no disponible hasta el{" "}
+          {dayjs(chartData?.configDates?.finRecepVoto).format(
+            "DD [de] MMMM [de] YYYY [a las] HH[:]mm [horas]"
+          )}
+        </Typography>
+      );
+
+    if (
+      new Date(chartData?.configDates?.inicioRecepVoto) > new Date() &&
+      tipoReporte === "reporteInicialHTML"
+    )
+      return (
+        <Typography variant="h6" color="initial">
+          Reporte inicial no disponible hasta el{" "}
+          {dayjs(chartData?.configDates?.inicioRecepVoto).format(
+            "DD [de] MMMM [de] YYYY [a las] HH[:]mm [horas]"
+          )}
+        </Typography>
+      );
     return (
       <>
         <Grid container spacing={2} id="ejemplo23">
@@ -462,4 +512,5 @@ export const ConsultaChart = ({ chartData = { resultados: [] }, tipoReporte }) =
         {/* <ReporteInicialHTML /> */}
       </>
     );
+  }
 };

@@ -22,7 +22,7 @@ import {
   onGetBoletasParaJornada,
   onGetBoletasParaJornadaNoFormal,
   onGetjornadas,
-  onGetjornadasNoFormales,
+  onGetjornadasNoFormalesJornada,
 } from "../../store/module-preparacion/jornada/ThunksJornada";
 import { getJornadasNoFormalesProvider } from "../../providers/Micro-NoFormales/providerNoFormales";
 import { BreadCrumbsCustom } from "../../module-empadronamiento/components/BreadCrumbsCustom";
@@ -58,7 +58,7 @@ export const VerJornadasNoFormales = () => {
   ];
 
   useEffect(() => {
-    dispatch(onGetjornadasNoFormales());
+    dispatch(onGetjornadasNoFormalesJornada());
   }, []);
 
   const handleWatch = (id, titulo) => {

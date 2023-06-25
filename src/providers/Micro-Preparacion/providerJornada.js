@@ -34,7 +34,28 @@ export const getJornadasFormales = async () => {
   try {
     const { data } = await jornadasAPI.get("jornada/electoral/");
     console.log("DATA JORNADAS", data);
+
     return { ok: true, data: data, errorMessage: "" };
+  } catch (error) {
+    return { ok: false, errorMessage: error.message };
+  }
+};
+
+export const getJornadasFormalesJornada = async () => {
+  try {
+    let { data } = await jornadasAPI.get("jornada/electoral/");
+    console.log("DATA JORNADAS", data);
+
+    let dataFinal = [];
+
+    if (data) {
+      dataFinal =
+        data?.filter((jornada) => {
+          if (jornada.estatus.configuracion.estatus) return jornada;
+        }) || [];
+    }
+
+    return { ok: true, data: dataFinal, errorMessage: "" };
   } catch (error) {
     return { ok: false, errorMessage: error.message };
   }
@@ -43,7 +64,20 @@ export const getJornadasFormales = async () => {
 export const getJornadasNoFormales = async () => {
   try {
     const { data } = await jornadasNoFormalesAPI.get("jornada/no_formal/elecciones");
+
     return { ok: true, data: data, errorMessage: "" };
+  } catch (error) {
+    return { ok: false, errorMessage: error.message };
+  }
+};
+
+export const getJornadasNoFormalesJornada = async () => {
+  try {
+    const { data } = await jornadasNoFormalesAPI.get("jornada/no_formal/elecciones");
+    const dataFinal = data.filter((jornada) => {
+      if (jornada.estatus.configuracion.estatus) return jornada;
+    });
+    return { ok: true, data: dataFinal, errorMessage: "" };
   } catch (error) {
     return { ok: false, errorMessage: error.message };
   }
@@ -81,12 +115,26 @@ export const getBoletasJornada = async (idJornadaElectoral) => {
     const { data } = await jornadasAPI.get(
       "jornada/electoral/jornada/" + idJornadaElectoral + "/estructurasboletas"
     );
-    // console.log("DATA BOLETASSSS", data);
+      // console.log("DATA BOLETASSSS", data);
     return { ok: true, data: data.data };
   } catch (error) {
     return { ok: false };
   }
 };
+
+export const getBoletasAllJornada = async () => {
+  try {
+    // **FETCH
+    const { data } = await jornadasAPI.get(
+      "jornada/electoral/estructurasboletas"
+    );
+      // console.log("DATA BOLETASSSS", data);
+    return { ok: true, data: data.data };
+  } catch (error) {
+    return { ok: false };
+  }
+};
+
 export const getBoletasJornadaNoFormal = async (idJornadaElectoral) => {
   try {
     // **FETCH
@@ -101,6 +149,7 @@ export const getBoletasJornadaNoFormal = async (idJornadaElectoral) => {
     return { ok: false };
   }
 };
+
 
 export const getBoletaData = async (idTicket) => {
   try {
@@ -160,7 +209,7 @@ export const getBoletaData = async (idTicket) => {
         apellidoPCandidato: objeto.candidatoModel.apellidoPCandidato,
         apellidoMCandidato: objeto.candidatoModel.apellidoMCandidato,
         nombreCandidato: objeto.candidatoModel.nombreCandidato,
-        fotografia: objeto.candidatoModel.fotoCandidato,
+        fotografiaCandidato: objeto.candidatoModel.fotoCandidato,
         seudonimoCandidato: objeto.candidatoModel.seudonimoCandidato,
         fechaNacimientoCandidato: objeto.candidatoModel.fechaNacimiento,
         generoCandidato: objeto.candidatoModel.genero,
@@ -291,11 +340,17 @@ export const updateBoletaData = async (
   data,
   idJornadaElectoral,
   candidatoandSuplentes,
+  partidos,
   idBoleta
+  // values,
+  // idJornada,
+  // candidatoandSuplentes,
+  // partidos,
+  // idBoleta
 ) => {
   try {
-    console.log("data provider", data);
-    console.log("idJornadaElectoral provider", idJornadaElectoral);
+    // console.log("data provider", data);
+    // console.log("idJornadaElectoral provider", idJornadaElectoral);
     console.log("candidatoandSuplentes provider", candidatoandSuplentes);
     console.log("partidos provider", partidos);
     console.log("idBoleta provider", idBoleta);
@@ -308,15 +363,22 @@ export const updateBoletaData = async (
       primerFirmanteCargo: data.cargoPrimerFirmante,
       segundoFirmanteNombre: data.segundoFirmante,
       segundoFirmanteCargo: data.cargoSegundoFirmante,
+      modalidadVotacionModel: {
+        idModalidadVotacion: 1,
+      },
       jornadaModel: {
         idJornada: idJornadaElectoral,
       },
     };
+
+    // console.log("boletaInformacion", boletaInformacion);
     const { data: data1 } = await jornadasAPI.put(
       "jornada/electoral/estructuraboleta/" + idBoleta,
       boletaInformacion
     );
 
+
+    console.log("data1 info de la boleta", data1);
     // Candidato
     candidatoandSuplentes.forEach(async (candidato) => {
       const { data: candidateRespData } = await jornadasAPI.put(
@@ -364,10 +426,17 @@ export const updateBoletaData = async (
           siglas: partido.siglasParty,
           emblema: partido.emblemParty,
           logo: partido.fotografiaParty,
+          // fechaCreacion:"2020-07-04T20:38:38.604+00:00",
           status: partido.statusParty,
           estructuraBoletaModel: {
             idEstructuraBoleta: idBoleta,
           },
+        //   candidatoModel:{
+        //     "idCandidato": 3
+        // },
+        // coalicionModel:{
+        //     "claveCoalicion": 2
+        // }
         }
       );
     });
@@ -556,7 +625,7 @@ export const getJornadaNoFormalVotos = async (idBoleta, id) => {
 
     let dataChart = [];
 
-    if (boleta.boletaCandidatos.modalidad.modalidad === "PLANILLA") {
+    if (boleta?.boletaCandidatos?.modalidad?.modalidad === "PLANILLA") {
       dataChart = boleta.representanteResultado.map((paquete) => {
         const planilla = boleta.boletaCandidatos.candidatosAsociaciones.find(
           (cands) => cands.idCombinacion === paquete.id
@@ -670,7 +739,7 @@ export const getJornadaNoFormalVotosInicio = async (idBoleta, id) => {
 
     let dataChart = [];
 
-    if (boleta.boletaCandidatos.modalidad.modalidad === "PLANILLA") {
+    if (boleta?.boletaCandidatos?.modalidad?.modalidad === "PLANILLA") {
       console.log("ENRTRA AQUI EN PLANILLA");
       dataChart = boleta.representanteResultado.map((paquete) => {
         console.log("paso 1", boleta.boletaCandidatos);
@@ -938,6 +1007,7 @@ export const getJornadaRespuestasConsultasInicio = async (idPapeleta, id) => {
     if (papeleta === undefined) {
       console.log("entr a undefined");
     } else if (papeleta.pregunta.subtipo === "2respuestas") {
+      console.log("entra subtipo 2respuestas");
       dataChart = [
         {
           id: 0,
@@ -1064,6 +1134,8 @@ export const getJornadaRespuestasConsultasInicio = async (idPapeleta, id) => {
       participacion: { cantidadVotaron: 0, totalEmpadronados: 1 },
       configDates: data.configuracion,
     };
+
+    console.log("dataFinal que se envia", dataFinal);
 
     // data.resultados = dataChart;
 

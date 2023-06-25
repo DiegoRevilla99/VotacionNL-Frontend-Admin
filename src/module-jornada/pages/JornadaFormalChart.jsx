@@ -178,15 +178,59 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
   };
 
   if (
-    chartData.resultados.length === 0 ||
-    !chartData.resultados ||
-    chartData.boleta === null ||
-    chartData.boleta === undefined ||
-    chartData.configDates === null ||
-    chartData.configDates === undefined
+    (chartData.configDates !== undefined || chartData.configDates !== null) &&
+    (chartData.resultados.length === 0 ||
+      !chartData.resultados ||
+      chartData.boleta === null ||
+      chartData.boleta === undefined)
   )
-    return <>Reporte no disponible</>;
-  else
+    return (
+      <Box>
+        {tipoReporte === "reporteInicialHTML" ? (
+          <Typography variant="h6" color="initial">
+            Reporte no disponible
+            {/* Reporte no disponible hasta el{" "} */}
+            {/* {dayjs(chartData?.configDates?.inicioRecepVoto).format(
+              "DD [de] MMMM [de] YYYY [a las] HH[:]mm [horas]"
+            )} */}
+          </Typography>
+        ) : (
+          <Typography variant="h6" color="initial">
+            Reporte no disponible
+            {/* Reporte no disponible hasta el{" "} */}
+            {/* {dayjs(chartData?.configDates?.finRecepVoto).format(
+              "DD [de] MMMM [de] YYYY [a las] HH[:]mm [horas]"
+            )} */}
+          </Typography>
+        )}
+      </Box>
+    );
+  else {
+    if (
+      new Date(chartData?.configDates?.finRecepVoto) > new Date() &&
+      tipoReporte === "reporteFinalHTML"
+    )
+      return (
+        <Typography variant="h6" color="initial">
+          Reporte final no disponible hasta el{" "}
+          {dayjs(chartData?.configDates?.finRecepVoto).format(
+            "DD [de] MMMM [de] YYYY [a las] HH[:]mm [horas]"
+          )}
+        </Typography>
+      );
+
+    if (
+      new Date(chartData?.configDates?.inicioRecepVoto) > new Date() &&
+      tipoReporte === "reporteInicialHTML"
+    )
+      return (
+        <Typography variant="h6" color="initial">
+          Reporte inicial no disponible hasta el{" "}
+          {dayjs(chartData?.configDates?.inicioRecepVoto).format(
+            "DD [de] MMMM [de] YYYY [a las] HH[:]mm [horas]"
+          )}
+        </Typography>
+      );
     return (
       <>
         <Grid container spacing={2} id="ejemplo23">
@@ -654,4 +698,5 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
         {/* <ReporteInicialHTML /> */}
       </>
     );
+  }
 };

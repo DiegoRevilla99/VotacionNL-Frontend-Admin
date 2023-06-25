@@ -18,6 +18,7 @@ import { useConsultaCiudadanaStore } from "../../module-preparacion/hooks/useCon
 import { onSetConsultaSelected } from "../../store/module-preparacion/consulta-ciudadana/consultaCiudadanaSlice";
 import {
   onGetConsultasCiudadanas,
+  onGetConsultasCiudadanasJornada,
   onGetPapeletasParaJornada,
 } from "../../store/module-preparacion/consulta-ciudadana/thunks";
 import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
@@ -55,7 +56,7 @@ export const VerConsultasCiudadanas = () => {
   ];
 
   useEffect(() => {
-    if (consultasData.length === 0) dispatch(onGetConsultasCiudadanas());
+    if (consultasData.length === 0) dispatch(onGetConsultasCiudadanasJornada());
   }, []);
 
   const handleWatch = (id, titulo) => {

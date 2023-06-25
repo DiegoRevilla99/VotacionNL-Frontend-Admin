@@ -8,6 +8,7 @@ export const SliceJornada = createSlice({
     successMessage: "",
     contador: 0,
     partidos: [],
+    boletaStatusAll: [],
     partidoSelected: {},
     candidatoandSuplentes: [],
     candidatoandSuplenteSelected: {
@@ -174,7 +175,7 @@ export const SliceJornada = createSlice({
           state.candidatoandSuplentes.push({ ...candidato, ...suplente });
         });
 
-        console.log("CANDIDATOS CON SUPLENTES en SLICE", state.candidatoandSuplentes);
+        // console.log("CANDIDATOS CON SUPLENTES en SLICE", state.candidatoandSuplentes);
       }
     },
 
@@ -272,7 +273,15 @@ export const SliceJornada = createSlice({
       // });
     },
     onEditCandidatoAndSuplente: (state, { payload }) => {
-      state.candidatoandSuplenteSelected = state.candidatoandSuplentes[0];
+      console.log("payload edit", payload);
+      console.log("state edit", state);
+      console.log("candidatoandSuplentessss", state.candidatoandSuplentes);
+      
+      const candidato = state.candidatoandSuplentes.find((item) => 
+      (item.id === payload)
+      );
+      state.candidatoandSuplenteSelected = candidato;
+
     },
     onUpdateCandidato: (state, { payload }) => {
       const candidato = state.candidatos.find(
@@ -286,6 +295,7 @@ export const SliceJornada = createSlice({
       candidato.seudonimoCandidato = payload?.seudonimoCandidate;
       candidato.fechaNacimientoCandidato = payload?.fechaNacimientoCandidate;
       candidato.generoCandidato = payload?.generoCandidate;
+      console.log("candidato", candidato);
     },
     onUpdateSuplente: (state, { payload }) => {
       const suplente = state.suplentes.find(
@@ -375,6 +385,9 @@ export const SliceJornada = createSlice({
 		},
 		onFillJornadasData: (state, { payload }) => {
 			state.jornadasData = payload || [];
+		},
+		onFillboletaStatusAll: (state, { payload }) => {
+			state.boletaStatusAll = payload || [];
 		},
 		onAddJornadas: (state, { payload }) => {
 			state.jornadasData.push(payload);
@@ -488,6 +501,7 @@ export const {
   onSuccessOperation,
   onErrorOperation,
   onOffOperation,
+  onFillboletaStatusAll,
   onSetJornadasVotosData,
   onDeleteJornadaDataCustom,
   onDeleteSesionesActivas,

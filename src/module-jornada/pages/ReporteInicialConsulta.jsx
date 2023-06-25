@@ -113,11 +113,8 @@ export const ReporteInicialConsulta = () => {
                   </Box>
                 ) : papeleta === null ? (
                   <></>
-                ) : jornadaVotosData.length !== 0 ? (
-                  <ConsultaChart chartData={jornadaVotosData} tipoReporte="reporteInicialHTML" />
                 ) : (
-                  // <></>
-                  <></>
+                  <ConsultaChart chartData={jornadaVotosData} tipoReporte="reporteInicialHTML" />
                 )
               }
             />

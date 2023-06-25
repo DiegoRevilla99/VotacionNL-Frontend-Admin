@@ -4,15 +4,20 @@ import {
   deleteBoleta,
   deleteJornada,
   getBoletaData,
+  getBoletasAllJornada,
   getBoletasJornada,
   getBoletasJornadaNoFormal,
   getJornadaNoFormalVotos,
   getJornadaNoFormalVotosInicio,
   getJornadaRespuestasConsultas,
   getJornadaRespuestasConsultasInicio,
+  getJornadaVotos,
+  getJornadaVotosInicio,
   getJornadas,
   getJornadasFormales,
+  getJornadasFormalesJornada,
   getJornadasNoFormales,
+  getJornadasNoFormalesJornada,
   getJornadaVotos,
   getJornadaVotosInicio,
   getSesionesActivas,
@@ -38,6 +43,7 @@ import {
   onErrorOperation,
   onFillBoletas,
   onFillJornadasData,
+  onFillboletaStatusAll,
   onSetBoletasSelectedNull,
   onSetCandidatoAndSuplenteNull,
   onSetCandidatoAndSuplenteSelectedNull,
@@ -101,10 +107,29 @@ export const onGetjornadas = () => {
   };
 };
 
-export const onGetjornadasNoFormales = () => {
+export const onGetjornadasJornada = () => {
   return async (dispatch) => {
     dispatch(onCheckingOperation());
-    const { ok, data, errorMessage } = await getJornadasNoFormales(); // PROVIDER
+    const { ok, data, errorMessage } = await getJornadasFormalesJornada(); // PROVIDER
+    if (ok) {
+      console.log("DATA DE JORNADAS en el thunks", data);
+      dispatch(onSuccessOperation());
+      dispatch(onFillJornadasData(data)); // SLICE
+    } else {
+      dispatch(onErrorOperation());
+      dispatch(
+        onToastErrorOperation({
+          errorMessage: errorMessage || "No se pudo obtener las jornadas",
+        })
+      );
+    }
+  };
+};
+
+export const onGetjornadasNoFormalesJornada = () => {
+  return async (dispatch) => {
+    dispatch(onCheckingOperation());
+    const { ok, data, errorMessage } = await getJornadasNoFormalesJornada(); // PROVIDER
     if (ok) {
       dispatch(onSuccessOperation());
       dispatch(onFillJornadasData(data)); // SLICE
@@ -172,7 +197,20 @@ export const onGetBoletas = (idJornada, navigate = () => {}) => {
     }
   };
 };
-
+export const onGetBoletasAll = (navigate = () => {}) => {
+  return async (dispatch) => {
+    dispatch(onCheckingOperation());
+    const { ok, data } = await getBoletasAllJornada(); // PROVIDER
+    // console.log("info de la peticion",data);
+    if (ok) {
+      dispatch(onFillboletaStatusAll(data)); // SLICE
+      // return data;
+    } else {
+      dispatch(onErrorOperation());
+      dispatch(onToastErrorOperation({ errorMessage: "No se pudo obtener las boletas" }));
+    }
+  };
+};
 export const onGetBoletasParaJornada = (idJornada, title, navigate = () => {}) => {
   return async (dispatch) => {
     dispatch(onCheckingOperation());
@@ -278,8 +316,8 @@ export const onUpdateBoletaData = (
   navigate = () => {}
 ) => {
   return async (dispatch) => {
-    console.log("VALUES THUNKS", values);
-    console.log("idJornada THUNKS", idJornada);
+    // console.log("VALUES THUNKS", values); // YA QUEDO
+    // console.log("idJornada THUNKS", idJornada); /// si llega
     console.log("candidatoandSuplentes THUNKS", candidatoandSuplentes);
     console.log("idBoleta THUNKS", idBoleta);
     dispatch(onCheckingOperation());
@@ -296,7 +334,9 @@ export const onUpdateBoletaData = (
       navigate();
     } else {
       dispatch(onErrorOperation());
-      // dispatch(onToastErrorOperation({ errorMessage: errorMessage || "No se pudo actualizar la boleta" }));
+      dispatch(
+        onToastErrorOperation({ errorMessage: errorMessage || "No se pudo actualizar la boleta" })
+      );
     }
   };
 };
