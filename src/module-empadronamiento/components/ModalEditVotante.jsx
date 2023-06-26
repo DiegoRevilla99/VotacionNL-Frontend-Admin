@@ -117,8 +117,6 @@ export const ModalEditVotante = ({
   };
 
   const finalizar = (valores) => {
-    console.log("Ediatndo Votante");
-
     const contac = valores.contacto;
     let newData = { ...votanteSelected };
     newData.correoVotante = contac.correoVotante;
@@ -140,7 +138,6 @@ export const ModalEditVotante = ({
   };
 
   const handleBack = () => {
-    console.log("en atras");
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -168,7 +165,6 @@ export const ModalEditVotante = ({
   };
 
   const AddVotanteNext = () => {
-    console.log("actualizando info");
     dispatch(getVotantesbyJornada(id));
     abrirCerrarModal();
 

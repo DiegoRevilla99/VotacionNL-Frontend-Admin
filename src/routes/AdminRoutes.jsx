@@ -8,6 +8,7 @@ import { JornadaRoutes } from "../module-jornada/routes/JornadaRoutes";
 import { PreparacionRoutes } from "../module-preparacion/routes/PreparacionRoutes";
 import { SidebarCustom } from "../ui/components/SidebarCustom";
 import { Topbar } from "../ui/components/Topbar";
+import { InicioInfo } from "../InicioInfo";
 
 export const AdminRoutes = () => {
   const {
@@ -76,15 +77,23 @@ export const AdminRoutes = () => {
           }}
         >
           <Topbar selected={selected} />
+
           <Routes>
             {/* EMPADRONAMIENTO*/}
-            <Route path="/empadronamiento/*" element={<EmpadronamientoRoutes />}></Route>
+            <Route
+              path="/empadronamiento/*"
+              element={<EmpadronamientoRoutes />}
+            ></Route>
 
             {/*JORNADA */}
             <Route path="/jornada/*" element={<JornadaRoutes />}></Route>
 
             {/* PREPARACION */}
-            <Route path="/preparacion/*" element={<PreparacionRoutes />}></Route>
+            <Route
+              path="/preparacion/*"
+              element={<PreparacionRoutes />}
+            ></Route>
+            <Route path="/home" element={<InicioInfo />}></Route>
             {/* <Route path="/*" element={<Navigate to="/home" />} /> */}
             {/* CONFIGURACION */}
             {/* <Route path="/configuracion/*" element={< CONFIG />}></Route> */}
