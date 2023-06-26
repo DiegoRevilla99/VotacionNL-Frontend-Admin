@@ -73,7 +73,7 @@ export const ReporteInicialConsultaHTML = ({ jornadaVotosData = { resultados: []
                 {jornadaVotosData.jornadaModel.entidad}
               </Typography>
               <Typography variant="body1" color="initial" align="center" pt={2} fontFamily="times">
-                Reporte inicial de consulta ciudadana
+                Reporte final de consulta ciudadana
               </Typography>
             </Box>
           </Box>
@@ -87,10 +87,10 @@ export const ReporteInicialConsultaHTML = ({ jornadaVotosData = { resultados: []
                   fontFamily="times"
                   fontWeight="bold"
                 >
-                  Fecha de inicio de votación
+                  Fecha de fin de la votación
                 </Typography>
                 <Typography variant="body2" color="initial" fontFamily="times" align="center">
-                  {dayjs(jornadaVotosData.configDates.inicioRecepVoto).format("DD[/]MM[/]YYYY")}
+                  {dayjs(jornadaVotosData.configDates.finRecepVoto).format("DD[/]MM[/]YYYY HH:mm")}
                 </Typography>
               </Grid>
               <Grid item xs={6}>

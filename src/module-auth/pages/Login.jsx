@@ -1,10 +1,6 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import {
-  Alert, Grid, IconButton,
-  InputAdornment, TextField,
-  Typography
-} from "@mui/material";
+import { Alert, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Box } from "@mui/system";
 import { Formik } from "formik";
@@ -64,26 +60,34 @@ export const Login = () => {
   if (!isScreenCompatible) {
     console.log("NO ES COMPATIBLE");
     return (
-      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%">
-      <Box display="flex" flexDirection="column" alignItems="center" maxWidth="300px">
-        <Typography variant="body1" color="error" textAlign="center" mb={2}>
-          NO PUEDE USAR EL SISTEMA EN ESTE TIPO DE PANTALLAS. POR FAVOR, INTÉNTELO EN OTRO DISPOSITIVO.
-        </Typography>
-        <Box width="100%" display="flex" justifyContent="center">
-          <img
-            src="https://media.discordapp.net/attachments/1071287057491693608/1121590202675249222/asdasd.png?width=878&height=480"
-            alt="Imagen de advertencia"
-            style={{
-              width: "100%",
-              height: "auto",
-              objectFit: "contain",
-            }}
-          />
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        height="100%"
+      >
+        <Box display="flex" flexDirection="column" alignItems="center" maxWidth="300px">
+          <Typography variant="body1" color="error" textAlign="center" mb={2}>
+            NO PUEDE USAR EL SISTEMA EN ESTE TIPO DE PANTALLAS. POR FAVOR, INTÉNTELO EN OTRO
+            DISPOSITIVO.
+          </Typography>
+          <Box width="100%" display="flex" justifyContent="center">
+            <img
+              src="https://media.discordapp.net/attachments/1071287057491693608/1121590202675249222/asdasd.png?width=878&height=480"
+              alt="Imagen de advertencia"
+              style={{
+                width: "100%",
+                height: "auto",
+                objectFit: "contain",
+              }}
+            />
+          </Box>
         </Box>
       </Box>
-    </Box>
     );
   }
+
   return (
     <Box
       sx={{
@@ -171,7 +175,7 @@ export const Login = () => {
                     onSubmit(values);
                   }}
                 >
-                  {({ handleChange, values, errors, touched, handleSubmit }) => (
+                  {({ handleChange, values, errors, touched, handleSubmit, setFieldValue }) => (
                     <form onSubmit={handleSubmit}>
                       <TextField
                         name="curp"
@@ -180,7 +184,9 @@ export const Login = () => {
                         id="curp"
                         label="CURP"
                         variant="standard"
-                        onChange={handleChange}
+                        onChange={(event) =>
+                          setFieldValue("curp", `${event.target.value.toUpperCase()}`)
+                        }
                         value={values.curp}
                         error={touched.curp && Boolean(errors.curp)}
                         helperText={touched.curp && errors.curp}
@@ -216,10 +222,10 @@ export const Login = () => {
                           ),
                         }}
                       />
-
+                      {/* 
                       <Box textAlign={"center"} mb={"2rem"}>
                         <Link to="/auth/recuperacion">¿Olvidaste tu contraseña?</Link>
-                      </Box>
+                      </Box> */}
 
                       <LoadingButton
                         type="submit"

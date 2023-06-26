@@ -115,7 +115,7 @@ export const getBoletasJornada = async (idJornadaElectoral) => {
     const { data } = await jornadasAPI.get(
       "jornada/electoral/jornada/" + idJornadaElectoral + "/estructurasboletas"
     );
-      // console.log("DATA BOLETASSSS", data);
+    // console.log("DATA BOLETASSSS", data);
     return { ok: true, data: data.data };
   } catch (error) {
     return { ok: false };
@@ -125,10 +125,8 @@ export const getBoletasJornada = async (idJornadaElectoral) => {
 export const getBoletasAllJornada = async () => {
   try {
     // **FETCH
-    const { data } = await jornadasAPI.get(
-      "jornada/electoral/estructurasboletas"
-    );
-      // console.log("DATA BOLETASSSS", data);
+    const { data } = await jornadasAPI.get("jornada/electoral/estructurasboletas");
+    // console.log("DATA BOLETASSSS", data);
     return { ok: true, data: data.data };
   } catch (error) {
     return { ok: false };
@@ -149,7 +147,6 @@ export const getBoletasJornadaNoFormal = async (idJornadaElectoral) => {
     return { ok: false };
   }
 };
-
 
 export const getBoletaData = async (idTicket) => {
   try {
@@ -377,7 +374,6 @@ export const updateBoletaData = async (
       boletaInformacion
     );
 
-
     console.log("data1 info de la boleta", data1);
     // Candidato
     candidatoandSuplentes.forEach(async (candidato) => {
@@ -431,12 +427,12 @@ export const updateBoletaData = async (
           estructuraBoletaModel: {
             idEstructuraBoleta: idBoleta,
           },
-        //   candidatoModel:{
-        //     "idCandidato": 3
-        // },
-        // coalicionModel:{
-        //     "claveCoalicion": 2
-        // }
+          //   candidatoModel:{
+          //     "idCandidato": 3
+          // },
+          // coalicionModel:{
+          //     "claveCoalicion": 2
+          // }
         }
       );
     });
@@ -599,7 +595,7 @@ export const getJornadaVotosInicio = async (idBoleta, idJornada) => {
         cantidadVotaron: 0,
         porcentajeAbstencion: 100,
         porcentajeParticipacion: 0,
-        totalEmpadronados: 1,
+        totalEmpadronados: data.participacion.totalEmpadronados,
       },
       configDates: data.config,
     };
@@ -826,7 +822,7 @@ export const getJornadaNoFormalVotosInicio = async (idBoleta, id) => {
         cantidadVotaron: 0,
         porcentajeAbstencion: 100,
         porcentajeParticipacion: 0,
-        totalEmpadronados: 1,
+        totalEmpadronados: data.participacion.totalEmpadronados,
       },
       configDates: data.configuracion,
     };
@@ -1131,7 +1127,13 @@ export const getJornadaRespuestasConsultasInicio = async (idPapeleta, id) => {
       jornadaModel: data.jornadaModel,
       papeleta: papeleta || null,
       resultados: dataChart,
-      participacion: { cantidadVotaron: 0, totalEmpadronados: 1 },
+      participacion: {
+        cantidadNoVotaron: 1,
+        cantidadVotaron: 0,
+        porcentajeAbstencion: 100,
+        porcentajeParticipacion: 0,
+        totalEmpadronados: data.participacion.totalEmpadronados,
+      },
       configDates: data.configuracion,
     };
 

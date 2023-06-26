@@ -294,16 +294,27 @@ export const JornadaFormalChart = ({ chartData = { resultados: [] }, tipoReporte
               alignContent="center"
               alignItems="center"
             >
-              <Typography variant="body1" color="initial" align="center">
-                Participación ciudadana
-              </Typography>
-              <Typography variant="body1" color="initial" fontWeight="bold" align="center">
-                {(
-                  (chartData.participacion.cantidadVotaron * 100) /
-                  chartData.participacion.totalEmpadronados
-                ).toFixed(2)}
-                %
-              </Typography>
+              <Box>
+                <Typography variant="body1" color="initial" align="center">
+                  Participación ciudadana
+                </Typography>
+                <Typography variant="body1" color="initial" fontWeight="bold" align="center">
+                  {(
+                    (chartData.participacion.cantidadVotaron * 100) /
+                    chartData.participacion.totalEmpadronados
+                  ).toFixed(2)}
+                  %
+                </Typography>
+              </Box>
+              <Box pt={2}>
+                <Typography variant="body1" color="initial" align="center">
+                  Boletas capturadas:
+                </Typography>
+                <Typography variant="body1" color="initial" align="center" fontWeight="bold">
+                  {chartData.participacion.cantidadVotaron} de{" "}
+                  {chartData.participacion.totalEmpadronados}
+                </Typography>
+              </Box>
             </Grid>
             <Grid
               item

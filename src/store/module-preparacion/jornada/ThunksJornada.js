@@ -16,8 +16,6 @@ import {
   getJornadasFormalesJornada,
   getJornadasNoFormales,
   getJornadasNoFormalesJornada,
-  getJornadaVotos,
-  getJornadaVotosInicio,
   getSesionesActivas,
   postImage,
   updateBoletaData,

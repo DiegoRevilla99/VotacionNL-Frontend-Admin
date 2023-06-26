@@ -113,10 +113,10 @@ export const ReporteFinalFormalHTML = ({
                   fontFamily="times"
                   fontWeight="bold"
                 >
-                  Fecha de inicio de votación
+                  Fecha de fin de la votación
                 </Typography>
                 <Typography variant="body2" color="initial" fontFamily="times" align="center">
-                  {dayjs(jornadaVotosData.configDates.inicioRecepVoto).format("DD[/]MM[/]YYYY")}
+                  {dayjs(jornadaVotosData.configDates.finRecepVoto).format("DD[/]MM[/]YYYY HH:mm")}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
