@@ -463,21 +463,12 @@ export const updateBoletaData = async (
           estructuraBoletaModel: {
             idEstructuraBoleta: idBoleta,
           },
-<<<<<<< HEAD
           candidatoModel:{
             idCandidato: partido.candidatosPartido.id
         },
         // coalicionModel:{
         //     claveCoalicion: 2
         // }
-=======
-          //   candidatoModel:{
-          //     "idCandidato": 3
-          // },
-          // coalicionModel:{
-          //     "claveCoalicion": 2
-          // }
->>>>>>> c6cdca039c6695081e636559a03bfc6204637b10
         }
       );
       console.log("Data de respuesta", partidoRespData);
