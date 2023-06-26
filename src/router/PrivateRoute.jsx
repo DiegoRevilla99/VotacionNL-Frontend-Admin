@@ -20,7 +20,7 @@ export const PrivateRoute = ({ children }) => {
   // console.log(location);
   sessionStorage.setItem("Location", location.pathname);
 
-  return status !== "notLogged" && status !== "checking" ? (
+  return (status === "logged") | (status === "checking") ? (
     children
   ) : (
     <Navigate to="/auth/login"></Navigate>
