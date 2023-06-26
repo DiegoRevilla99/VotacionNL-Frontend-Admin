@@ -83,7 +83,9 @@ export const ModalInfo = ({ isOpen = false, abrirCerrarModal = () => {} }) => {
     abrirCerrarModal();
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log("Ver foto: ", votanteSelected);
+  }, [votanteSelected]);
 
   useEffect(() => {}, [isOpen]);
 
@@ -125,35 +127,46 @@ export const ModalInfo = ({ isOpen = false, abrirCerrarModal = () => {} }) => {
             </Box>
 
             <hr className={styles.hr} />
-            <Box display="flex" flexDirection="row">
-              <Typography sx={{ fontWeight: "bold", mr: 1 }}>CURP:</Typography>
-              <Typography>{votanteSelected.curp}</Typography>
-            </Box>
-            <Box display="flex" flexDirection="row">
-              <Typography sx={{ fontWeight: "bold", mr: 1 }}>
-                Nombre:{" "}
-              </Typography>
-              <Typography>
-                {votanteSelected.nombreVotante +
-                  " " +
-                  votanteSelected.apellidoPVotante +
-                  " " +
-                  votanteSelected.apellidoMVotante}
-              </Typography>
-            </Box>
-            <Box display="flex" flexDirection="row">
-              <Typography sx={{ fontWeight: "bold", mr: 1 }}>
-                Fecha nacimiento:
-              </Typography>
-              <Typography>
-                {transformDate(votanteSelected.fechaNacimiento)}
-              </Typography>
-            </Box>
-            <Box display="flex" flexDirection="row">
-              <Typography sx={{ fontWeight: "bold", mr: 1 }}>
-                Genero:
-              </Typography>
-              <Typography>{votanteSelected.genero}</Typography>
+            <Box display={"flex"} justifyContent={"space-between"}>
+              <Box>
+                <Box display="flex" flexDirection="row">
+                  <Typography sx={{ fontWeight: "bold", mr: 1 }}>
+                    CURP:
+                  </Typography>
+                  <Typography>{votanteSelected.curp}</Typography>
+                </Box>
+                <Box display="flex" flexDirection="row">
+                  <Typography sx={{ fontWeight: "bold", mr: 1 }}>
+                    Nombre:{" "}
+                  </Typography>
+                  <Typography>
+                    {votanteSelected.nombreVotante +
+                      " " +
+                      votanteSelected.apellidoPVotante +
+                      " " +
+                      votanteSelected.apellidoMVotante}
+                  </Typography>
+                </Box>
+                <Box display="flex" flexDirection="row">
+                  <Typography sx={{ fontWeight: "bold", mr: 1 }}>
+                    Fecha nacimiento:
+                  </Typography>
+                  <Typography>
+                    {transformDate(votanteSelected.fechaNacimiento)}
+                  </Typography>
+                </Box>
+                <Box display="flex" flexDirection="row">
+                  <Typography sx={{ fontWeight: "bold", mr: 1 }}>
+                    Genero:
+                  </Typography>
+                  <Typography>{votanteSelected.genero}</Typography>
+                </Box>
+              </Box>
+              <img
+                style={{ marginRight: "50px" }}
+                width={"100px"}
+                src={votanteSelected?.foto ? votanteSelected?.foto : ""}
+              />
             </Box>
             <Box display="flex" sx={{ mt: 4, mb: 1 }}>
               <PersonPinCircleIcon />
@@ -161,7 +174,6 @@ export const ModalInfo = ({ isOpen = false, abrirCerrarModal = () => {} }) => {
                 DIRECCIÓN
               </Typography>
             </Box>
-
             <hr className={styles.hr} />
             <Box display="flex" flexDirection="row">
               <Typography sx={{ fontWeight: "bold", mr: 1 }}>
