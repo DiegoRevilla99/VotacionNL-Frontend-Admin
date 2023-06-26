@@ -12,5 +12,9 @@ export const PublicRoute = ({ children }) => {
   let ruta = sessionStorage.getItem("Location");
   ruta = ruta ? ruta : "/";
   console.log("ruta::" + ruta);
-  return status === "notLogged" ? children : <Navigate to={ruta}></Navigate>;
+  return (status === "notLogged") | (status === "checking") ? (
+    children
+  ) : (
+    <Navigate to={ruta}></Navigate>
+  );
 };
