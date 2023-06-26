@@ -115,7 +115,9 @@ export const ReporteInicialHTML = ({
                   Fecha de inicio de votación
                 </Typography>
                 <Typography variant="body2" color="initial" fontFamily="times" align="center">
-                  {dayjs(jornadaVotosData.configDates.inicioRecepVoto).format("DD[/]MM[/]YYYY")}
+                  {dayjs(jornadaVotosData.configDates.inicioRecepVoto).format(
+                    "DD[/]MM[/]YYYY HH:mm"
+                  )}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -540,7 +542,7 @@ export const ReporteInicialHTML = ({
                     align="center"
                     my={1}
                   >
-                    100.00%
+                    0.00%
                   </Typography>
                 </Box>
               </Grid>
