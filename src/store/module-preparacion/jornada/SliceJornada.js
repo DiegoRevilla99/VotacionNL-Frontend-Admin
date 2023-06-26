@@ -83,7 +83,7 @@ export const SliceJornada = createSlice({
         payload.forEach((partido) => {
           state.partidos.push({
             id: state.contador,
-            // clavePartido: partido.clavePartido,
+            clavePartido: partido.clavePartido,
             nameParty: partido.nameParty,
             siglasParty: partido.siglasParty,
             emblemParty: partido.emblemParty,
@@ -96,7 +96,7 @@ export const SliceJornada = createSlice({
       } else {
         state.partidos.push({
           id: state.contador,
-          // clavePartido: payload?.clavePartido,
+          clavePartido: payload?.clavePartido,
           nameParty: payload?.nameParty,
           siglasParty: payload?.siglasParty,
           emblemParty: payload?.emblemParty,
@@ -262,20 +262,13 @@ export const SliceJornada = createSlice({
     },
     onEditPartido: (state, { payload }) => {
       console.log("payload aprtidoooooooo", payload);
-      state.partidoSelected = state.partidos[0];
-      // const index = state.partidos.findIndex(partido => partido.id === state.partidoSelected.id);
-      // state.partidos.splice(index, 1, {
-      //   id: payload.id,
-      //   nombrePartido: payload.nombrePartido,
-      //   siglasPartido: payload.siglasPartido,
-      //   emblemaPartido: payload.emblemaPartido,
-      //   fotografiaPartido: payload.fotografiaPartido
-      // });
+      const partidito = state.partidos.find((partido) => partido.id === payload);
+      state.partidoSelected = partidito;
     },
     onEditCandidatoAndSuplente: (state, { payload }) => {
-      console.log("payload edit", payload);
-      console.log("state edit", state);
-      console.log("candidatoandSuplentessss", state.candidatoandSuplentes);
+      // console.log("payload edit", payload);
+      // console.log("state edit", state);
+      // console.log("candidatoandSuplentessss", state.candidatoandSuplentes);
       
       const candidato = state.candidatoandSuplentes.find((item) => 
       (item.id === payload)
@@ -315,7 +308,7 @@ export const SliceJornada = createSlice({
       console.log("actualizando", payload);
       const partido = state.partidos.find((partido) => partido.id === state.partidoSelected.id);
       partido.id = payload?.id;
-      // partido.clavePartido = payload?.claveParty;
+      partido.clavePartido = payload?.claveParty;
       partido.nameParty = payload?.namePartyy;
       partido.siglasParty = payload?.siglasPartyy;
       partido.emblemParty = payload?.emblemaPartyy;

@@ -113,8 +113,8 @@ export const getBoletaData = async (idBoleta) => {
     const { data: data3 } = await jornadasNoFormalesAPI.get(
       `jornada/no_formal/estructuras/boleta/${idBoleta}/modalidad`
     );
-    console.log("Data boleta: ", data);
-    console.log("Data boleta y candidato: ", data1);
+    // console.log("Data boleta: ", data);
+    // console.log("Data boleta y candidato: ", data1);
     // // console.log("Data models todos los candidatos: ", data1.candidatoModels);
     console.log("Data asociacion: ", data2);
     // console.log("Data modalidad: ", data3.modalidadVotacionModel.idModalidadVotacion);
@@ -163,7 +163,7 @@ export const getBoletaData = async (idBoleta) => {
         };
       });
       return {
-        id: "",
+        id: asociacion.asociacionModel.idAsociacion,
         nombreAsociacion: asociacion.asociacionModel.nombreAsociacion,
         emblema: asociacion.asociacionModel.emblema,
         logo: asociacion.asociacionModel.logo,
@@ -337,16 +337,10 @@ export const updateBoletaData = async (
   data,
   idJornadaElectoral,
   candidatos,
-  asociaciones,
   idBoleta
 ) => {
   try {
     console.log("data provider", data);
-    console.log("idJornadaElectoral provider", idJornadaElectoral);
-    console.log("candidatos provider", candidatos);
-    console.log("asociaciones provider", asociaciones);
-    // console.log("idBoleta provider",idBoleta.listBoletas[0].idEstructuraBoleta);
-    console.log("idBoleta provider", idBoleta);
     const { data: data1 } = await jornadasNoFormalesAPI.put(
       "jornada/no_formal/estructura_boleta/" + idBoleta,
       {
@@ -366,49 +360,97 @@ export const updateBoletaData = async (
         },
       }
     );
-    // console.log("Data CREATE BOLETA de respuesta", data1);
-    // console.log("Data candidato", candidatos[0].id);
-    // console.log("Data candidato", candidatos[0]);
+
     // Candidato
-    const candidatoDatos = {
-      claveCandidato: candidatos[0].curp,
-      apellidoPCandidato: candidatos[0].apellidoPCandidato,
-      apellidoMCandidato: candidatos[0].apellidoMCandidato,
-      nombreCandidato: candidatos[0].nombreCandidato,
-      fotoCandidato: candidatos[0].fotografiaCandidato,
-      seudonimoCandidato: candidatos[0].seudonimoCandidato,
-      fechaNacimiento: candidatos[0].fechaNacimientoCandidato,
-      // fechaNacimiento: "2019-07-04T20:38:38.604+00:00",
-      genero: candidatos[0].generoCandidato,
-    };
+    candidatos.forEach(async (candidato) => {
 
-    const { data: candidateRespData } = await jornadasNoFormalesAPI.put(
-      "jornada/no_formal/candidato/" + candidatos[0].claveCandidato,
-      candidatoDatos
+      const { data: candidateRespData } = await jornadasNoFormalesAPI.put(
+        "jornada/no_formal/candidato/" + candidato.claveCandidato,
+        {
+         claveCandidato: candidato.curp,
+         apellidoPCandidato: candidato.apellidoPCandidato,
+         apellidoMCandidato: candidato.apellidoMCandidato,
+         nombreCandidato: candidato.nombreCandidato,
+         fotoCandidato: candidato.fotografiaCandidato,
+         seudonimoCandidato: candidato.seudonimoCandidato,
+         fechaNacimiento: candidato.fechaNacimientoCandidato,
+         // fechaNacimiento: "2019-07-04T20:38:38.604+00:00",
+         genero: candidato.generoCandidato,
+       }
+      );
+      console.log("Data candidato de respuesta", candidateRespData);
+    });
+    return { ok: true };
+  } catch (error) {
+    return { ok: false };
+  }
+};
+export const updateBoletaAsociacionData = async (
+  data,
+  idJornadaElectoral,
+  candidatos,
+  asociaciones,
+  idBoleta
+) => {
+  try {
+    console.log("data provider", data);
+    console.log("idJornadaElectoral provider", idJornadaElectoral);
+    console.log("candidatos provider", candidatos);
+    console.log("asociaciones provider", asociaciones);
+    // console.log("idBoleta provider",idBoleta.listBoletas[0].idEstructuraBoleta);
+    console.log("idBoleta provider", idBoleta);
+
+    
+    const { data: data1 } = await jornadasNoFormalesAPI.put(
+      "jornada/no_formal/estructura_boleta/" + idBoleta,
+      {
+        encabezadoBoleta: data.encabezado,
+        // modalidadVotacion: data.modalidadVotacion,
+        entidadFederativa: data.entidadFederativa,
+        municipio: data.municipio,
+        primerFirmanteNombre: data.primerFirmante,
+        primerFirmanteCargo: data.cargoPrimerFirmante,
+        segundoFirmanteNombre: data.segundoFirmante,
+        segundoFirmanteCargo: data.cargoSegundoFirmante,
+        modalidadVotacionModel: {
+          idModalidadVotacion: data.modalidadVotacion,
+        },
+        eleccionModel: {
+          idEleccion: idJornadaElectoral,
+        },
+      }
     );
-    // console.log("Data candidato de respuesta", candidateRespData);
 
-    // Asociaciones
-    // let asociacionDatos = {};
-    // if (asociaciones.length) {
-    // 	asociacionDatos = {
-    // 		nombreAsociacion: asociaciones[0].nombreAsociacion,
-    // 		emblema: asociaciones[0].emblema,
-    // 		logo: asociaciones[0].logo,
-    // 	};
-    // } else {
-    // 	asociacionDatos = {
-    // 		nombreAsociacion: "",
-    // 		emblema: "",
-    // 		logo: "",
-    // 	};
-    // }
-    // console.log("Data asociacion", asociaciones[0]);
-    // const { data: asociacionRespData } = await jornadasNoFormalesAPI.put(
-    // 	"jornada/no_formal/asociacion/" + asociaciones[0].id,
-    // 	asociacionDatos
-    // );
-    // console.log("Data asociacion de respuesta", asociacionRespData);
+    candidatos.forEach(async (candidato) => {
+
+      const { data: candidateRespData } = await jornadasNoFormalesAPI.put(
+        "jornada/no_formal/candidato/" + candidato.claveCandidato,
+        {
+         claveCandidato: candidato.curp,
+         apellidoPCandidato: candidato.apellidoPCandidato,
+         apellidoMCandidato: candidato.apellidoMCandidato,
+         nombreCandidato: candidato.nombreCandidato,
+         fotoCandidato: candidato.fotografiaCandidato,
+         seudonimoCandidato: candidato.seudonimoCandidato,
+         fechaNacimiento: candidato.fechaNacimientoCandidato,
+         // fechaNacimiento: "2019-07-04T20:38:38.604+00:00",
+         genero: candidato.generoCandidato,
+       }
+      );
+      console.log("Data candidato de respuesta", candidateRespData);
+    });
+        // Asociaciones
+      asociaciones.forEach(async (asociacion) => {
+          const { data: asociacionRespData } = await jornadasNoFormalesAPI.put(
+            "jornada/no_formal/asociacion/" + asociacion.id,
+            {
+              nombreAsociacion: asociacion.nombreAsociacion,
+              emblema: asociacion.emblema,
+              logo: asociacion.logo,
+            }
+          );
+        console.log("Data asociacion de respuesta", asociacionRespData);
+      });
 
     return { ok: true };
   } catch (error) {

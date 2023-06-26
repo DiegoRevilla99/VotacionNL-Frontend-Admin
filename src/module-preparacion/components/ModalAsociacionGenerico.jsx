@@ -1,3 +1,4 @@
+import { InputAdornment, Link } from "@material-ui/core";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import {
   Box,
@@ -64,6 +65,7 @@ export const ModalAsociacionGenerico = ({
     addAsociacion,
     setAsociacionesSelectedNull,
   } = useJornadaNoFormalStore();
+  console.log("asociacionesSelected", asociacionesSelected);
   const onSubmit = async (values) => {
     // setLogo({ name: "Sin Archivo seleccionado" });
     // console.log(values);
@@ -129,6 +131,7 @@ export const ModalAsociacionGenerico = ({
     return url;
   };
 
+
   return (
     <Modal
       open={statusRegisterAsociacionModal}
@@ -175,6 +178,8 @@ export const ModalAsociacionGenerico = ({
                 setFieldValue,
               }) => {
                 const [candidatosDisponibles, setCandidatosDisponibles] = useState(candidatos);
+
+                // console.log("candidatosDisponibles", candidatosDisponibles);
                 return (
                   <Form onSubmit={handleSubmit}>
                     <Typography variant="h7">
@@ -214,13 +219,31 @@ export const ModalAsociacionGenerico = ({
                       flexDirection="row"
                     >
                       <TextField
-                        fullWidth
-                        label=""
-                        disabled
-                        value={logo.name}
-                        variant="outlined"
-                        size="small"
-                      />
+													fullWidth
+													label=""
+													disabled
+													value={
+														logo && logo.name
+														? logo.name
+														: asociacionesSelected.logo || "Sin Archivo seleccionado"
+													}
+													variant="outlined"
+													size="small"
+													InputProps={{
+														startAdornment: asociacionesSelected.logo &&
+														asociacionesSelected.logo.length > 0 ? (
+															<InputAdornment position="start">
+															<Link
+																href={asociacionesSelected.logo}
+																target="_blank"
+																rel="noopener noreferrer"
+															>
+																Presione aquí para ver el logo -----------------------------------------------------------------
+															</Link>
+															</InputAdornment>
+														) : null,
+													}}
+													/>
                       <IconButton
                         disabled={status === "checking"}
                         color="primary"
@@ -293,7 +316,79 @@ export const ModalAsociacionGenerico = ({
                               mb: 1,
                             }}
                           >
-                            {candidatosDisponibles.map((candidato) => (
+{candidatosDisponibles.map((candidato) => {
+  const isSelected = values.candidatosAsociacion.findIndex(
+    (c) => c.claveCandidato === candidato.claveCandidato
+  ) !== -1;
+
+  return (
+    <Box
+      sx={{
+        boxShadow: isSelected ? 3 : 0,
+        display: "flex",
+        justifyContent: "space-around",
+        alignItems: "center",
+        width: "300px",
+        height: "80px",
+        m: 1,
+        border: "1px solid rgba(0,0,0,0.2)",
+        borderRadius: "8px",
+        background: isSelected ? "#E7C0F9" : "#FFF",
+        transition: "boxShadow, background 0.4s ease-in-out",
+      }}
+    >
+      <Box
+        sx={{
+          borderRadius: "15px",
+          width: "50px",
+          height: "50px",
+          background: "#000",
+          ml: 1,
+        }}
+      >
+        <a href={candidato.fotografiaCandidato}>
+          <img
+            width="60px"
+            height="55px"
+            src={candidato.fotografiaCandidato}
+            alt="fotoCandidato"
+          />
+        </a>
+      </Box>
+      <Box sx={{ p: 2 }}>
+        <Typography sx={{ fontSize: "15px", fontWeight: "bold" }}>
+          {candidato.nombreCandidato}
+        </Typography>
+      </Box>
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={isSelected}
+            onChange={() => {
+              if (isSelected) {
+                setFieldValue(
+                  "candidatosAsociacion",
+                  values.candidatosAsociacion.filter(
+                    (c) => c.claveCandidato !== candidato.claveCandidato
+                  )
+                );
+              } else {
+                setFieldValue("candidatosAsociacion", [
+                  ...values.candidatosAsociacion,
+                  candidato,
+                ]);
+              }
+            }}
+          />
+        }
+      />
+    </Box>
+  );
+})}
+
+
+
+                            {/* {candidatosDisponibles.map((candidato) => (
                               <Box
                                 sx={{
                                   boxShadow:
@@ -373,7 +468,7 @@ export const ModalAsociacionGenerico = ({
                                   }
                                 />
                               </Box>
-                            ))}
+                            ))} */}
                           </Box>
                         </Box>
                         {touched.candidatosAsociacion && (
@@ -417,6 +512,7 @@ export const ModalAsociacionGenerico = ({
                           type="submit"
                           variant="contained"
                           size="large"
+                          disabled={status === "checking"}
                           sx={{
                             boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
                             transition: "all 0.5s ease",

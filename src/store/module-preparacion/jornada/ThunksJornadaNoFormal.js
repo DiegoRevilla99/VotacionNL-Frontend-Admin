@@ -1,7 +1,9 @@
 import {
     createBoleta, createBoletaAsociaciones, createJornada, deleteBoleta, deleteJornada, getBoletaData, getBoletasJornadaNoFormal, getCandidatoBoletaNoFormal, getJornadasNoFormales,
     getModalidades,
-    postImage, updateBoletaData
+    postImage,
+    updateBoletaAsociacionData,
+    updateBoletaData
 } from "../../../providers/Micro-Preparacion/providerJornadaNoFormal";
 import {
     onToastCheckingOperation,
@@ -173,7 +175,7 @@ export const onGetBoletaData = (idBoleta, navigate = () => {}) => {
         dispatch(onCheckingOperation());
         // console.log("IDBOLETA THUNKS: ", idBoleta);
         const {ok, data, dataCandidato, dataAsociacion } = await getBoletaData(idBoleta);// PROVIDER
-        console.log("CANDIDATOS EN EL THUNKS",dataCandidato);
+        // console.log("CANDIDATOS EN EL THUNKS",dataCandidato);
         // console.log("boleta EN EL THUNKS",data);
         // console.log("asociacion EN EL THUNKS",dataAsociacion);
         if (ok) {
@@ -193,13 +195,38 @@ export const onUpdateBoletaData = (
     values, 
     idJornada, 
     candidatos, 
-    asociaciones, 
+    // asociaciones, 
     idBoleta,
     navigate = () => {}) => {
         return async (dispatch) => {
             dispatch(onCheckingOperation());
             console.log("VALORES EN EL THUNKS",idBoleta);
-            const { ok } = await updateBoletaData(values, idJornada, candidatos, asociaciones, idBoleta );// PROVIDER
+            const { ok } = await updateBoletaData(values, idJornada, candidatos, idBoleta );// PROVIDER
+            if (ok) {
+                dispatch(onSuccessOperation());
+                console.log("BOLETA ACTUALIZADA");
+                navigate();
+            } else {
+            dispatch(onErrorOperation());
+            // dispatch(onToastErrorOperation({ errorMessage: errorMessage || "No se pudo actualizar la boleta" }));
+            }
+        }
+    };
+export const onUpdateBoletaDataAsociacion = (
+    values, 
+    idJornada, 
+    candidatos, 
+    asociaciones, 
+    idBoleta,
+    navigate = () => {}) => {
+        // console.log("values EN EL THUNKS",values)
+        // console.log("idJornada EN EL THUNKS",idJornada)
+        // console.log("candidatos EN EL THUNKS",candidatos)
+        // console.log("asociaciones EN EL THUNKS",asociaciones)
+        // console.log("idBoleta EN EL THUNKS",idBoleta)
+        return async (dispatch) => {
+            dispatch(onCheckingOperation());
+            const { ok } = await updateBoletaAsociacionData(values, idJornada, candidatos,asociaciones, idBoleta );// PROVIDER
             if (ok) {
                 dispatch(onSuccessOperation());
                 console.log("BOLETA ACTUALIZADA");

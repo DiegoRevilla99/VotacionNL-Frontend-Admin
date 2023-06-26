@@ -1,4 +1,6 @@
+import { InputAdornment, Link } from "@material-ui/core";
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
+
 import {
 	Box,
 	Button,
@@ -799,11 +801,30 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 													fullWidth
 													label=""
 													disabled
-													value={fotografiaCandidato ? candidatoandSuplenteSelected.fotografiaCandidato : "Sin Archivo seleccionado"}
-													// value={fotografiaCandidato.name}
+													value={
+														fotografiaCandidato && fotografiaCandidato.name
+														? fotografiaCandidato.name
+														: candidatoandSuplenteSelected.fotografiaCandidato || "Sin Archivo seleccionado"
+													}
 													variant="outlined"
 													size="small"
-													></TextField>
+													InputProps={{
+														startAdornment: candidatoandSuplenteSelected.fotografiaCandidato &&
+														candidatoandSuplenteSelected.fotografiaCandidato.length > 0 ? (
+															<InputAdornment position="start">
+															<Link
+																href={candidatoandSuplenteSelected.fotografiaCandidato}
+																target="_blank"
+																rel="noopener noreferrer"
+															>
+																Presione aquí para ver la fotografía -----------------------------------------------------------------
+															</Link>
+															</InputAdornment>
+														) : null,
+													}}
+													/>
+
+
 													<IconButton
 														disabled={status === "checking"}
 														color="primary"
@@ -959,12 +980,29 @@ export const ModalRegisterCS = ({ statusRegisterModal, handleToggleModal }) => {
 													fullWidth
 													label=""
 													disabled
-													value={fotografiaSuplente ? candidatoandSuplenteSelected.fotografiaSuplente : "Sin Archivo seleccionado"}
-													placeholder="Sin Archivo seleccionado"
-													// value={fotografiaSuplente.name}
+													value={
+														fotografiaSuplente && fotografiaSuplente.name
+														? fotografiaSuplente.name
+														: candidatoandSuplenteSelected.fotografiaSuplente || "Sin Archivo seleccionado"
+													}
 													variant="outlined"
 													size="small"
-													></TextField>
+													InputProps={{
+														startAdornment: candidatoandSuplenteSelected.fotografiaSuplente &&
+														candidatoandSuplenteSelected.fotografiaSuplente.length > 0 ? (
+															<InputAdornment position="start">
+															<Link
+																href={candidatoandSuplenteSelected.fotografiaSuplente}
+																target="_blank"
+																rel="noopener noreferrer"
+															>
+																Presione aquí para ver la fotografía -----------------------------------------------------------------
+															</Link>
+															</InputAdornment>
+														) : null,
+													}}
+													/>
+
 													<IconButton
 														disabled={status === "checking"}
 														color="primary"

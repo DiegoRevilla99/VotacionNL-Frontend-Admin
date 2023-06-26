@@ -1,3 +1,4 @@
+import { InputAdornment, Link } from "@material-ui/core";
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { Box, Button, Grid, Modal, TextField, Typography } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
@@ -12,13 +13,12 @@ import { onPostImage } from '../../store/module-preparacion/jornada/ThunksJornad
 import { useJornadaNoFormalStore } from "../hooks/useJornadaNoFormalStore";
 import { FielTextCustomRegistro } from './FielTextCustomRegistro';
 import { GeneroRadioButton } from "./GeneroRadioButton";
-
 const style = {
 	position: "absolute",
 	top: "50%",
 	left: "50%",
 	transform: "translate(-50%, -50%)",
-	width: "70%",
+	width: "50%",
 	height: { xl: "85%", lg: "85%", md:"100%",  sm: "100%", xs: "100%" },
 	bgcolor: "background.paper",
 	borderRadius: "2rem",
@@ -181,6 +181,8 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 	const navigate = useNavigate();
 	const { toastSuccesOperation } = useUiStore();
 	const { status, candidatos, addCandidato, setCandidatosSelectedNull, candidatoSelected, updateCandidato } = useJornadaNoFormalStore();
+
+	// console.log("candidatoSelected",candidatoSelected)
 	const onSubmit = async(values) => {
 		
 		const info = { ...values };
@@ -484,14 +486,33 @@ export const ModalBoletaCandidatoGenerico = ({ statusRegisterModal, handleCloseR
 										sx={{ width: "100%" }}
 										flexDirection="row"
 									>
-										<TextField
-                    label=""
-                    disabled
-                    variant="outlined"
-                    size="small"
-                    value={fotografiaCandidato.name}
-                    // className={styles.textField}
-                  ></TextField>
+
+				  <TextField
+					fullWidth
+					label=""
+					disabled
+					value={
+						fotografiaCandidato && fotografiaCandidato.name
+						? fotografiaCandidato.name
+						: candidatoSelected.fotografiaCandidato || "Sin Archivo seleccionado"
+					}
+					variant="outlined"
+					size="small"
+					InputProps={{
+						startAdornment: candidatoSelected.fotografiaCandidato &&
+						candidatoSelected.fotografiaCandidato.length > 0 ? (
+							<InputAdornment position="start">
+							<Link
+								href={candidatoSelected.fotografiaCandidato}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Presione aquí para ver la fotografía -----------------------------------------------------------------
+							</Link>
+							</InputAdornment>
+						) : null,
+					}}
+					/>
                   <IconButton
                     color="primary"
                     aria-label="upload picture"

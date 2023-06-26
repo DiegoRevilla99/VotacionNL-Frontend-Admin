@@ -157,17 +157,18 @@ export const getBoletaData = async (idTicket) => {
     // **FETCH
     const { data } = await jornadasAPI.get("jornada/electoral/estructuraboleta/" + idTicket);
     // **Fetch de candidatos y suplentes por boleta
-    // console.log("idTicket", idTicket);
+    console.log("idTicket", idTicket);
     const { data: data1 } = await jornadasAPI.get(
       "jornada/electoral/estructuraboleta/" + idTicket + "/candidatoSuplente"
     );
 
-    // console.log("data2", data1.data);
+    console.log("data2", data1.data);
     // **Fetch de partidos por boleta
     const { data: data2 } = await jornadasAPI.get(
       "jornada/electoral/estructuraboleta/" + idTicket + "/partidos"
-    );
-
+      );
+      
+      console.log("PARTIDOSSSSSSS", data2.data);
     const formatPartidos = await Promise.all(
       data2.data.map(async (partido) => {
         const { data: candidatos } = await jornadasAPI.get(
@@ -175,8 +176,8 @@ export const getBoletaData = async (idTicket) => {
         );
         console.log(candidatos);
         return {
-          id: "",
-          // clavePartido: partido.clavePartido,
+          // id: "",
+          clavePartido: partido.clavePartido,
           nameParty: partido.nombre,
           siglasParty: partido.siglas,
           emblemParty: partido.emblema,
@@ -199,7 +200,7 @@ export const getBoletaData = async (idTicket) => {
       })
     );
 
-    console.log("PARTIDOS", formatPartidos);
+    console.log("PARTIDOSSSSSSS", formatPartidos);
     // console.log("DATA candidatos y suplentes por boleta", data1.data);
 
     const formatCandidatoSuplente = data1.data.map((objeto) => ({
@@ -242,9 +243,9 @@ export const getBoletaData = async (idTicket) => {
       // },
     };
 
-    console.log("FORMAT", format);
-    console.log("FORMAT CANDIDATO SUPLENTE", formatCandidatoSuplente);
-    console.log("FORMAT PARTIDO", formatPartidos);
+    // console.log("FORMAT", format);
+    // console.log("FORMAT CANDIDATO SUPLENTE", formatCandidatoSuplente);
+    // console.log("FORMAT PARTIDO", formatPartidos);
 
     return {
       ok: true,
@@ -378,70 +379,114 @@ export const updateBoletaData = async (
     );
 
 
+    
     console.log("data1 info de la boleta", data1);
     // Candidato
     candidatoandSuplentes.forEach(async (candidato) => {
       const { data: candidateRespData } = await jornadasAPI.put(
-        "jornada/electoral/candidato/" + candidato.idCandidato,
+        "jornada/electoral/candidato/" + candidato.id,
         {
           curp: candidato.claveElectoralCandidato,
           apellidoPCandidato: candidato.apellidoPCandidato,
           apellidoMCandidato: candidato.apellidoMCandidato,
           nombreCandidato: candidato.nombreCandidato,
-          fotoCandidato: candidato.fotografia,
+          fotoCandidato: candidato.fotografiaCandidato,
           seudonimoCandidato: candidato.seudonimoCandidato,
           fechaNacimiento: candidato.fechaNacimientoCandidato,
           genero: candidato.generoCandidato,
         }
       );
+      // console.log("Data de respuesta", candidateRespData);
     });
 
-    console.log("Data de respuesta", candidateRespData);
 
     // Suplente
-    candidatoandSuplentes.forEach(async (candidato) => {
-      const { data: suplenteRespData } = await jornadasAPI.put(
-        "jornada/electoral/suplente/" + candidato.idSuplente,
-        {
-          curp: candidato.claveElectoralSuplente,
-          apellidoPSuplente: candidato.apellidoPSuplente,
-          apellidoMSuplente: candidato.apellidoMSuplente,
-          nombreSuplente: candidato.nombreSuplente,
-          fotoSuplente: candidato.fotografiaSuplente,
-          seudonimoSuplente: candidato.seudonimoSuplente,
-          fechaNacimiento: candidato.fechaNacimientoSuplente,
-          genero: candidato.generoSuplente,
-        }
-      );
-    });
+    // candidatoandSuplentes.forEach(async (candidato) => {
+    //   const suplente = candidato.id + 1;
 
-    console.log("Data de respuesta", suplenteRespData);
+    //   const { data: suplenteRespData } = await jornadasAPI.put(
+    //     "jornada/electoral/suplente/" +suplente,
+    //     {
 
+    //       curp: candidato.claveElectoralSuplente,
+    //       apellidoPSuplente: candidato.apellidoPSuplente,
+    //       apellidoMSuplente: candidato.apellidoMSuplente,
+    //       nombreSuplente: candidato.nombreSuplente,
+    //       fotoSuplente: candidato.fotografiaSuplente,
+    //       seudonimoSuplente: candidato.seudonimoSuplente,
+    //       fechaNacimiento: candidato.fechaNacimientoSuplente,
+    //       genero: candidato.generoSuplente,
+    //     }
+    //   );
+    //   // console.log("Data de respuesta", suplenteRespData);
+    // });
+
+    for (const candidato of candidatoandSuplentes) {
+      const suplente = candidato.id + 1;
+    
+      try {
+        const { data: suplenteRespData } = await jornadasAPI.put(
+          "jornada/electoral/suplente/" + suplente,
+          {
+            curp: candidato.claveElectoralSuplente,
+            apellidoPSuplente: candidato.apellidoPSuplente,
+            apellidoMSuplente: candidato.apellidoMSuplente,
+            nombreSuplente: candidato.nombreSuplente,
+            fotoSuplente: candidato.fotografiaSuplente,
+            seudonimoSuplente: candidato.seudonimoSuplente,
+            fechaNacimiento: candidato.fechaNacimientoSuplente,
+            genero: candidato.generoSuplente,
+            candidatoModel: {
+              idCandidato: candidato.id,
+              }
+          }    
+          );
+          console.log("Data de respuesta", suplenteRespData);
+    
+      } catch (error) {
+        // Manejar el error aquí
+      }
+    }
     // Partido
     partidos.forEach(async (partido) => {
+      console.log("Data de partido", partido);
+
       const { data: partidoRespData } = await jornadasAPI.put(
-        `jornada/electoral/partido/${partido.id}`,
+        `jornada/electoral/partido/${partido.clavePartido}`,
         {
           nombre: partido.nameParty,
           siglas: partido.siglasParty,
           emblema: partido.emblemParty,
           logo: partido.fotografiaParty,
-          // fechaCreacion:"2020-07-04T20:38:38.604+00:00",
+          fechaCreacion:"",
           status: partido.statusParty,
           estructuraBoletaModel: {
             idEstructuraBoleta: idBoleta,
           },
-        //   candidatoModel:{
-        //     "idCandidato": 3
-        // },
+          candidatoModel:{
+            idCandidato: partido.candidatosPartido.id
+        },
         // coalicionModel:{
-        //     "claveCoalicion": 2
+        //     claveCoalicion: 2
         // }
         }
       );
+      console.log("Data de respuesta", partidoRespData);
     });
-
-    console.log("Data de respuesta", partidoRespData);
+  //   {
+  //     "nombre": "PARTIDO ACCION NACIONAL",
+  //     "siglas": "PAN",
+  //     "emblema": "PAN ES LA UNION",
+  //     "logo": "https://imagesvotacion.s3.eu-north-1.amazonaws.com/1687576332513_PAN_logo_(Mexico).svg.png",
+  //     "fechaCreacion": "2023-06-24T03:17:59.214+00:00",
+  //     "status": true,
+  //     "estructuraBoletaModel":{
+  //         "idEstructuraBoleta": 9
+  //     },
+  //     "candidatoModel":{
+  //         "idCandidato": 12
+  //     }
+  // }
 
     return { ok: true };
   } catch (error) {

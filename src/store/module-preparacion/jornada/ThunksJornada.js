@@ -16,13 +16,10 @@ import {
   getJornadas,
   getJornadasFormales,
   getJornadasFormalesJornada,
-  getJornadasNoFormales,
   getJornadasNoFormalesJornada,
-  getJornadaVotos,
-  getJornadaVotosInicio,
   getSesionesActivas,
   postImage,
-  updateBoletaData,
+  updateBoletaData
 } from "../../../providers/Micro-Preparacion/providerJornada";
 import {
   onToastCheckingOperation,
@@ -319,6 +316,7 @@ export const onUpdateBoletaData = (
     // console.log("VALUES THUNKS", values); // YA QUEDO
     // console.log("idJornada THUNKS", idJornada); /// si llega
     console.log("candidatoandSuplentes THUNKS", candidatoandSuplentes);
+    console.log("partidos THUNKS", partidos);
     console.log("idBoleta THUNKS", idBoleta);
     dispatch(onCheckingOperation());
     const { ok } = await updateBoletaData(

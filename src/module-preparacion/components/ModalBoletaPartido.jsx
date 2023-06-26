@@ -1,3 +1,4 @@
+import { InputAdornment, Link } from "@material-ui/core";
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import {
 	Box,
@@ -20,7 +21,6 @@ import { useUiStore } from "../../hooks/useUiStore";
 import { onPostImage } from '../../store/module-preparacion/jornada/ThunksJornada';
 import { useJornadaStore } from "../hooks/useJornadaStore";
 import { FielTextCustomRegistro } from './FielTextCustomRegistro';
-
 const style = {
 	position: "absolute",
 	top: "50%",
@@ -66,6 +66,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 		candidatosAMostrar,
 	} = useJornadaStore();
 
+	console.log("partidoSelected",partidoSelected)
 	const onSubmit = async(values) => {
 		// console.log("valuessssssss", values);
 		if (Object.values(partidoSelected).length === 0) {
@@ -92,6 +93,7 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
                 }
 			updatePartido(
 				partidoSelected.id,
+				partidoSelected.clavePartido,
 				values.nameParty,
 				values.siglasParty,
 				values.emblemParty,
@@ -160,20 +162,13 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 				statusParty: switchValue,
 				candidatosPartido: [],
 			} : {
-
+				// claveParty: partidoSelected.claveParty,
 				nameParty: partidoSelected.nameParty,
 				siglasParty: partidoSelected.siglasParty,
 				emblemParty: partidoSelected.emblemParty,
 				fotografiaParty: partidoSelected.fotografiaParty,
 				statusParty: partidoSelected.statusParty,
 				candidatosPartido: partidoSelected.candidatosPartido,
-
-				// nameParty: partidoSelected.nameParty["nameParty"],
-				// siglasParty: partidoSelected.siglasParty["siglasParty"],
-				// emblemParty: partidoSelected.emblemParty["emblemParty"],
-				// fotografiaParty: partidoSelected.fotografiaParty["fotografiaParty"],
-				// statusParty: partidoSelected.statusParty["statusParty"],
-				// candidatosPartido: partidoSelected.candidatosPartido["candidatosPartido"],
 			}
 		}
 		validate = {validando}
@@ -282,14 +277,40 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 						sx={{ width: "100%" }}
 						flexDirection="row"
 						>
-						<TextField
+						{/* <TextField
 						fullWidth
 						label=""
 						value={fotografiaParty.name}
 						disabled
 						variant="outlined"
 						size="small"
-						/>
+						/> */}
+						<TextField
+							fullWidth
+							label=""
+							disabled
+							value={
+								fotografiaParty && fotografiaParty.name
+								? fotografiaParty.name
+								: partidoSelected.fotografiaParty || "Sin Archivo seleccionado"
+							}
+							variant="outlined"
+							size="small"
+							InputProps={{
+								startAdornment: partidoSelected.fotografiaParty &&
+								partidoSelected.fotografiaParty.length > 0 ? (
+									<InputAdornment position="start">
+									<Link
+										href={partidoSelected.fotografiaParty}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										Presione aquí para ver el logo -------------------------------------------------------------------------
+									</Link>
+									</InputAdornment>
+								) : null,
+							}}
+							/>
 						<IconButton
 							disabled={status === "checking"}
 							color="primary"
@@ -323,19 +344,21 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 					<Typography variant="h7" mt={"1rem"}>
 						¿EL PARTIDO ESTÁ VIGENTE? <span style={{ color: "red" }}>*</span>
 					</Typography>
-					<Stack direction="row" spacing={1} alignItems="center"> 
-						<Typography>No</Typography>
-						<FormControlLabel
-							control={
-								<Switch 
-									name={"statusParty"}
-									checked={switchValue}
-									onChange={handleChangeSwitch}
-									defaultChecked 
-								/>}
-							/>
-						<Typography>Sí</Typography>
-					</Stack>
+					<Stack direction="row" spacing={1} alignItems="center">
+  <Typography>No</Typography>
+  <FormControlLabel
+    control={
+      <Switch
+        name="statusParty"
+        checked={switchValue}
+		// checked={values.statusParty}
+        onChange={handleChangeSwitch}
+      />
+    }
+  />
+  <Typography>Sí</Typography>
+</Stack>
+
 					{/* {touched.statusParty && (
 							<Box ml={2} 
 							sx={{
@@ -423,20 +446,6 @@ export const ModalBoletaPartido = ({ statusMatchModal, handleToggleModal }) => {
 											  }
 											}
 										  }}
-										// }}
-										// onChange={() => {
-										// 	if (values.candidatosPartido.findIndex(c => c.id === candidato.id) !== -1) {
-										// 	setFieldValue(
-										// 		"candidatosPartido",
-										// 		values.candidatosPartido.filter(c => c.id !== candidato.id)
-										// 	);
-										// 	} else {
-										// 	setFieldValue(
-										// 		"candidatosPartido",
-										// 		[...values.candidatosPartido, candidato]
-										// 	);
-										// 	}
-										// }}
 										/>
 									}
 									/>

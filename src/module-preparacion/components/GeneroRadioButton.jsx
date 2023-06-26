@@ -1,7 +1,7 @@
 import {
-    FormControl,
-    FormControlLabel,
-    Radio, RadioGroup
+	FormControl,
+	FormControlLabel,
+	Radio, RadioGroup
 } from "@mui/material";
 import React from "react";
 export const GeneroRadioButton = React.memo(
@@ -25,7 +25,7 @@ export const GeneroRadioButton = React.memo(
 						<FormControlLabel
 							// onClick={() => setIsOther(false)}
                             
-							value="femenino"
+							value="FEMENINO"
 							control={
 								<Radio
 									sx={{
@@ -38,7 +38,7 @@ export const GeneroRadioButton = React.memo(
 							label="FEMENINO"
 						/>
 						<FormControlLabel
-							value="masculino"
+							value="MASCULINO"
 							// onClick={() => setIsOther(false)}
 							control={
 								<Radio
@@ -52,7 +52,7 @@ export const GeneroRadioButton = React.memo(
 							label="MASCULINO"
 						/>
                     <FormControlLabel
-							value="otro"
+							value="OTRO"
 							// onClick={() => setIsOther(true)}
 							control={
 								<Radio

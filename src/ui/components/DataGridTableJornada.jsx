@@ -5,7 +5,6 @@ import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useJornadaStore } from "../../module-preparacion/hooks/useJornadaStore";
-import { onEditCandidatoAndSuplente } from "../../store/module-preparacion/jornada/SliceJornada";
 
 export const DataGridTableJornada = ({ handleOpenModal, handleOpenDeleteCandidatoModal }) => {
   const { candidatoandSuplentes, deleteCandidatoAndSuplente, editCandidatoAndSuplente } =
@@ -17,8 +16,7 @@ export const DataGridTableJornada = ({ handleOpenModal, handleOpenDeleteCandidat
   const handleEdit = (id) => {
     console.log("id", id);
     handleOpenModal();
-    dispatch(onEditCandidatoAndSuplente(id));
-    // editCandidatoAndSuplente(id);
+    editCandidatoAndSuplente(id);
   };
 
   const columns = [

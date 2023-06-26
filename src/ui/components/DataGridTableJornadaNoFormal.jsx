@@ -9,7 +9,7 @@ export const DataGridTableJornadaNoFormal = ({ handleOpenModal, handleOpenDelete
 	const { candidatos, deleteCandidato, editCandidato} = useJornadaNoFormalStore();
 	
 	const dispatch = useDispatch();
-	console.log("candidatos", candidatos);
+	// console.log("candidatos", candidatos);
     const handleDelete = (id) => {
 		// dispatch(deleteCandidato(id));
 		deleteCandidato(id);

@@ -55,7 +55,7 @@ export const CrudJornada = () => {
         );
       });
 
-      console.log("filteredBoletas", filteredBoletas);
+      // console.log("filteredBoletas", filteredBoletas);
 
     const columns = [
         {
@@ -70,7 +70,7 @@ export const CrudJornada = () => {
       sortable: false,
       disableColumnMenu: true,
       renderCell: ({row}) => {
-        console.log("dentro deeee",row);
+        // console.log("dentro deeee",row);
         return (
           <Box width="100%" display="flex" justifyContent="space-evenly">
             <Tooltip

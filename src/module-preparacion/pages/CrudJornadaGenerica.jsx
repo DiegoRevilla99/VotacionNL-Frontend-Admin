@@ -56,7 +56,7 @@ export const CrudJornadaGenerica = () => {
       sortable: false,
       disableColumnMenu: true,
       renderCell: ({row}) => {
-        console.log("dentro deeee",row);
+        // console.log("dentro deeee",row);
         return (
           <Box width="100%" display="flex" justifyContent="space-evenly">
             <Tooltip

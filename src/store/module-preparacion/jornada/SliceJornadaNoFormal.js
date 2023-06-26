@@ -76,7 +76,9 @@ export const SliceJornadaNoFormal = createSlice({
         },
 
         onEditCandidato: (state, { payload }) => {
-            state.candidatoSelected = state.candidatos[0];
+            // state.candidatoSelected = state.candidatos[0];
+            const candidato = state.candidatos.find((candidato) => candidato.id === payload);
+            state.candidatoSelected = candidato;
         },
 
         onUpdateCandidato: (state, { payload }) => {
@@ -137,7 +139,9 @@ export const SliceJornadaNoFormal = createSlice({
             state.asociaciones.splice(state.asociaciones.indexOf(asociacionFound), 1);
         },
         onEditAsociacion: (state, { payload }) => {
-            state.asociacionesSelected = state.asociaciones[0];
+            // state.asociacionesSelected = state.asociaciones[0];
+            const asociacion = state.asociaciones.find((asociacion) => asociacion.id === payload);
+            state.asociacionesSelected = asociacion;
         },
         onUpdateAsociacion : (state, { payload }) => {
             const asociacionFound = state.asociaciones.find((asociacion) => asociacion.id === state.asociacionesSelected.id);

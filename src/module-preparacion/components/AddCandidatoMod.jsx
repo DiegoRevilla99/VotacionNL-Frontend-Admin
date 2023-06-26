@@ -1,8 +1,11 @@
 import { Box, Button, Grid, Tooltip } from "@mui/material";
 import React from "react";
 import { DataGridTableJornada } from "../../ui/components/DataGridTableJornada";
+import { useJornadaStore } from "../hooks/useJornadaStore";
 
 export const AddCandidatoMod = React.memo(({ handleOpenModal,handleOpenDeleteCandidatoModal,  status }) => {
+	const { candidatoandSuplentes } =
+    useJornadaStore();
 	return (
 		<>
 			<Grid item xs={12} md={6} lg={4}>
@@ -12,7 +15,7 @@ export const AddCandidatoMod = React.memo(({ handleOpenModal,handleOpenDeleteCan
 					onClick={handleOpenModal}
 					variant="contained"
 					size="large"
-					disabled={status === "checking"}
+					disabled={status === "checking" }
 					sx={{
 						boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)",
 						transition: "all 0.5s ease",

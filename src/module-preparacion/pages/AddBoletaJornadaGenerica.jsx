@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import { Formik } from 'formik';
 import { useNavigate, useParams } from "react-router-dom";
 import { object, string } from "yup";
-import { onCreateBoleta, onCreateBoletaAsociaciones, onUpdateBoletaData } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
+import { onCreateBoleta, onCreateBoletaAsociaciones, onUpdateBoletaData, onUpdateBoletaDataAsociacion } from "../../store/module-preparacion/jornada/ThunksJornadaNoFormal";
 import { AddCandidatoGenericoMod } from "../components/AddCandidatoGenericoMod";
 import { ModalAsociacionGenerico } from "../components/ModalAsociacionGenerico";
 import { ModalBoletaCandidatoGenerico } from "../components/ModalBoletaCandidatoGenerico";
@@ -63,7 +63,8 @@ export const AddBoletaJornadaGenerica = () => {
 	  getData();
 	}, [dispatch]);
 
-	console.log("modalidades", modalidades);
+	// console.log("modalidades", modalidades);
+	// console.log("modalidades", modalidades.modalidad);
 
 	// const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -204,12 +205,13 @@ export const AddBoletaJornadaGenerica = () => {
 		  setCandidatosSelectedNull();
 		  setAsociacionesSelectedNull();
 		} else {
-		  if (values.modalidadVotacion === 3) { // Seleccionaron planilla
+		  if (values.modalidadVotacion === 8) { // Seleccionaron planilla
 			dispatch(onUpdateBoletaDataAsociacion(values, params.id, candidatos, asociaciones, params.idBoleta, () => {
 			  navigate("/preparacion/jornada/noFormal/" + params.id);
 			}
 			));
 		  } else { // Otras opciones distintas de planilla
+			console.log("params.idBoleta", params.idBoleta);
 			dispatch(onUpdateBoletaData(
 			  values,
 			  params.id,

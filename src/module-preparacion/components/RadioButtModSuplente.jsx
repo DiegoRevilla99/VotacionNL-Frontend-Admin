@@ -1,12 +1,10 @@
-import React from "react";
 import {
 	FormControl,
 	FormControlLabel,
 	Radio,
-    FormLabel,
-	RadioGroup,
-    Typography,
+	RadioGroup
 } from "@mui/material";
+import React from "react";
 export const RadioButtModSuplente = React.memo(
 	({
 		valuesTipo,
@@ -14,7 +12,7 @@ export const RadioButtModSuplente = React.memo(
         errorsgeneroSuplente,
         // isOther,
 	}) => {
-		console.log("ME RENDERIZO TIPOS");
+		console.log("ME RENDERIZO TIPOS", valuesTipo);
 		return (
 			<>
 				<FormControl  error={Boolean(errorsgeneroSuplente)}>
@@ -28,7 +26,7 @@ export const RadioButtModSuplente = React.memo(
 						<FormControlLabel
 							// onClick={() => setIsOther(false)}
                             
-							value="femenino"
+							value="FEMENINO"
 							control={
 								<Radio
 									sx={{
@@ -41,7 +39,7 @@ export const RadioButtModSuplente = React.memo(
 							label="FEMENINO"
 						/>
 						<FormControlLabel
-							value="masculino"
+							value="MASCULINO"
 							// onClick={() => setIsOther(false)}
 							control={
 								<Radio
@@ -55,7 +53,7 @@ export const RadioButtModSuplente = React.memo(
 							label="MASCULINO"
 						/>
                     <FormControlLabel
-							value="otro"
+							value="OTRO"
 							// onClick={() => setIsOther(true)}
 							control={
 								<Radio
@@ -70,27 +68,6 @@ export const RadioButtModSuplente = React.memo(
 						/>
 					</RadioGroup>
 				</FormControl>
-                {/* {isOther && (
-                    <FormControl variant="standard">
-					<FormLabel id="generoOther">
-						<Typography variant="h7" mt={"1rem"}>
-							INGRESE EL GÉNERO <span style={{ color: "red" }}>*</span>
-						</Typography>
-					</FormLabel>
-                        <TextField
-                            name={name}
-                            fullWidth
-                            size="small"
-                            id={name}
-                            label={label}
-                            variant="filled"
-                            onChange={handleChange}
-                            value={value}
-                            error={touched && Boolean(error)}
-                            helperText={touched && error}
-                        />
-                    </FormControl>
-                )} */}
 			</>
 		);
 	}

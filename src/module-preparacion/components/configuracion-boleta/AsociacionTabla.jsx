@@ -13,7 +13,7 @@ import { BoxCandidatoFormal } from "./BoxCandidatoFormal";
 export const AsociacionTabla = memo(({
   info = {}, handleOpenModal
 }) => {
-  console.log("AsociacionTabla", info);
+  // console.log("AsociacionTabla", info);
   const { id, nombreAsociacion, logo, candidatosAsociacion } = info;
 
   const dispatch = useDispatch();
