@@ -375,11 +375,8 @@ export const updateBoletaData = async (
       boletaInformacion
     );
 
-<<<<<<< HEAD
 
     
-=======
->>>>>>> c6cdca039c6695081e636559a03bfc6204637b10
     console.log("data1 info de la boleta", data1);
     // Candidato
     candidatoandSuplentes.forEach(async (candidato) => {
